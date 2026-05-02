@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\VAIBHAV SANTHALIYA\\\\Downloads\\\\skincare-app\" -Recurse | Select-Object -Property FullName, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\){\"DIR\"}else{\"FILE\"}}} | ConvertTo-Json | Out-String)",
+      "PowerShell(vercel *)",
+      "PowerShell(claude mcp *)",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__get_project_url",
+      "mcp__supabase__get_publishable_keys",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__search_docs",
+      "PowerShell(Select-String *)",
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\VAIBHAV SANTHALIYA\\\\.claude\\\\projects\\\\C--Users-VAIBHAV-SANTHALIYA-Downloads-skincare-app\\\\c0479704-0a4f-4b05-8509-4086b5e97e45\\\\tool-results\\\\mcp-supabase-search_docs-1777713633946.txt\" -Raw\\) -match 'SMTP|smtp' | Measure-Object)",
+      "PowerShell(Get-Content *)",
+      "WebFetch(domain:supabase.com)",
+      "mcp__supabase__get_logs",
+      "mcp__supabase__execute_sql"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}
