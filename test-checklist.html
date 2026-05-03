@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skincare App — QA Checklist</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      padding: 24px 16px 64px;
+    }
+
+    .container { max-width: 720px; margin: 0 auto; }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 28px;
+    }
+
+    .progress-bar-wrap {
+      background: #e0e0e0;
+      border-radius: 8px;
+      height: 8px;
+      margin-bottom: 6px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background: #4caf50;
+      height: 100%;
+      width: 0%;
+      border-radius: 8px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-label {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 28px;
+    }
+
+    section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #888;
+      margin-bottom: 14px;
+    }
+
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.1s;
+    }
+
+    .item:last-child { border-bottom: none; }
+    .item:hover { background: #fafafa; }
+
+    .item input[type="checkbox"] {
+      margin-top: 2px;
+      width: 17px;
+      height: 17px;
+      accent-color: #4caf50;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .item label {
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .item.checked label {
+      color: #aaa;
+      text-decoration: line-through;
+    }
+
+    .note {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 7px;
+      border-radius: 99px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .badge-high   { background: #fee2e2; color: #b91c1c; }
+    .badge-medium { background: #fef3c7; color: #92400e; }
+    .badge-low    { background: #ede9fe; color: #5b21b6; }
+
+    .reset-btn {
+      display: block;
+      margin: 24px auto 0;
+      padding: 10px 24px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #555;
+    }
+
+    .reset-btn:hover { background: #e4e4e4; }
+
+    .all-done {
+      display: none;
+      text-align: center;
+      margin-top: 24px;
+      padding: 16px;
+      background: #f0fdf4;
+      border-radius: 12px;
+      color: #166534;
+      font-weight: 600;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Skincare App — QA Test Checklist</h1>
+  <p class="meta">Run after deployment. Check each item manually in the deployed app.</p>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+  <p class="progress-label" id="progress-label">0 / 0 completed</p>
+
+  <!-- AUTH & SYNC -->
+  <section>
+    <h2>Auth &amp; Sync</h2>
+
+    <div class="item" data-id="auth-1">
+      <input type="checkbox" id="auth-1">
+      <label for="auth-1">
+        Sign in fresh on a new device / incognito tab → data syncs from cloud, all tabs render correctly (Today, Cycle, Progress, Settings)
+        <span class="badge badge-high">HIGH</span>
+      </label>
+    </div>
+
+    <div class="item" data-id="auth-2">
+      <input type="checkbox" id="auth-2">
+      <label for="auth-2">
+        Sign in on a second device simultaneously → only ONE <code>user_data</code> SELECT fires (check DevTools Network tab — no duplicate requests within 1s)
+        <span class="badge badge-high">HIGH</span>
+        <div class="note">Validates the syncInProgress double-sync fix.</div>
+      </label>
+    </div>
+
+    <div class="item" data-id="auth-3">
+      <input type="checkbox" id="auth-3">
+      <label for="auth-3">
+        Sign out → auth screen appears, local state is preserved in localStorage (verify via DevTools → Application → Local Storage)
+      </label>
+    </div>
+
+    <div class="item" data-id="auth-4">
+      <input type="checkbox" id="auth-4">
+      <label for="auth-4">
+        Sign back in after sign-out → cloud state merges with local, no duplicate loggedDays, streak is correct
+      </label>
+    </div>
+
+    <div class="item" data-id="auth-5">
+      <input type="checkbox" id="auth-5">
+      <label for="auth-5">
+        Device A has reminders enabled. Sign in fresh on Device B (reminders previously off) → after sync, notifications are armed without requiring a page reload or manual toggle
+        <span class="badge badge-high">HIGH</span>
+        <div class="note">Validates the reminders re-scheduling fix after sync.</div>
+      </label>
+    </div>
+
+    <div class="item" data-id="auth-6">
+      <input type="checkbox" id="auth-6">
+      <label for="auth-6">
+        Sign in while offline (disable network in DevTools) → app loads in local mode, no crashes, no blank screen, no console errors about unhandled rejections
+        <span class="badge badge-medium">MEDIUM</span>
+      </label>
+    </div>
+
+    <div class="item" data-id="auth-7">
+      <input type="checkbox" id="auth-7">
+      <label for="auth-7">
+        New account (no existing cloud data) → local state is pushed up as the initial cloud record, app proceeds normally
+      </label>
+    </div>
+
+    <div class="item" data-id="auth-8">
+      <input type="checkbox" id="auth-8">
+      <label for="auth-8">
+        Expired/invalid session (or force-expire the token in DevTools cookies) → auth screen shown cleanly, no unhandled promise rejection in console
+        <div class="note">Validates the updateAccountView .catch() fix.</div>
+      </label>
+    </div>
+  </section>
+
+  <!-- MILESTONE & CYCLE -->
+  <section>
+    <h2>Milestone &amp; Cycle</h2>
+
+    <div class="item" data-id="ms-1">
+      <input type="checkbox" id="ms-1">
+      <label for="ms-1">
+        Day 0 (fresh start): Foundation stage tasks visible, milestone badge shows "Foundation"
+      </label>
+    </div>
+
+    <div class="item" data-id="ms-2">
+      <input type="checkbox" id="ms-2">
+      <label for="ms-2">
+        Simulate Day 14: change <code>startDate</code> in localStorage to 14 days ago, reload → Acne Control tasks added automatically, no duplicate tasks
+        <span class="badge badge-medium">MEDIUM</span>
+        <div class="note">In DevTools: Application → Local Storage → edit startDate value.</div>
+      </label>
+    </div>
+
+    <div class="item" data-id="ms-3">
+      <input type="checkbox" id="ms-3">
+      <label for="ms-3">
+        Simulate Day 28: startDate set to 28 days ago → Marks/Texture tasks added, no duplicates
+      </label>
+    </div>
+
+    <div class="item" data-id="ms-4">
+      <input type="checkbox" id="ms-4">
+      <label for="ms-4">
+        Simulate Day 56: startDate set to 56 days ago → Maintenance tasks added, no duplicates
+      </label>
+    </div>
+
+    <div class="item" data-id="ms-5">
+      <input type="checkbox" id="ms-5">
+      <label for="ms-5">
+        Night cycle rotates correctly over 3 days: Niacinamide → Salicylic → Rest → back to Niacinamide
+      </label>
+    </div>
+
+    <div class="item" data-id="ms-6">
+      <input type="checkbox" id="ms-6">
+      <label for="ms-6">
+        Set <code>lastCycleDate</code> to 5 days ago in localStorage, reload → cycle advances correctly by the right number of steps (catches up multiple missed days)
+        <span class="badge badge-medium">MEDIUM</span>
+      </label>
+    </div>
+
+    <div class="item" data-id="ms-7">
+      <input type="checkbox" id="ms-7">
+      <label for="ms-7">
+        Cycle tab renders the correct current night after sync on a second device (stale cycle tab fix)
+        <div class="note">Validates renderCycleList() added to syncFromSupabase.</div>
+      </label>
+    </div>
+  </section>
+
+  <!-- STREAK & DAY COMPLETION -->
+  <section>
+    <h2>Streak &amp; Day Completion</h2>
+
+    <div class="item" data-id="streak-1">
+      <input type="checkbox" id="streak-1">
+      <label for="streak-1">
+        Complete all morning + night tasks for today → day auto-logs, streak counter increments by 1
+        <span class="badge badge-high">HIGH</span>
+      </label>
+    </div>
+
+    <div class="item" data-id="streak-2">
+      <input type="checkbox" id="streak-2">
+      <label for="streak-2">
+        Open app next morning (yesterday is logged, today not started) → streak number is preserved, not reset
+      </label>
+    </div>
+
+    <div class="item" data-id="streak-3">
+      <input type="checkbox" id="streak-3">
+      <label for="streak-3">
+        Miss 2 days (set loggedDays to exclude yesterday and today in localStorage) → streak shows 0
+      </label>
+    </div>
+
+    <div class="item" data-id="streak-4">
+      <input type="checkbox" id="streak-4">
+      <label for="streak-4">
+        Habit checkboxes (e.g. water intake) do NOT prevent or block day completion — only required morning/night tasks count
+      </label>
+    </div>
+
+    <div class="item" data-id="streak-5">
+      <input type="checkbox" id="streak-5">
+      <label for="streak-5">
+        Partially completed tasks (some morning done, night not started) → day does NOT auto-log
+      </label>
+    </div>
+  </section>
+
+  <!-- IMPORT / EXPORT -->
+  <section>
+    <h2>Import &amp; Export</h2>
+
+    <div class="item" data-id="io-1">
+      <input type="checkbox" id="io-1">
+      <label for="io-1">
+        Export data → valid JSON file downloaded, filename includes today's date
+      </label>
+    </div>
+
+    <div class="item" data-id="io-2">
+      <input type="checkbox" id="io-2">
+      <label for="io-2">
+        Import the exported file → state restores correctly, streak and loggedDays intact, toast shows "Data imported"
+      </label>
+    </div>
+
+    <div class="item" data-id="io-3">
+      <input type="checkbox" id="io-3">
+      <label for="io-3">
+        Import a file where <code>lastCycleDate</code> is 3+ days old → cycle advances to the correct day for today (not stuck on the old date)
+        <span class="badge badge-medium">MEDIUM</span>
+        <div class="note">Validates advanceCycleIfNeeded() added to importData. Edit the JSON before importing to set lastCycleDate to e.g. 4 days ago.</div>
+      </label>
+    </div>
+
+    <div class="item" data-id="io-4">
+      <input type="checkbox" id="io-4">
+      <label for="io-4">
+        Import an invalid JSON file → toast shows "Could not import file", existing state unchanged
+      </label>
+    </div>
+
+    <div class="item" data-id="io-5">
+      <input type="checkbox" id="io-5">
+      <label for="io-5">
+        Import a valid JSON missing the <code>tasks</code> key → treated as invalid, toast shown, state unchanged
+      </label>
+    </div>
+  </section>
+
+  <!-- PWA & OFFLINE -->
+  <section>
+    <h2>PWA &amp; Offline</h2>
+
+    <div class="item" data-id="pwa-1">
+      <input type="checkbox" id="pwa-1">
+      <label for="pwa-1">
+        Install to home screen on Android → app launches in standalone mode (no browser UI), maskable icon displays correctly in adaptive icon grid
+        <div class="note">Validates icon-maskable.png added to SW ASSETS.</div>
+      </label>
+    </div>
+
+    <div class="item" data-id="pwa-2">
+      <input type="checkbox" id="pwa-2">
+      <label for="pwa-2">
+        Install to home screen on iOS (Safari → Add to Home Screen) → app opens in standalone, icons display correctly
+      </label>
+    </div>
+
+    <div class="item" data-id="pwa-3">
+      <input type="checkbox" id="pwa-3">
+      <label for="pwa-3">
+        Go offline (DevTools → Network → Offline) after first load → app loads from cache, all tabs functional, no blank screen
+        <span class="badge badge-medium">MEDIUM</span>
+      </label>
+    </div>
+
+    <div class="item" data-id="pwa-4">
+      <input type="checkbox" id="pwa-4">
+      <label for="pwa-4">
+        Close app, go offline, reopen → app loads from service worker cache, today's tasks visible
+      </label>
+    </div>
+
+    <div class="item" data-id="pwa-5">
+      <input type="checkbox" id="pwa-5">
+      <label for="pwa-5">
+        Check task offline → state saved to localStorage immediately, syncs to Supabase when back online
+      </label>
+    </div>
+  </section>
+
+  <!-- NOTIFICATIONS -->
+  <section>
+    <h2>Notifications &amp; Reminders</h2>
+
+    <div class="item" data-id="notif-1">
+      <input type="checkbox" id="notif-1">
+      <label for="notif-1">
+        Enable reminders in Settings → browser permission prompt appears, after granting, reminder time can be set
+      </label>
+    </div>
+
+    <div class="item" data-id="notif-2">
+      <input type="checkbox" id="notif-2">
+      <label for="notif-2">
+        Disable reminders → no more notifications scheduled, existing ones cleared
+      </label>
+    </div>
+
+    <div class="item" data-id="notif-3">
+      <input type="checkbox" id="notif-3">
+      <label for="notif-3">
+        Notification fires at the scheduled time → tapping it focuses/opens the app
+      </label>
+    </div>
+  </section>
+
+  <!-- SETTINGS & RESET -->
+  <section>
+    <h2>Settings &amp; Reset</h2>
+
+    <div class="item" data-id="set-1">
+      <input type="checkbox" id="set-1">
+      <label for="set-1">
+        Account email displays correctly in Settings after sign-in
+      </label>
+    </div>
+
+    <div class="item" data-id="set-2">
+      <input type="checkbox" id="set-2">
+      <label for="set-2">
+        Add a custom task → task appears in Today view, persists after reload
+      </label>
+    </div>
+
+    <div class="item" data-id="set-3">
+      <input type="checkbox" id="set-3">
+      <label for="set-3">
+        Edit a task name → name updates everywhere it appears
+      </label>
+    </div>
+
+    <div class="item" data-id="set-4">
+      <input type="checkbox" id="set-4">
+      <label for="set-4">
+        Delete a task → removed from all views, check history for that task no longer affects day completion
+      </label>
+    </div>
+
+    <div class="item" data-id="set-5">
+      <input type="checkbox" id="set-5">
+      <label for="set-5">
+        Reset All → confirmation prompt appears, after confirming: state resets to defaults, Supabase record updated, all tabs show empty/fresh state
+      </label>
+    </div>
+
+    <div class="item" data-id="set-6">
+      <input type="checkbox" id="set-6">
+      <label for="set-6">
+        Cancel Reset All prompt → nothing changes
+      </label>
+    </div>
+  </section>
+
+  <!-- PHOTOS -->
+  <section>
+    <h2>Weekly Photos</h2>
+
+    <div class="item" data-id="photo-1">
+      <input type="checkbox" id="photo-1">
+      <label for="photo-1">
+        Capture or upload a weekly photo → photo stored and visible in the app
+      </label>
+    </div>
+
+    <div class="item" data-id="photo-2">
+      <input type="checkbox" id="photo-2">
+      <label for="photo-2">
+        Reload the page → photo persists (stored in IndexedDB, not localStorage)
+      </label>
+    </div>
+
+    <div class="item" data-id="photo-3">
+      <input type="checkbox" id="photo-3">
+      <label for="photo-3">
+        Reset All → photos are cleared along with other data, no orphaned photo data remains
+      </label>
+    </div>
+  </section>
+
+  <!-- CONSOLE HEALTH -->
+  <section>
+    <h2>Console Health</h2>
+
+    <div class="item" data-id="console-1">
+      <input type="checkbox" id="console-1">
+      <label for="console-1">
+        Fresh load (signed in) → DevTools Console shows no unhandled promise rejections and no uncaught errors
+        <span class="badge badge-high">HIGH</span>
+      </label>
+    </div>
+
+    <div class="item" data-id="console-2">
+      <input type="checkbox" id="console-2">
+      <label for="console-2">
+        Fresh load (offline / Supabase unavailable) → console shows only the expected warning: "Supabase unavailable — running in offline/local mode", nothing else
+      </label>
+    </div>
+
+    <div class="item" data-id="console-3">
+      <input type="checkbox" id="console-3">
+      <label for="console-3">
+        Network tab: confirm service worker is registered and active (Application → Service Workers shows "activated and running")
+      </label>
+    </div>
+  </section>
+
+  <div class="all-done" id="all-done">All tests passed. Ready to ship.</div>
+
+  <button class="reset-btn" id="reset-btn">Reset all checkboxes</button>
+</div>
+
+<script>
+  const STORAGE_KEY = 'qa-checklist-v1';
+
+  function save() {
+    const checked = Array.from(document.querySelectorAll('input[type=checkbox]'))
+      .filter(c => c.checked).map(c => c.id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+  }
+
+  function load() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      saved.forEach(id => {
+        const cb = document.getElementById(id);
+        if (cb) { cb.checked = true; cb.closest('.item').classList.add('checked'); }
+      });
+    } catch {}
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('input[type=checkbox]');
+    const done = document.querySelectorAll('input[type=checkbox]:checked');
+    const pct = all.length ? (done.length / all.length) * 100 : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = `${done.length} / ${all.length} completed`;
+    document.getElementById('all-done').style.display = done.length === all.length ? 'block' : 'none';
+  }
+
+  document.querySelectorAll('.item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      const cb = item.querySelector('input[type=checkbox]');
+      if (e.target !== cb) cb.checked = !cb.checked;
+      item.classList.toggle('checked', cb.checked);
+      save();
+      updateProgress();
+    });
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if (!confirm('Reset all checkboxes?')) return;
+    document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+    document.querySelectorAll('.item').forEach(i => i.classList.remove('checked'));
+    localStorage.removeItem(STORAGE_KEY);
+    updateProgress();
+  });
+
+  load();
+  updateProgress();
+</script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Skin" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <title>Skin · Routine</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Auth screen — hidden once session confirmed -->
+  <div class="auth-screen" id="auth-screen" hidden>
+    <div class="auth-card">
+      <div class="auth-glyph">◌</div>
+      <h1 class="auth-title">Skin · Routine</h1>
+
+      <!-- Sign in (default) -->
+      <div class="auth-view" id="auth-signin">
+        <p class="auth-sub">Sign in to sync across devices</p>
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input type="email" id="signin-email" class="field-input" placeholder="you@example.com" autocomplete="email" />
+        </label>
+        <label class="field">
+          <span class="field-label">Password</span>
+          <input type="password" id="signin-password" class="field-input" placeholder="Password" autocomplete="current-password" />
+        </label>
+        <button class="btn-primary" id="signin-btn">Sign in</button>
+        <button class="btn-text" id="goto-forgot">Forgot password?</button>
+        <p class="auth-switch">No account? <button class="btn-link" id="goto-signup">Sign up</button></p>
+      </div>
+
+      <!-- Sign up -->
+      <div class="auth-view" id="auth-signup" hidden>
+        <p class="auth-sub">Create your account</p>
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input type="email" id="signup-email" class="field-input" placeholder="you@example.com" autocomplete="email" />
+        </label>
+        <label class="field">
+          <span class="field-label">Password</span>
+          <input type="password" id="signup-password" class="field-input" placeholder="At least 6 characters" autocomplete="new-password" />
+        </label>
+        <button class="btn-primary" id="signup-btn">Create account</button>
+        <p class="auth-switch">Have an account? <button class="btn-link" id="goto-signin">Sign in</button></p>
+      </div>
+
+      <!-- Forgot password -->
+      <div class="auth-view" id="auth-forgot" hidden>
+        <p class="auth-sub">Enter your email and we'll send a reset link</p>
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input type="email" id="forgot-email" class="field-input" placeholder="you@example.com" autocomplete="email" />
+        </label>
+        <button class="btn-primary" id="forgot-btn">Send reset link</button>
+        <button class="btn-text" id="forgot-back">Back to sign in</button>
+      </div>
+
+      <!-- Check email (after sign-up) -->
+      <div class="auth-view" id="auth-confirm" hidden>
+        <p class="auth-sub">Check your email and click the confirmation link, then come back and sign in.</p>
+        <button class="btn-primary" id="confirm-back">Go to sign in</button>
+      </div>
+
+      <!-- Set new password (after clicking reset link) -->
+      <div class="auth-view" id="auth-reset" hidden>
+        <p class="auth-sub">Choose a new password</p>
+        <label class="field">
+          <span class="field-label">New password</span>
+          <input type="password" id="reset-password" class="field-input" placeholder="At least 6 characters" autocomplete="new-password" />
+        </label>
+        <button class="btn-primary" id="reset-btn">Update password</button>
+      </div>
+
+      <p class="auth-error" id="auth-error" hidden></p>
+    </div>
+  </div>
+
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div>
+          <p class="date-label" id="date-label"></p>
+          <h1 class="greeting" id="greeting">Today</h1>
+        </div>
+        <button class="streak-pill" id="streak-pill" aria-label="View streak">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+          <span id="streak-num">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- TODAY TAB -->
+      <section class="tab-pane active" id="pane-today">
+        <!-- Progress ring -->
+        <div class="hero-card">
+          <div class="ring-wrap">
+            <svg class="ring" viewBox="0 0 120 120">
+              <circle class="ring-bg" cx="60" cy="60" r="52" />
+              <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="52" />
+            </svg>
+            <div class="ring-text">
+              <span class="ring-num" id="ring-pct">0</span>
+              <span class="ring-suffix">%</span>
+            </div>
+          </div>
+          <div class="hero-meta">
+            <p class="hero-label">Today's progress</p>
+            <p class="hero-status" id="hero-status">Let's get started</p>
+            <p class="hero-cycle" id="hero-cycle">Tonight: —</p>
+          </div>
+        </div>
+
+        <!-- Morning section -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="section-icon icon-morning">☀</span>
+              <h2>Morning</h2>
+              <span class="comfort-tag" id="comfort-tag" hidden>Minimal</span>
+            </div>
+            <button class="add-btn" data-section="morning" aria-label="Add task">＋</button>
+          </div>
+          <ul class="task-list" id="list-morning"></ul>
+        </div>
+
+        <!-- Night section -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="section-icon icon-night">☾</span>
+              <h2>Night</h2>
+              <span class="cycle-tag" id="cycle-tag">—</span>
+            </div>
+            <button class="add-btn" data-section="night" aria-label="Add task">＋</button>
+          </div>
+          <ul class="task-list" id="list-night"></ul>
+        </div>
+
+        <!-- Habits section -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="section-icon icon-habit">◐</span>
+              <h2>Daily habits</h2>
+            </div>
+            <button class="add-btn" data-section="habit" aria-label="Add task">＋</button>
+          </div>
+          <ul class="task-list" id="list-habit"></ul>
+        </div>
+
+        <div class="footer-spacer"></div>
+      </section>
+
+      <!-- CYCLE TAB -->
+      <section class="tab-pane" id="pane-cycle">
+        <div class="section">
+          <p class="section-sub">Cycle rotates automatically each day. Tap a card to override tonight's routine.</p>
+          <div class="cycle-list" id="cycle-list"></div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-h">Sweat management</h2>
+          <div class="info-card">
+            <div class="info-row">Dab sweat with clean tissue — never rub</div>
+            <div class="info-row">Rinse with plain water 1–2× if needed</div>
+            <div class="info-row">Keep hands away from face</div>
+            <div class="info-row">Beard: keep short, clean with face wash</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-h">Active rules</h2>
+          <div class="info-card">
+            <div class="info-row">Salicylic max 3–4×/week, never daily</div>
+            <div class="info-row">Never layer multiple actives</div>
+            <div class="info-row">Pea-sized serum amount only</div>
+            <div class="info-row">No scrubbing, no picking</div>
+          </div>
+        </div>
+
+        <div class="footer-spacer"></div>
+      </section>
+
+      <!-- PROGRESS TAB -->
+      <section class="tab-pane" id="pane-progress">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <p class="stat-label">Streak</p>
+            <p class="stat-value" id="stat-streak">0</p>
+            <p class="stat-unit">days</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Logged</p>
+            <p class="stat-value" id="stat-logged">0</p>
+            <p class="stat-unit">total</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">This week</p>
+            <p class="stat-value" id="stat-week">0</p>
+            <p class="stat-unit">/ 7</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">21-day goal</p>
+            <p class="stat-value" id="stat-goal">0</p>
+            <p class="stat-unit">/ 21</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-h">Last 6 weeks</h2>
+          <div class="cal-card">
+            <div class="cal-weekdays">
+              <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-h">Milestones</h2>
+          <div class="milestone-list" id="milestone-list"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">
+              <h2>Weekly photos</h2>
+            </div>
+            <button class="add-btn" id="add-photo-btn" aria-label="Add weekly photo">＋</button>
+          </div>
+          <input type="file" id="weekly-photo-input" accept="image/*" hidden />
+          <div class="photo-grid" id="weekly-photos-grid"></div>
+        </div>
+
+        <div class="footer-spacer"></div>
+      </section>
+
+      <!-- SETTINGS TAB -->
+      <section class="tab-pane" id="pane-settings">
+        <div class="section">
+          <h2 class="section-h">Account</h2>
+          <div class="setting-card">
+            <div class="setting-row">
+              <div>
+                <p class="setting-name">Signed in as</p>
+                <p class="setting-sub" id="account-email">—</p>
+              </div>
+            </div>
+            <button class="setting-row btn-row danger" id="sign-out-btn">
+              <span class="setting-name">Sign out</span>
+              <span class="chevron">›</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-h">Routine</h2>
+          <div class="setting-card">
+            <div class="setting-row">
+              <div>
+                <p class="setting-name">Comfort mode</p>
+                <p class="setting-sub">Summer / sweat friendly — shows only face wash and sunscreen in the morning</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="comfort-toggle" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-h">Reminders</h2>
+          <div class="setting-card">
+            <div class="setting-row">
+              <div>
+                <p class="setting-name">Morning reminder</p>
+                <p class="setting-sub" id="morning-time-label">8:00 AM</p>
+              </div>
+              <input type="time" id="morning-time" class="time-input" value="08:00" />
+            </div>
+            <div class="setting-row">
+              <div>
+                <p class="setting-name">Night reminder</p>
+                <p class="setting-sub" id="night-time-label">10:00 PM</p>
+              </div>
+              <input type="time" id="night-time" class="time-input" value="22:00" />
+            </div>
+            <div class="setting-row">
+              <div>
+                <p class="setting-name">Evening check-in</p>
+                <p class="setting-sub" id="checkin-time-label">9:00 PM</p>
+              </div>
+              <input type="time" id="checkin-time" class="time-input" value="21:00" />
+            </div>
+            <div class="setting-row">
+              <div>
+                <p class="setting-name">Notifications</p>
+                <p class="setting-sub" id="notif-status">Tap to enable</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="notif-toggle" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          <p class="hint" id="notif-hint">Reminders fire while the app is open or running in the background. Install to Home Screen for the most reliable experience on iPhone.</p>
+        </div>
+
+        <div class="section">
+          <h2 class="section-h">Install</h2>
+          <div class="install-card">
+            <p class="install-text" id="install-text">On iPhone/iPad: tap Share → "Add to Home Screen". On Mac Safari: File → Add to Dock. On Chrome: install icon in URL bar.</p>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-h">Start date</h2>
+          <div class="setting-card">
+            <div class="setting-row">
+              <div>
+                <p class="setting-name">Routine started</p>
+                <p class="setting-sub" id="start-date-label">—</p>
+              </div>
+              <button class="text-btn" id="reset-start">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-h">Data</h2>
+          <div class="setting-card">
+            <button class="setting-row btn-row" id="export-btn">
+              <span class="setting-name">Export data</span>
+              <span class="chevron">›</span>
+            </button>
+            <label class="setting-row btn-row" for="import-file">
+              <span class="setting-name">Import data</span>
+              <span class="chevron">›</span>
+            </label>
+            <input type="file" id="import-file" accept=".json" hidden />
+            <button class="setting-row btn-row danger" id="reset-all-btn">
+              <span class="setting-name">Reset everything</span>
+              <span class="chevron">›</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="version">Skincare routine · v1</p>
+        <div class="footer-spacer"></div>
+      </section>
+    </main>
+
+    <!-- Bottom tab navigation -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="today" aria-label="Today">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Today</span>
+      </button>
+      <button class="tab" data-tab="cycle" aria-label="Cycle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>
+        <span>Cycle</span>
+      </button>
+      <button class="tab" data-tab="progress" aria-label="Progress">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Progress</span>
+      </button>
+      <button class="tab" data-tab="settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Edit task modal -->
+  <div class="modal" id="edit-modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" id="modal-title">Edit task</h3>
+      <div class="modal-body">
+        <label class="field">
+          <span class="field-label">Task</span>
+          <input type="text" id="edit-text" class="field-input" placeholder="Task name" />
+        </label>
+        <label class="field" id="section-field">
+          <span class="field-label">Section</span>
+          <select id="edit-section" class="field-input">
+            <option value="morning">Morning</option>
+            <option value="night">Night</option>
+            <option value="habit">Daily habit</option>
+          </select>
+        </label>
+        <label class="field" id="cycle-field" hidden>
+          <span class="field-label">Cycle day</span>
+          <select id="edit-cycle" class="field-input">
+            <option value="0">Day 1 — Niacinamide</option>
+            <option value="1">Day 2 — Salicylic</option>
+            <option value="2">Day 3 — Rest</option>
+            <option value="all">All cycle days</option>
+          </select>
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="modal-delete" hidden>Delete</button>
+        <button class="btn-primary" id="modal-save">Save</button>
+      </div>
+      <button class="btn-text" data-close>Cancel</button>
+    </div>
+  </div>
+
+  <!-- Past day modal -->
+  <div class="modal" id="past-day-modal" hidden>
+    <div class="modal-backdrop" id="past-day-backdrop"></div>
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" id="past-day-title">Past day</h3>
+      <div id="past-day-body" class="past-day-body"></div>
+      <button class="btn-text" id="past-day-close">Done</button>
+    </div>
+  </div>
+
+  <!-- Task info modal -->
+  <div class="modal" id="task-info-modal" hidden>
+    <div class="modal-backdrop" onclick="closeTaskInfoModal()"></div>
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" id="task-info-title"></h3>
+      <div class="task-info-body">
+        <div class="task-info-row">
+          <span class="task-info-label">What it does</span>
+          <p class="task-info-text" id="task-info-what"></p>
+        </div>
+        <div class="task-info-row">
+          <span class="task-info-label">How to use</span>
+          <p class="task-info-text" id="task-info-how"></p>
+        </div>
+        <div class="task-info-row">
+          <span class="task-info-label">When to skip</span>
+          <p class="task-info-text" id="task-info-skip"></p>
+        </div>
+      </div>
+      <button class="btn-text" onclick="closeTaskInfoModal()">Got it</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
