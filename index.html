@@ -21,69 +21,87 @@
 <body>
   <!-- Auth screen — hidden once session confirmed -->
   <div class="auth-screen" id="auth-screen" hidden>
-    <div class="auth-card">
-      <div class="auth-glyph">◌</div>
-      <h1 class="auth-title">Elysium</h1>
+    <div class="auth-shell">
+      <div class="auth-glow" aria-hidden="true"></div>
+
+      <header class="auth-identity">
+        <div class="auth-medallion" aria-hidden="true">
+          <svg class="auth-mark" viewBox="0 0 96 96" width="44" height="44" fill="none" stroke-linecap="round">
+            <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="1.6" />
+            <line x1="6.8" y1="32.56" x2="89.2" y2="32.56" stroke="currentColor" stroke-width="1.6" />
+            <circle cx="48" cy="32.56" r="2.1" fill="currentColor" stroke="none" />
+          </svg>
+        </div>
+        <p class="auth-eyebrow">Obsidian Temple</p>
+        <h1 class="auth-wordmark">Elys<span class="ital">ium</span></h1>
+        <p class="auth-tagline">A quiet place to keep your rituals.</p>
+      </header>
 
       <!-- Sign in (default) -->
       <div class="auth-view" id="auth-signin">
-        <p class="auth-sub">Sign in to sync across devices</p>
-        <label class="field">
-          <span class="field-label">Email</span>
-          <input type="email" id="signin-email" class="field-input" placeholder="you@example.com" autocomplete="email" />
+        <label class="auth-field">
+          <span class="auth-field-label">Email</span>
+          <input type="email" id="signin-email" class="auth-field-input" placeholder="your@address" autocomplete="email" />
         </label>
-        <label class="field">
-          <span class="field-label">Password</span>
-          <input type="password" id="signin-password" class="field-input" placeholder="Password" autocomplete="current-password" />
+        <label class="auth-field">
+          <span class="auth-field-label">Password</span>
+          <input type="password" id="signin-password" class="auth-field-input" placeholder="••••••••" autocomplete="current-password" />
         </label>
-        <button class="btn-primary" id="signin-btn">Sign in</button>
-        <button class="btn-text" id="goto-forgot">Forgot password?</button>
-        <p class="auth-switch">No account? <button class="btn-link" id="goto-signup">Sign up</button></p>
+        <button class="auth-cta" id="signin-btn">Continue</button>
+        <div class="auth-quiet-row">
+          <button class="auth-quiet-link" id="goto-signup">Create an account</button>
+          <button class="auth-quiet-link" id="goto-forgot">Forgot</button>
+        </div>
       </div>
 
       <!-- Sign up -->
       <div class="auth-view" id="auth-signup" hidden>
-        <p class="auth-sub">Create your account</p>
-        <label class="field">
-          <span class="field-label">Email</span>
-          <input type="email" id="signup-email" class="field-input" placeholder="you@example.com" autocomplete="email" />
+        <p class="auth-sub">A quiet practice begins here.</p>
+        <label class="auth-field">
+          <span class="auth-field-label">Email</span>
+          <input type="email" id="signup-email" class="auth-field-input" placeholder="your@address" autocomplete="email" />
         </label>
-        <label class="field">
-          <span class="field-label">Password</span>
-          <input type="password" id="signup-password" class="field-input" placeholder="At least 6 characters" autocomplete="new-password" />
+        <label class="auth-field">
+          <span class="auth-field-label">Password</span>
+          <input type="password" id="signup-password" class="auth-field-input" placeholder="At least six quiet characters" autocomplete="new-password" />
         </label>
-        <button class="btn-primary" id="signup-btn">Create account</button>
-        <p class="auth-switch">Have an account? <button class="btn-link" id="goto-signin">Sign in</button></p>
+        <button class="auth-cta" id="signup-btn">Begin</button>
+        <div class="auth-quiet-row centered">
+          <button class="auth-quiet-link" id="goto-signin">Have an account · sign in</button>
+        </div>
       </div>
 
       <!-- Forgot password -->
       <div class="auth-view" id="auth-forgot" hidden>
-        <p class="auth-sub">Enter your email and we'll send a reset link</p>
-        <label class="field">
-          <span class="field-label">Email</span>
-          <input type="email" id="forgot-email" class="field-input" placeholder="you@example.com" autocomplete="email" />
+        <p class="auth-sub">Enter your email and we'll send a reset link.</p>
+        <label class="auth-field">
+          <span class="auth-field-label">Email</span>
+          <input type="email" id="forgot-email" class="auth-field-input" placeholder="your@address" autocomplete="email" />
         </label>
-        <button class="btn-primary" id="forgot-btn">Send reset link</button>
-        <button class="btn-text" id="forgot-back">Back to sign in</button>
+        <button class="auth-cta" id="forgot-btn">Send reset link</button>
+        <div class="auth-quiet-row centered">
+          <button class="auth-quiet-link" id="forgot-back">Back to sign in</button>
+        </div>
       </div>
 
       <!-- Check email (after sign-up) -->
       <div class="auth-view" id="auth-confirm" hidden>
-        <p class="auth-sub">Check your email and click the confirmation link, then come back and sign in.</p>
-        <button class="btn-primary" id="confirm-back">Go to sign in</button>
+        <p class="auth-sub">Check your email and tap the confirmation link, then return to sign in.</p>
+        <button class="auth-cta" id="confirm-back">Go to sign in</button>
       </div>
 
       <!-- Set new password (after clicking reset link) -->
       <div class="auth-view" id="auth-reset" hidden>
-        <p class="auth-sub">Choose a new password</p>
-        <label class="field">
-          <span class="field-label">New password</span>
-          <input type="password" id="reset-password" class="field-input" placeholder="At least 6 characters" autocomplete="new-password" />
+        <p class="auth-sub">Choose a new password.</p>
+        <label class="auth-field">
+          <span class="auth-field-label">New password</span>
+          <input type="password" id="reset-password" class="auth-field-input" placeholder="At least six quiet characters" autocomplete="new-password" />
         </label>
-        <button class="btn-primary" id="reset-btn">Update password</button>
+        <button class="auth-cta" id="reset-btn">Update password</button>
       </div>
 
       <p class="auth-error" id="auth-error" hidden></p>
+      <p class="auth-reassurance">Synced quietly · encrypted at rest</p>
     </div>
   </div>
 
