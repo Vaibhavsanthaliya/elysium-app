@@ -52,6 +52,9 @@ const DEFAULT_DATA = {
     checkInTime: '21:00',
   },
   weeklyPhotos: [], // [{ id, date, label }] — image data lives in IndexedDB
+  chronicle: {
+    notes: {}, // { 'YYYY-MM-DD': { body: '...', updatedAt: 'ISO timestamp' } }
+  },
 };
 
 function deepClone(obj) {
@@ -224,6 +227,10 @@ function migrateState(s) {
       comfortSafe: comfortSafeIds.includes(t.id) ? true : (t.comfortSafe ?? false),
     }));
   }
+  s.chronicle = s.chronicle && typeof s.chronicle === 'object' && !Array.isArray(s.chronicle)
+    ? s.chronicle : {};
+  s.chronicle.notes = s.chronicle.notes && typeof s.chronicle.notes === 'object' && !Array.isArray(s.chronicle.notes)
+    ? s.chronicle.notes : {};
   return s;
 }
 
@@ -477,6 +484,7 @@ async function syncFromSupabase() {
       renderAllLists();
       renderCycleList();
       if (document.getElementById('pane-temple').classList.contains('active')) renderTemple();
+      if (document.getElementById('pane-chronicle').classList.contains('active')) renderChronicle();
       if (document.getElementById('pane-progress').classList.contains('active')) renderProgress();
       if (document.getElementById('pane-settings').classList.contains('active')) updateSettingsView();
       if (state.reminders?.enabled && 'Notification' in window && Notification.permission === 'granted') {
@@ -747,6 +755,35 @@ function renderTemple() {
   const streak = getStreak();
   document.getElementById('temple-streak-sub').textContent =
     streak > 0 ? `${streak}-day streak` : 'No streak yet';
+}
+
+function renderChronicle() {
+  const note = state.chronicle?.notes?.[todayStr];
+  const textarea = document.getElementById('chronicle-textarea');
+  const status = document.getElementById('chronicle-status');
+  textarea.value = note ? note.body : '';
+  if (note && note.updatedAt) {
+    const d = new Date(note.updatedAt);
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    status.textContent = `Saved · ${formatTime12(`${hh}:${mm}`)}`;
+  } else {
+    status.textContent = 'No entry yet';
+  }
+}
+
+function saveChronicleNote() {
+  const body = document.getElementById('chronicle-textarea').value.trim();
+  if (!state.chronicle) state.chronicle = { notes: {} };
+  if (!state.chronicle.notes) state.chronicle.notes = {};
+  if (body) {
+    state.chronicle.notes[todayStr] = { body, updatedAt: new Date().toISOString() };
+  } else {
+    delete state.chronicle.notes[todayStr];
+  }
+  saveState();
+  renderChronicle();
+  showToast(body ? 'Chronicle saved' : 'Entry cleared');
 }
 
 function toggleTask(taskId) {
@@ -1459,6 +1496,7 @@ function switchTab(name) {
   document.querySelector(`.tab[data-tab="${name}"]`).classList.add('active');
 
   if (name === 'temple') renderTemple();
+  if (name === 'chronicle') renderChronicle();
   if (name === 'progress') { renderProgress(); renderWeeklyPhotos(); }
   if (name === 'cycle') renderCycleList();
   if (name === 'settings') updateSettingsView();
@@ -1767,6 +1805,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('temple-goto-today').addEventListener('click', () => switchTab('today'));
   document.getElementById('temple-goto-cycle').addEventListener('click', () => switchTab('cycle'));
   document.getElementById('temple-goto-progress').addEventListener('click', () => switchTab('progress'));
+  document.getElementById('chronicle-save-btn').addEventListener('click', saveChronicleNote);
 
   // Schedule reminders if enabled
   if (state.reminders.enabled && 'Notification' in window && Notification.permission === 'granted') {

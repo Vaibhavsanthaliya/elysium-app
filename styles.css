@@ -1381,6 +1381,39 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 .auth-error[hidden] { display: none; }
 
+/* ============== CHRONICLE ============== */
+.chronicle-card {
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.chronicle-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--label);
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  -webkit-appearance: none;
+}
+
+.chronicle-textarea:focus {
+  outline: none;
+}
+
+.chronicle-status {
+  font-size: 13px;
+  color: var(--label-secondary);
+  margin: 8px 2px 16px;
+}
+
 /* Disable text selection on UI chrome */
 .tab, .add-btn, .task-check, .section-icon, .streak-pill, .cycle-card-top, .cycle-active-badge {
   user-select: none;
