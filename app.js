@@ -280,7 +280,7 @@ function updateMilestoneStage() {
   }
   state.milestoneStage = newStage;
   saveState();
-  showToast(`Routine updated for ${MILESTONES[newStage].weeks}`);
+  showToast(`Ritual updated for ${MILESTONES[newStage].weeks}`);
   return true;
 }
 
@@ -690,7 +690,7 @@ function getSmartFeedback(pct) {
   const streak = getStreak();
   const missed = getMissedDays();
 
-  if (pct === 100) return 'All done — well done';
+  if (pct === 100) return 'Ritual complete.';
 
   if (streak >= 21) return 'Twenty-one days. This is a habit now.';
   if (streak >= 14) return 'Two weeks straight. Your skin is noticing.';
@@ -700,7 +700,7 @@ function getSmartFeedback(pct) {
   if (streak >= 3)  return 'Three days in. Momentum is building.';
 
   if (missed >= 3) return 'A few days off. Start fresh with the basics.';
-  if (missed >= 2) return 'You slipped. Restart with minimal routine.';
+  if (missed >= 2) return 'You slipped. Return to the basics.';
   if (missed === 1 && pct > 0) return 'Back at it — good.';
   if (missed === 1) return 'Yesterday was a miss. Start now.';
 
@@ -709,7 +709,7 @@ function getSmartFeedback(pct) {
   if (pct > 0)   return 'Off to a good start';
   if (streak === 1) return 'Day one. Show up again tomorrow.';
 
-  return 'Let\'s get started';
+  return 'Begin the ritual.';
 }
 
 function updateRing() {
@@ -1350,7 +1350,7 @@ async function toggleNotifications(enable) {
     showToast('Reminders on');
     saveState();
     scheduleReminders();
-    fireNotification('Reminders enabled', 'Skincare reminders are active for your selected times.', 'skin-reminders-enabled');
+    fireNotification('Reminders enabled', 'Your ritual reminders are active.', 'skin-reminders-enabled');
   } else {
     state.reminders.enabled = false;
     clearScheduledReminders();
@@ -1371,9 +1371,9 @@ function scheduleReminders() {
   clearScheduledReminders();
   if (!('Notification' in window) || !state.reminders.enabled || Notification.permission !== 'granted') return;
 
-  scheduleNextFor(state.reminders.morningTime, 'Morning routine', 'Time to wash your face and apply sunscreen ☀', 'skin-morning');
+  scheduleNextFor(state.reminders.morningTime, 'Morning ritual', 'Time to wash your face and apply sunscreen ☀', 'skin-morning');
   scheduleNextFor(state.reminders.nightTime, () => `Tonight — ${CYCLE_NAMES[state.cycleDay]}`, () => `Cycle day ${state.cycleDay + 1}: ${CYCLE_DESC[state.cycleDay]}`, 'skin-night');
-  scheduleNextFor(state.reminders.checkInTime, 'Daily check-in', 'Did you complete your skincare routine today? Tap to log.', 'skin-checkin');
+  scheduleNextFor(state.reminders.checkInTime, 'Daily check-in', 'Did you complete your ritual today? Tap to log.', 'skin-checkin');
 }
 
 async function fireNotification(titleStr, bodyStr, tag) {
@@ -1491,7 +1491,7 @@ function importData(file) {
 }
 
 async function resetAll() {
-  if (!confirm('Reset everything? This deletes all tasks, progress, and settings.')) return;
+  if (!confirm('Reset everything? This clears all ritual data, progress, and settings.')) return;
   if (sb && sbUserId) {
     try {
       await sb.from('user_data').upsert({
@@ -1513,7 +1513,7 @@ async function resetAll() {
 }
 
 function resetStartDate() {
-  if (!confirm('Reset the routine start date to today?')) return;
+  if (!confirm('Reset the ritual start date to today.')) return;
   state.startDate = todayStr;
   state.milestoneStage = 0;
   updateMilestoneStage();
