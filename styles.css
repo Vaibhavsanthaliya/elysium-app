@@ -52,6 +52,42 @@
   --oracle-text: var(--label);              /* primary body text */
   --muted-text: var(--label-secondary);     /* secondary / supporting text */
   --divine-accent: var(--tint);             /* interactive accent, links, rings */
+
+  /* ── Obsidian Temple: obsidian backgrounds ────────────────────────────── */
+  --obsidian-bg: #111111;                   /* floor layer for dark-surface contexts */
+  --obsidian-elevated: #1e1e1e;             /* one step up — layered dark surfaces */
+
+  /* ── Obsidian Temple: marble/alabaster surfaces ───────────────────────── */
+  --alabaster: #f8f6f1;                     /* warm near-white between marble and ivory */
+
+  /* ── Obsidian Temple: bronze accents ─────────────────────────────────── */
+  --bronze-soft: rgba(160, 114, 42, 0.14);  /* low-opacity bronze fill for badges/highlights */
+
+  /* ── Obsidian Temple: ink text material ──────────────────────────────── */
+  --ink: #111210;                           /* warm near-black for display headings */
+  --ink-secondary: rgba(17, 18, 16, 0.58); /* supporting ink text on light surfaces */
+
+  /* ── Obsidian Temple: warm separator ─────────────────────────────────── */
+  --separator-warm: rgba(160, 114, 42, 0.14); /* bronze-warm divider for temple contexts */
+
+  /* ── Obsidian Temple: gradients and glows ────────────────────────────── */
+  --temple-gradient: linear-gradient(160deg, #1a1a1a 0%, #2a2218 100%);
+  --shadow-bronze: 0 0 24px rgba(160, 114, 42, 0.22);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.10), 0 1px 3px rgba(0, 0, 0, 0.07);
+
+  /* ── Obsidian Temple: radius scale ───────────────────────────────────── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 18px;
+  --radius-2xl: 20px;
+
+  /* ── Obsidian Temple: spacing scale ──────────────────────────────────── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -91,6 +127,28 @@
     --oracle-text: var(--label);
     --muted-text: var(--label-secondary);
     --divine-accent: var(--tint);
+
+    /* ── Obsidian Temple: obsidian backgrounds (dark) ────────────────────── */
+    --obsidian-bg: #000000;                   /* floor — pure black in dark mode */
+    --obsidian-elevated: #0f0f0f;             /* barely-lifted step above floor */
+
+    /* ── Obsidian Temple: marble/alabaster surfaces (dark) ───────────────── */
+    --alabaster: #f0ece4;                     /* warm near-white for elements on dark surfaces */
+
+    /* ── Obsidian Temple: bronze accents (dark) ──────────────────────────── */
+    --bronze-soft: rgba(201, 144, 62, 0.18);  /* dark-mode bronze fill */
+
+    /* ── Obsidian Temple: ink text material (dark) ───────────────────────── */
+    --ink: #f5f4f0;                           /* warm near-white for headings on obsidian */
+    --ink-secondary: rgba(245, 244, 240, 0.58); /* secondary ink on dark surfaces */
+
+    /* ── Obsidian Temple: warm separator (dark) ──────────────────────────── */
+    --separator-warm: rgba(201, 144, 62, 0.18); /* dark-mode bronze-warm divider */
+
+    /* ── Obsidian Temple: gradients and glows (dark) ─────────────────────── */
+    --temple-gradient: linear-gradient(160deg, #000000 0%, #190f03 100%);
+    --shadow-bronze: 0 0 32px rgba(201, 144, 62, 0.28);
+    --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.40);
   }
 }
 

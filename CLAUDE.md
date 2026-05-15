@@ -197,6 +197,7 @@ New UI work should reference Elysium tokens where appropriate. Do not reference 
 | EA-9 | Renamed project identity across GitHub and Vercel to elysium-app; local origin remote updated and external tooling verified. |
 | EA-10 | Temple visual polish. Six `#pane-temple`-scoped CSS rules: larger hero card (padding, radius, shadow, gap), 100px ring, `--divine-accent` ring stroke, `--bronze` eyebrow label and chevrons, `--oracle-text` quick-action names. No HTML or JS changes. |
 | EA-11 | Chronicle visual polish. CSS-only, Chronicle-scoped: upgraded card (16px radius, `--ritual-surface`, `--shadow-md`, separator border), focus-within ring via `--divine-accent`, textarea breathing room (padding, line-height, `--oracle-text`), placeholder via `--muted-text`, status margin, full-width `--divine-accent` save button. No HTML or JS changes. |
+| EA-13 | Obsidian Temple foundation tokens. CSS-only, additive-only: 21 new custom properties added to `:root` and dark-mode block — obsidian depth layers, alabaster surface, bronze-soft fill, ink text material, warm separator, temple gradient, bronze glow, card shadow, radius scale (sm–2xl), spacing scale (xs–xl). No existing variables changed, no selectors changed, no HTML or JS changes. |
 
 ---
 
