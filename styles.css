@@ -2193,3 +2193,55 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     gap: 3px;
   }
 }
+
+/* ── EA-23: Bronze state pass ─────────────────────────────────────────────── */
+
+/* Today progress ring — bronze instead of base green */
+#pane-today .ring-fg {
+  stroke: var(--bronze);
+}
+
+/* Completed task check — bronze instead of green */
+.task-item.done .task-check {
+  background: var(--bronze);
+  border-color: var(--bronze);
+}
+
+/* Checkmark glyph — adapt to mode so contrast holds on bronze */
+.task-check svg {
+  color: var(--bg);
+}
+
+/* Done strikethrough — bronze-tinted, matches concept */
+.task-item.done .task-text {
+  text-decoration-color: rgba(201, 165, 107, 0.3);
+}
+
+/* Cycle active card — bronze border + soft bronze fill */
+.cycle-card.active {
+  border-color: var(--bronze);
+  background: var(--bronze-soft);
+}
+
+/* Cycle active badge — bronze chip with mode-adaptive label */
+.cycle-active-badge {
+  background: var(--bronze);
+  color: var(--bg);
+}
+
+/* Progress calendar logged day — bronze fill, mode-adaptive numeral */
+.cal-day.logged {
+  background: var(--bronze);
+  color: var(--bg);
+}
+
+/* Streak pill — bronze instead of ember/orange */
+.streak-pill {
+  background: var(--bronze-soft);
+  color: var(--bronze);
+}
+
+/* Task info (i) button — bronze instead of iOS blue */
+.task-info-btn {
+  color: var(--bronze);
+}
