@@ -1431,7 +1431,7 @@ function scheduleReminders() {
   clearScheduledReminders();
   if (!('Notification' in window) || !state.reminders.enabled || Notification.permission !== 'granted') return;
 
-  scheduleNextFor(state.reminders.morningTime, 'Morning ritual', 'Time to wash your face and apply sunscreen ☀', 'skin-morning');
+  scheduleNextFor(state.reminders.morningTime, 'Morning care ritual', 'Time to wash your face and apply sunscreen ☀', 'skin-morning');
   scheduleNextFor(state.reminders.nightTime, () => `Tonight — ${CYCLE_NAMES[state.cycleDay]}`, () => `Cycle day ${state.cycleDay + 1}: ${CYCLE_DESC[state.cycleDay]}`, 'skin-night');
   scheduleNextFor(state.reminders.checkInTime, 'Daily check-in', 'Did you complete your ritual today? Tap to log.', 'skin-checkin');
 }
