@@ -1523,3 +1523,85 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 #pane-temple .chevron {
   color: var(--bronze);
 }
+
+/* ── EA-14: Stacked Medallion layout (Temple tab only) ───────────────────── */
+
+/* Hero card — column layout, centered medallion */
+#pane-temple .hero-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-lg);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-card), var(--shadow-bronze);
+  margin-bottom: var(--space-lg);
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-temple .hero-card {
+    background: var(--temple-gradient);
+  }
+}
+
+/* Hero meta — centered text block under the ring */
+#pane-temple .hero-meta {
+  flex: initial;
+  text-align: center;
+  width: 100%;
+}
+
+/* Ring — larger medallion presence */
+#pane-temple .ring-wrap {
+  width: 120px;
+  height: 120px;
+}
+
+/* Ring track — warm bronze ghost */
+#pane-temple .ring-bg {
+  stroke: var(--separator-warm);
+}
+
+/* Ring fill — bronze */
+#pane-temple .ring-fg {
+  stroke: var(--bronze);
+}
+
+/* Hero label — centered, bronze eyebrow */
+#pane-temple .hero-label {
+  color: var(--bronze);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+/* Hero status and cycle — centered under ring */
+#pane-temple .hero-status {
+  text-align: center;
+}
+
+#pane-temple .hero-cycle {
+  text-align: center;
+}
+
+/* Quick-action card — warm shadow and radius scale */
+#pane-temple .setting-card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Quick-action rows — warm bronze separator */
+#pane-temple .setting-row {
+  border-bottom-color: var(--separator-warm);
+}
+
+/* Chevron — bronze (carries forward from EA-10) */
+#pane-temple .chevron {
+  color: var(--bronze);
+}
+
+/* Nav name — oracle text, medium weight (carries forward from EA-10) */
+#pane-temple .btn-row .setting-name {
+  color: var(--oracle-text);
+  font-weight: 500;
+}
