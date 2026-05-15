@@ -1,7 +1,7 @@
 {
-  "name": "Skin · Routine Tracker",
-  "short_name": "Skin",
-  "description": "Daily skincare routine tracker with reminders and progress",
+  "name": "Elysium",
+  "short_name": "Elysium",
+  "description": "Your personal ritual OS",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

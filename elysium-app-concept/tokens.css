@@ -1,0 +1,64 @@
+/* Obsidian Temple — design tokens
+ * Two themes, atmospheric not literal.
+ * Greek mythology surfaces through naming, glyphs, spacing, mood.
+ */
+
+:root {
+  /* Type system — sans for everything, serif italic only for archetype labels */
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Spectral', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+  /* Radii */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+
+  /* Spacing rhythm */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 32px;
+  --s-8: 44px;
+}
+
+/* OBSIDIAN — default theme */
+[data-theme="obsidian"] {
+  --bg: #0E0E12;
+  --bg-soft: #131318;
+  --surface: #1A1A21;
+  --surface-2: #22222B;
+  --ink: #ECE6D9;
+  --ink-muted: rgba(236,230,217,0.62);
+  --ink-faint: rgba(236,230,217,0.40);
+  --bronze: #C9A56B;
+  --bronze-dim: #8A704A;
+  --separator: rgba(236,230,217,0.08);
+  --separator-strong: rgba(236,230,217,0.16);
+  --shadow-card: 0 30px 60px -20px rgba(0,0,0,0.6);
+  --glow-bronze: 0 0 24px -4px rgba(201,165,107,0.28);
+  --temple-grad: radial-gradient(ellipse at 50% -10%, rgba(201,165,107,0.10), transparent 60%);
+}
+
+/* MARBLE — light theme */
+[data-theme="marble"] {
+  --bg: #F4EFE6;
+  --bg-soft: #EBE4D6;
+  --surface: #FFFFFF;
+  --surface-2: #FAF6EC;
+  --ink: #1A1816;
+  --ink-muted: rgba(26,24,22,0.62);
+  --ink-faint: rgba(26,24,22,0.36);
+  --bronze: #A07A4A;
+  --bronze-dim: #C9A56B;
+  --separator: rgba(26,24,22,0.10);
+  --separator-strong: rgba(26,24,22,0.20);
+  --shadow-card: 0 20px 40px -16px rgba(70,55,30,0.18);
+  --glow-bronze: 0 0 20px -4px rgba(160,122,74,0.18);
+  --temple-grad: radial-gradient(ellipse at 50% -10%, rgba(160,122,74,0.10), transparent 60%);
+}

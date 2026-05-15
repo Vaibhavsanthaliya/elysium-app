@@ -52,6 +52,9 @@ const DEFAULT_DATA = {
     checkInTime: '21:00',
   },
   weeklyPhotos: [], // [{ id, date, label }] — image data lives in IndexedDB
+  chronicle: {
+    notes: {}, // { 'YYYY-MM-DD': { body: '...', updatedAt: 'ISO timestamp' } }
+  },
 };
 
 function deepClone(obj) {
@@ -224,6 +227,10 @@ function migrateState(s) {
       comfortSafe: comfortSafeIds.includes(t.id) ? true : (t.comfortSafe ?? false),
     }));
   }
+  s.chronicle = s.chronicle && typeof s.chronicle === 'object' && !Array.isArray(s.chronicle)
+    ? s.chronicle : {};
+  s.chronicle.notes = s.chronicle.notes && typeof s.chronicle.notes === 'object' && !Array.isArray(s.chronicle.notes)
+    ? s.chronicle.notes : {};
   return s;
 }
 
@@ -280,7 +287,7 @@ function updateMilestoneStage() {
   }
   state.milestoneStage = newStage;
   saveState();
-  showToast(`Routine updated for ${MILESTONES[newStage].weeks}`);
+  showToast(`Ritual updated for ${MILESTONES[newStage].weeks}`);
   return true;
 }
 
@@ -476,6 +483,8 @@ async function syncFromSupabase() {
       renderTodayCycle();
       renderAllLists();
       renderCycleList();
+      if (document.getElementById('pane-temple').classList.contains('active')) renderTemple();
+      if (document.getElementById('pane-chronicle').classList.contains('active')) renderChronicle();
       if (document.getElementById('pane-progress').classList.contains('active')) renderProgress();
       if (document.getElementById('pane-settings').classList.contains('active')) updateSettingsView();
       if (state.reminders?.enabled && 'Notification' in window && Notification.permission === 'granted') {
@@ -690,7 +699,7 @@ function getSmartFeedback(pct) {
   const streak = getStreak();
   const missed = getMissedDays();
 
-  if (pct === 100) return 'All done — well done';
+  if (pct === 100) return 'Ritual complete.';
 
   if (streak >= 21) return 'Twenty-one days. This is a habit now.';
   if (streak >= 14) return 'Two weeks straight. Your skin is noticing.';
@@ -700,7 +709,7 @@ function getSmartFeedback(pct) {
   if (streak >= 3)  return 'Three days in. Momentum is building.';
 
   if (missed >= 3) return 'A few days off. Start fresh with the basics.';
-  if (missed >= 2) return 'You slipped. Restart with minimal routine.';
+  if (missed >= 2) return 'You slipped. Return to the basics.';
   if (missed === 1 && pct > 0) return 'Back at it — good.';
   if (missed === 1) return 'Yesterday was a miss. Start now.';
 
@@ -709,7 +718,7 @@ function getSmartFeedback(pct) {
   if (pct > 0)   return 'Off to a good start';
   if (streak === 1) return 'Day one. Show up again tomorrow.';
 
-  return 'Let\'s get started';
+  return 'Begin the ritual.';
 }
 
 function updateRing() {
@@ -724,6 +733,57 @@ function updateRing() {
 
   document.getElementById('ring-pct').textContent = pct;
   document.getElementById('hero-status').textContent = getSmartFeedback(pct);
+}
+
+function renderTemple() {
+  const all = getAllTodayTasks();
+  const checks = getTodayChecks();
+  const done = all.filter(t => checks[t.id]).length;
+  const pct = all.length ? Math.round(done / all.length * 100) : 0;
+
+  const ring = document.getElementById('temple-ring-fg');
+  const circumference = 326.7;
+  ring.style.strokeDashoffset = circumference - (circumference * pct / 100);
+  document.getElementById('temple-ring-pct').textContent = pct;
+
+  document.getElementById('temple-status').textContent = getSmartFeedback(pct);
+  document.getElementById('temple-hero-cycle').textContent =
+    `Tonight's cycle: ${CYCLE_FULL_NAMES[state.cycleDay]}`;
+  document.getElementById('temple-cycle-name').textContent =
+    CYCLE_FULL_NAMES[state.cycleDay];
+
+  const streak = getStreak();
+  document.getElementById('temple-streak-sub').textContent =
+    streak > 0 ? `${streak}-day streak` : 'No streak yet';
+}
+
+function renderChronicle() {
+  const note = state.chronicle?.notes?.[todayStr];
+  const textarea = document.getElementById('chronicle-textarea');
+  const status = document.getElementById('chronicle-status');
+  textarea.value = note ? note.body : '';
+  if (note && note.updatedAt) {
+    const d = new Date(note.updatedAt);
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    status.textContent = `Saved · ${formatTime12(`${hh}:${mm}`)}`;
+  } else {
+    status.textContent = 'No entry yet';
+  }
+}
+
+function saveChronicleNote() {
+  const body = document.getElementById('chronicle-textarea').value.trim();
+  if (!state.chronicle) state.chronicle = { notes: {} };
+  if (!state.chronicle.notes) state.chronicle.notes = {};
+  if (body) {
+    state.chronicle.notes[todayStr] = { body, updatedAt: new Date().toISOString() };
+  } else {
+    delete state.chronicle.notes[todayStr];
+  }
+  saveState();
+  renderChronicle();
+  showToast(body ? 'Chronicle saved' : 'Entry cleared');
 }
 
 function toggleTask(taskId) {
@@ -1350,7 +1410,7 @@ async function toggleNotifications(enable) {
     showToast('Reminders on');
     saveState();
     scheduleReminders();
-    fireNotification('Reminders enabled', 'Skincare reminders are active for your selected times.', 'skin-reminders-enabled');
+    fireNotification('Reminders enabled', 'Your ritual reminders are active.', 'skin-reminders-enabled');
   } else {
     state.reminders.enabled = false;
     clearScheduledReminders();
@@ -1371,9 +1431,9 @@ function scheduleReminders() {
   clearScheduledReminders();
   if (!('Notification' in window) || !state.reminders.enabled || Notification.permission !== 'granted') return;
 
-  scheduleNextFor(state.reminders.morningTime, 'Morning routine', 'Time to wash your face and apply sunscreen ☀', 'skin-morning');
+  scheduleNextFor(state.reminders.morningTime, 'Morning care ritual', 'Time to wash your face and apply sunscreen ☀', 'skin-morning');
   scheduleNextFor(state.reminders.nightTime, () => `Tonight — ${CYCLE_NAMES[state.cycleDay]}`, () => `Cycle day ${state.cycleDay + 1}: ${CYCLE_DESC[state.cycleDay]}`, 'skin-night');
-  scheduleNextFor(state.reminders.checkInTime, 'Daily check-in', 'Did you complete your skincare routine today? Tap to log.', 'skin-checkin');
+  scheduleNextFor(state.reminders.checkInTime, 'Daily check-in', 'Did you complete your ritual today? Tap to log.', 'skin-checkin');
 }
 
 async function fireNotification(titleStr, bodyStr, tag) {
@@ -1435,6 +1495,8 @@ function switchTab(name) {
   document.getElementById('pane-' + name).classList.add('active');
   document.querySelector(`.tab[data-tab="${name}"]`).classList.add('active');
 
+  if (name === 'temple') renderTemple();
+  if (name === 'chronicle') renderChronicle();
   if (name === 'progress') { renderProgress(); renderWeeklyPhotos(); }
   if (name === 'cycle') renderCycleList();
   if (name === 'settings') updateSettingsView();
@@ -1491,7 +1553,7 @@ function importData(file) {
 }
 
 async function resetAll() {
-  if (!confirm('Reset everything? This deletes all tasks, progress, and settings.')) return;
+  if (!confirm('Reset everything? This clears all ritual data, progress, and settings.')) return;
   if (sb && sbUserId) {
     try {
       await sb.from('user_data').upsert({
@@ -1513,7 +1575,7 @@ async function resetAll() {
 }
 
 function resetStartDate() {
-  if (!confirm('Reset the routine start date to today?')) return;
+  if (!confirm('Reset the ritual start date to today.')) return;
   state.startDate = todayStr;
   state.milestoneStage = 0;
   updateMilestoneStage();
@@ -1532,6 +1594,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTodayCycle();
   renderAllLists();
   renderCycleList();
+  renderTemple();
 
   // Tab clicks
   document.querySelectorAll('.tab').forEach(btn => {
@@ -1739,6 +1802,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('streak-pill').addEventListener('click', () => switchTab('progress'));
+  document.getElementById('temple-goto-today').addEventListener('click', () => switchTab('today'));
+  document.getElementById('temple-goto-cycle').addEventListener('click', () => switchTab('cycle'));
+  document.getElementById('temple-goto-progress').addEventListener('click', () => switchTab('progress'));
+  document.getElementById('chronicle-save-btn').addEventListener('click', saveChronicleNote);
 
   // Schedule reminders if enabled
   if (state.reminders.enabled && 'Notification' in window && Notification.permission === 'granted') {

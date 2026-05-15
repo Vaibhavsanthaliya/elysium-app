@@ -11,14 +11,14 @@
 
 :root {
   /* Light mode (default) */
-  --bg: #f2f2f7;
+  --bg: #ede8df;
   --bg-elevated: #ffffff;
   --bg-grouped: #ffffff;
-  --bg-input: rgba(120, 120, 128, 0.12);
+  --bg-input: rgba(100, 75, 30, 0.10);
   --label: #000000;
   --label-secondary: rgba(60, 60, 67, 0.6);
   --label-tertiary: rgba(60, 60, 67, 0.3);
-  --separator: rgba(60, 60, 67, 0.18);
+  --separator: rgba(95, 70, 28, 0.13);
   --separator-opaque: #c6c6c8;
   --tint: #007aff;
   --green: #34c759;
@@ -36,18 +36,73 @@
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  --font-display: "Spectral", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* ── Elysium theme foundation tokens (light) ──────────────────────────────
+     These semantic tokens map to the current palette initially so no visual
+     change occurs. Future UI work will reference these instead of the raw
+     system variables above.
+     ──────────────────────────────────────────────────────────────────────── */
+  --obsidian: #1a1a1a;                      /* deep near-black; strong surfaces, headings */
+  --marble: #ffffff;                        /* pure white; card and sheet surfaces */
+  --ivory: #f5f5f0;                         /* warm off-white; subtle fill, input backgrounds */
+  --bronze: #a0722a;                        /* warm metallic accent; icons, highlights */
+  --ember: #ff9500;                         /* flame/streak colour — matches --orange */
+  --temple-surface: var(--bg);              /* page-level background */
+  --ritual-surface: var(--bg-elevated);     /* card / module surface */
+  --oracle-text: var(--label);              /* primary body text */
+  --muted-text: var(--label-secondary);     /* secondary / supporting text */
+  --divine-accent: var(--tint);             /* interactive accent, links, rings */
+
+  /* ── Obsidian Temple: obsidian backgrounds ────────────────────────────── */
+  --obsidian-bg: #111111;                   /* floor layer for dark-surface contexts */
+  --obsidian-elevated: #1e1e1e;             /* one step up — layered dark surfaces */
+
+  /* ── Obsidian Temple: marble/alabaster surfaces ───────────────────────── */
+  --alabaster: #f8f6f1;                     /* warm near-white between marble and ivory */
+
+  /* ── Obsidian Temple: bronze accents ─────────────────────────────────── */
+  --bronze-soft: rgba(160, 114, 42, 0.14);  /* low-opacity bronze fill for badges/highlights */
+
+  /* ── Obsidian Temple: ink text material ──────────────────────────────── */
+  --ink: #111210;                           /* warm near-black for display headings */
+  --ink-secondary: rgba(17, 18, 16, 0.58); /* supporting ink text on light surfaces */
+
+  /* ── Obsidian Temple: warm separator ─────────────────────────────────── */
+  --separator-warm: rgba(160, 114, 42, 0.14); /* bronze-warm divider for temple contexts */
+
+  /* ── Obsidian Temple: gradients and glows ────────────────────────────── */
+  --temple-gradient: linear-gradient(160deg, #1a1a1a 0%, #2a2218 100%);
+  --shadow-bronze: 0 0 24px rgba(160, 114, 42, 0.22);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.10), 0 1px 3px rgba(0, 0, 0, 0.07);
+
+  /* ── Obsidian Temple: radius scale ───────────────────────────────────── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 18px;
+  --radius-2xl: 20px;
+
+  /* ── Obsidian Temple: spacing scale ──────────────────────────────────── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #000000;
-    --bg-elevated: #1c1c1e;
-    --bg-grouped: #1c1c1e;
-    --bg-input: rgba(118, 118, 128, 0.24);
-    --label: #ffffff;
-    --label-secondary: rgba(235, 235, 245, 0.6);
-    --label-tertiary: rgba(235, 235, 245, 0.3);
-    --separator: rgba(84, 84, 88, 0.6);
+    --bg: #0E0E12;
+    --bg-elevated: #1A1A21;
+    --bg-grouped: #1A1A21;
+    --bg-input: rgba(236, 230, 217, 0.10);
+    --label: #ECE6D9;
+    --label-secondary: rgba(236, 230, 217, 0.62);
+    --label-tertiary: rgba(236, 230, 217, 0.40);
+    --separator: rgba(236, 230, 217, 0.08);
     --separator-opaque: #38383a;
     --tint: #0a84ff;
     --green: #30d158;
@@ -63,13 +118,47 @@
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    /* ── Elysium theme foundation tokens (dark) ─────────────────────────── */
+    --obsidian: #0E0E12;
+    --marble: #1A1A21;
+    --ivory: #ece8df;
+    --bronze: #C9A56B;
+    --ember: #ff9f0a;
+    --temple-surface: var(--bg);
+    --ritual-surface: var(--bg-elevated);
+    --oracle-text: var(--label);
+    --muted-text: var(--label-secondary);
+    --divine-accent: var(--tint);
+
+    /* ── Obsidian Temple: obsidian backgrounds (dark) ────────────────────── */
+    --obsidian-bg: #0E0E12;                   /* floor — obsidian depth, not pure black */
+    --obsidian-elevated: #131318;             /* bg-soft: one step above obsidian floor */
+
+    /* ── Obsidian Temple: marble/alabaster surfaces (dark) ───────────────── */
+    --alabaster: #f0ece4;                     /* warm near-white for elements on dark surfaces */
+
+    /* ── Obsidian Temple: bronze accents (dark) ──────────────────────────── */
+    --bronze-soft: rgba(201, 165, 107, 0.18); /* dark-mode champagne bronze fill */
+
+    /* ── Obsidian Temple: ink text material (dark) ───────────────────────── */
+    --ink: #ECE6D9;                           /* warm off-white ink — concept value */
+    --ink-secondary: rgba(236, 230, 217, 0.62); /* secondary ink on dark surfaces */
+
+    /* ── Obsidian Temple: warm separator (dark) ──────────────────────────── */
+    --separator-warm: rgba(236, 230, 217, 0.10); /* near-invisible warm hairline */
+
+    /* ── Obsidian Temple: gradients and glows (dark) ─────────────────────── */
+    --temple-gradient: linear-gradient(160deg, #000000 0%, #190f03 100%);
+    --shadow-bronze: 0 0 24px -4px rgba(201, 165, 107, 0.28);
+    --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.40);
   }
 }
 
 html, body {
   background: var(--bg);
   color: var(--label);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 17px;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
@@ -107,7 +196,7 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
-  .header { background: rgba(0, 0, 0, 0.82); }
+  .header { background: rgba(14, 14, 18, 0.88); }
 }
 
 .header-top {
@@ -169,7 +258,7 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
-  .tabs { background: rgba(0, 0, 0, 0.88); }
+  .tabs { background: rgba(14, 14, 18, 0.88); }
 }
 
 .tab {
@@ -205,7 +294,7 @@ body {
   line-height: 1;
 }
 
-.tab.active { color: var(--tint); }
+.tab.active { color: var(--bronze); }
 .tab:active svg { transform: scale(0.86); }
 
 /* ============== MAIN ============== */
@@ -1353,8 +1442,1141 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 .auth-error[hidden] { display: none; }
 
+/* ============== CHRONICLE ============== */
+.chronicle-card {
+  background: var(--ritual-surface);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--separator);
+  box-shadow: var(--shadow-md);
+}
+
+.chronicle-card:focus-within {
+  box-shadow: var(--shadow-md), 0 0 0 2px var(--divine-accent);
+}
+
+.chronicle-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 18px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--oracle-text);
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  -webkit-appearance: none;
+}
+
+.chronicle-textarea::placeholder {
+  color: var(--muted-text);
+  opacity: 0.7;
+}
+
+.chronicle-textarea:focus {
+  outline: none;
+}
+
+.chronicle-status {
+  font-size: 13px;
+  color: var(--muted-text);
+  margin: 10px 2px 18px;
+}
+
+#pane-chronicle .btn-primary {
+  width: 100%;
+  background: var(--divine-accent);
+}
+
 /* Disable text selection on UI chrome */
 .tab, .add-btn, .task-check, .section-icon, .streak-pill, .cycle-card-top, .cycle-active-badge {
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* ── EA-10: Temple visual polish ─────────────────────────────────────────── */
+#pane-temple .hero-card {
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  gap: 24px;
+}
+
+#pane-temple .ring-wrap {
+  width: 100px;
+  height: 100px;
+}
+
+#pane-temple .ring-fg {
+  stroke: var(--divine-accent);
+}
+
+#pane-temple .hero-label {
+  color: var(--bronze);
+  letter-spacing: 0.06em;
+}
+
+#pane-temple .btn-row .setting-name {
+  color: var(--oracle-text);
+  font-weight: 500;
+}
+
+#pane-temple .chevron {
+  color: var(--bronze);
+}
+
+/* ── EA-14: Stacked Medallion layout (Temple tab only) ───────────────────── */
+
+/* Hero card — column layout, centered medallion */
+#pane-temple .hero-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-lg);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-card), var(--shadow-bronze);
+  margin-bottom: var(--space-lg);
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-temple .hero-card {
+    background: var(--temple-gradient);
+  }
+}
+
+/* Hero meta — centered text block under the ring */
+#pane-temple .hero-meta {
+  flex: initial;
+  text-align: center;
+  width: 100%;
+}
+
+/* Ring — larger medallion presence */
+#pane-temple .ring-wrap {
+  width: 120px;
+  height: 120px;
+}
+
+/* Ring track — warm bronze ghost */
+#pane-temple .ring-bg {
+  stroke: var(--separator-warm);
+}
+
+/* Ring fill — bronze */
+#pane-temple .ring-fg {
+  stroke: var(--bronze);
+}
+
+/* Hero label — centered, bronze eyebrow */
+#pane-temple .hero-label {
+  color: var(--bronze);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+/* Hero status and cycle — centered under ring */
+#pane-temple .hero-status {
+  text-align: center;
+}
+
+#pane-temple .hero-cycle {
+  text-align: center;
+}
+
+/* Quick-action card — warm shadow and radius scale */
+#pane-temple .setting-card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Quick-action rows — warm bronze separator */
+#pane-temple .setting-row {
+  border-bottom-color: var(--separator-warm);
+}
+
+/* Chevron — bronze (carries forward from EA-10) */
+#pane-temple .chevron {
+  color: var(--bronze);
+}
+
+/* Nav name — oracle text, medium weight (carries forward from EA-10) */
+#pane-temple .btn-row .setting-name {
+  color: var(--oracle-text);
+  font-weight: 500;
+}
+
+/* ── EA-16: Today/Care — Obsidian Temple polish ──────────────────────────── */
+
+/* Hero card — alabaster warmth (light), warm border, deeper shadow */
+#pane-today .hero-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Hero card — restore dark surface in dark mode (alabaster is a light colour) */
+@media (prefers-color-scheme: dark) {
+  #pane-today .hero-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* Ring track — warm bronze ghost (matches Temple ring treatment) */
+#pane-today .ring-bg {
+  stroke: var(--separator-warm);
+}
+
+/* Hero eyebrow label — bronze (matches Temple eyebrow) */
+#pane-today .hero-label {
+  color: var(--bronze);
+}
+
+/* Task list cards — refined radius and deeper shadow */
+#pane-today .task-list {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* ── EA-17: Chronicle — Obsidian Temple polish ───────────────────────────── */
+
+/* Chronicle card — alabaster warmth (light), warm border, deeper shadow */
+#pane-chronicle .chronicle-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Chronicle card — restore dark surface in dark mode */
+@media (prefers-color-scheme: dark) {
+  #pane-chronicle .chronicle-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* Focus ring — bronze instead of iOS blue */
+#pane-chronicle .chronicle-card:focus-within {
+  box-shadow: var(--shadow-card), 0 0 0 2.5px var(--bronze);
+}
+
+/* Save button — radius matches card */
+#pane-chronicle .btn-primary {
+  border-radius: var(--radius-lg);
+}
+
+/* ── EA-18: Progress / Stars — Obsidian Temple polish ───────────────────── */
+
+/* Stat cards — alabaster surface (light), warm border, deeper shadow */
+#pane-progress .stat-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Calendar card — alabaster surface (light), warm border, deeper shadow */
+#pane-progress .cal-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Today ring — bronze instead of iOS blue */
+#pane-progress .cal-day.today {
+  box-shadow: inset 0 0 0 2px var(--bronze);
+}
+
+/* Preserve white ring for logged-today day */
+#pane-progress .cal-day.today.logged {
+  box-shadow: inset 0 0 0 2px white;
+}
+
+/* Milestone list — refined radius, deeper shadow */
+#pane-progress .milestone-list {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Milestone row separators — warm instead of cold grey */
+#pane-progress .milestone-row {
+  border-bottom-color: var(--separator-warm);
+}
+
+/* Active milestone dot — bronze instead of orange */
+#pane-progress .milestone-dot.active {
+  background: var(--bronze);
+  box-shadow: 0 0 0 4px var(--bronze-soft);
+}
+
+/* Photo items — refined radius */
+#pane-progress .photo-item {
+  border-radius: var(--radius-lg);
+}
+
+/* Dark mode — restore dark surfaces */
+@media (prefers-color-scheme: dark) {
+  #pane-progress .stat-card,
+  #pane-progress .cal-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* ── EA-19: Settings — Obsidian Temple polish ───────────────────────────── */
+
+/* Setting cards and install card — alabaster (light), warm border, deeper shadow, refined radius */
+#pane-settings .setting-card,
+#pane-settings .install-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
+}
+
+/* Row separators — warm instead of cold grey */
+#pane-settings .setting-row {
+  border-bottom-color: var(--separator-warm);
+}
+
+/* Action row names — oracle-text instead of iOS blue */
+#pane-settings .btn-row {
+  color: var(--oracle-text);
+}
+
+/* Danger rows — preserve red (required: #pane-settings ID raises specificity above .btn-row.danger) */
+#pane-settings .btn-row.danger {
+  color: var(--red);
+}
+
+/* Chevrons — bronze */
+#pane-settings .chevron {
+  color: var(--bronze);
+}
+
+/* Danger chevrons — red to match danger row */
+#pane-settings .btn-row.danger .chevron {
+  color: var(--red);
+}
+
+/* Reset text button — bronze instead of iOS blue */
+#pane-settings .text-btn {
+  color: var(--bronze);
+}
+
+/* Dark mode — restore dark surfaces */
+@media (prefers-color-scheme: dark) {
+  #pane-settings .setting-card,
+  #pane-settings .install-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* ── EA-20: Global atmosphere pass ───────────────────────────────────────── */
+
+/* Header: warm glass in light mode; warm separator on bottom border */
+@media (prefers-color-scheme: light) {
+  .header {
+    background: rgba(237, 232, 222, 0.88);
+    border-bottom-color: var(--separator-warm);
+  }
+}
+
+/* Tab bar: warm glass in light mode; warm separator on top border */
+@media (prefers-color-scheme: light) {
+  .tabs {
+    background: rgba(237, 232, 222, 0.92);
+    border-top-color: var(--separator-warm);
+  }
+}
+
+/* Task lists: alabaster surface in light mode; restore dark surface in dark mode */
+.task-list { background: var(--alabaster); }
+@media (prefers-color-scheme: dark) {
+  .task-list { background: var(--bg-elevated); }
+}
+
+/* Cycle cards (inactive only): alabaster + temple shadow in light mode.
+   .cycle-card.active keeps its own border-color + green-soft background without needing a corrective override. */
+.cycle-card:not(.active) {
+  background: var(--alabaster);
+  box-shadow: var(--shadow-card);
+}
+@media (prefers-color-scheme: dark) {
+  .cycle-card:not(.active) { background: var(--bg-elevated); }
+}
+
+/* Info cards: alabaster surface in light mode */
+.info-card {
+  background: var(--alabaster);
+  box-shadow: var(--shadow-card);
+}
+@media (prefers-color-scheme: dark) {
+  .info-card { background: var(--bg-elevated); }
+}
+
+/* Action rows: oracle text globally; .btn-row.danger (specificity 0,2,0) still wins with --red */
+.btn-row { color: var(--oracle-text); }
+
+/* Text button: bronze — matches EA-19 scope but now global */
+.text-btn { color: var(--bronze); }
+
+/* Task info icon: bronze (non-text affordance, 3:1 threshold applies) */
+.task-info-btn { color: var(--bronze); }
+
+/* Field focus ring: bronze instead of iOS blue */
+.field-input:focus { outline-color: var(--bronze); }
+
+/* Primary CTA button: obsidian in light mode (17.8:1 contrast with white label) */
+@media (prefers-color-scheme: light) {
+  .btn-primary { background: var(--obsidian); }
+}
+
+/* Ambient temple light: subtle warm radial glow from top of app — light mode only */
+@media (prefers-color-scheme: light) {
+  .app {
+    background: radial-gradient(
+      ellipse 120% 280px at 50% 0%,
+      rgba(160, 114, 42, 0.05) 0%,
+      transparent 100%
+    );
+  }
+}
+
+/* ── EA-21: Obsidian Temple typography identity pass ─────────────────────── */
+.date-label,
+.hero-label,
+.cycle-day-label,
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+#pane-temple .hero-label,
+#pane-today .hero-label {
+  letter-spacing: 0.2em;
+}
+
+.version {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.ring-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--bronze);
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.ring-suffix {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--bronze);
+  letter-spacing: 0.08em;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--bronze);
+  letter-spacing: 0;
+}
+
+.chronicle-textarea {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.chronicle-textarea::placeholder {
+  font-style: italic;
+}
+
+.greeting,
+.section-title h2,
+.section-h {
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* ── EA-22: Temple concept card rebuild ──────────────────────────────────── */
+#pane-temple {
+  --bronze: #a07a4a;
+}
+
+#pane-temple .temple-feature-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+  padding: 18px;
+  overflow: hidden;
+  color: var(--oracle-text);
+  background:
+    linear-gradient(180deg, rgba(160, 122, 74, 0.11), rgba(160, 122, 74, 0.025)) padding-box,
+    linear-gradient(145deg, rgba(160, 122, 74, 0.42), rgba(160, 122, 74, 0.08)) border-box;
+  border: 1px solid transparent;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card), 0 18px 36px -30px rgba(160, 122, 74, 0.58);
+}
+
+#pane-temple .temple-feature-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 26% 18%, rgba(160, 122, 74, 0.13), transparent 42%);
+}
+
+#pane-temple .temple-ritual-seal {
+  position: relative;
+  z-index: 1;
+  width: 112px;
+  height: 112px;
+  flex: 0 0 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--bronze);
+  background: linear-gradient(160deg, #f8efde, #ebdfc4);
+  box-shadow:
+    0 0 18px -3px rgba(160, 122, 74, 0.32),
+    inset 0 0 0 1px rgba(160, 122, 74, 0.30);
+}
+
+#pane-temple .temple-ritual-seal .ring-wrap {
+  width: 92px;
+  height: 92px;
+}
+
+#pane-temple .temple-ritual-seal .ring-bg {
+  stroke: rgba(160, 122, 74, 0.20);
+}
+
+#pane-temple .temple-ritual-seal .ring-fg {
+  stroke: var(--bronze);
+  filter: drop-shadow(0 0 6px rgba(160, 122, 74, 0.26));
+}
+
+#pane-temple .temple-ritual-seal .ring-text {
+  color: var(--oracle-text);
+}
+
+#pane-temple .temple-feature-copy {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  flex: 1;
+}
+
+#pane-temple .temple-feature-copy .hero-label {
+  margin-bottom: 8px;
+  color: var(--bronze);
+}
+
+#pane-temple .temple-feature-copy .hero-status {
+  margin-bottom: 8px;
+  color: var(--oracle-text);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.18;
+}
+
+#pane-temple .temple-feature-copy .hero-cycle {
+  color: var(--muted-text);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+#pane-temple .temple-actions {
+  margin-bottom: 28px;
+}
+
+#pane-temple .temple-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 2px 10px;
+}
+
+#pane-temple .temple-section-head span:first-child {
+  color: var(--oracle-text);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+#pane-temple .temple-section-head span:last-child {
+  flex-shrink: 0;
+  color: var(--muted-text);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+#pane-temple .temple-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#pane-temple .temple-action-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+  padding: 14px 16px;
+  color: var(--oracle-text);
+  background: var(--ritual-surface);
+  border: 1px solid rgba(160, 122, 74, 0.16);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#pane-temple .temple-action-card:active {
+  transform: scale(0.99);
+  border-color: rgba(160, 122, 74, 0.34);
+  background: linear-gradient(180deg, rgba(160, 122, 74, 0.07), rgba(160, 122, 74, 0.015));
+}
+
+#pane-temple .temple-action-medallion {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(160, 122, 74, 0.28);
+  border-radius: 50%;
+  color: var(--bronze);
+  background: rgba(160, 122, 74, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.36);
+}
+
+#pane-temple .temple-action-medallion span {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1;
+}
+
+#pane-temple .temple-action-copy {
+  display: block;
+  min-width: 0;
+  flex: 1;
+}
+
+#pane-temple .temple-action-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 3px;
+}
+
+#pane-temple .temple-action-name {
+  color: var(--oracle-text);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+#pane-temple .temple-action-state {
+  flex-shrink: 0;
+  color: var(--bronze);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+#pane-temple .temple-action-sub {
+  display: block;
+  color: var(--muted-text);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-temple {
+    --bronze: #c9a56b;
+  }
+
+  #pane-temple .temple-feature-card {
+    background:
+      linear-gradient(180deg, rgba(201, 165, 107, 0.13), rgba(201, 165, 107, 0.03)) padding-box,
+      linear-gradient(145deg, rgba(201, 165, 107, 0.36), rgba(236, 230, 217, 0.08)) border-box;
+    box-shadow: var(--shadow-card), 0 0 28px -10px rgba(201, 165, 107, 0.28);
+  }
+
+  #pane-temple .temple-feature-card::before {
+    background: radial-gradient(circle at 26% 18%, rgba(201, 165, 107, 0.14), transparent 44%);
+  }
+
+  #pane-temple .temple-ritual-seal {
+    background: linear-gradient(160deg, #2a221a, #1a1612);
+    box-shadow:
+      0 0 22px -4px rgba(201, 165, 107, 0.30),
+      inset 0 0 0 1px rgba(201, 165, 107, 0.30);
+  }
+
+  #pane-temple .temple-ritual-seal .ring-bg {
+    stroke: rgba(236, 230, 217, 0.12);
+  }
+
+  #pane-temple .temple-ritual-seal .ring-fg {
+    filter: drop-shadow(0 0 7px rgba(201, 165, 107, 0.30));
+  }
+
+  #pane-temple .temple-action-card {
+    background: rgba(28, 28, 30, 0.88);
+    border-color: rgba(201, 165, 107, 0.18);
+  }
+
+  #pane-temple .temple-action-card:active {
+    border-color: rgba(201, 165, 107, 0.32);
+    background: linear-gradient(180deg, rgba(201, 165, 107, 0.09), rgba(201, 165, 107, 0.02));
+  }
+
+  #pane-temple .temple-action-medallion {
+    border-color: rgba(201, 165, 107, 0.30);
+    background: rgba(201, 165, 107, 0.10);
+    box-shadow: inset 0 0 0 1px rgba(201, 165, 107, 0.12);
+  }
+}
+
+@media (max-width: 360px) {
+  #pane-temple .temple-feature-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  #pane-temple .temple-feature-copy {
+    width: 100%;
+  }
+
+  #pane-temple .temple-action-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+}
+
+/* ── EA-23: Bronze state pass ─────────────────────────────────────────────── */
+
+/* Today progress ring — bronze instead of base green */
+#pane-today .ring-fg {
+  stroke: var(--bronze);
+}
+
+/* Completed task check — bronze instead of green */
+.task-item.done .task-check {
+  background: var(--bronze);
+  border-color: var(--bronze);
+}
+
+/* Checkmark glyph — adapt to mode so contrast holds on bronze */
+.task-check svg {
+  color: var(--bg);
+}
+
+/* Done strikethrough — bronze-tinted, matches concept */
+.task-item.done .task-text {
+  text-decoration-color: rgba(201, 165, 107, 0.3);
+}
+
+/* Cycle active card — bronze border + soft bronze fill */
+.cycle-card.active {
+  border-color: var(--bronze);
+  background: var(--bronze-soft);
+}
+
+/* Cycle active badge — bronze chip with mode-adaptive label */
+.cycle-active-badge {
+  background: var(--bronze);
+  color: var(--bg);
+}
+
+/* Progress calendar logged day — bronze fill, mode-adaptive numeral */
+.cal-day.logged {
+  background: var(--bronze);
+  color: var(--bg);
+}
+
+/* Streak pill — bronze instead of ember/orange */
+.streak-pill {
+  background: var(--bronze-soft);
+  color: var(--bronze);
+}
+
+/* Task info (i) button — bronze instead of iOS blue */
+.task-info-btn {
+  color: var(--bronze);
+}
+
+/* ── EA-24: Dark mode token correction ────────────────────────────────────── */
+
+/* Dark ambient temple light — warm bronze radial glow from top of app canvas */
+@media (prefers-color-scheme: dark) {
+  .app {
+    background: radial-gradient(
+      ellipse 120% 280px at 50% 0%,
+      rgba(201, 165, 107, 0.07) 0%,
+      transparent 100%
+    );
+  }
+}
+
+/* ============== EA-25 AUTH OBSIDIAN TEMPLE ==============
+ * Aperture mark + Sanctuary layout. All selectors scoped to .auth-screen
+ * or .auth-shell — nothing here leaks into the main app shell.
+ * Old .auth-card / .auth-glyph / .auth-title / .auth-switch / .btn-link /
+ * .field / .field-input rules remain in place (no markup matches them
+ * after EA-25, so they're inert) for an easy rollback path.
+ * ======================================================== */
+.auth-screen {
+  padding: 24px 24px;
+  padding-top: calc(var(--safe-top) + 24px);
+  padding-bottom: calc(var(--safe-bottom) + 24px);
+  background: var(--bg);
+}
+
+.auth-shell {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 48px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+
+.auth-glow {
+  position: absolute;
+  inset: -40px -40px auto -40px;
+  height: 320px;
+  background: radial-gradient(
+    ellipse 80% 100% at 50% 0%,
+    rgba(160, 114, 42, 0.10) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+@media (prefers-color-scheme: dark) {
+  .auth-glow {
+    background: radial-gradient(
+      ellipse 80% 100% at 50% 0%,
+      rgba(201, 165, 107, 0.12) 0%,
+      transparent 65%
+    );
+  }
+}
+
+.auth-identity {
+  text-align: center;
+  padding: 28px 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-medallion {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 1px solid var(--separator-warm);
+  background: var(--alabaster);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bronze);
+  box-shadow: var(--shadow-bronze);
+  margin-bottom: 18px;
+}
+@media (prefers-color-scheme: dark) {
+  .auth-medallion {
+    background: var(--obsidian-elevated);
+  }
+}
+
+.auth-mark {
+  display: block;
+}
+
+.auth-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin: 0 0 10px;
+}
+
+.auth-wordmark {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+  margin: 0;
+}
+
+.auth-wordmark .ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--bronze);
+}
+
+.auth-tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ink-secondary);
+  max-width: 26ch;
+  margin: 14px auto 0;
+}
+
+.auth-shell .auth-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.auth-shell .auth-view[hidden] {
+  display: none;
+}
+
+.auth-shell .auth-sub {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink-secondary);
+  text-align: center;
+  margin: 4px auto 18px;
+  max-width: 28ch;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 0 12px;
+  border-bottom: 1px solid var(--separator-warm);
+  transition: border-color 200ms ease;
+}
+
+.auth-field:focus-within {
+  border-bottom-color: var(--bronze);
+}
+
+.auth-field-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  transition: color 200ms ease;
+}
+
+.auth-field:focus-within .auth-field-label {
+  color: var(--bronze);
+}
+
+.auth-field-input {
+  border: 0;
+  background: transparent;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+}
+
+.auth-field-input::placeholder {
+  color: rgba(17, 18, 16, 0.36);
+  opacity: 1;
+}
+@media (prefers-color-scheme: dark) {
+  .auth-field-input::placeholder {
+    color: rgba(236, 230, 217, 0.36);
+  }
+}
+
+.auth-field-input:-webkit-autofill {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+  caret-color: var(--ink);
+}
+
+.auth-cta {
+  width: 100%;
+  margin-top: 24px;
+  padding: 15px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--bronze);
+  background: linear-gradient(180deg, rgba(160, 122, 74, 0.16), rgba(160, 122, 74, 0.04));
+  color: var(--bronze);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-bronze);
+  transition: transform 180ms ease, box-shadow 200ms ease, opacity 200ms ease;
+}
+
+.auth-cta:active {
+  transform: scale(0.99);
+}
+
+.auth-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (prefers-color-scheme: dark) {
+  .auth-cta {
+    background: linear-gradient(180deg, rgba(201, 165, 107, 0.16), rgba(201, 165, 107, 0.04));
+  }
+}
+
+.auth-quiet-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0 0;
+}
+
+.auth-quiet-row.centered {
+  justify-content: center;
+}
+
+.auth-quiet-link {
+  background: none;
+  border: 0;
+  padding: 8px 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.auth-quiet-link:hover,
+.auth-quiet-link:focus-visible {
+  color: var(--bronze);
+  outline: none;
+}
+
+.auth-error {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--red);
+  text-align: center;
+  margin: 18px auto 0;
+  max-width: 30ch;
+}
+
+.auth-error[hidden] {
+  display: none;
+}
+
+.auth-reassurance {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  text-align: center;
+  line-height: 1.6;
+  margin: auto 0 4px;
+  padding-top: 28px;
+  opacity: 0.7;
+}
+
+@media (max-height: 640px) {
+  .auth-shell {
+    min-height: auto;
+  }
+  .auth-identity {
+    padding: 16px 0 16px;
+  }
+  .auth-medallion {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 14px;
+  }
+  .auth-wordmark {
+    font-size: 28px;
+  }
+  .auth-tagline {
+    margin-top: 10px;
+  }
+  .auth-reassurance {
+    padding-top: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-field,
+  .auth-field-label,
+  .auth-cta,
+  .auth-quiet-link {
+    transition: none;
+  }
 }

@@ -8,79 +8,100 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Skin" />
+  <meta name="apple-mobile-web-app-title" content="Elysium" />
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="icon" type="image/png" href="icon-192.png" />
-  <title>Skin · Routine</title>
+  <title>Elysium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <!-- Auth screen — hidden once session confirmed -->
   <div class="auth-screen" id="auth-screen" hidden>
-    <div class="auth-card">
-      <div class="auth-glyph">◌</div>
-      <h1 class="auth-title">Skin · Routine</h1>
+    <div class="auth-shell">
+      <div class="auth-glow" aria-hidden="true"></div>
+
+      <header class="auth-identity">
+        <div class="auth-medallion" aria-hidden="true">
+          <svg class="auth-mark" viewBox="0 0 96 96" width="44" height="44" fill="none" stroke-linecap="round">
+            <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="1.6" />
+            <line x1="6.8" y1="32.56" x2="89.2" y2="32.56" stroke="currentColor" stroke-width="1.6" />
+            <circle cx="48" cy="32.56" r="2.1" fill="currentColor" stroke="none" />
+          </svg>
+        </div>
+        <p class="auth-eyebrow">Obsidian Temple</p>
+        <h1 class="auth-wordmark">Elys<span class="ital">ium</span></h1>
+        <p class="auth-tagline">A quiet place to keep your rituals.</p>
+      </header>
 
       <!-- Sign in (default) -->
       <div class="auth-view" id="auth-signin">
-        <p class="auth-sub">Sign in to sync across devices</p>
-        <label class="field">
-          <span class="field-label">Email</span>
-          <input type="email" id="signin-email" class="field-input" placeholder="you@example.com" autocomplete="email" />
+        <label class="auth-field">
+          <span class="auth-field-label">Email</span>
+          <input type="email" id="signin-email" class="auth-field-input" placeholder="your@address" autocomplete="email" />
         </label>
-        <label class="field">
-          <span class="field-label">Password</span>
-          <input type="password" id="signin-password" class="field-input" placeholder="Password" autocomplete="current-password" />
+        <label class="auth-field">
+          <span class="auth-field-label">Password</span>
+          <input type="password" id="signin-password" class="auth-field-input" placeholder="••••••••" autocomplete="current-password" />
         </label>
-        <button class="btn-primary" id="signin-btn">Sign in</button>
-        <button class="btn-text" id="goto-forgot">Forgot password?</button>
-        <p class="auth-switch">No account? <button class="btn-link" id="goto-signup">Sign up</button></p>
+        <button class="auth-cta" id="signin-btn">Continue</button>
+        <div class="auth-quiet-row">
+          <button class="auth-quiet-link" id="goto-signup">Create an account</button>
+          <button class="auth-quiet-link" id="goto-forgot">Forgot</button>
+        </div>
       </div>
 
       <!-- Sign up -->
       <div class="auth-view" id="auth-signup" hidden>
-        <p class="auth-sub">Create your account</p>
-        <label class="field">
-          <span class="field-label">Email</span>
-          <input type="email" id="signup-email" class="field-input" placeholder="you@example.com" autocomplete="email" />
+        <p class="auth-sub">A quiet practice begins here.</p>
+        <label class="auth-field">
+          <span class="auth-field-label">Email</span>
+          <input type="email" id="signup-email" class="auth-field-input" placeholder="your@address" autocomplete="email" />
         </label>
-        <label class="field">
-          <span class="field-label">Password</span>
-          <input type="password" id="signup-password" class="field-input" placeholder="At least 6 characters" autocomplete="new-password" />
+        <label class="auth-field">
+          <span class="auth-field-label">Password</span>
+          <input type="password" id="signup-password" class="auth-field-input" placeholder="At least six quiet characters" autocomplete="new-password" />
         </label>
-        <button class="btn-primary" id="signup-btn">Create account</button>
-        <p class="auth-switch">Have an account? <button class="btn-link" id="goto-signin">Sign in</button></p>
+        <button class="auth-cta" id="signup-btn">Begin</button>
+        <div class="auth-quiet-row centered">
+          <button class="auth-quiet-link" id="goto-signin">Have an account · sign in</button>
+        </div>
       </div>
 
       <!-- Forgot password -->
       <div class="auth-view" id="auth-forgot" hidden>
-        <p class="auth-sub">Enter your email and we'll send a reset link</p>
-        <label class="field">
-          <span class="field-label">Email</span>
-          <input type="email" id="forgot-email" class="field-input" placeholder="you@example.com" autocomplete="email" />
+        <p class="auth-sub">Enter your email and we'll send a reset link.</p>
+        <label class="auth-field">
+          <span class="auth-field-label">Email</span>
+          <input type="email" id="forgot-email" class="auth-field-input" placeholder="your@address" autocomplete="email" />
         </label>
-        <button class="btn-primary" id="forgot-btn">Send reset link</button>
-        <button class="btn-text" id="forgot-back">Back to sign in</button>
+        <button class="auth-cta" id="forgot-btn">Send reset link</button>
+        <div class="auth-quiet-row centered">
+          <button class="auth-quiet-link" id="forgot-back">Back to sign in</button>
+        </div>
       </div>
 
       <!-- Check email (after sign-up) -->
       <div class="auth-view" id="auth-confirm" hidden>
-        <p class="auth-sub">Check your email and click the confirmation link, then come back and sign in.</p>
-        <button class="btn-primary" id="confirm-back">Go to sign in</button>
+        <p class="auth-sub">Check your email and tap the confirmation link, then return to sign in.</p>
+        <button class="auth-cta" id="confirm-back">Go to sign in</button>
       </div>
 
       <!-- Set new password (after clicking reset link) -->
       <div class="auth-view" id="auth-reset" hidden>
-        <p class="auth-sub">Choose a new password</p>
-        <label class="field">
-          <span class="field-label">New password</span>
-          <input type="password" id="reset-password" class="field-input" placeholder="At least 6 characters" autocomplete="new-password" />
+        <p class="auth-sub">Choose a new password.</p>
+        <label class="auth-field">
+          <span class="auth-field-label">New password</span>
+          <input type="password" id="reset-password" class="auth-field-input" placeholder="At least six quiet characters" autocomplete="new-password" />
         </label>
-        <button class="btn-primary" id="reset-btn">Update password</button>
+        <button class="auth-cta" id="reset-btn">Update password</button>
       </div>
 
       <p class="auth-error" id="auth-error" hidden></p>
+      <p class="auth-reassurance">Synced quietly · encrypted at rest</p>
     </div>
   </div>
 
@@ -100,8 +121,74 @@
     </header>
 
     <main class="main">
+      <!-- TEMPLE TAB -->
+      <section class="tab-pane active" id="pane-temple">
+        <!-- Care module summary -->
+        <div class="temple-feature-card">
+          <div class="temple-ritual-seal">
+            <div class="ring-wrap">
+              <svg class="ring" viewBox="0 0 120 120">
+                <circle class="ring-bg" cx="60" cy="60" r="52" />
+                <circle class="ring-fg" id="temple-ring-fg" cx="60" cy="60" r="52" />
+              </svg>
+              <div class="ring-text">
+                <span class="ring-num" id="temple-ring-pct">0</span>
+                <span class="ring-suffix">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="temple-feature-copy">
+            <p class="hero-label">Today's Care Ritual</p>
+            <p class="hero-status" id="temple-status">Begin the ritual.</p>
+            <p class="hero-cycle" id="temple-hero-cycle">Tonight's cycle: —</p>
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="temple-actions">
+          <div class="temple-section-head">
+            <span>Ritual paths</span>
+            <span>03 actions</span>
+          </div>
+          <div class="temple-card-list">
+            <button class="temple-action-card" id="temple-goto-today">
+              <span class="temple-action-medallion" aria-hidden="true"><span>I</span></span>
+              <span class="temple-action-copy">
+                <span class="temple-action-row">
+                  <span class="temple-action-name">Today's ritual</span>
+                  <span class="temple-action-state">Care</span>
+                </span>
+                <span class="temple-action-sub">Morning, night, and daily care</span>
+              </span>
+            </button>
+            <button class="temple-action-card" id="temple-goto-cycle">
+              <span class="temple-action-medallion" aria-hidden="true"><span>II</span></span>
+              <span class="temple-action-copy">
+                <span class="temple-action-row">
+                  <span class="temple-action-name">Care cycle</span>
+                  <span class="temple-action-state">Cycle</span>
+                </span>
+                <span class="temple-action-sub" id="temple-cycle-name">—</span>
+              </span>
+            </button>
+            <button class="temple-action-card" id="temple-goto-progress">
+              <span class="temple-action-medallion" aria-hidden="true"><span>III</span></span>
+              <span class="temple-action-copy">
+                <span class="temple-action-row">
+                  <span class="temple-action-name">Ritual progress</span>
+                  <span class="temple-action-state">Stars</span>
+                </span>
+                <span class="temple-action-sub" id="temple-streak-sub">—</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="footer-spacer"></div>
+      </section>
+
       <!-- TODAY TAB -->
-      <section class="tab-pane active" id="pane-today">
+      <section class="tab-pane" id="pane-today">
         <!-- Progress ring -->
         <div class="hero-card">
           <div class="ring-wrap">
@@ -115,7 +202,7 @@
             </div>
           </div>
           <div class="hero-meta">
-            <p class="hero-label">Today's progress</p>
+            <p class="hero-label">Today's care</p>
             <p class="hero-status" id="hero-status">Let's get started</p>
             <p class="hero-cycle" id="hero-cycle">Tonight: —</p>
           </div>
@@ -152,7 +239,7 @@
           <div class="section-header">
             <div class="section-title">
               <span class="section-icon icon-habit">◐</span>
-              <h2>Daily habits</h2>
+              <h2>Daily rituals</h2>
             </div>
             <button class="add-btn" data-section="habit" aria-label="Add task">＋</button>
           </div>
@@ -165,7 +252,7 @@
       <!-- CYCLE TAB -->
       <section class="tab-pane" id="pane-cycle">
         <div class="section">
-          <p class="section-sub">Cycle rotates automatically each day. Tap a card to override tonight's routine.</p>
+          <p class="section-sub">Cycle advances daily. Tap a card to set tonight's ritual.</p>
           <div class="cycle-list" id="cycle-list"></div>
         </div>
 
@@ -189,6 +276,20 @@
           </div>
         </div>
 
+        <div class="footer-spacer"></div>
+      </section>
+
+      <!-- CHRONICLE TAB -->
+      <section class="tab-pane" id="pane-chronicle">
+        <div class="section">
+          <h2 class="section-h">Today's Chronicle</h2>
+          <p class="section-sub">One note per day. Saved with your ritual data.</p>
+          <div class="chronicle-card">
+            <textarea class="chronicle-textarea" id="chronicle-textarea" rows="8" placeholder="What happened today? How did the ritual feel?"></textarea>
+          </div>
+          <p class="chronicle-status" id="chronicle-status">No entry yet</p>
+          <button class="btn-primary" id="chronicle-save-btn">Save note</button>
+        </div>
         <div class="footer-spacer"></div>
       </section>
 
@@ -265,7 +366,7 @@
         </div>
 
         <div class="section">
-          <h2 class="section-h">Routine</h2>
+          <h2 class="section-h">Care ritual</h2>
           <div class="setting-card">
             <div class="setting-row">
               <div>
@@ -330,7 +431,7 @@
           <div class="setting-card">
             <div class="setting-row">
               <div>
-                <p class="setting-name">Routine started</p>
+                <p class="setting-name">Ritual started</p>
                 <p class="setting-sub" id="start-date-label">—</p>
               </div>
               <button class="text-btn" id="reset-start">Reset</button>
@@ -357,20 +458,28 @@
           </div>
         </div>
 
-        <p class="version">Skincare routine · v1</p>
+        <p class="version">Elysium · v0.1</p>
         <div class="footer-spacer"></div>
       </section>
     </main>
 
     <!-- Bottom tab navigation -->
     <nav class="tabs">
-      <button class="tab active" data-tab="today" aria-label="Today">
+      <button class="tab active" data-tab="temple" aria-label="Temple">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Temple</span>
+      </button>
+      <button class="tab" data-tab="today" aria-label="Today">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
         <span>Today</span>
       </button>
       <button class="tab" data-tab="cycle" aria-label="Cycle">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>
         <span>Cycle</span>
+      </button>
+      <button class="tab" data-tab="chronicle" aria-label="Chronicle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <span>Chronicle</span>
       </button>
       <button class="tab" data-tab="progress" aria-label="Progress">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
