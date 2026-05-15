@@ -1,6 +1,6 @@
 # Elysium — Project Handoff Guide
 
-This file is the authoritative context document for every Claude session working on this codebase. Read it before inspecting any source file or making any change.
+This file is the authoritative context document for every Codex session working on this codebase. Read it before inspecting any source file or making any change.
 
 ---
 
@@ -222,9 +222,9 @@ New UI work should reference Elysium tokens where appropriate. Do not reference 
 
 ## 9 · Ticket workflow
 
-Every future Claude session working on an EA ticket must follow these steps in order:
+Every future Codex session working on an EA ticket must follow these steps in order:
 
-1. **Read this file first.** Do not inspect source files or propose changes before reading `CLAUDE.md`.
+1. **Read this file first.** Do not inspect source files or propose changes before reading `AGENTS.md`.
 2. **For any UI/design ticket, read the Obsidian Temple design reference before proposing changes:**
    - `design/obsidian-temple/README.md`
    - `design/obsidian-temple/design-system.md`

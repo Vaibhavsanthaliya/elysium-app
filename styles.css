@@ -11,14 +11,14 @@
 
 :root {
   /* Light mode (default) */
-  --bg: #f2f2f7;
+  --bg: #ede8df;
   --bg-elevated: #ffffff;
   --bg-grouped: #ffffff;
-  --bg-input: rgba(120, 120, 128, 0.12);
+  --bg-input: rgba(100, 75, 30, 0.10);
   --label: #000000;
   --label-secondary: rgba(60, 60, 67, 0.6);
   --label-tertiary: rgba(60, 60, 67, 0.3);
-  --separator: rgba(60, 60, 67, 0.18);
+  --separator: rgba(95, 70, 28, 0.13);
   --separator-opaque: #c6c6c8;
   --tint: #007aff;
   --green: #34c759;
@@ -1766,5 +1766,76 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   #pane-settings .setting-card,
   #pane-settings .install-card {
     background: var(--bg-elevated);
+  }
+}
+
+/* ── EA-20: Global atmosphere pass ───────────────────────────────────────── */
+
+/* Header: warm glass in light mode; warm separator on bottom border */
+@media (prefers-color-scheme: light) {
+  .header {
+    background: rgba(237, 232, 222, 0.88);
+    border-bottom-color: var(--separator-warm);
+  }
+}
+
+/* Tab bar: warm glass in light mode; warm separator on top border */
+@media (prefers-color-scheme: light) {
+  .tabs {
+    background: rgba(237, 232, 222, 0.92);
+    border-top-color: var(--separator-warm);
+  }
+}
+
+/* Task lists: alabaster surface in light mode; restore dark surface in dark mode */
+.task-list { background: var(--alabaster); }
+@media (prefers-color-scheme: dark) {
+  .task-list { background: var(--bg-elevated); }
+}
+
+/* Cycle cards (inactive only): alabaster + temple shadow in light mode.
+   .cycle-card.active keeps its own border-color + green-soft background without needing a corrective override. */
+.cycle-card:not(.active) {
+  background: var(--alabaster);
+  box-shadow: var(--shadow-card);
+}
+@media (prefers-color-scheme: dark) {
+  .cycle-card:not(.active) { background: var(--bg-elevated); }
+}
+
+/* Info cards: alabaster surface in light mode */
+.info-card {
+  background: var(--alabaster);
+  box-shadow: var(--shadow-card);
+}
+@media (prefers-color-scheme: dark) {
+  .info-card { background: var(--bg-elevated); }
+}
+
+/* Action rows: oracle text globally; .btn-row.danger (specificity 0,2,0) still wins with --red */
+.btn-row { color: var(--oracle-text); }
+
+/* Text button: bronze — matches EA-19 scope but now global */
+.text-btn { color: var(--bronze); }
+
+/* Task info icon: bronze (non-text affordance, 3:1 threshold applies) */
+.task-info-btn { color: var(--bronze); }
+
+/* Field focus ring: bronze instead of iOS blue */
+.field-input:focus { outline-color: var(--bronze); }
+
+/* Primary CTA button: obsidian in light mode (17.8:1 contrast with white label) */
+@media (prefers-color-scheme: light) {
+  .btn-primary { background: var(--obsidian); }
+}
+
+/* Ambient temple light: subtle warm radial glow from top of app — light mode only */
+@media (prefers-color-scheme: light) {
+  .app {
+    background: radial-gradient(
+      ellipse 120% 280px at 50% 0%,
+      rgba(160, 114, 42, 0.05) 0%,
+      transparent 100%
+    );
   }
 }
