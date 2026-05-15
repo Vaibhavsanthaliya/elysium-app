@@ -2031,7 +2031,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 400;
-  letter-spacing: 0;
+  letter-spacing: 0.18em;
   line-height: 1.2;
   text-transform: uppercase;
 }
@@ -2117,7 +2117,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 400;
-  letter-spacing: 0;
+  letter-spacing: 0.16em;
   line-height: 1.2;
   text-transform: uppercase;
 }
