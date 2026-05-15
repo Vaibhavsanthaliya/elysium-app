@@ -1719,3 +1719,52 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     background: var(--bg-elevated);
   }
 }
+
+/* ── EA-19: Settings — Obsidian Temple polish ───────────────────────────── */
+
+/* Setting cards and install card — alabaster (light), warm border, deeper shadow, refined radius */
+#pane-settings .setting-card,
+#pane-settings .install-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
+}
+
+/* Row separators — warm instead of cold grey */
+#pane-settings .setting-row {
+  border-bottom-color: var(--separator-warm);
+}
+
+/* Action row names — oracle-text instead of iOS blue */
+#pane-settings .btn-row {
+  color: var(--oracle-text);
+}
+
+/* Danger rows — preserve red (required: #pane-settings ID raises specificity above .btn-row.danger) */
+#pane-settings .btn-row.danger {
+  color: var(--red);
+}
+
+/* Chevrons — bronze */
+#pane-settings .chevron {
+  color: var(--bronze);
+}
+
+/* Danger chevrons — red to match danger row */
+#pane-settings .btn-row.danger .chevron {
+  color: var(--red);
+}
+
+/* Reset text button — bronze instead of iOS blue */
+#pane-settings .text-btn {
+  color: var(--bronze);
+}
+
+/* Dark mode — restore dark surfaces */
+@media (prefers-color-scheme: dark) {
+  #pane-settings .setting-card,
+  #pane-settings .install-card {
+    background: var(--bg-elevated);
+  }
+}
