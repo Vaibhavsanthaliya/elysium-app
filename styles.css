@@ -1637,3 +1637,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
 }
+
+/* ── EA-17: Chronicle — Obsidian Temple polish ───────────────────────────── */
+
+/* Chronicle card — alabaster warmth (light), warm border, deeper shadow */
+#pane-chronicle .chronicle-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Chronicle card — restore dark surface in dark mode */
+@media (prefers-color-scheme: dark) {
+  #pane-chronicle .chronicle-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* Focus ring — bronze instead of iOS blue */
+#pane-chronicle .chronicle-card:focus-within {
+  box-shadow: var(--shadow-card), 0 0 0 2.5px var(--bronze);
+}
+
+/* Save button — radius matches card */
+#pane-chronicle .btn-primary {
+  border-radius: var(--radius-lg);
+}

@@ -201,6 +201,7 @@ New UI work should reference Elysium tokens where appropriate. Do not reference 
 | EA-14 | Stacked Medallion layout for Temple tab. CSS-only, appended `#pane-temple`-scoped EA-14 block: hero card converted to column/centered layout, `--alabaster` surface in light mode / `--temple-gradient` in dark, `--shadow-card` + `--shadow-bronze`, `--separator-warm` card border and ring track, 120px ring, `--bronze` ring stroke, centered hero text, quick-action card radius/shadow/separator upgraded. No HTML or JS changes. |
 | EA-15 | Bottom tab bar active state bronze. CSS-only, one-property change: `.tab.active` color swapped from `var(--tint)` (iOS system blue) to `var(--bronze)` (warm metallic). No layout, icon, animation, HTML, or JS changes. |
 | EA-16 | Today/Care Obsidian Temple polish. CSS-only, `#pane-today`-scoped block appended: hero card `--alabaster` surface (light mode) + `--separator-warm` border + `--shadow-card`; dark-mode hero card override restores `--bg-elevated`; ring track `--separator-warm`; hero label `--bronze`; task list cards `--radius-lg` + `--shadow-card`. No HTML or JS changes. |
+| EA-17 | Chronicle Obsidian Temple polish. CSS-only, `#pane-chronicle`-scoped block appended: chronicle card `--alabaster` surface (light mode) + `--separator-warm` border + `--shadow-card`; dark-mode card override restores `--bg-elevated`; focus ring changed to `--bronze`; save button `--radius-lg`. No HTML or JS changes. |
 
 ---
 
