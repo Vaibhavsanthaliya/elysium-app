@@ -476,6 +476,7 @@ async function syncFromSupabase() {
       renderTodayCycle();
       renderAllLists();
       renderCycleList();
+      if (document.getElementById('pane-temple').classList.contains('active')) renderTemple();
       if (document.getElementById('pane-progress').classList.contains('active')) renderProgress();
       if (document.getElementById('pane-settings').classList.contains('active')) updateSettingsView();
       if (state.reminders?.enabled && 'Notification' in window && Notification.permission === 'granted') {
@@ -724,6 +725,28 @@ function updateRing() {
 
   document.getElementById('ring-pct').textContent = pct;
   document.getElementById('hero-status').textContent = getSmartFeedback(pct);
+}
+
+function renderTemple() {
+  const all = getAllTodayTasks();
+  const checks = getTodayChecks();
+  const done = all.filter(t => checks[t.id]).length;
+  const pct = all.length ? Math.round(done / all.length * 100) : 0;
+
+  const ring = document.getElementById('temple-ring-fg');
+  const circumference = 326.7;
+  ring.style.strokeDashoffset = circumference - (circumference * pct / 100);
+  document.getElementById('temple-ring-pct').textContent = pct;
+
+  document.getElementById('temple-status').textContent = getSmartFeedback(pct);
+  document.getElementById('temple-hero-cycle').textContent =
+    `Tonight's cycle: ${CYCLE_FULL_NAMES[state.cycleDay]}`;
+  document.getElementById('temple-cycle-name').textContent =
+    CYCLE_FULL_NAMES[state.cycleDay];
+
+  const streak = getStreak();
+  document.getElementById('temple-streak-sub').textContent =
+    streak > 0 ? `${streak}-day streak` : 'No streak yet';
 }
 
 function toggleTask(taskId) {
@@ -1435,6 +1458,7 @@ function switchTab(name) {
   document.getElementById('pane-' + name).classList.add('active');
   document.querySelector(`.tab[data-tab="${name}"]`).classList.add('active');
 
+  if (name === 'temple') renderTemple();
   if (name === 'progress') { renderProgress(); renderWeeklyPhotos(); }
   if (name === 'cycle') renderCycleList();
   if (name === 'settings') updateSettingsView();
@@ -1532,6 +1556,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderTodayCycle();
   renderAllLists();
   renderCycleList();
+  renderTemple();
 
   // Tab clicks
   document.querySelectorAll('.tab').forEach(btn => {
@@ -1739,6 +1764,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('streak-pill').addEventListener('click', () => switchTab('progress'));
+  document.getElementById('temple-goto-today').addEventListener('click', () => switchTab('today'));
+  document.getElementById('temple-goto-cycle').addEventListener('click', () => switchTab('cycle'));
+  document.getElementById('temple-goto-progress').addEventListener('click', () => switchTab('progress'));
 
   // Schedule reminders if enabled
   if (state.reminders.enabled && 'Notification' in window && Notification.permission === 'granted') {
