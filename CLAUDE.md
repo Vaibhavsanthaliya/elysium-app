@@ -194,6 +194,7 @@ New UI work should reference Elysium tokens where appropriate. Do not reference 
 | EA-5 | Temple tab added as read-only home summary. Made default active tab. Renders ring, status, cycle name, streak, and quick-action rows. |
 | EA-6 | Chronicle tab added between Cycle and Progress. One note per day stored in `chronicle.notes` via existing state/save/sync flow. |
 | EA-8 | Care module language introduced. Four copy-only changes: Today tab hero label, Temple "Care cycle" quick action, Settings "Care ritual" section heading, and morning push notification title. |
+| EA-9 | Renamed project identity across GitHub and Vercel to elysium-app; local origin remote updated and external tooling verified. |
 
 ---
 
