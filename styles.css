@@ -1605,3 +1605,35 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   color: var(--oracle-text);
   font-weight: 500;
 }
+
+/* ── EA-16: Today/Care — Obsidian Temple polish ──────────────────────────── */
+
+/* Hero card — alabaster warmth (light), warm border, deeper shadow */
+#pane-today .hero-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Hero card — restore dark surface in dark mode (alabaster is a light colour) */
+@media (prefers-color-scheme: dark) {
+  #pane-today .hero-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* Ring track — warm bronze ghost (matches Temple ring treatment) */
+#pane-today .ring-bg {
+  stroke: var(--separator-warm);
+}
+
+/* Hero eyebrow label — bronze (matches Temple eyebrow) */
+#pane-today .hero-label {
+  color: var(--bronze);
+}
+
+/* Task list cards — refined radius and deeper shadow */
+#pane-today .task-list {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
