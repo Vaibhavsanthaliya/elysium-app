@@ -291,7 +291,7 @@ body {
   line-height: 1;
 }
 
-.tab.active { color: var(--tint); }
+.tab.active { color: var(--bronze); }
 .tab:active svg { transform: scale(0.86); }
 
 /* ============== MAIN ============== */

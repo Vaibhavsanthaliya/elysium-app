@@ -199,6 +199,7 @@ New UI work should reference Elysium tokens where appropriate. Do not reference 
 | EA-11 | Chronicle visual polish. CSS-only, Chronicle-scoped: upgraded card (16px radius, `--ritual-surface`, `--shadow-md`, separator border), focus-within ring via `--divine-accent`, textarea breathing room (padding, line-height, `--oracle-text`), placeholder via `--muted-text`, status margin, full-width `--divine-accent` save button. No HTML or JS changes. |
 | EA-13 | Obsidian Temple foundation tokens. CSS-only, additive-only: 21 new custom properties added to `:root` and dark-mode block — obsidian depth layers, alabaster surface, bronze-soft fill, ink text material, warm separator, temple gradient, bronze glow, card shadow, radius scale (sm–2xl), spacing scale (xs–xl). No existing variables changed, no selectors changed, no HTML or JS changes. |
 | EA-14 | Stacked Medallion layout for Temple tab. CSS-only, appended `#pane-temple`-scoped EA-14 block: hero card converted to column/centered layout, `--alabaster` surface in light mode / `--temple-gradient` in dark, `--shadow-card` + `--shadow-bronze`, `--separator-warm` card border and ring track, 120px ring, `--bronze` ring stroke, centered hero text, quick-action card radius/shadow/separator upgraded. No HTML or JS changes. |
+| EA-15 | Bottom tab bar active state bronze. CSS-only, one-property change: `.tab.active` color swapped from `var(--tint)` (iOS system blue) to `var(--bronze)` (warm metallic). No layout, icon, animation, HTML, or JS changes. |
 
 ---
 
