@@ -36,6 +36,9 @@
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  --font-display: "Spectral", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 
   /* ── Elysium theme foundation tokens (light) ──────────────────────────────
      These semantic tokens map to the current palette initially so no visual
@@ -155,7 +158,7 @@
 html, body {
   background: var(--bg);
   color: var(--label);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 17px;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
@@ -1838,4 +1841,74 @@ input[type="time"]::-webkit-calendar-picker-indicator {
       transparent 100%
     );
   }
+}
+
+/* ── EA-21: Obsidian Temple typography identity pass ─────────────────────── */
+.date-label,
+.hero-label,
+.cycle-day-label,
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+#pane-temple .hero-label,
+#pane-today .hero-label {
+  letter-spacing: 0.2em;
+}
+
+.version {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.ring-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--bronze);
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.ring-suffix {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--bronze);
+  letter-spacing: 0.08em;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--bronze);
+  letter-spacing: 0;
+}
+
+.chronicle-textarea {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.chronicle-textarea::placeholder {
+  font-style: italic;
+}
+
+.greeting,
+.section-title h2,
+.section-h {
+  font-weight: 500;
+  letter-spacing: 0;
 }
