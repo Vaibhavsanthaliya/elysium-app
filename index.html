@@ -106,18 +106,20 @@
       <!-- TEMPLE TAB -->
       <section class="tab-pane active" id="pane-temple">
         <!-- Care module summary -->
-        <div class="hero-card">
-          <div class="ring-wrap">
-            <svg class="ring" viewBox="0 0 120 120">
-              <circle class="ring-bg" cx="60" cy="60" r="52" />
-              <circle class="ring-fg" id="temple-ring-fg" cx="60" cy="60" r="52" />
-            </svg>
-            <div class="ring-text">
-              <span class="ring-num" id="temple-ring-pct">0</span>
-              <span class="ring-suffix">%</span>
+        <div class="temple-feature-card">
+          <div class="temple-ritual-seal">
+            <div class="ring-wrap">
+              <svg class="ring" viewBox="0 0 120 120">
+                <circle class="ring-bg" cx="60" cy="60" r="52" />
+                <circle class="ring-fg" id="temple-ring-fg" cx="60" cy="60" r="52" />
+              </svg>
+              <div class="ring-text">
+                <span class="ring-num" id="temple-ring-pct">0</span>
+                <span class="ring-suffix">%</span>
+              </div>
             </div>
           </div>
-          <div class="hero-meta">
+          <div class="temple-feature-copy">
             <p class="hero-label">Today's Care Ritual</p>
             <p class="hero-status" id="temple-status">Begin the ritual.</p>
             <p class="hero-cycle" id="temple-hero-cycle">Tonight's cycle: —</p>
@@ -125,28 +127,41 @@
         </div>
 
         <!-- Quick actions -->
-        <div class="section">
-          <div class="setting-card">
-            <button class="setting-row btn-row" id="temple-goto-today">
-              <div>
-                <p class="setting-name">Today's ritual</p>
-                <p class="setting-sub">Morning, night, and daily care</p>
-              </div>
-              <span class="chevron">›</span>
+        <div class="temple-actions">
+          <div class="temple-section-head">
+            <span>Ritual paths</span>
+            <span>03 actions</span>
+          </div>
+          <div class="temple-card-list">
+            <button class="temple-action-card" id="temple-goto-today">
+              <span class="temple-action-medallion" aria-hidden="true"><span>I</span></span>
+              <span class="temple-action-copy">
+                <span class="temple-action-row">
+                  <span class="temple-action-name">Today's ritual</span>
+                  <span class="temple-action-state">Care</span>
+                </span>
+                <span class="temple-action-sub">Morning, night, and daily care</span>
+              </span>
             </button>
-            <button class="setting-row btn-row" id="temple-goto-cycle">
-              <div>
-                <p class="setting-name">Care cycle</p>
-                <p class="setting-sub" id="temple-cycle-name">—</p>
-              </div>
-              <span class="chevron">›</span>
+            <button class="temple-action-card" id="temple-goto-cycle">
+              <span class="temple-action-medallion" aria-hidden="true"><span>II</span></span>
+              <span class="temple-action-copy">
+                <span class="temple-action-row">
+                  <span class="temple-action-name">Care cycle</span>
+                  <span class="temple-action-state">Cycle</span>
+                </span>
+                <span class="temple-action-sub" id="temple-cycle-name">—</span>
+              </span>
             </button>
-            <button class="setting-row btn-row" id="temple-goto-progress">
-              <div>
-                <p class="setting-name">Ritual progress</p>
-                <p class="setting-sub" id="temple-streak-sub">—</p>
-              </div>
-              <span class="chevron">›</span>
+            <button class="temple-action-card" id="temple-goto-progress">
+              <span class="temple-action-medallion" aria-hidden="true"><span>III</span></span>
+              <span class="temple-action-copy">
+                <span class="temple-action-row">
+                  <span class="temple-action-name">Ritual progress</span>
+                  <span class="temple-action-state">Stars</span>
+                </span>
+                <span class="temple-action-sub" id="temple-streak-sub">—</span>
+              </span>
             </button>
           </div>
         </div>
