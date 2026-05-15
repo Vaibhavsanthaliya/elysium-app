@@ -1663,3 +1663,59 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 #pane-chronicle .btn-primary {
   border-radius: var(--radius-lg);
 }
+
+/* ── EA-18: Progress / Stars — Obsidian Temple polish ───────────────────── */
+
+/* Stat cards — alabaster surface (light), warm border, deeper shadow */
+#pane-progress .stat-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Calendar card — alabaster surface (light), warm border, deeper shadow */
+#pane-progress .cal-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Today ring — bronze instead of iOS blue */
+#pane-progress .cal-day.today {
+  box-shadow: inset 0 0 0 2px var(--bronze);
+}
+
+/* Preserve white ring for logged-today day */
+#pane-progress .cal-day.today.logged {
+  box-shadow: inset 0 0 0 2px white;
+}
+
+/* Milestone list — refined radius, deeper shadow */
+#pane-progress .milestone-list {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Milestone row separators — warm instead of cold grey */
+#pane-progress .milestone-row {
+  border-bottom-color: var(--separator-warm);
+}
+
+/* Active milestone dot — bronze instead of orange */
+#pane-progress .milestone-dot.active {
+  background: var(--bronze);
+  box-shadow: 0 0 0 4px var(--bronze-soft);
+}
+
+/* Photo items — refined radius */
+#pane-progress .photo-item {
+  border-radius: var(--radius-lg);
+}
+
+/* Dark mode — restore dark surfaces */
+@media (prefers-color-scheme: dark) {
+  #pane-progress .stat-card,
+  #pane-progress .cal-card {
+    background: var(--bg-elevated);
+  }
+}

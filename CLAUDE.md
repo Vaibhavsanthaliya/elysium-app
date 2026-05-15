@@ -202,6 +202,7 @@ New UI work should reference Elysium tokens where appropriate. Do not reference 
 | EA-15 | Bottom tab bar active state bronze. CSS-only, one-property change: `.tab.active` color swapped from `var(--tint)` (iOS system blue) to `var(--bronze)` (warm metallic). No layout, icon, animation, HTML, or JS changes. |
 | EA-16 | Today/Care Obsidian Temple polish. CSS-only, `#pane-today`-scoped block appended: hero card `--alabaster` surface (light mode) + `--separator-warm` border + `--shadow-card`; dark-mode hero card override restores `--bg-elevated`; ring track `--separator-warm`; hero label `--bronze`; task list cards `--radius-lg` + `--shadow-card`. No HTML or JS changes. |
 | EA-17 | Chronicle Obsidian Temple polish. CSS-only, `#pane-chronicle`-scoped block appended: chronicle card `--alabaster` surface (light mode) + `--separator-warm` border + `--shadow-card`; dark-mode card override restores `--bg-elevated`; focus ring changed to `--bronze`; save button `--radius-lg`. No HTML or JS changes. |
+| EA-18 | Progress / Stars Obsidian Temple polish. CSS-only, `#pane-progress`-scoped block appended: stat cards and calendar card `--alabaster` (light) + `--separator-warm` border + `--shadow-card`; dark-mode overrides restore `--bg-elevated`; today calendar ring `--bronze` (logged-today white ring preserved); milestone list `--radius-lg` + `--shadow-card` + `--separator-warm` rows; active milestone dot `--bronze` + `--bronze-soft` glow; photo items `--radius-lg`. No HTML or JS changes. |
 
 ---
 
