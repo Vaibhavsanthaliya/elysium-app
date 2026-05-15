@@ -36,6 +36,22 @@
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* ── Elysium theme foundation tokens (light) ──────────────────────────────
+     These semantic tokens map to the current palette initially so no visual
+     change occurs. Future UI work will reference these instead of the raw
+     system variables above.
+     ──────────────────────────────────────────────────────────────────────── */
+  --obsidian: #1a1a1a;                      /* deep near-black; strong surfaces, headings */
+  --marble: #ffffff;                        /* pure white; card and sheet surfaces */
+  --ivory: #f5f5f0;                         /* warm off-white; subtle fill, input backgrounds */
+  --bronze: #a0722a;                        /* warm metallic accent; icons, highlights */
+  --ember: #ff9500;                         /* flame/streak colour — matches --orange */
+  --temple-surface: var(--bg);              /* page-level background */
+  --ritual-surface: var(--bg-elevated);     /* card / module surface */
+  --oracle-text: var(--label);              /* primary body text */
+  --muted-text: var(--label-secondary);     /* secondary / supporting text */
+  --divine-accent: var(--tint);             /* interactive accent, links, rings */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -63,6 +79,18 @@
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    /* ── Elysium theme foundation tokens (dark) ─────────────────────────── */
+    --obsidian: #000000;
+    --marble: #1c1c1e;
+    --ivory: #ece8df;
+    --bronze: #c9903e;
+    --ember: #ff9f0a;
+    --temple-surface: var(--bg);
+    --ritual-surface: var(--bg-elevated);
+    --oracle-text: var(--label);
+    --muted-text: var(--label-secondary);
+    --divine-accent: var(--tint);
   }
 }
 
