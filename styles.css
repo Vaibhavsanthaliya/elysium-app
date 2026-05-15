@@ -95,14 +95,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #000000;
-    --bg-elevated: #1c1c1e;
-    --bg-grouped: #1c1c1e;
-    --bg-input: rgba(118, 118, 128, 0.24);
-    --label: #ffffff;
-    --label-secondary: rgba(235, 235, 245, 0.6);
-    --label-tertiary: rgba(235, 235, 245, 0.3);
-    --separator: rgba(84, 84, 88, 0.6);
+    --bg: #0E0E12;
+    --bg-elevated: #1A1A21;
+    --bg-grouped: #1A1A21;
+    --bg-input: rgba(236, 230, 217, 0.10);
+    --label: #ECE6D9;
+    --label-secondary: rgba(236, 230, 217, 0.62);
+    --label-tertiary: rgba(236, 230, 217, 0.40);
+    --separator: rgba(236, 230, 217, 0.08);
     --separator-opaque: #38383a;
     --tint: #0a84ff;
     --green: #30d158;
@@ -120,10 +120,10 @@
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
 
     /* ── Elysium theme foundation tokens (dark) ─────────────────────────── */
-    --obsidian: #000000;
-    --marble: #1c1c1e;
+    --obsidian: #0E0E12;
+    --marble: #1A1A21;
     --ivory: #ece8df;
-    --bronze: #c9903e;
+    --bronze: #C9A56B;
     --ember: #ff9f0a;
     --temple-surface: var(--bg);
     --ritual-surface: var(--bg-elevated);
@@ -132,25 +132,25 @@
     --divine-accent: var(--tint);
 
     /* ── Obsidian Temple: obsidian backgrounds (dark) ────────────────────── */
-    --obsidian-bg: #000000;                   /* floor — pure black in dark mode */
-    --obsidian-elevated: #0f0f0f;             /* barely-lifted step above floor */
+    --obsidian-bg: #0E0E12;                   /* floor — obsidian depth, not pure black */
+    --obsidian-elevated: #131318;             /* bg-soft: one step above obsidian floor */
 
     /* ── Obsidian Temple: marble/alabaster surfaces (dark) ───────────────── */
     --alabaster: #f0ece4;                     /* warm near-white for elements on dark surfaces */
 
     /* ── Obsidian Temple: bronze accents (dark) ──────────────────────────── */
-    --bronze-soft: rgba(201, 144, 62, 0.18);  /* dark-mode bronze fill */
+    --bronze-soft: rgba(201, 165, 107, 0.18); /* dark-mode champagne bronze fill */
 
     /* ── Obsidian Temple: ink text material (dark) ───────────────────────── */
-    --ink: #f5f4f0;                           /* warm near-white for headings on obsidian */
-    --ink-secondary: rgba(245, 244, 240, 0.58); /* secondary ink on dark surfaces */
+    --ink: #ECE6D9;                           /* warm off-white ink — concept value */
+    --ink-secondary: rgba(236, 230, 217, 0.62); /* secondary ink on dark surfaces */
 
     /* ── Obsidian Temple: warm separator (dark) ──────────────────────────── */
-    --separator-warm: rgba(201, 144, 62, 0.18); /* dark-mode bronze-warm divider */
+    --separator-warm: rgba(236, 230, 217, 0.10); /* near-invisible warm hairline */
 
     /* ── Obsidian Temple: gradients and glows (dark) ─────────────────────── */
     --temple-gradient: linear-gradient(160deg, #000000 0%, #190f03 100%);
-    --shadow-bronze: 0 0 32px rgba(201, 144, 62, 0.28);
+    --shadow-bronze: 0 0 24px -4px rgba(201, 165, 107, 0.28);
     --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.40);
   }
 }
@@ -196,7 +196,7 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
-  .header { background: rgba(0, 0, 0, 0.82); }
+  .header { background: rgba(14, 14, 18, 0.88); }
 }
 
 .header-top {
@@ -258,7 +258,7 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
-  .tabs { background: rgba(0, 0, 0, 0.88); }
+  .tabs { background: rgba(14, 14, 18, 0.88); }
 }
 
 .tab {
@@ -2244,4 +2244,17 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 /* Task info (i) button — bronze instead of iOS blue */
 .task-info-btn {
   color: var(--bronze);
+}
+
+/* ── EA-24: Dark mode token correction ────────────────────────────────────── */
+
+/* Dark ambient temple light — warm bronze radial glow from top of app canvas */
+@media (prefers-color-scheme: dark) {
+  .app {
+    background: radial-gradient(
+      ellipse 120% 280px at 50% 0%,
+      rgba(201, 165, 107, 0.07) 0%,
+      transparent 100%
+    );
+  }
 }
