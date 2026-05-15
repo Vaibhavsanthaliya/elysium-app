@@ -1383,19 +1383,24 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 /* ============== CHRONICLE ============== */
 .chronicle-card {
-  background: var(--bg-elevated);
-  border-radius: 12px;
+  background: var(--ritual-surface);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--separator);
+  box-shadow: var(--shadow-md);
+}
+
+.chronicle-card:focus-within {
+  box-shadow: var(--shadow-md), 0 0 0 2px var(--divine-accent);
 }
 
 .chronicle-textarea {
   width: 100%;
   box-sizing: border-box;
-  padding: 14px 16px;
+  padding: 16px 18px;
   font-size: 15px;
-  line-height: 1.5;
-  color: var(--label);
+  line-height: 1.6;
+  color: var(--oracle-text);
   background: transparent;
   border: none;
   outline: none;
@@ -1404,14 +1409,24 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   -webkit-appearance: none;
 }
 
+.chronicle-textarea::placeholder {
+  color: var(--muted-text);
+  opacity: 0.7;
+}
+
 .chronicle-textarea:focus {
   outline: none;
 }
 
 .chronicle-status {
   font-size: 13px;
-  color: var(--label-secondary);
-  margin: 8px 2px 16px;
+  color: var(--muted-text);
+  margin: 10px 2px 18px;
+}
+
+#pane-chronicle .btn-primary {
+  width: 100%;
+  background: var(--divine-accent);
 }
 
 /* Disable text selection on UI chrome */
