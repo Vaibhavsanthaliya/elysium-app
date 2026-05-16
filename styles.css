@@ -2580,3 +2580,101 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     transition: none;
   }
 }
+
+/* ============== EA-26 MOBILE POLISH & BOOT SHELL ==============
+ * Bug 08 — scrollbar hiding
+ * Bug 09 — tab bar compositor stabilisation
+ * Bug 02 — auth keyboard flash (dvh → svh fallback)
+ * Bug 04 — boot shell (first-paint startup cover)
+ * Bug 01 — scroll reset on tab switch (see app.js switchTab)
+ * Bug 05 — tab reset on sign-out (see app.js sign-out handler)
+ * ============================================================= */
+
+/* ── Bug 08: Hide scrollbars globally ───────────────────────────────────── */
+html,
+body,
+.auth-screen,
+.past-day-body {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.auth-screen::-webkit-scrollbar,
+.past-day-body::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Bug 09: Tab bar compositor stabilisation ───────────────────────────── */
+/* Forces .tabs onto its own GPU composite layer. Prevents the 1–2 frame
+   lag during iOS keyboard-dismiss animation that shows a gap below the bar. */
+.tabs {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* ── Bug 02: Auth keyboard flash — dvh → svh ────────────────────────────── */
+/* 100dvh shrinks when the iOS keyboard opens, causing .auth-shell to
+   reflow and the layout to jump. 100svh is the small/static viewport
+   height — it never changes with the keyboard. vh is the fallback for
+   browsers that don't support svh (Safari < 15.4). */
+.auth-shell {
+  min-height: calc(100vh - var(--safe-top) - var(--safe-bottom) - 48px);
+}
+@supports (height: 100svh) {
+  .auth-shell {
+    min-height: calc(100svh - var(--safe-top) - var(--safe-bottom) - 48px);
+  }
+}
+
+/* ── Bug 04: Boot shell ──────────────────────────────────────────────────── */
+.boot-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  pointer-events: none;
+}
+
+.boot-shell[hidden] {
+  display: none;
+}
+
+.boot-mark {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1px solid var(--separator-warm);
+  background: var(--alabaster);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bronze);
+  box-shadow: var(--shadow-bronze);
+}
+
+@media (prefers-color-scheme: dark) {
+  .boot-mark {
+    background: var(--obsidian-elevated);
+  }
+}
+
+.boot-wordmark {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.boot-wordmark .ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--bronze);
+}

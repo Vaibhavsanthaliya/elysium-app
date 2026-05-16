@@ -366,14 +366,19 @@ let sbUserId = null;
 let sbSaveTimer = null;
 let syncInProgress = false;
 
+function hideBootShell() {
+  const el = document.getElementById('boot-shell');
+  if (el) el.hidden = true;
+}
+
 function initSupabase() {
+  const authScreen = document.getElementById('auth-screen');
   if (!window.supabase) {
     console.warn('Supabase unavailable — running in offline/local mode');
+    hideBootShell();
     return;
   }
   sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  const authScreen = document.getElementById('auth-screen');
-  authScreen.hidden = false;
   showAuthView('signin');
   let initialSessionChecked = false;
 
@@ -382,6 +387,7 @@ function initSupabase() {
     if (event === 'PASSWORD_RECOVERY') {
       authScreen.hidden = false;
       showAuthView('reset');
+      hideBootShell();
       return;
     }
     if (session) {
@@ -392,9 +398,11 @@ function initSupabase() {
         if (sbUserId !== syncUserId) return;
         updateAccountView();
       }
+      hideBootShell();
     } else {
       authScreen.hidden = false;
       showAuthView('signin');
+      hideBootShell();
     }
   }
 
@@ -411,6 +419,7 @@ function initSupabase() {
     initialSessionChecked = true;
     authScreen.hidden = false;
     showAuthView('signin');
+    hideBootShell();
   });
 
   // Safety net: if onAuthStateChange never fires (stale SW, CDN issue, etc.)
@@ -426,6 +435,7 @@ function initSupabase() {
       initialSessionChecked = true;
       authScreen.hidden = false;
       showAuthView('signin');
+      hideBootShell();
     }
   }, 1500);
 }
@@ -1490,6 +1500,7 @@ function scheduleNextFor(time24, title, body, tag) {
 
 // =============== TAB SWITCHING ===============
 function switchTab(name) {
+  window.scrollTo(0, 0);
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('pane-' + name).classList.add('active');
@@ -1588,6 +1599,10 @@ function resetStartDate() {
 // =============== INIT ===============
 document.addEventListener('DOMContentLoaded', () => {
   initSupabase();
+  // Safety net: if a JS exception prevents normal hideBootShell() call sites
+  // from running, auto-clear after 4s so the app never stays permanently blocked.
+  // Normal flow hides the boot shell in under 1s; this only fires on failure.
+  setTimeout(hideBootShell, 4000);
   updateMilestoneStage();
 
   renderHeader();
@@ -1797,6 +1812,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state = deepClone(DEFAULT_DATA);
     sbUserId = null;
     if (sb) try { await sb.auth.signOut(); } catch {}
+    switchTab('temple');
     document.getElementById('auth-screen').hidden = false;
     showAuthView('signin');
   });
