@@ -135,65 +135,145 @@
     <main class="main">
       <!-- TEMPLE TAB -->
       <section class="tab-pane active" id="pane-temple">
-        <!-- Care module summary -->
-        <div class="temple-feature-card">
-          <div class="temple-ritual-seal">
-            <div class="ring-wrap">
-              <svg class="ring" viewBox="0 0 120 120">
-                <circle class="ring-bg" cx="60" cy="60" r="52" />
-                <circle class="ring-fg" id="temple-ring-fg" cx="60" cy="60" r="52" />
-              </svg>
-              <div class="ring-text">
-                <span class="ring-num" id="temple-ring-pct">0</span>
-                <span class="ring-suffix">%</span>
-              </div>
-            </div>
+        <!-- Featured Care card -->
+        <button class="temple-featured" id="temple-goto-today">
+          <span class="temple-featured-medallion" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="16" cy="16" r="10"/>
+              <path d="M10 16 A6 6 0 0 1 22 16"/>
+            </svg>
+          </span>
+          <span class="temple-featured-body">
+            <span class="temple-featured-eyebrow">CARE · HYGIEIA</span>
+            <span class="temple-featured-status" id="temple-status">Begin the ritual.</span>
+            <span class="temple-featured-cycle" id="temple-hero-cycle">Niacinamide tonight.</span>
+          </span>
+          <span class="temple-featured-arc-col" aria-hidden="true">
+            <svg class="temple-mini-arc" viewBox="0 0 28 28" width="28" height="28">
+              <circle cx="14" cy="14" r="11" class="temple-arc-bg"/>
+              <circle cx="14" cy="14" r="11" class="temple-arc-fg" id="temple-ring-fg"
+                stroke-dasharray="69.12" stroke-dashoffset="69.12"
+                transform="rotate(-90 14 14)"/>
+            </svg>
+            <span class="temple-arc-pct">
+              <span id="temple-ring-pct">0</span><span class="temple-pct-sign">%</span>
+            </span>
+          </span>
+        </button>
+
+        <!-- Ritual domain cards -->
+        <div class="temple-domains">
+          <div class="temple-domain-head">
+            <span class="temple-domain-label">The other paths</span>
+            <span class="domain-meta">06 DOMAINS</span>
           </div>
-          <div class="temple-feature-copy">
-            <p class="hero-label">Today's Care Ritual</p>
-            <p class="hero-status" id="temple-status">Begin the ritual.</p>
-            <p class="hero-cycle" id="temple-hero-cycle">Tonight's cycle: —</p>
+          <div class="temple-domain-list">
+
+            <!-- Chronicle — real note state -->
+            <button class="temple-domain-card" id="temple-goto-chronicle">
+              <span class="temple-domain-medallion" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="16" cy="16" r="10"/>
+                  <circle cx="16" cy="16" r="5.5"/>
+                  <circle cx="16" cy="16" r="2" fill="currentColor" stroke="none"/>
+                </svg>
+              </span>
+              <span class="temple-domain-body">
+                <span class="temple-domain-name">Chronicle</span>
+                <span class="temple-domain-sub">Daily reflection</span>
+              </span>
+              <span class="temple-domain-state" id="temple-chronicle-state">Quiet</span>
+            </button>
+
+            <!-- Light — dormant -->
+            <button class="temple-domain-card" disabled>
+              <span class="temple-domain-medallion" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="16" cy="16" r="4"/>
+                  <circle cx="16" cy="5"  r="1.5" fill="currentColor" stroke="none"/>
+                  <circle cx="23.5" cy="8.5"  r="1.5" fill="currentColor" stroke="none"/>
+                  <circle cx="27" cy="16" r="1.5" fill="currentColor" stroke="none"/>
+                  <circle cx="23.5" cy="23.5" r="1.5" fill="currentColor" stroke="none"/>
+                  <circle cx="16" cy="27" r="1.5" fill="currentColor" stroke="none"/>
+                  <circle cx="8.5" cy="23.5" r="1.5" fill="currentColor" stroke="none"/>
+                  <circle cx="5" cy="16"  r="1.5" fill="currentColor" stroke="none"/>
+                  <circle cx="8.5" cy="8.5"  r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+              </span>
+              <span class="temple-domain-body">
+                <span class="temple-domain-name">Light</span>
+                <span class="temple-domain-sub">Dawn rituals</span>
+              </span>
+              <span class="temple-domain-state">—</span>
+            </button>
+
+            <!-- Body — dormant -->
+            <button class="temple-domain-card" disabled>
+              <span class="temple-domain-medallion" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 6 L27 24 L5 24 Z"/>
+                  <path d="M3 24 L29 24" stroke-width="2"/>
+                </svg>
+              </span>
+              <span class="temple-domain-body">
+                <span class="temple-domain-name">Body</span>
+                <span class="temple-domain-sub">Physical rhythm</span>
+              </span>
+              <span class="temple-domain-state">—</span>
+            </button>
+
+            <!-- Mind — dormant -->
+            <button class="temple-domain-card" disabled>
+              <span class="temple-domain-medallion" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4 L28 16 L16 28 L4 16 Z"/>
+                  <line x1="4" y1="16" x2="28" y2="16"/>
+                </svg>
+              </span>
+              <span class="temple-domain-body">
+                <span class="temple-domain-name">Mind</span>
+                <span class="temple-domain-sub">Mental clarity</span>
+              </span>
+              <span class="temple-domain-state">—</span>
+            </button>
+
+            <!-- Water — dormant -->
+            <button class="temple-domain-card" disabled>
+              <span class="temple-domain-medallion" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 13 Q10 8 16 13 Q22 18 28 13"/>
+                  <path d="M4 20 Q10 15 16 20 Q22 25 28 20"/>
+                </svg>
+              </span>
+              <span class="temple-domain-body">
+                <span class="temple-domain-name">Water</span>
+                <span class="temple-domain-sub">Recovery &amp; balance</span>
+              </span>
+              <span class="temple-domain-state">—</span>
+            </button>
+
+            <!-- Sleep — dormant -->
+            <button class="temple-domain-card" disabled>
+              <span class="temple-domain-medallion" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 6 A12 12 0 1 0 22 26 A8 8 0 0 1 22 6 Z"/>
+                </svg>
+              </span>
+              <span class="temple-domain-body">
+                <span class="temple-domain-name">Sleep</span>
+                <span class="temple-domain-sub">Evening restoration</span>
+              </span>
+              <span class="temple-domain-state">—</span>
+            </button>
+
           </div>
         </div>
 
-        <!-- Quick actions -->
-        <div class="temple-actions">
-          <div class="temple-section-head">
-            <span>Ritual paths</span>
-            <span>03 actions</span>
-          </div>
-          <div class="temple-card-list">
-            <button class="temple-action-card" id="temple-goto-today">
-              <span class="temple-action-medallion" aria-hidden="true"><span>I</span></span>
-              <span class="temple-action-copy">
-                <span class="temple-action-row">
-                  <span class="temple-action-name">Today's ritual</span>
-                  <span class="temple-action-state">Care</span>
-                </span>
-                <span class="temple-action-sub">Morning, night, and daily care</span>
-              </span>
-            </button>
-            <button class="temple-action-card" id="temple-goto-cycle">
-              <span class="temple-action-medallion" aria-hidden="true"><span>II</span></span>
-              <span class="temple-action-copy">
-                <span class="temple-action-row">
-                  <span class="temple-action-name">Care cycle</span>
-                  <span class="temple-action-state">Cycle</span>
-                </span>
-                <span class="temple-action-sub" id="temple-cycle-name">—</span>
-              </span>
-            </button>
-            <button class="temple-action-card" id="temple-goto-progress">
-              <span class="temple-action-medallion" aria-hidden="true"><span>III</span></span>
-              <span class="temple-action-copy">
-                <span class="temple-action-row">
-                  <span class="temple-action-name">Ritual progress</span>
-                  <span class="temple-action-state">Stars</span>
-                </span>
-                <span class="temple-action-sub" id="temple-streak-sub">—</span>
-              </span>
-            </button>
-          </div>
+        <!-- Secondary navigation -->
+        <div class="temple-secondary-nav">
+          <button class="temple-nav-link" id="temple-goto-cycle">Care cycle</button>
+          <span class="temple-nav-sep" aria-hidden="true">·</span>
+          <button class="temple-nav-link" id="temple-goto-progress">Progress</button>
         </div>
 
         <div class="footer-spacer"></div>
@@ -580,7 +660,7 @@
   <div class="toast" id="toast" hidden></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="main.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

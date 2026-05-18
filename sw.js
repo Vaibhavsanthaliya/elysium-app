@@ -1,16 +1,34 @@
 /* Skin — Service Worker
    Cache shell for offline + standalone install */
 
-const CACHE_NAME = 'elysium-v1';
+const CACHE_NAME = 'elysium-v2';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
-  './app.js',
+  './main.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
   './icon-maskable.png',
+  './js/constants.js',
+  './js/utils.js',
+  './js/state.js',
+  './js/sync.js',
+  './js/domains/care.js',
+  './js/domains/chronicle.js',
+  './js/services/photos.js',
+  './js/services/notifications.js',
+  './js/render/common.js',
+  './js/render/temple.js',
+  './js/render/today.js',
+  './js/render/cycle.js',
+  './js/render/chronicle.js',
+  './js/render/progress.js',
+  './js/render/settings.js',
+  './js/ui/tabs.js',
+  './js/ui/modals.js',
+  './js/ui/toast.js',
 ];
 
 self.addEventListener('install', (event) => {
@@ -37,8 +55,9 @@ self.addEventListener('fetch', (event) => {
   const shellPath = url.pathname === '/' ||
     url.pathname.endsWith('/index.html') ||
     url.pathname.endsWith('/styles.css') ||
-    url.pathname.endsWith('/app.js') ||
-    url.pathname.endsWith('/manifest.json');
+    url.pathname.endsWith('/main.js') ||
+    url.pathname.endsWith('/manifest.json') ||
+    url.pathname.includes('/js/');
 
   if (event.request.mode === 'navigate' || (sameOrigin && shellPath)) {
     event.respondWith(
