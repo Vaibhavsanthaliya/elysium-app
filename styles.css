@@ -2678,3 +2678,80 @@ body::-webkit-scrollbar,
   font-weight: 400;
   color: var(--bronze);
 }
+
+/* ── EA-27: Modal Obsidian Temple alignment ─────────────────────────────
+ * Removes iOS blue/pink visual language from edit-task, past-day, and
+ * task-info modals. CSS-only, all selectors scoped to .modal context.
+ * No HTML or app.js changes. No task logic changes.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+/* Handle pill: warm separator tone instead of iOS cold gray */
+.modal-handle {
+  background: var(--separator-warm);
+}
+
+/* Title: DM Sans already inherited — lighten weight from 700 → 500 */
+.modal-title {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+}
+
+/* Field labels: mono eyebrow treatment matching bronze meta labels */
+.modal .field-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  color: var(--bronze);
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+/* Field inputs: underline-only style, removes iOS filled rounded-rect */
+.modal .field-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--separator-warm);
+  border-radius: 0;
+  padding: 10px 0;
+  font-size: 15px;
+  color: var(--oracle-text);
+  outline: none;
+}
+.modal .field-input:focus {
+  border-bottom-color: var(--bronze);
+  outline: none;
+}
+
+/* Select dropdown arrow: bronze-toned per theme (was iOS gray #8E8E93) */
+.modal select.field-input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23A07A4A' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  padding-right: 28px;
+  padding-left: 0;
+}
+@media (prefers-color-scheme: dark) {
+  .modal select.field-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C9A56B' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  }
+}
+
+/* Save button dark mode: bronze bg / near-black text (9.3:1 contrast).
+ * Mirrors .cycle-active-badge and .auth-cta patterns already in the codebase.
+ * Light mode handled by EA-20: .btn-primary { background: var(--obsidian) }. */
+@media (prefers-color-scheme: dark) {
+  .modal .btn-primary {
+    background: var(--bronze);
+    color: var(--bg);
+  }
+}
+
+/* Delete button: desaturated rust, matches concept danger row color */
+.modal .btn-secondary {
+  background: rgba(217, 122, 94, 0.12);
+  color: #d97a5e;
+}
+
+/* Cancel / Done / Got it: muted ink, removes iOS blue link appearance */
+.modal .btn-text {
+  color: var(--muted-text);
+}
