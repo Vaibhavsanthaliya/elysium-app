@@ -3,8 +3,13 @@
 // consume the imports inside function bodies, never at module evaluation time.
 // Future EA: resolve via event delegation in main.js.
 import { TASK_INFO } from '../constants.js';
-import { uid } from '../utils.js';
-import { state, saveState } from '../state.js';
+import { formatTime12, isValidReminderTime, uid } from '../utils.js';
+import { state, saveState, todayStr } from '../state.js';
+import {
+  getRecentSleepHistory,
+  getSleepEntry,
+  saveSleepBedtime as upsertSleepBedtime,
+} from '../domains/sleep.js';
 import { showToast } from './toast.js';
 import { renderAllLists } from '../render/today.js';
 
@@ -28,6 +33,60 @@ export function closeTaskInfoModal() {
 // TODO: remove this once task-info-modal onclick attrs are replaced
 // with addEventListener wiring in main.js (future EA).
 window.closeTaskInfoModal = closeTaskInfoModal;
+
+function formatSleepHistoryDate(dateStr, index) {
+  if (index === 0) return 'TODAY';
+  return new Date(`${dateStr}T00:00:00`).toLocaleDateString(undefined, {
+    weekday: 'short',
+  }).toUpperCase();
+}
+
+function renderSleepHistory() {
+  const historyEl = document.getElementById('sleep-history-list');
+  if (!historyEl) return;
+
+  historyEl.innerHTML = getRecentSleepHistory().map(({ dateStr, entry }, index) => `
+    <div class="sleep-history-row${entry ? ' has-entry' : ''}">
+      <span class="sleep-history-date">${formatSleepHistoryDate(dateStr, index)}</span>
+      <span class="sleep-history-dot" aria-hidden="true"></span>
+      <span class="sleep-history-time">${entry ? formatTime12(entry.bedtime) : '—'}</span>
+    </div>
+  `).join('');
+}
+
+export function openSleepModal() {
+  const modal = document.getElementById('sleep-modal');
+  const input = document.getElementById('sleep-bedtime');
+  const entry = getSleepEntry(todayStr);
+  input.value = entry?.bedtime || '';
+  renderSleepHistory();
+  modal.hidden = false;
+  setTimeout(() => input.focus(), 250);
+}
+
+export function closeSleepModal() {
+  document.getElementById('sleep-modal').hidden = true;
+}
+
+export function saveSleepModal() {
+  const input = document.getElementById('sleep-bedtime');
+  const bedtime = input.value.trim();
+  if (!isValidReminderTime(bedtime)) {
+    showToast('Enter a valid bedtime');
+    return;
+  }
+  if (!upsertSleepBedtime(todayStr, bedtime)) {
+    showToast('Could not save bedtime');
+    return;
+  }
+
+  saveState();
+  const sleepStateEl = document.getElementById('temple-sleep-state');
+  if (sleepStateEl) sleepStateEl.textContent = formatTime12(bedtime);
+  renderSleepHistory();
+  closeSleepModal();
+  showToast('Bedtime saved');
+}
 
 export function openEditModal(section, task) {
   editContext = { mode: 'edit', section, task };

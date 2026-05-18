@@ -48,6 +48,12 @@ export const DEFAULT_DATA = {
   chronicle: {
     notes: {},
   },
+  light: {
+    entries: {},
+  },
+  sleep: {
+    entries: {},
+  },
 };
 
 export const CYCLE_NAMES = ['Niacinamide', 'Salicylic', 'Rest night'];

@@ -308,3 +308,27 @@
   background: transparent;
   border: 1px solid var(--separator-warm);
 }
+
+/* ── EA-40: Cycle info section headers ──────────────────────────────────── */
+#pane-cycle .section-hd {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+#pane-cycle .section-lbl-ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--oracle-text);
+}
+
+#pane-cycle .section-meta-mono {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}

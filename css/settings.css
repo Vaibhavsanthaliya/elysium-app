@@ -159,6 +159,38 @@
 
 .footer-spacer { height: 40px; }
 
+/* ── EA-41: Settings page heading alignment ─────────────────────────────── */
+#pane-settings .settings-head {
+  padding: 8px 0 20px;
+}
+
+#pane-settings .settings-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-bottom: 4px;
+}
+
+#pane-settings .settings-title {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+  line-height: 1.1;
+  margin: 0;
+}
+
+#pane-settings .settings-title .ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--bronze);
+}
+
 /* ── EA-19: Settings — Obsidian Temple polish ───────────────────────────── */
 
 /* Setting cards and install card — alabaster (light), warm border, deeper shadow, refined radius */

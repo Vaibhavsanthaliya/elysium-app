@@ -1,5 +1,8 @@
 import { state, todayStr } from '../state.js';
+import { formatTime12 } from '../utils.js';
 import { getAllTodayTasks, getTodayChecks, getStreak, getMissedDays } from '../domains/care.js';
+import { getLightEntry } from '../domains/light.js';
+import { getLastSleepEntry } from '../domains/sleep.js';
 
 // Returns a one-line status string for the Care ring hero area and Temple featured card.
 // Lives here because Temple is the primary consumer; Today's ring imports it for consistency.
@@ -47,4 +50,16 @@ export function renderTemple() {
 
   const hasNote = !!(state.chronicle?.notes?.[todayStr]?.body);
   document.getElementById('temple-chronicle-state').textContent = hasNote ? 'Written' : 'Quiet';
+
+  const lightEntry = getLightEntry(todayStr);
+  const lightStateEl = document.getElementById('temple-light-state');
+  if (lightStateEl) {
+    lightStateEl.textContent = lightEntry ? formatTime12(lightEntry.witnessedAt) : '—';
+  }
+
+  const sleepStateEl = document.getElementById('temple-sleep-state');
+  if (sleepStateEl) {
+    const lastSleep = getLastSleepEntry();
+    sleepStateEl.textContent = lastSleep ? formatTime12(lastSleep.bedtime) : 'Quiet';
+  }
 }

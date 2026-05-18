@@ -180,3 +180,92 @@
 #pane-chronicle .chronicle-card:focus-within {
   box-shadow: var(--shadow-card), 0 0 0 3px rgba(201, 165, 107, 0.12);
 }
+
+/* ── EA-35: Chronicle → Drift (reading-first) ─────────────────────────────── */
+
+.chronicle-drift {
+  margin-bottom: 28px;
+}
+
+.chronicle-drift-entry {
+  padding: 14px 2px;
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+.chronicle-drift-entry:first-child {
+  border-top: 1px solid var(--separator-warm);
+}
+
+.chronicle-drift-date {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-bottom: 6px;
+}
+
+.chronicle-drift-body {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--oracle-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Year-ago surfacing */
+.chronicle-drift-ago {
+  margin-bottom: 0;
+}
+
+.chronicle-drift-ago-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  opacity: 0.75;
+  padding: 12px 2px 0;
+}
+
+.chronicle-drift-ago .chronicle-drift-entry:first-child {
+  border-top-color: rgba(160, 122, 74, 0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  .chronicle-drift-ago .chronicle-drift-entry:first-child {
+    border-top-color: rgba(201, 165, 107, 0.35);
+  }
+}
+
+/* Empty state (no past entries) */
+.chronicle-drift-empty {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--muted-text);
+  opacity: 0.6;
+  text-align: center;
+  padding: 20px 0 28px;
+  margin: 0;
+}
+
+/* Writing surface wrapper */
+.chronicle-today {
+  /* inherits pane padding */
+}
+
+/* ── EA-42: Memory river header ─────────────────────────────────────────── */
+.chronicle-river-hd {
+  margin: 0 2px 12px;
+}
+
+.chronicle-river-lbl {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--oracle-text);
+}

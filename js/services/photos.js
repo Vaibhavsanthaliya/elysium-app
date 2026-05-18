@@ -138,7 +138,7 @@ export async function renderWeeklyPhotos() {
   grid.innerHTML = '';
 
   if (!state.weeklyPhotos.length) {
-    grid.innerHTML = '<p class="empty-photos">No photos yet — tap + to add your first weekly shot.</p>';
+    grid.innerHTML = '<p class="empty-photos">No photos yet. Use Add Photo for your first weekly shot.</p>';
     return;
   }
 

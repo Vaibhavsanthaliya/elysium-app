@@ -27,7 +27,10 @@
       "Bash(git rm *)",
       "Bash(Remove-Item D:/Projects/elysium-app/styles.css)",
       "Skill(vercel:deploy)",
-      "Skill(vercel:deploy:*)"
+      "Skill(vercel:deploy:*)",
+      "Bash(gunzip -c \"/Users/macm92/.claude/projects/-Volumes-external-Projects-elysium-app/e5fd75c8-1f60-4ed1-922f-449e1e30ac7c/tool-results/webfetch-1779122196893-pkv77q.bin\")",
+      "Bash(tar -t)",
+      "Bash(tar -x -C /tmp/elysium-design)"
     ]
   }
 }

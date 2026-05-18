@@ -129,16 +129,13 @@
 
   <div class="app">
     <!-- Header -->
-    <header class="header">
+    <header class="header" aria-label="Daily status">
       <div class="header-top">
-        <div>
-          <p class="date-label" id="date-label"></p>
-          <h1 class="greeting" id="greeting">Today</h1>
-        </div>
-        <button class="streak-pill" id="streak-pill" aria-label="View streak">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+        <p class="date-label" id="date-label"></p>
+        <div class="streak-pill" id="streak-pill" aria-label="Current streak">
           <span id="streak-num">0</span>
-        </button>
+          <span class="streak-label">day streak</span>
+        </div>
       </div>
     </header>
 
@@ -190,13 +187,14 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Chronicle</span>
-                <span class="temple-domain-sub">Daily reflection</span>
+                <span class="temple-domain-sub">remember</span>
+                <span class="temple-domain-archetype">Mnemosyne</span>
               </span>
               <span class="temple-domain-state" id="temple-chronicle-state">Quiet</span>
             </button>
 
-            <!-- Light — dormant -->
-            <button class="temple-domain-card" disabled>
+            <!-- Light — active -->
+            <button class="temple-domain-card" id="temple-goto-light">
               <span class="temple-domain-medallion" aria-hidden="true">
                 <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="16" cy="16" r="4"/>
@@ -212,10 +210,31 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Light</span>
-                <span class="temple-domain-sub">Dawn rituals</span>
+                <span class="temple-domain-sub">witness</span>
+                <span class="temple-domain-archetype">Apollo</span>
               </span>
-              <span class="temple-domain-state">—</span>
+              <span class="temple-domain-state" id="temple-light-state">—</span>
             </button>
+
+            <!-- Sleep — real bedtime state -->
+            <button class="temple-domain-card" id="temple-goto-sleep">
+              <span class="temple-domain-medallion" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 6 A12 12 0 1 0 22 26 A8 8 0 0 1 22 6 Z"/>
+                </svg>
+              </span>
+              <span class="temple-domain-body">
+                <span class="temple-domain-name">Sleep</span>
+                <span class="temple-domain-sub">close</span>
+                <span class="temple-domain-archetype">Hypnos</span>
+              </span>
+              <span class="temple-domain-state" id="temple-sleep-state">Quiet</span>
+            </button>
+
+            <!-- Dormant domain separator -->
+            <div class="temple-dormant-head" aria-hidden="true">
+              <span class="temple-dormant-label">IN STUDY</span>
+            </div>
 
             <!-- Body — dormant -->
             <button class="temple-domain-card" disabled>
@@ -227,7 +246,8 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Body</span>
-                <span class="temple-domain-sub">Physical rhythm</span>
+                <span class="temple-domain-sub">arrive</span>
+                <span class="temple-domain-archetype">Atlas</span>
               </span>
               <span class="temple-domain-state">—</span>
             </button>
@@ -242,7 +262,8 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Mind</span>
-                <span class="temple-domain-sub">Mental clarity</span>
+                <span class="temple-domain-sub">hold</span>
+                <span class="temple-domain-archetype">Athena</span>
               </span>
               <span class="temple-domain-state">—</span>
             </button>
@@ -257,21 +278,8 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Water</span>
-                <span class="temple-domain-sub">Recovery &amp; balance</span>
-              </span>
-              <span class="temple-domain-state">—</span>
-            </button>
-
-            <!-- Sleep — dormant -->
-            <button class="temple-domain-card" disabled>
-              <span class="temple-domain-medallion" aria-hidden="true">
-                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 6 A12 12 0 1 0 22 26 A8 8 0 0 1 22 6 Z"/>
-                </svg>
-              </span>
-              <span class="temple-domain-body">
-                <span class="temple-domain-name">Sleep</span>
-                <span class="temple-domain-sub">Evening restoration</span>
+                <span class="temple-domain-sub">notice</span>
+                <span class="temple-domain-archetype">Poseidon</span>
               </span>
               <span class="temple-domain-state">—</span>
             </button>
@@ -377,7 +385,10 @@
         </div>
 
         <div class="section">
-          <h2 class="section-h">Sweat management</h2>
+          <div class="section-hd">
+            <span class="section-lbl-ital"><em>Sweat management</em></span>
+            <span class="section-meta-mono">CARE NOTE</span>
+          </div>
           <div class="info-card">
             <div class="info-row">Dab sweat with clean tissue — never rub</div>
             <div class="info-row">Rinse with plain water 1–2× if needed</div>
@@ -387,7 +398,10 @@
         </div>
 
         <div class="section">
-          <h2 class="section-h">Active rules</h2>
+          <div class="section-hd">
+            <span class="section-lbl-ital"><em>Active rules</em></span>
+            <span class="section-meta-mono">CARE NOTE</span>
+          </div>
           <div class="info-card">
             <div class="info-row">Salicylic max 3–4×/week, never daily</div>
             <div class="info-row">Never layer multiple actives</div>
@@ -407,17 +421,28 @@
           <h1 class="chronicle-title">The <span class="ital">chronicle</span></h1>
         </div>
 
-        <div class="chronicle-prompt">
-          <div class="chronicle-prompt-label">A quiet record of the day</div>
-          <p class="chronicle-prompt-q" id="chronicle-prompt-q">What did today ask of you?</p>
+        <!-- River: section header for past entries (JS shows/hides) -->
+        <div class="chronicle-river-hd" id="chronicle-river-hd" hidden>
+          <em class="chronicle-river-lbl">The river</em>
         </div>
 
-        <div class="chronicle-card">
-          <textarea class="chronicle-textarea" id="chronicle-textarea" rows="7" placeholder="Write here. One note per day."></textarea>
-        </div>
+        <!-- Drift: past entries, reading-first (rendered by JS) -->
+        <div class="chronicle-drift" id="chronicle-drift"></div>
 
-        <p class="chronicle-status" id="chronicle-status">No entry yet</p>
-        <button class="btn-primary" id="chronicle-save-btn">Save</button>
+        <!-- Today: writing surface (secondary motion) -->
+        <div class="chronicle-today">
+          <div class="chronicle-prompt">
+            <div class="chronicle-prompt-label">A quiet record of the day</div>
+            <p class="chronicle-prompt-q" id="chronicle-prompt-q">What did today ask of you?</p>
+          </div>
+
+          <div class="chronicle-card">
+            <textarea class="chronicle-textarea" id="chronicle-textarea" rows="7" placeholder="Write here. One note per day."></textarea>
+          </div>
+
+          <p class="chronicle-status" id="chronicle-status">No entry yet</p>
+          <button class="btn-primary" id="chronicle-save-btn">Save</button>
+        </div>
 
         <div class="footer-spacer"></div>
       </section>
@@ -473,11 +498,9 @@
         </div>
 
         <div class="section">
-          <div class="section-header">
-            <div class="section-title">
-              <h2>Weekly photos</h2>
-            </div>
-            <button class="add-btn" id="add-photo-btn" aria-label="Add weekly photo">＋</button>
+          <div class="section-hd">
+            <span class="section-lbl-ital"><em>Weekly photos</em></span>
+            <button class="section-meta-mono photo-add-action" id="add-photo-btn" aria-label="Add weekly photo">Add photo</button>
           </div>
           <input type="file" id="weekly-photo-input" accept="image/*" hidden />
           <div class="photo-grid" id="weekly-photos-grid"></div>
@@ -488,6 +511,11 @@
 
       <!-- SETTINGS TAB -->
       <section class="tab-pane" id="pane-settings">
+        <div class="settings-head">
+          <p class="settings-eyebrow">ACCOUNT &amp; RITUAL</p>
+          <h1 class="settings-title"><span class="ital">Settings</span></h1>
+        </div>
+
         <div class="section">
           <h2 class="section-h">Account</h2>
           <div class="setting-card">
@@ -679,6 +707,33 @@
     </div>
   </div>
 
+  <!-- Sleep bedtime modal -->
+  <div class="modal sleep-modal" id="sleep-modal" hidden>
+    <div class="modal-backdrop" id="sleep-modal-backdrop"></div>
+    <div class="modal-sheet sleep-modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="sleep-modal-eyebrow">SLEEP</div>
+      <h3 class="modal-title sleep-modal-title">Close the day</h3>
+      <p class="sleep-modal-help">Record when the day ended.</p>
+      <div class="modal-body sleep-modal-body">
+        <label class="field">
+          <span class="field-label">Bedtime</span>
+          <input type="time" id="sleep-bedtime" class="field-input sleep-time-input" />
+        </label>
+        <div class="sleep-history">
+          <div class="sleep-history-head">
+            <span>Last seven nights</span>
+          </div>
+          <div class="sleep-history-list" id="sleep-history-list"></div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="sleep-save">Save</button>
+      </div>
+      <button class="btn-text" id="sleep-cancel">Cancel</button>
+    </div>
+  </div>
+
   <!-- Task info modal -->
   <div class="modal" id="task-info-modal" hidden>
     <div class="modal-backdrop" onclick="closeTaskInfoModal()"></div>
@@ -700,6 +755,25 @@
         </div>
       </div>
       <button class="btn-text" onclick="closeTaskInfoModal()">Got it</button>
+    </div>
+  </div>
+
+  <!-- Light domain modal -->
+  <div class="modal" id="light-modal" hidden>
+    <div class="modal-backdrop" id="light-modal-backdrop"></div>
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="light-modal-head">
+        <div class="light-modal-eyebrow">LIGHT · APOLLO</div>
+        <h3 class="light-modal-title">Witness the morning</h3>
+        <p class="light-modal-sub">Mark the first light you met today.</p>
+      </div>
+      <div class="light-modal-witnessed" id="light-witnessed" hidden>
+        <span class="light-witnessed-time" id="light-witnessed-time"></span>
+      </div>
+      <div class="light-history-row" id="light-history"></div>
+      <button class="btn-primary" id="light-witness-btn">I'm here</button>
+      <button class="btn-text" id="light-modal-close">Close</button>
     </div>
   </div>
 

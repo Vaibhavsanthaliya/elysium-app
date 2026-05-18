@@ -11,10 +11,20 @@ import { renderTemple } from './js/render/temple.js';
 import { renderAllLists } from './js/render/today.js';
 import { renderCycleList } from './js/render/cycle.js';
 import { renderChronicle, saveChronicleNote } from './js/render/chronicle.js';
+import { getLightEntry, witnessLight } from './js/domains/light.js';
 import { renderProgress, renderWeeklyPhotos, closePastDayModal } from './js/render/progress.js';
 import { updateSettingsView, exportData, importData, resetAll, resetStartDate } from './js/render/settings.js';
 import { switchTab } from './js/ui/tabs.js';
-import { openAddModal, closeModal, saveTask, deleteTask, handleSectionChange } from './js/ui/modals.js';
+import {
+  openAddModal,
+  closeModal,
+  saveTask,
+  deleteTask,
+  handleSectionChange,
+  openSleepModal,
+  closeSleepModal,
+  saveSleepModal,
+} from './js/ui/modals.js';
 import { showToast } from './js/ui/toast.js';
 import { addWeeklyPhoto, hasPhotoThisWeek } from './js/services/photos.js';
 import { scheduleReminders, clearScheduledReminders, toggleNotifications } from './js/services/notifications.js';
@@ -265,6 +275,69 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('temple-goto-cycle').addEventListener('click', () => switchTab('cycle'));
   document.getElementById('temple-goto-progress').addEventListener('click', () => switchTab('progress'));
   document.getElementById('chronicle-save-btn').addEventListener('click', saveChronicleNote);
+  document.getElementById('temple-goto-sleep').addEventListener('click', openSleepModal);
+  document.getElementById('sleep-modal-backdrop').addEventListener('click', closeSleepModal);
+  document.getElementById('sleep-cancel').addEventListener('click', closeSleepModal);
+  document.getElementById('sleep-save').addEventListener('click', saveSleepModal);
+  document.getElementById('sleep-bedtime').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); saveSleepModal(); }
+  });
+
+  // --- Light domain modal ---
+  const LIGHT_DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+
+  function renderLightModal() {
+    const entry = getLightEntry(todayStr);
+    const btn = document.getElementById('light-witness-btn');
+    const witnessedEl = document.getElementById('light-witnessed');
+    const witnessedTimeEl = document.getElementById('light-witnessed-time');
+    if (entry) {
+      btn.textContent = 'Witnessed';
+      btn.disabled = true;
+      witnessedEl.hidden = false;
+      witnessedTimeEl.textContent = formatTime12(entry.witnessedAt);
+    } else {
+      btn.textContent = 'I\'m here';
+      btn.disabled = false;
+      witnessedEl.hidden = true;
+    }
+    const histEl = document.getElementById('light-history');
+    if (!histEl) return;
+    const now = new Date();
+    let html = '';
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const key = ymd(d);
+      const witnessed = !!getLightEntry(key);
+      html += `<div class="light-hist-day${i === 0 ? ' today' : ''}">` +
+        `<div class="light-hist-dot${witnessed ? ' witnessed' : ''}"></div>` +
+        `<div class="light-hist-label">${LIGHT_DAYS[d.getDay()]}</div>` +
+        `</div>`;
+    }
+    histEl.innerHTML = html;
+  }
+
+  function openLightModal() {
+    renderLightModal();
+    document.getElementById('light-modal').hidden = false;
+  }
+
+  function closeLightModal() {
+    document.getElementById('light-modal').hidden = true;
+  }
+
+  document.getElementById('temple-goto-light').addEventListener('click', openLightModal);
+  document.getElementById('light-modal-backdrop').addEventListener('click', closeLightModal);
+  document.getElementById('light-modal-close').addEventListener('click', closeLightModal);
+  document.getElementById('light-witness-btn').addEventListener('click', () => {
+    if (getLightEntry(todayStr)) return;
+    witnessLight(todayStr);
+    saveState();
+    renderTemple();
+    renderLightModal();
+    showToast('Witnessed');
+  });
 
   // Schedule reminders if already enabled
   if (state.reminders.enabled && 'Notification' in window && Notification.permission === 'granted') {

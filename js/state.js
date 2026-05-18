@@ -111,6 +111,23 @@ export function migrateState(s) {
     ? s.chronicle : {};
   s.chronicle.notes = s.chronicle.notes && typeof s.chronicle.notes === 'object' && !Array.isArray(s.chronicle.notes)
     ? s.chronicle.notes : {};
+  s.light = s.light && typeof s.light === 'object' && !Array.isArray(s.light)
+    ? s.light : {};
+  s.light.entries = s.light.entries && typeof s.light.entries === 'object' && !Array.isArray(s.light.entries)
+    ? s.light.entries : {};
+  s.sleep = s.sleep && typeof s.sleep === 'object' && !Array.isArray(s.sleep)
+    ? s.sleep : {};
+  s.sleep.entries = s.sleep.entries && typeof s.sleep.entries === 'object' && !Array.isArray(s.sleep.entries)
+    ? s.sleep.entries : {};
+  s.sleep.entries = Object.fromEntries(Object.entries(s.sleep.entries)
+    .filter(([date, entry]) =>
+      isYmd(date) &&
+      entry &&
+      typeof entry === 'object' &&
+      !Array.isArray(entry) &&
+      isValidReminderTime(entry.bedtime)
+    )
+    .map(([date, entry]) => [date, { bedtime: entry.bedtime }]));
   return s;
 }
 

@@ -37,13 +37,13 @@
 
 /* ============== HEADER ============== */
 .header {
-  padding: calc(var(--safe-top) + 16px) 20px 12px;
+  padding: calc(var(--safe-top) + 10px) 20px 9px;
   background: rgba(242, 242, 247, 0.82);
   position: sticky;
   top: 0;
   z-index: 10;
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(140%) blur(18px);
+  -webkit-backdrop-filter: saturate(140%) blur(18px);
   border-bottom: 0.5px solid var(--separator);
 }
 
@@ -62,57 +62,66 @@
 .header-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
 }
 
 .date-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--label-secondary);
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--muted-text);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 2px;
+  letter-spacing: 0.18em;
+  margin: 0;
+  line-height: 1.15;
 }
 
 /* ── EA-21: Typography — date-label ─────────────────────────────────────── */
 .date-label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 400;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
-.greeting {
-  font-size: 34px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
 .streak-pill {
-  display: flex;
+  flex: 0 0 auto;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background: var(--orange-soft);
-  color: var(--orange);
-  padding: 8px 12px;
-  border-radius: 100px;
+  gap: 5px;
+  background: transparent;
+  color: var(--muted-text);
+  padding: 0;
+  border-radius: 0;
   border: none;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: default;
+  margin: 0;
 }
 
-.streak-pill:active { transform: scale(0.95); }
+.streak-pill:active { transform: none; }
 
 /* ── EA-23: Streak pill bronze ───────────────────────────────────────────── */
 .streak-pill {
-  background: var(--bronze-soft);
+  background: transparent;
+  color: var(--muted-text);
+}
+
+.streak-pill #streak-num {
   color: var(--bronze);
+}
+
+.streak-label {
+  color: var(--muted-text);
 }
 
 /* ============== BOTTOM TAB BAR ============== */

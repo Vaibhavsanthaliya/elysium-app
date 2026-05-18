@@ -131,9 +131,15 @@ export async function syncFromSupabase() {
         mergedChecks[date] = Object.fromEntries(Object.entries(merged).filter(([, v]) => v === true));
       }
 
+      const mergedSleepEntries = {
+        ...(cloud.sleep?.entries || {}),
+        ...(state.sleep?.entries || {}),
+      };
+
       setState(cloud);
       state.loggedDays = mergedLoggedDays;
       state.checks = mergedChecks;
+      state.sleep = { entries: mergedSleepEntries };
       if (!state.startDate) state.startDate = todayStr;
       migrateState(state);
       advanceCycleIfNeeded();

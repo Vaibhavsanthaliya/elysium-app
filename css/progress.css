@@ -369,6 +369,24 @@
   color: var(--muted-text);
 }
 
+#pane-progress .photo-add-action {
+  border: 0;
+  background: transparent;
+  padding: 8px 0 8px 12px;
+  color: var(--bronze);
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+#pane-progress .photo-add-action:active {
+  opacity: 0.62;
+}
+
+#pane-progress .photo-add-action:focus-visible {
+  outline: 1px solid var(--bronze);
+  outline-offset: 4px;
+}
+
 /* Stats grid — 4-column concept layout */
 #pane-progress .stats-grid {
   grid-template-columns: repeat(4, 1fr);
