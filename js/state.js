@@ -1,0 +1,185 @@
+import { STORAGE_KEY, DEFAULT_DATA, MILESTONES, MILESTONE_UPGRADES } from './constants.js';
+import { deepClone, ymd, isYmd, daysBetween, isValidReminderTime, uid } from './utils.js';
+import { showToast } from './ui/toast.js';
+
+export let state;
+export let today;
+export let todayStr;
+
+// Injected by main.js to break the state → sync circular dependency.
+// saveState() triggers this callback after writing localStorage.
+let _syncCallback = null;
+export function registerSyncCallback(fn) { _syncCallback = fn; }
+
+// Used by sync.js when it replaces state wholesale after a cloud sync.
+export function setState(newState) { state = newState; }
+
+// Wraps the module-level initialization that ran at script parse time in the monolith.
+// Must be the first call in main.js DOMContentLoaded before any renders.
+export function initState() {
+  state = loadState();
+  today = new Date();
+  todayStr = ymd(today);
+  if (!state.startDate) {
+    state.startDate = todayStr;
+    saveState();
+  }
+  advanceCycleIfNeeded();
+}
+
+export function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return deepClone(DEFAULT_DATA);
+    const parsed = JSON.parse(raw);
+    return migrateState(mergeDefaults(parsed, DEFAULT_DATA));
+  } catch {
+    return deepClone(DEFAULT_DATA);
+  }
+}
+
+export function mergeDefaults(obj, defaults) {
+  if (typeof defaults !== 'object' || defaults === null) return obj ?? defaults;
+  if (Array.isArray(defaults)) return Array.isArray(obj) ? obj : deepClone(defaults);
+  const out = { ...defaults, ...(obj || {}) };
+  for (const k of Object.keys(defaults)) {
+    if (typeof defaults[k] === 'object' && defaults[k] !== null && !Array.isArray(defaults[k])) {
+      out[k] = mergeDefaults(obj?.[k], defaults[k]);
+    }
+  }
+  return out;
+}
+
+export function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    _syncCallback?.();
+  } catch (e) {
+    showToast('Could not save data');
+  }
+}
+
+export function migrateState(s) {
+  s.tasks = s.tasks && typeof s.tasks === 'object' && !Array.isArray(s.tasks) ? s.tasks : deepClone(DEFAULT_DATA.tasks);
+  s.tasks.morning = Array.isArray(s.tasks.morning) ? s.tasks.morning : deepClone(DEFAULT_DATA.tasks.morning);
+  s.tasks.habit = Array.isArray(s.tasks.habit) ? s.tasks.habit : deepClone(DEFAULT_DATA.tasks.habit);
+  s.tasks.night = s.tasks.night && typeof s.tasks.night === 'object' ? s.tasks.night : {};
+  for (let i = 0; i < 3; i++) {
+    s.tasks.night[i] = Array.isArray(s.tasks.night[i]) ? s.tasks.night[i] : deepClone(DEFAULT_DATA.tasks.night[i]);
+  }
+
+  s.cycleDay = Number(s.cycleDay);
+  s.cycleDay = Number.isInteger(s.cycleDay) && s.cycleDay >= 0 && s.cycleDay <= 2 ? s.cycleDay : 0;
+  s.milestoneStage = Number(s.milestoneStage);
+  s.milestoneStage = Number.isInteger(s.milestoneStage) && s.milestoneStage >= 0 && s.milestoneStage <= 3 ? s.milestoneStage : 0;
+  s.startDate = isYmd(s.startDate) ? s.startDate : null;
+  s.lastCycleDate = isYmd(s.lastCycleDate) ? s.lastCycleDate : null;
+  s.loggedDays = Array.isArray(s.loggedDays) ? Array.from(new Set(s.loggedDays.filter(isYmd))) : [];
+  s.checks = s.checks && typeof s.checks === 'object' && !Array.isArray(s.checks) ? s.checks : {};
+  s.checks = Object.fromEntries(Object.entries(s.checks)
+    .filter(([date, checks]) => isYmd(date) && checks && typeof checks === 'object' && !Array.isArray(checks))
+    .map(([date, checks]) => [date, Object.fromEntries(Object.entries(checks).filter(([, v]) => v === true))]));
+  s.weeklyPhotos = Array.isArray(s.weeklyPhotos)
+    ? s.weeklyPhotos
+      .filter(p => p && typeof p.id === 'string' && p.id && isYmd(p.date))
+      .map((p, i) => ({ id: p.id, date: p.date, label: typeof p.label === 'string' && p.label.trim() ? p.label.trim() : `Week ${i + 1}` }))
+    : [];
+  s.reminders = s.reminders && typeof s.reminders === 'object' && !Array.isArray(s.reminders) ? s.reminders : deepClone(DEFAULT_DATA.reminders);
+  s.reminders.morningTime = isValidReminderTime(s.reminders.morningTime) ? s.reminders.morningTime : DEFAULT_DATA.reminders.morningTime;
+  s.reminders.nightTime = isValidReminderTime(s.reminders.nightTime) ? s.reminders.nightTime : DEFAULT_DATA.reminders.nightTime;
+  s.reminders.checkInTime = isValidReminderTime(s.reminders.checkInTime) ? s.reminders.checkInTime : DEFAULT_DATA.reminders.checkInTime;
+  s.reminders.enabled = Boolean(s.reminders.enabled);
+
+  const comfortSafeIds = ['m1', 'm2'];
+  s.tasks.habit = s.tasks.habit
+    .filter(t => t && typeof t.text === 'string' && t.text.trim())
+    .map(t => ({ ...t, id: typeof t.id === 'string' && t.id ? t.id : uid(), text: t.text.trim() }));
+  for (let i = 0; i < 3; i++) {
+    s.tasks.night[i] = s.tasks.night[i]
+      .filter(t => t && typeof t.text === 'string' && t.text.trim())
+      .map(t => ({ ...t, id: typeof t.id === 'string' && t.id ? t.id : uid(), text: t.text.trim() }));
+  }
+  if (Array.isArray(s.tasks?.morning)) {
+    s.tasks.morning = s.tasks.morning.filter(t => t && typeof t.text === 'string' && t.text.trim()).map(t => ({
+      ...t,
+      id: typeof t.id === 'string' && t.id ? t.id : uid(),
+      text: t.text.trim(),
+      comfortSafe: comfortSafeIds.includes(t.id) ? true : (t.comfortSafe ?? false),
+    }));
+  }
+  s.chronicle = s.chronicle && typeof s.chronicle === 'object' && !Array.isArray(s.chronicle)
+    ? s.chronicle : {};
+  s.chronicle.notes = s.chronicle.notes && typeof s.chronicle.notes === 'object' && !Array.isArray(s.chronicle.notes)
+    ? s.chronicle.notes : {};
+  return s;
+}
+
+// Advance cycleDay by elapsed days since last open; call after any state load.
+export function advanceCycleIfNeeded() {
+  if (!state.lastCycleDate) {
+    state.lastCycleDate = todayStr;
+    saveState();
+    return;
+  }
+  if (state.lastCycleDate === todayStr) return;
+  const daysElapsed = daysBetween(state.lastCycleDate, todayStr);
+  if (daysElapsed > 0) {
+    state.cycleDay = (state.cycleDay + daysElapsed) % 3;
+    state.lastCycleDate = todayStr;
+    saveState();
+  }
+}
+
+export function getMilestoneStage(daysSinceStart) {
+  if (daysSinceStart >= 56) return 3;
+  if (daysSinceStart >= 28) return 2;
+  if (daysSinceStart >= 14) return 1;
+  return 0;
+}
+
+// Internal helpers used only by updateMilestoneStage; not exported.
+function getAllTaskGroups() {
+  return [
+    state.tasks.morning,
+    state.tasks.habit,
+    state.tasks.night?.[0] || [],
+    state.tasks.night?.[1] || [],
+    state.tasks.night?.[2] || [],
+  ];
+}
+
+function taskExistsByKey(upgradeKey, text) {
+  const normalizedText = text.trim().toLowerCase();
+  return getAllTaskGroups().some(group =>
+    Array.isArray(group) && group.some(task =>
+      task.upgradeKey === upgradeKey || task.text?.trim().toLowerCase() === normalizedText
+    )
+  );
+}
+
+function applyMilestoneRoutine(stage) {
+  const upgrades = MILESTONE_UPGRADES[stage] || [];
+  upgrades.forEach(upgrade => {
+    if (upgrade.requiresComfortOff && state.comfortMode) return;
+    if (taskExistsByKey(upgrade.upgradeKey, upgrade.text)) return;
+    const task = { id: upgrade.id, text: upgrade.text, upgradeKey: upgrade.upgradeKey };
+    if (upgrade.section === 'morning') state.tasks.morning.push(task);
+    if (upgrade.section === 'habit') state.tasks.habit.push(task);
+  });
+}
+
+export function updateMilestoneStage() {
+  const currentStage = Number.isInteger(state.milestoneStage) ? state.milestoneStage : 0;
+  const daysSince = state.startDate && isYmd(state.startDate)
+    ? Math.max(0, daysBetween(state.startDate, todayStr))
+    : 0;
+  const newStage = getMilestoneStage(daysSince);
+  if (newStage <= currentStage) return false;
+  for (let stage = currentStage + 1; stage <= newStage; stage++) {
+    applyMilestoneRoutine(stage);
+  }
+  state.milestoneStage = newStage;
+  saveState();
+  showToast(`Ritual updated for ${MILESTONES[newStage].weeks}`);
+  return true;
+}
