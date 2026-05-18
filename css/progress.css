@@ -1,0 +1,540 @@
+/* ==========================================================================
+   Elysium — progress: progress tab components
+   ========================================================================== */
+
+/* ============== STATS ============== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-elevated);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--label-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+/* ── EA-21: Typography — stat-label ─────────────────────────────────────── */
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ── EA-21: Typography — stat-value ─────────────────────────────────────── */
+.stat-value {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--bronze);
+  letter-spacing: 0;
+}
+
+.stat-unit {
+  font-size: 13px;
+  color: var(--label-secondary);
+  margin-top: 2px;
+}
+
+/* ============== CALENDAR ============== */
+.cal-card {
+  background: var(--bg-elevated);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.cal-weekdays span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--label-tertiary);
+  text-transform: uppercase;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: var(--bg-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--label-tertiary);
+  position: relative;
+}
+
+.cal-day:not(.future) { cursor: pointer; }
+.cal-day:not(.future):active { opacity: 0.6; }
+.cal-day.future { opacity: 0.3; }
+.cal-day.logged {
+  background: var(--green);
+  color: white;
+}
+
+.cal-day.today { box-shadow: inset 0 0 0 2px var(--tint); }
+.cal-day.today.logged { box-shadow: inset 0 0 0 2px white; }
+
+/* ── EA-23: Calendar logged day bronze ───────────────────────────────────── */
+.cal-day.logged {
+  background: var(--bronze);
+  color: var(--bg);
+}
+
+/* ============== WEEKLY PHOTOS ============== */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-input);
+}
+
+.photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 18px 8px 6px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.55));
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.photo-label-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.95);
+  line-height: 1;
+}
+
+.photo-date-text {
+  font-size: 10px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1;
+}
+
+.photo-delete-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  border: none;
+  color: white;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  line-height: 1;
+}
+
+.photo-delete-btn:active { transform: scale(0.9); }
+
+.empty-photos {
+  font-size: 14px;
+  color: var(--label-tertiary);
+  text-align: center;
+  padding: 24px 16px;
+}
+
+/* ============== MILESTONES ============== */
+.milestone-list {
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.milestone-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 0.5px solid var(--separator);
+}
+
+.milestone-row:last-child { border-bottom: none; }
+
+.milestone-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--label-tertiary);
+  flex-shrink: 0;
+}
+
+.milestone-dot.done { background: var(--green); }
+.milestone-dot.active {
+  background: var(--orange);
+  box-shadow: 0 0 0 4px var(--orange-soft);
+}
+
+.milestone-info { flex: 1; }
+
+.milestone-week {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--label-secondary);
+  margin-bottom: 2px;
+}
+
+.milestone-desc {
+  font-size: 15px;
+  color: var(--label);
+}
+
+.milestone-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.milestone-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: var(--green-soft);
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.milestone-badge.active {
+  background: var(--orange-soft);
+  color: var(--orange);
+}
+
+.milestone-badge.updated {
+  background: var(--indigo-soft);
+  color: var(--indigo);
+}
+
+/* ── EA-18: Progress / Stars — Obsidian Temple polish ───────────────────── */
+
+/* Stat cards — alabaster surface (light), warm border, deeper shadow */
+#pane-progress .stat-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Calendar card — alabaster surface (light), warm border, deeper shadow */
+#pane-progress .cal-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Today ring — bronze instead of iOS blue */
+#pane-progress .cal-day.today {
+  box-shadow: inset 0 0 0 2px var(--bronze);
+}
+
+/* Preserve white ring for logged-today day */
+#pane-progress .cal-day.today.logged {
+  box-shadow: inset 0 0 0 2px white;
+}
+
+/* Milestone list — refined radius, deeper shadow */
+#pane-progress .milestone-list {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Milestone row separators — warm instead of cold grey */
+#pane-progress .milestone-row {
+  border-bottom-color: var(--separator-warm);
+}
+
+/* Active milestone dot — bronze instead of orange */
+#pane-progress .milestone-dot.active {
+  background: var(--bronze);
+  box-shadow: 0 0 0 4px var(--bronze-soft);
+}
+
+/* Photo items — refined radius */
+#pane-progress .photo-item {
+  border-radius: var(--radius-lg);
+}
+
+/* Dark mode — restore dark surfaces */
+@media (prefers-color-scheme: dark) {
+  #pane-progress .stat-card,
+  #pane-progress .cal-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* ── EA-30: Stars / Constellation concept foundation ────────────────────── */
+
+/* Page heading */
+#pane-progress .progress-head {
+  padding: 8px 0 20px;
+}
+#pane-progress .progress-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-bottom: 4px;
+}
+#pane-progress .progress-title {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* Section header: Spectral italic label + mono right-meta */
+#pane-progress .section-hd {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+#pane-progress .section-lbl-ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--oracle-text);
+}
+#pane-progress .section-meta-mono {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+/* Stats grid — 4-column concept layout */
+#pane-progress .stats-grid {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 28px;
+}
+#pane-progress .stat-card {
+  padding: 12px 8px;
+  text-align: center;
+}
+#pane-progress .stat-value {
+  font-size: 26px;
+}
+#pane-progress .stat-label {
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+}
+#pane-progress .stat-unit {
+  font-size: 10px;
+  margin-top: 1px;
+}
+
+/* Responsive: 2-column fallback for very narrow viewports */
+@media (max-width: 360px) {
+  #pane-progress .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Star field card — bg-soft surface */
+#pane-progress .star-field-card {
+  background: var(--obsidian-elevated, #131318);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-lg, 20px);
+  padding: 14px;
+}
+@media (prefers-color-scheme: light) {
+  #pane-progress .star-field-card {
+    background: var(--bg-soft, #e5ddd0);
+    border-color: var(--separator-warm);
+  }
+}
+@media (prefers-color-scheme: dark) {
+  #pane-progress .star-field-card {
+    background: var(--obsidian-elevated, #131318);
+  }
+}
+
+/* Cal-grid — relative positioning for SVG overlay */
+#pane-progress .cal-grid {
+  position: relative;
+}
+
+/* Star cells — circular dots */
+#pane-progress .cal-day {
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--separator);
+  color: var(--muted-text);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-weight: 400;
+  letter-spacing: 0;
+  transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+/* Logged day — bronze fill, glow, faint numeral */
+#pane-progress .cal-day.logged {
+  background: var(--bronze);
+  border-color: var(--bronze);
+  color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 6px rgba(201, 165, 107, 0.45);
+}
+/* Partial day — faint bronze ring, barely-there numeral */
+#pane-progress .cal-day.partial {
+  background: rgba(201, 165, 107, 0.15);
+  border-color: rgba(201, 165, 107, 0.40);
+  color: rgba(201, 165, 107, 0.45);
+}
+/* Future — near-invisible */
+#pane-progress .cal-day.future {
+  opacity: 0.22;
+}
+/* Today — bronze inset ring (preserved) */
+#pane-progress .cal-day.today {
+  box-shadow: inset 0 0 0 2px var(--bronze);
+  color: var(--muted-text);
+}
+#pane-progress .cal-day.today.logged {
+  box-shadow: 0 0 6px rgba(201, 165, 107, 0.45), inset 0 0 0 2px rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.22);
+}
+
+/* Constellation SVG overlay */
+#pane-progress .constellation-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+#pane-progress .constellation-svg line {
+  stroke: var(--bronze);
+  stroke-width: 0.5;
+  opacity: 0.35;
+}
+
+/* Milestone rows — roman numeral index + state surfaces */
+#pane-progress .milestone-row.done {
+  background: linear-gradient(180deg, rgba(201, 165, 107, 0.08), rgba(201, 165, 107, 0.02));
+  border-bottom-color: rgba(201, 165, 107, 0.18);
+}
+#pane-progress .milestone-index {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--bronze);
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ── EA-34: Stars / Progress deeper refinement ───────────────────────────────
+   Constellation algorithm: all-pairs nearest-neighbor (in progress.js).
+   CSS: milestone badge de-pill, stronger logged glow, richer partial state.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+/* Milestone badges — remove colored pill, render as mono meta text */
+#pane-progress .milestone-badge {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+
+#pane-progress .milestone-badge.active {
+  color: var(--muted-text);
+}
+
+/* "Routine updated" is internal jargon — not user-facing value */
+#pane-progress .milestone-badge.updated {
+  display: none;
+}
+
+/* Logged star — stronger radial glow for more star presence */
+#pane-progress .cal-day.logged {
+  box-shadow: 0 0 8px rgba(201, 165, 107, 0.55), 0 0 2px rgba(201, 165, 107, 0.35);
+}
+
+/* Today + logged — preserve inset ring, match stronger glow */
+#pane-progress .cal-day.today.logged {
+  box-shadow: 0 0 8px rgba(201, 165, 107, 0.55), inset 0 0 0 2px rgba(255, 255, 255, 0.55);
+}
+
+/* Partial day — closer to prototype s2 state (more visible ghost) */
+#pane-progress .cal-day.partial {
+  background: rgba(201, 165, 107, 0.22);
+  border-color: rgba(201, 165, 107, 0.52);
+  color: rgba(201, 165, 107, 0.38);
+}
+
+/* Constellation lines — very slightly more visible */
+#pane-progress .constellation-svg line {
+  opacity: 0.42;
+}

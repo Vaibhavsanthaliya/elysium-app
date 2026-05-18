@@ -1,0 +1,190 @@
+/* ==========================================================================
+   Elysium — base: tokens, reset, html/body
+   ========================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  /* Light mode (default) */
+  --bg: #ede8df;
+  --bg-elevated: #ffffff;
+  --bg-grouped: #ffffff;
+  --bg-input: rgba(100, 75, 30, 0.10);
+  --label: #000000;
+  --label-secondary: rgba(60, 60, 67, 0.6);
+  --label-tertiary: rgba(60, 60, 67, 0.3);
+  --separator: rgba(95, 70, 28, 0.13);
+  --separator-opaque: #c6c6c8;
+  --tint: #007aff;
+  --green: #34c759;
+  --green-soft: rgba(52, 199, 89, 0.15);
+  --orange: #ff9500;
+  --orange-soft: rgba(255, 149, 0, 0.15);
+  --pink: #ff2d55;
+  --pink-soft: rgba(255, 45, 85, 0.15);
+  --indigo: #5856d6;
+  --indigo-soft: rgba(88, 86, 214, 0.15);
+  --red: #ff3b30;
+  --yellow: #ffcc00;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  --font-display: "Spectral", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* ── Elysium theme foundation tokens (light) ──────────────────────────────
+     These semantic tokens map to the current palette initially so no visual
+     change occurs. Future UI work will reference these instead of the raw
+     system variables above.
+     ──────────────────────────────────────────────────────────────────────── */
+  --obsidian: #1a1a1a;                      /* deep near-black; strong surfaces, headings */
+  --marble: #ffffff;                        /* pure white; card and sheet surfaces */
+  --ivory: #f5f5f0;                         /* warm off-white; subtle fill, input backgrounds */
+  --bronze: #a0722a;                        /* warm metallic accent; icons, highlights */
+  --ember: #ff9500;                         /* flame/streak colour — matches --orange */
+  --temple-surface: var(--bg);              /* page-level background */
+  --ritual-surface: var(--bg-elevated);     /* card / module surface */
+  --oracle-text: var(--label);              /* primary body text */
+  --muted-text: var(--label-secondary);     /* secondary / supporting text */
+  --divine-accent: var(--tint);             /* interactive accent, links, rings */
+
+  /* ── Obsidian Temple: obsidian backgrounds ────────────────────────────── */
+  --obsidian-bg: #111111;                   /* floor layer for dark-surface contexts */
+  --obsidian-elevated: #1e1e1e;             /* one step up — layered dark surfaces */
+
+  /* ── Obsidian Temple: marble/alabaster surfaces ───────────────────────── */
+  --alabaster: #f8f6f1;                     /* warm near-white between marble and ivory */
+
+  /* ── Obsidian Temple: bronze accents ─────────────────────────────────── */
+  --bronze-soft: rgba(160, 114, 42, 0.14);  /* low-opacity bronze fill for badges/highlights */
+
+  /* ── Obsidian Temple: ink text material ──────────────────────────────── */
+  --ink: #111210;                           /* warm near-black for display headings */
+  --ink-secondary: rgba(17, 18, 16, 0.58); /* supporting ink text on light surfaces */
+
+  /* ── Obsidian Temple: warm separator ─────────────────────────────────── */
+  --separator-warm: rgba(160, 114, 42, 0.14); /* bronze-warm divider for temple contexts */
+
+  /* ── Obsidian Temple: gradients and glows ────────────────────────────── */
+  --temple-gradient: linear-gradient(160deg, #1a1a1a 0%, #2a2218 100%);
+  --shadow-bronze: 0 0 24px rgba(160, 114, 42, 0.22);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.10), 0 1px 3px rgba(0, 0, 0, 0.07);
+
+  /* ── Obsidian Temple: radius scale ───────────────────────────────────── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 18px;
+  --radius-2xl: 20px;
+
+  /* ── Obsidian Temple: spacing scale ──────────────────────────────────── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0E0E12;
+    --bg-elevated: #1A1A21;
+    --bg-grouped: #1A1A21;
+    --bg-input: rgba(236, 230, 217, 0.10);
+    --label: #ECE6D9;
+    --label-secondary: rgba(236, 230, 217, 0.62);
+    --label-tertiary: rgba(236, 230, 217, 0.40);
+    --separator: rgba(236, 230, 217, 0.08);
+    --separator-opaque: #38383a;
+    --tint: #0a84ff;
+    --green: #30d158;
+    --green-soft: rgba(48, 209, 88, 0.2);
+    --orange: #ff9f0a;
+    --orange-soft: rgba(255, 159, 10, 0.2);
+    --pink: #ff375f;
+    --pink-soft: rgba(255, 55, 95, 0.2);
+    --indigo: #5e5ce6;
+    --indigo-soft: rgba(94, 92, 230, 0.2);
+    --red: #ff453a;
+    --yellow: #ffd60a;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    /* ── Elysium theme foundation tokens (dark) ─────────────────────────── */
+    --obsidian: #0E0E12;
+    --marble: #1A1A21;
+    --ivory: #ece8df;
+    --bronze: #C9A56B;
+    --ember: #ff9f0a;
+    --temple-surface: var(--bg);
+    --ritual-surface: var(--bg-elevated);
+    --oracle-text: var(--label);
+    --muted-text: var(--label-secondary);
+    --divine-accent: var(--tint);
+
+    /* ── Obsidian Temple: obsidian backgrounds (dark) ────────────────────── */
+    --obsidian-bg: #0E0E12;                   /* floor — obsidian depth, not pure black */
+    --obsidian-elevated: #131318;             /* bg-soft: one step above obsidian floor */
+
+    /* ── Obsidian Temple: marble/alabaster surfaces (dark) ───────────────── */
+    --alabaster: #f0ece4;                     /* warm near-white for elements on dark surfaces */
+
+    /* ── Obsidian Temple: bronze accents (dark) ──────────────────────────── */
+    --bronze-soft: rgba(201, 165, 107, 0.18); /* dark-mode champagne bronze fill */
+
+    /* ── Obsidian Temple: ink text material (dark) ───────────────────────── */
+    --ink: #ECE6D9;                           /* warm off-white ink — concept value */
+    --ink-secondary: rgba(236, 230, 217, 0.62); /* secondary ink on dark surfaces */
+
+    /* ── Obsidian Temple: warm separator (dark) ──────────────────────────── */
+    --separator-warm: rgba(236, 230, 217, 0.10); /* near-invisible warm hairline */
+
+    /* ── Obsidian Temple: gradients and glows (dark) ─────────────────────── */
+    --temple-gradient: linear-gradient(160deg, #000000 0%, #190f03 100%);
+    --shadow-bronze: 0 0 24px -4px rgba(201, 165, 107, 0.28);
+    --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.40);
+  }
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--label);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body {
+  padding: 0;
+  overflow-x: hidden;
+}
+
+input, select, textarea, button { font-family: inherit; }
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+}
+
+/* ── EA-26: Scrollbar hiding (html/body) ────────────────────────────────── */
+html,
+body {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}

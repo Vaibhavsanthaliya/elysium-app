@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Read(//tmp/elysium-auth-concept/**)",
+      "Bash(tar -xf pkg)",
+      "Bash(cp -r /tmp/elysium-auth-concept/elysium-app/project /tmp/auth-concept-project)",
+      "Read(//tmp/**)",
+      "Bash(git rev-list *)",
+      "Bash(git fetch *)",
+      "Bash(gh --version)",
+      "Bash(gh auth *)",
+      "Bash(gh pr *)",
+      "Bash(git checkout *)",
+      "Bash(git pull *)",
+      "Bash(gh api *)",
+      "Bash(gh repo *)",
+      "Bash(New-Item -ItemType Directory -Force -Path \"D:\\\\Projects\\\\elysium-app\\\\.claude\\\\skills\\\\taste-skill\", \"D:\\\\Projects\\\\elysium-app\\\\.claude\\\\skills\\\\gpt-tasteskill\", \"D:\\\\Projects\\\\elysium-app\\\\.claude\\\\skills\\\\image-to-code-skill\", \"D:\\\\Projects\\\\elysium-app\\\\.claude\\\\skills\\\\redesign-skill\", \"D:\\\\Projects\\\\elysium-app\\\\.claude\\\\skills\\\\soft-skill\", \"D:\\\\Projects\\\\elysium-app\\\\.claude\\\\skills\\\\output-skill\", \"D:\\\\Projects\\\\elysium-app\\\\.claude\\\\skills\\\\minimalist-skill\", \"D:\\\\Projects\\\\elysium-app\\\\.claude\\\\skills\\\\brutalist-skill\", \"D:\\\\Projects\\\\elysium-app\\\\.claude\\\\skills\\\\stitch-skill\")",
+      "Bash(Out-Null)",
+      "Bash(git commit *)",
+      "PowerShell(uvx *)",
+      "PowerShell(pip *)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(claude mcp *)",
+      "Bash(git rm *)",
+      "Bash(Remove-Item D:/Projects/elysium-app/styles.css)",
+      "Skill(vercel:deploy)",
+      "Skill(vercel:deploy:*)"
+    ]
+  }
+}

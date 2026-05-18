@@ -6,6 +6,8 @@ import { getStreak, getMorningTasksForDate, getDaysSinceStart, getCycleDayForDat
 import { renderAllLists } from './today.js';
 import { renderWeeklyPhotos } from '../services/photos.js';
 
+const ROMAN = ['I', 'II', 'III', 'IV'];
+
 export function renderProgress() {
   const streak = getStreak();
   const logged = state.loggedDays.length;
@@ -35,10 +37,13 @@ export function renderProgress() {
     const isLogged = state.loggedDays.includes(ds);
     const isToday = ds === todayStr;
     const isFuture = d > today;
+    const isPartial = !isLogged && !isFuture && !isToday
+      && Object.keys(state.checks[ds] || {}).length > 0;
 
     const cell = document.createElement('div');
     cell.className = 'cal-day' +
       (isLogged ? ' logged' : '') +
+      (isPartial ? ' partial' : '') +
       (isToday ? ' today' : '') +
       (isFuture ? ' future' : '');
     cell.textContent = d.getDate();
@@ -49,9 +54,21 @@ export function renderProgress() {
     cal.appendChild(cell);
   }
 
+  const meta = document.getElementById('star-field-meta');
+  if (meta) meta.textContent = `${logged} RECORDED`;
+
+  requestAnimationFrame(() => {
+    if (document.getElementById('pane-progress').classList.contains('active')) {
+      renderConstellationLines();
+    }
+  });
+
   const daysSinceStart = getDaysSinceStart();
   const currentStage = getMilestoneStage(daysSinceStart);
   const upgradedStage = Number.isInteger(state.milestoneStage) ? state.milestoneStage : 0;
+  const stageMeta = document.getElementById('milestone-stage-meta');
+  if (stageMeta) stageMeta.textContent = `${ROMAN[currentStage] ?? currentStage} OF IV`;
+
   const ml = document.getElementById('milestone-list');
   ml.innerHTML = '';
   MILESTONES.forEach((m, i) => {
@@ -59,9 +76,9 @@ export function renderProgress() {
     const active = i === currentStage;
     const routineUpdated = i > 0 && upgradedStage >= i;
     const row = document.createElement('div');
-    row.className = 'milestone-row';
+    row.className = 'milestone-row' + (done ? ' done' : active ? ' active' : '');
     row.innerHTML = `
-      <div class="milestone-dot ${done ? 'done' : active ? 'active' : ''}"></div>
+      <div class="milestone-index">${ROMAN[i] ?? String(i + 1)}</div>
       <div class="milestone-info">
         <div class="milestone-week">${m.weeks}</div>
         <div class="milestone-desc">${m.desc}</div>
@@ -74,6 +91,54 @@ export function renderProgress() {
     `;
     ml.appendChild(row);
   });
+}
+
+function renderConstellationLines() {
+  const grid = document.getElementById('cal-grid');
+  if (!grid) return;
+  const old = grid.querySelector('.constellation-svg');
+  if (old) old.remove();
+
+  const loggedCells = [...grid.querySelectorAll('.cal-day.logged')];
+  if (loggedCells.length < 2) return;
+
+  const gridRect = grid.getBoundingClientRect();
+  if (!gridRect.width) return;
+
+  const allCells = [...grid.querySelectorAll('.cal-day')];
+  const cellUnit = allCells.length > 0
+    ? allCells[0].getBoundingClientRect().width
+    : gridRect.width / 7;
+  // 1.9× allows H/V/diagonal immediate neighbors; blocks skip-one row/column long jumps
+  const maxDist = cellUnit * 1.9;
+
+  const points = loggedCells.map(el => {
+    const r = el.getBoundingClientRect();
+    return { cx: r.left - gridRect.left + r.width / 2, cy: r.top - gridRect.top + r.height / 2 };
+  });
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('class', 'constellation-svg');
+  svg.setAttribute('width', gridRect.width);
+  svg.setAttribute('height', gridRect.height);
+
+  // All-pairs: connect any two logged nodes within the distance threshold.
+  // Produces genuine constellation clusters rather than a simple date-order chain.
+  for (let i = 0; i < points.length; i++) {
+    for (let j = i + 1; j < points.length; j++) {
+      const dx = points[j].cx - points[i].cx;
+      const dy = points[j].cy - points[i].cy;
+      if (Math.sqrt(dx * dx + dy * dy) > maxDist) continue;
+      const line = document.createElementNS(svgNS, 'line');
+      line.setAttribute('x1', points[i].cx);
+      line.setAttribute('y1', points[i].cy);
+      line.setAttribute('x2', points[j].cx);
+      line.setAttribute('y2', points[j].cy);
+      svg.appendChild(line);
+    }
+  }
+  grid.appendChild(svg);
 }
 
 export function openPastDayModal(dateStr) {

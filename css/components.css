@@ -1,0 +1,459 @@
+/* ==========================================================================
+   Elysium — components: shared UI components used across tabs
+   ========================================================================== */
+
+/* ============== HERO CARD ============== */
+.hero-card {
+  background: var(--bg-elevated);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.ring-wrap {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ring-bg {
+  fill: none;
+  stroke: var(--bg-input);
+  stroke-width: 8;
+}
+
+.ring-fg {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 326.7;
+  stroke-dashoffset: 326.7;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-num {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── EA-21: Typography — ring numbers ────────────────────────────────────── */
+.ring-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--bronze);
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.ring-suffix {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--label-secondary);
+  margin-left: 1px;
+  margin-top: 4px;
+}
+
+/* ── EA-21: Typography — ring suffix ─────────────────────────────────────── */
+.ring-suffix {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--bronze);
+  letter-spacing: 0.08em;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+.hero-meta { flex: 1; }
+
+.hero-label {
+  font-size: 13px;
+  color: var(--label-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+/* ── EA-21: Typography — hero-label ─────────────────────────────────────── */
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+#pane-temple .hero-label,
+#pane-today .hero-label {
+  letter-spacing: 0.2em;
+}
+
+.hero-status {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.hero-cycle {
+  font-size: 13px;
+  color: var(--label-secondary);
+}
+
+/* ============== SECTIONS ============== */
+.section { margin-bottom: 28px; }
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title h2 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.section-h {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.section-sub {
+  font-size: 14px;
+  color: var(--label-secondary);
+  padding: 0 4px;
+  margin-bottom: 12px;
+}
+
+/* ── EA-21: Typography — headings ────────────────────────────────────────── */
+.greeting,
+.section-title h2,
+.section-h {
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.icon-morning { background: var(--orange-soft); color: var(--orange); }
+.icon-night { background: var(--indigo-soft); color: var(--indigo); }
+.icon-habit { background: var(--green-soft); color: var(--green); }
+
+.cycle-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: var(--indigo-soft);
+  color: var(--indigo);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.comfort-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: var(--orange-soft);
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.add-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background: var(--bg-input);
+  border: none;
+  color: var(--label);
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+  font-family: inherit;
+  line-height: 1;
+}
+
+.add-btn:active { transform: scale(0.92); }
+
+/* ============== TASK LIST ============== */
+.task-list {
+  list-style: none;
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── EA-20: Task list alabaster surface ──────────────────────────────────── */
+.task-list { background: var(--alabaster); }
+@media (prefers-color-scheme: dark) {
+  .task-list { background: var(--bg-elevated); }
+}
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 0.5px solid var(--separator);
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+}
+
+.task-item:last-child { border-bottom: none; }
+.task-item:active { background: var(--bg-input); }
+
+.task-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--label-tertiary);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background: transparent;
+  margin-top: 1px;
+}
+
+.task-item.done .task-check {
+  background: var(--green);
+  border-color: var(--green);
+  transform: scale(1.05);
+}
+
+/* ── EA-23: Completed task check bronze ──────────────────────────────────── */
+.task-item.done .task-check {
+  background: var(--bronze);
+  border-color: var(--bronze);
+  transform: scale(1.05);
+}
+
+.task-check svg {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s ease;
+  color: white;
+}
+
+/* ── EA-23: Checkmark glyph — adapt to mode so contrast holds on bronze ─── */
+.task-check svg {
+  color: var(--bg);
+}
+
+.task-item.done .task-check svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.task-text {
+  flex: 1;
+  font-size: 16px;
+  color: var(--label);
+  transition: all 0.2s ease;
+  line-height: 1.35;
+}
+
+.task-item.done .task-text {
+  color: var(--label-secondary);
+  text-decoration: line-through;
+  text-decoration-color: var(--label-tertiary);
+}
+
+/* ── EA-23: Done strikethrough bronze-tinted ─────────────────────────────── */
+.task-item.done .task-text {
+  text-decoration-color: rgba(201, 165, 107, 0.3);
+}
+
+.task-edit-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background: transparent;
+  border: none;
+  color: var(--label-tertiary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  font-family: inherit;
+  margin-top: -1px;
+}
+
+.task-edit-btn:hover { color: var(--label-secondary); background: var(--bg-input); }
+.task-edit-btn:active { transform: scale(0.9); }
+
+.task-info-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background: transparent;
+  border: none;
+  color: var(--tint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  font-family: inherit;
+  margin-top: -1px;
+  opacity: 0.7;
+}
+.task-info-btn:hover { opacity: 1; background: var(--bg-input); }
+.task-info-btn:active { transform: scale(0.9); }
+
+/* ── EA-20/23: Task info button bronze ───────────────────────────────────── */
+.task-info-btn { color: var(--bronze); }
+
+.task-info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 0 8px;
+}
+
+.task-info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-info-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--label-tertiary);
+}
+
+.task-info-text {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--label-secondary);
+}
+
+.empty-list {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--label-tertiary);
+  font-size: 14px;
+}
+
+/* ============== INFO CARDS ============== */
+.info-card {
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── EA-20: Info card alabaster surface ──────────────────────────────────── */
+.info-card {
+  background: var(--alabaster);
+  box-shadow: var(--shadow-card);
+}
+@media (prefers-color-scheme: dark) {
+  .info-card { background: var(--bg-elevated); }
+}
+
+.info-row {
+  padding: 12px 16px;
+  font-size: 15px;
+  color: var(--label);
+  border-bottom: 0.5px solid var(--separator);
+  line-height: 1.4;
+}
+
+.info-row:last-child { border-bottom: none; }
+
+/* ============== TOAST ============== */
+.toast {
+  position: fixed;
+  bottom: calc(49px + var(--safe-bottom) + 24px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 200;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: toastIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .toast { background: rgba(255, 255, 255, 0.92); color: black; }
+}
+
+.toast[hidden] { display: none; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Disable text selection on UI chrome */
+.tab, .add-btn, .task-check, .section-icon, .streak-pill, .cycle-card-top, .cycle-active-badge {
+  user-select: none;
+  -webkit-user-select: none;
+}

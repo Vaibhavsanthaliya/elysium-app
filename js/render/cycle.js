@@ -1,24 +1,35 @@
-import { CYCLE_FULL_NAMES, CYCLE_NAMES, CYCLE_DESC } from '../constants.js';
+import { CYCLE_NAMES } from '../constants.js';
 import { state, todayStr, saveState } from '../state.js';
 import { renderAllLists } from './today.js';
 import { renderTodayCycle } from './common.js';
 import { showToast } from '../ui/toast.js';
 
+const ROMAN = ['I', 'II', 'III'];
+const NODE_NAMES = ['Niacinamide', 'Salicylic', 'Rest'];
+
 export function renderCycleList() {
-  const list = document.getElementById('cycle-list');
-  list.innerHTML = '';
-  CYCLE_FULL_NAMES.forEach((name, i) => {
-    const card = document.createElement('div');
-    card.className = 'cycle-card' + (i === state.cycleDay ? ' active' : '');
-    card.innerHTML = `
-      <div class="cycle-card-top">
-        <span class="cycle-day-label">Cycle day ${i + 1}</span>
-        ${i === state.cycleDay ? '<span class="cycle-active-badge">Tonight</span>' : ''}
-      </div>
-      <div class="cycle-name">${name.split('—')[1].trim()}</div>
-      <div class="cycle-steps-text">${CYCLE_DESC[i]}</div>
+  const wrap = document.getElementById('cycle-astrolabe');
+  if (!wrap) return;
+
+  wrap.querySelectorAll('.al-node').forEach(n => n.remove());
+
+  const radius = 102;
+  NODE_NAMES.forEach((name, i) => {
+    const angle = -90 + (360 / 3) * i;
+    const rad = (angle * Math.PI) / 180;
+    const x = Math.cos(rad) * radius;
+    const y = Math.sin(rad) * radius;
+    const isActive = i === state.cycleDay;
+
+    const btn = document.createElement('button');
+    btn.className = 'al-node' + (isActive ? ' active' : '');
+    btn.setAttribute('aria-label', `${name} — cycle day ${i + 1}${isActive ? ', tonight' : ''}`);
+    btn.style.cssText = `left: calc(50% + ${x}px - 26px); top: calc(50% + ${y}px - 26px)`;
+    btn.innerHTML = `
+      <span class="al-node-numeral">${ROMAN[i]}</span>
+      <span class="al-node-name">${name}</span>
     `;
-    card.addEventListener('click', () => {
+    btn.addEventListener('click', () => {
       state.cycleDay = i;
       state.lastCycleDate = todayStr;
       saveState();
@@ -27,6 +38,16 @@ export function renderCycleList() {
       renderAllLists();
       showToast(`Switched to ${CYCLE_NAMES[i]} night`);
     });
-    list.appendChild(card);
+    wrap.appendChild(btn);
   });
+
+  const numEl = document.getElementById('al-numeral');
+  const lblEl = document.getElementById('al-lbl');
+  const eyebrow = document.getElementById('cycle-eyebrow');
+
+  if (numEl) numEl.textContent = ROMAN[state.cycleDay];
+  if (lblEl) lblEl.textContent = NODE_NAMES[state.cycleDay].toUpperCase();
+  if (eyebrow) {
+    eyebrow.textContent = `NIGHT ${ROMAN[state.cycleDay]} · ${NODE_NAMES[state.cycleDay].toUpperCase()}`;
+  }
 }

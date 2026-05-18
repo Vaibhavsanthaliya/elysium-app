@@ -1,0 +1,182 @@
+/* ==========================================================================
+   Elysium — chronicle: chronicle tab components
+   ========================================================================== */
+
+/* ============== CHRONICLE ============== */
+.chronicle-card {
+  background: var(--ritual-surface);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--separator);
+  box-shadow: var(--shadow-md);
+}
+
+.chronicle-card:focus-within {
+  box-shadow: var(--shadow-md), 0 0 0 2px var(--divine-accent);
+}
+
+.chronicle-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 18px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--oracle-text);
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  -webkit-appearance: none;
+}
+
+/* ── EA-21: Typography — chronicle textarea ──────────────────────────────── */
+.chronicle-textarea {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.chronicle-textarea::placeholder {
+  color: var(--muted-text);
+  opacity: 0.7;
+}
+
+/* ── EA-21: Typography — chronicle placeholder ───────────────────────────── */
+.chronicle-textarea::placeholder {
+  font-style: italic;
+}
+
+.chronicle-textarea:focus {
+  outline: none;
+}
+
+.chronicle-status {
+  font-size: 13px;
+  color: var(--muted-text);
+  margin: 10px 2px 18px;
+}
+
+#pane-chronicle .btn-primary {
+  width: 100%;
+  background: var(--divine-accent);
+}
+
+/* ── EA-17: Chronicle — Obsidian Temple polish ───────────────────────────── */
+
+/* Chronicle card — alabaster warmth (light), warm border, deeper shadow */
+#pane-chronicle .chronicle-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Chronicle card — restore dark surface in dark mode */
+@media (prefers-color-scheme: dark) {
+  #pane-chronicle .chronicle-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* Focus ring — bronze instead of iOS blue */
+#pane-chronicle .chronicle-card:focus-within {
+  box-shadow: var(--shadow-card), 0 0 0 2.5px var(--bronze);
+}
+
+/* Save button — radius matches card */
+#pane-chronicle .btn-primary {
+  border-radius: var(--radius-lg);
+}
+
+/* ── EA-32: Chronicle heading ─────────────────────────────────────────────── */
+.chronicle-heading {
+  padding-bottom: 16px;
+  text-align: center;
+}
+
+.chronicle-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.chronicle-title {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+  margin: 0;
+}
+
+.chronicle-title .ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--bronze);
+}
+
+/* ── EA-32: Prompt card ──────────────────────────────────────────────────── */
+.chronicle-prompt {
+  border: 1px dashed rgba(160, 122, 74, 0.30);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  background: rgba(160, 122, 74, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .chronicle-prompt {
+    background: rgba(201, 165, 107, 0.04);
+    border-color: rgba(201, 165, 107, 0.25);
+  }
+}
+
+.chronicle-prompt-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  color: var(--bronze);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.chronicle-prompt-q {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--oracle-text);
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* ── EA-32: Chronicle status — mono meta label ───────────────────────────── */
+.chronicle-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── EA-32: Save button — warm, not iOS blue ─────────────────────────────── */
+#pane-chronicle .btn-primary {
+  background: var(--obsidian);
+  color: var(--marble);
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-chronicle .btn-primary {
+    background: var(--bronze);
+    color: var(--bg);
+  }
+}
+
+/* ── EA-32: Softer focus ring on chronicle card ──────────────────────────── */
+#pane-chronicle .chronicle-card:focus-within {
+  box-shadow: var(--shadow-card), 0 0 0 3px rgba(201, 165, 107, 0.12);
+}

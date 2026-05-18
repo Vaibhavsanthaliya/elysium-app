@@ -1,0 +1,111 @@
+/* ==========================================================================
+   Elysium — today: today/care tab overrides
+   ========================================================================== */
+
+/* ── EA-16: Today/Care — Obsidian Temple polish ──────────────────────────── */
+
+/* Hero card — alabaster warmth (light), warm border, deeper shadow */
+#pane-today .hero-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Hero card — restore dark surface in dark mode (alabaster is a light colour) */
+@media (prefers-color-scheme: dark) {
+  #pane-today .hero-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* Ring track — warm bronze ghost (matches Temple ring treatment) */
+#pane-today .ring-bg {
+  stroke: var(--separator-warm);
+}
+
+/* Hero eyebrow label — bronze (matches Temple eyebrow) */
+#pane-today .hero-label {
+  color: var(--bronze);
+}
+
+/* Task list cards — refined radius and deeper shadow */
+#pane-today .task-list {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* ── EA-23: Today progress ring bronze ───────────────────────────────────── */
+#pane-today .ring-fg {
+  stroke: var(--bronze);
+}
+
+/* ── EA-33: Today/Care task surface refinement ───────────────────────────────
+   Separator-led naked rows — removes card wrapper, aligns with Obsidian
+   Temple prototype task row direction.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+/* Strip card wrapper — tasks sit on the page floor */
+#pane-today .task-list {
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+}
+
+/* Separator-led rows — warm hairlines top and bottom */
+#pane-today .task-item {
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+#pane-today .task-item:first-child {
+  border-top: 1px solid var(--separator-warm);
+}
+
+#pane-today .task-item:last-child {
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+/* Task text — 15px, tighter tracking */
+#pane-today .task-text {
+  font-size: 15px;
+  letter-spacing: -0.005em;
+}
+
+/* Task check — 20px (prototype size) */
+#pane-today .task-check {
+  width: 20px;
+  height: 20px;
+}
+
+/* Section icon — remove colored pill, quiet glyph */
+#pane-today .section-icon {
+  background: transparent;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  font-size: 15px;
+  opacity: 0.45;
+}
+
+/* Section heading — Spectral italic */
+#pane-today .section-title h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+}
+
+/* Cycle and comfort tags — mono bronze meta label, no pill */
+#pane-today .cycle-tag,
+#pane-today .comfort-tag {
+  background: transparent;
+  color: var(--bronze);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  padding: 0;
+  border-radius: 0;
+  text-transform: uppercase;
+}

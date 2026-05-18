@@ -1,0 +1,436 @@
+/* ==========================================================================
+   Elysium — temple: temple tab — ritual domain entry screen
+   ========================================================================== */
+
+/* ── EA-10: Temple visual polish ─────────────────────────────────────────── */
+#pane-temple .hero-card {
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  gap: 24px;
+}
+
+#pane-temple .ring-wrap {
+  width: 100px;
+  height: 100px;
+}
+
+#pane-temple .ring-fg {
+  stroke: var(--divine-accent);
+}
+
+#pane-temple .hero-label {
+  color: var(--bronze);
+  letter-spacing: 0.06em;
+}
+
+#pane-temple .btn-row .setting-name {
+  color: var(--oracle-text);
+  font-weight: 500;
+}
+
+#pane-temple .chevron {
+  color: var(--bronze);
+}
+
+/* ── EA-14: Stacked Medallion layout (Temple tab only) ───────────────────── */
+
+/* Hero card — column layout, centered medallion */
+#pane-temple .hero-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-lg);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-card), var(--shadow-bronze);
+  margin-bottom: var(--space-lg);
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-temple .hero-card {
+    background: var(--temple-gradient);
+  }
+}
+
+/* Hero meta — centered text block under the ring */
+#pane-temple .hero-meta {
+  flex: initial;
+  text-align: center;
+  width: 100%;
+}
+
+/* Ring — larger medallion presence */
+#pane-temple .ring-wrap {
+  width: 120px;
+  height: 120px;
+}
+
+/* Ring track — warm bronze ghost */
+#pane-temple .ring-bg {
+  stroke: var(--separator-warm);
+}
+
+/* Ring fill — bronze */
+#pane-temple .ring-fg {
+  stroke: var(--bronze);
+}
+
+/* Hero label — centered, bronze eyebrow */
+#pane-temple .hero-label {
+  color: var(--bronze);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+/* Hero status and cycle — centered under ring */
+#pane-temple .hero-status {
+  text-align: center;
+}
+
+#pane-temple .hero-cycle {
+  text-align: center;
+}
+
+/* Quick-action card — warm shadow and radius scale */
+#pane-temple .setting-card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+/* Quick-action rows — warm bronze separator */
+#pane-temple .setting-row {
+  border-bottom-color: var(--separator-warm);
+}
+
+/* Chevron — bronze (carries forward from EA-10) */
+#pane-temple .chevron {
+  color: var(--bronze);
+}
+
+/* Nav name — oracle text, medium weight (carries forward from EA-10) */
+#pane-temple .btn-row .setting-name {
+  color: var(--oracle-text);
+  font-weight: 500;
+}
+
+/* ── EA-28: Temple ritual-domain entry screen ───────────────────────────── */
+
+/* Bronze token per mode */
+#pane-temple { --bronze: #a07a4a; }
+@media (prefers-color-scheme: dark) {
+  #pane-temple { --bronze: #c9a56b; }
+}
+
+/* ─── Featured Care card ─────────────────────────────────────────────────── */
+#pane-temple .temple-featured {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  margin-bottom: 24px;
+  background: linear-gradient(180deg, rgba(160, 122, 74, 0.10), rgba(160, 122, 74, 0.02));
+  border: 1px solid rgba(160, 122, 74, 0.32);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+#pane-temple .temple-featured:active {
+  transform: scale(0.99);
+  border-color: rgba(160, 122, 74, 0.50);
+}
+
+/* Bronzed featured medallion */
+#pane-temple .temple-featured-medallion {
+  flex: 0 0 60px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #f8efde, #ebdfc4);
+  box-shadow: 0 0 18px -2px rgba(160, 122, 74, 0.25), inset 0 0 0 1px rgba(160, 122, 74, 0.30);
+  color: var(--bronze);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Featured body */
+#pane-temple .temple-featured-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#pane-temple .temple-featured-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  font-weight: 400;
+  margin-bottom: 3px;
+}
+
+#pane-temple .temple-featured-status {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+  line-height: 1.2;
+}
+
+#pane-temple .temple-featured-cycle {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--muted-text);
+  line-height: 1.35;
+}
+
+/* Mini arc column */
+#pane-temple .temple-featured-arc-col {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+#pane-temple .temple-arc-bg {
+  stroke: var(--separator-warm);
+  stroke-width: 2.5;
+  fill: none;
+}
+
+#pane-temple .temple-arc-fg {
+  stroke: var(--bronze);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  fill: none;
+  transition: stroke-dashoffset 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+#pane-temple .temple-arc-pct {
+  display: flex;
+  align-items: baseline;
+  gap: 1px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--bronze);
+  line-height: 1;
+}
+
+#pane-temple .temple-pct-sign {
+  font-size: 8px;
+}
+
+/* ─── Domain section ─────────────────────────────────────────────────────── */
+#pane-temple .temple-domains {
+  margin-bottom: 20px;
+}
+
+#pane-temple .temple-domain-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 2px 10px;
+}
+
+#pane-temple .temple-domain-label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--oracle-text);
+  line-height: 1.2;
+}
+
+#pane-temple .domain-meta {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+/* ─── Domain card list ───────────────────────────────────────────────────── */
+#pane-temple .temple-domain-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#pane-temple .temple-domain-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--separator-warm);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+#pane-temple .temple-domain-card:not(:disabled):active {
+  transform: scale(0.99);
+  border-color: rgba(160, 122, 74, 0.34);
+}
+
+/* Dormant (disabled) domain cards */
+#pane-temple .temple-domain-card:disabled {
+  opacity: 0.38;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Domain medallion */
+#pane-temple .temple-domain-medallion {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--separator-warm);
+  background: var(--bg);
+  color: var(--bronze);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Domain body */
+#pane-temple .temple-domain-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#pane-temple .temple-domain-name {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--oracle-text);
+  line-height: 1.25;
+}
+
+#pane-temple .temple-domain-sub {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--muted-text);
+  letter-spacing: 0.02em;
+}
+
+/* Domain state label */
+#pane-temple .temple-domain-state {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+
+/* ─── Secondary nav (Cycle · Progress) ──────────────────────────────────── */
+#pane-temple .temple-secondary-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 0 12px;
+}
+
+#pane-temple .temple-nav-link {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  background: none;
+  border: none;
+  padding: 8px 6px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: color 180ms ease;
+}
+
+#pane-temple .temple-nav-link:hover,
+#pane-temple .temple-nav-link:active {
+  color: var(--bronze);
+}
+
+#pane-temple .temple-nav-sep {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted-text);
+  opacity: 0.40;
+  user-select: none;
+}
+
+/* ─── Dark mode overrides ────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  #pane-temple .temple-featured {
+    background: linear-gradient(180deg, rgba(201, 165, 107, 0.11), rgba(201, 165, 107, 0.02));
+    border-color: rgba(201, 165, 107, 0.24);
+    box-shadow: var(--shadow-card), 0 0 28px -12px rgba(201, 165, 107, 0.18);
+  }
+
+  #pane-temple .temple-featured:active {
+    border-color: rgba(201, 165, 107, 0.40);
+  }
+
+  #pane-temple .temple-featured-medallion {
+    background: linear-gradient(160deg, #2a221a, #1a1612);
+    box-shadow: 0 0 22px -4px rgba(201, 165, 107, 0.30), inset 0 0 0 1px rgba(201, 165, 107, 0.30);
+  }
+
+  #pane-temple .temple-domain-card:not(:disabled):active {
+    border-color: rgba(201, 165, 107, 0.28);
+    background: rgba(201, 165, 107, 0.05);
+  }
+}
+
+/* ─── Small viewport ─────────────────────────────────────────────────────── */
+@media (max-width: 360px) {
+  #pane-temple .temple-featured {
+    gap: 12px;
+    padding: 15px;
+  }
+
+  #pane-temple .temple-featured-medallion {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+  }
+
+  #pane-temple .temple-featured-status {
+    font-size: 16px;
+  }
+}

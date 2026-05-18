@@ -16,7 +16,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/settings.css" />
+  <link rel="stylesheet" href="css/modal.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/cycle.css" />
+  <link rel="stylesheet" href="css/chronicle.css" />
+  <link rel="stylesheet" href="css/progress.css" />
+  <link rel="stylesheet" href="css/today.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/temple.css" />
 </head>
 <body>
   <!-- Boot shell — visible on first paint, hidden by JS after session resolves -->
@@ -343,9 +353,27 @@
 
       <!-- CYCLE TAB -->
       <section class="tab-pane" id="pane-cycle">
-        <div class="section">
-          <p class="section-sub">Cycle advances daily. Tap a card to set tonight's ritual.</p>
-          <div class="cycle-list" id="cycle-list"></div>
+
+        <div class="cycle-heading">
+          <div class="cycle-eyebrow" id="cycle-eyebrow">NIGHT I · NIACINAMIDE</div>
+          <h1 class="cycle-title">The <span class="ital">wheel</span></h1>
+          <p class="cycle-sub">Three nights. Tap to set tonight's ritual.</p>
+        </div>
+
+        <div class="astrolabe-wrap" id="cycle-astrolabe">
+          <div class="al-ring al-glow"></div>
+          <div class="al-ring al-outer"></div>
+          <div class="al-ring al-mid"></div>
+          <div class="al-ring al-inner"></div>
+          <div class="al-center">
+            <div class="al-numeral" id="al-numeral">I</div>
+            <div class="al-lbl" id="al-lbl">NIACINAMIDE</div>
+          </div>
+        </div>
+
+        <div class="al-legend">
+          <div class="al-legend-item"><span class="al-dot al-dot-active"></span><span>Tonight</span></div>
+          <div class="al-legend-item"><span class="al-dot al-dot-pending"></span><span>Upcoming</span></div>
         </div>
 
         <div class="section">
@@ -373,20 +401,33 @@
 
       <!-- CHRONICLE TAB -->
       <section class="tab-pane" id="pane-chronicle">
-        <div class="section">
-          <h2 class="section-h">Today's Chronicle</h2>
-          <p class="section-sub">One note per day. Saved with your ritual data.</p>
-          <div class="chronicle-card">
-            <textarea class="chronicle-textarea" id="chronicle-textarea" rows="8" placeholder="What happened today? How did the ritual feel?"></textarea>
-          </div>
-          <p class="chronicle-status" id="chronicle-status">No entry yet</p>
-          <button class="btn-primary" id="chronicle-save-btn">Save note</button>
+
+        <div class="chronicle-heading">
+          <div class="chronicle-eyebrow">CHRONICLE</div>
+          <h1 class="chronicle-title">The <span class="ital">chronicle</span></h1>
         </div>
+
+        <div class="chronicle-prompt">
+          <div class="chronicle-prompt-label">A quiet record of the day</div>
+          <p class="chronicle-prompt-q" id="chronicle-prompt-q">What did today ask of you?</p>
+        </div>
+
+        <div class="chronicle-card">
+          <textarea class="chronicle-textarea" id="chronicle-textarea" rows="7" placeholder="Write here. One note per day."></textarea>
+        </div>
+
+        <p class="chronicle-status" id="chronicle-status">No entry yet</p>
+        <button class="btn-primary" id="chronicle-save-btn">Save</button>
+
         <div class="footer-spacer"></div>
       </section>
 
       <!-- PROGRESS TAB -->
       <section class="tab-pane" id="pane-progress">
+        <div class="progress-head">
+          <p class="progress-eyebrow">STARS · PROGRESS</p>
+          <h1 class="progress-title">The <span class="ital">stars</span></h1>
+        </div>
         <div class="stats-grid">
           <div class="stat-card">
             <p class="stat-label">Streak</p>
@@ -411,8 +452,11 @@
         </div>
 
         <div class="section">
-          <h2 class="section-h">Last 6 weeks</h2>
-          <div class="cal-card">
+          <div class="section-hd">
+            <span class="section-lbl-ital"><em>Constellation</em></span>
+            <span class="section-meta-mono" id="star-field-meta"></span>
+          </div>
+          <div class="cal-card star-field-card">
             <div class="cal-weekdays">
               <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
             </div>
@@ -421,7 +465,10 @@
         </div>
 
         <div class="section">
-          <h2 class="section-h">Milestones</h2>
+          <div class="section-hd">
+            <span class="section-lbl-ital"><em>Milestones</em></span>
+            <span class="section-meta-mono" id="milestone-stage-meta"></span>
+          </div>
           <div class="milestone-list" id="milestone-list"></div>
         </div>
 

@@ -1,0 +1,217 @@
+/* ==========================================================================
+   Elysium — settings: settings tab components
+   ========================================================================== */
+
+/* ============== SETTINGS ============== */
+.setting-card {
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 0.5px solid var(--separator);
+  gap: 12px;
+}
+
+.setting-row:last-child { border-bottom: none; }
+
+.btn-row {
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--tint);
+}
+
+.btn-row:active { background: var(--bg-input); }
+.btn-row.danger { color: var(--red); }
+
+.setting-name {
+  font-size: 16px;
+  color: var(--label);
+}
+
+.btn-row .setting-name {
+  color: inherit;
+  font-weight: 400;
+}
+
+.setting-sub {
+  font-size: 13px;
+  color: var(--label-secondary);
+  margin-top: 1px;
+}
+
+.chevron {
+  color: var(--label-tertiary);
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.time-input {
+  background: var(--bg-input);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 15px;
+  color: var(--label);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.text-btn {
+  background: transparent;
+  border: none;
+  color: var(--tint);
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 4px 8px;
+}
+
+.toggle {
+  position: relative;
+  width: 51px;
+  height: 31px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-input);
+  border-radius: 100px;
+  transition: background 0.25s;
+  cursor: pointer;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.toggle input:checked + .toggle-slider {
+  background: var(--green);
+}
+
+.toggle input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--label-secondary);
+  padding: 8px 4px 0;
+  line-height: 1.5;
+}
+
+.install-card {
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.install-text {
+  font-size: 14px;
+  color: var(--label-secondary);
+  line-height: 1.5;
+}
+
+.version {
+  text-align: center;
+  font-size: 12px;
+  color: var(--label-tertiary);
+  margin-top: 16px;
+}
+
+/* ── EA-21: Typography — version ────────────────────────────────────────── */
+.version {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.footer-spacer { height: 40px; }
+
+/* ── EA-19: Settings — Obsidian Temple polish ───────────────────────────── */
+
+/* Setting cards and install card — alabaster (light), warm border, deeper shadow, refined radius */
+#pane-settings .setting-card,
+#pane-settings .install-card {
+  background: var(--alabaster);
+  border: 0.5px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
+}
+
+/* Row separators — warm instead of cold grey */
+#pane-settings .setting-row {
+  border-bottom-color: var(--separator-warm);
+}
+
+/* Action row names — oracle-text instead of iOS blue */
+#pane-settings .btn-row {
+  color: var(--oracle-text);
+}
+
+/* Danger rows — preserve red (required: #pane-settings ID raises specificity above .btn-row.danger) */
+#pane-settings .btn-row.danger {
+  color: var(--red);
+}
+
+/* Chevrons — bronze */
+#pane-settings .chevron {
+  color: var(--bronze);
+}
+
+/* Danger chevrons — red to match danger row */
+#pane-settings .btn-row.danger .chevron {
+  color: var(--red);
+}
+
+/* Reset text button — bronze instead of iOS blue */
+#pane-settings .text-btn {
+  color: var(--bronze);
+}
+
+/* Dark mode — restore dark surfaces */
+@media (prefers-color-scheme: dark) {
+  #pane-settings .setting-card,
+  #pane-settings .install-card {
+    background: var(--bg-elevated);
+  }
+}
+
+/* ── EA-20: Global btn-row and text-btn overrides ────────────────────────── */
+
+/* Action rows: oracle text globally; .btn-row.danger (specificity 0,2,0) still wins with --red */
+.btn-row { color: var(--oracle-text); }
+
+/* Text button: bronze — matches EA-19 scope but now global */
+.text-btn { color: var(--bronze); }

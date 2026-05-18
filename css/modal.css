@@ -1,0 +1,288 @@
+/* ==========================================================================
+   Elysium — modal: modal system, field inputs, action buttons, past-day
+   ========================================================================== */
+
+/* ============== PAST DAY MODAL ============== */
+.past-day-body {
+  max-height: 55vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 8px;
+}
+
+.past-day-section {
+  margin-bottom: 16px;
+}
+
+.past-day-section-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--label-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0 4px;
+  margin-bottom: 6px;
+}
+
+/* ── EA-26: Past-day scrollbar hiding ───────────────────────────────────── */
+.past-day-body {
+  scrollbar-width: none;
+}
+.past-day-body::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============== MODAL ============== */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.modal[hidden] { display: none; }
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fadeBackdrop 0.25s ease;
+  pointer-events: auto;
+}
+
+@keyframes fadeBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-sheet {
+  position: relative;
+  background: var(--bg-grouped);
+  border-radius: 20px 20px 0 0;
+  padding: 12px 20px calc(var(--safe-bottom) + 24px);
+  width: 100%;
+  max-width: 600px;
+  animation: slideUp 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+  pointer-events: auto;
+}
+
+@media (min-width: 600px) {
+  .modal { align-items: center; }
+  .modal-sheet {
+    border-radius: 20px;
+    margin: 0 16px;
+    max-width: 460px;
+    animation: scaleIn 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-handle {
+  width: 36px;
+  height: 5px;
+  background: var(--label-tertiary);
+  border-radius: 100px;
+  margin: 0 auto 16px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.field {
+  display: block;
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--label-secondary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: none;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 16px;
+  color: var(--label);
+  font-family: inherit;
+}
+
+.field-input:focus {
+  outline: 2px solid var(--tint);
+  outline-offset: -2px;
+}
+
+/* ── EA-20: Field focus ring bronze ─────────────────────────────────────── */
+.field-input:focus { outline-color: var(--bronze); }
+
+select.field-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238E8E93' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.btn-primary {
+  flex: 1;
+  background: var(--tint);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.btn-primary:active { transform: scale(0.98); opacity: 0.85; }
+
+/* ── EA-20: Primary CTA button obsidian (light mode) ────────────────────── */
+@media (prefers-color-scheme: light) {
+  .btn-primary { background: var(--obsidian); }
+}
+
+.btn-secondary {
+  flex: 1;
+  background: var(--pink-soft);
+  color: var(--red);
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.15s;
+}
+
+.btn-secondary:active { transform: scale(0.98); }
+
+.btn-text {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--tint);
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ── EA-27: Modal Obsidian Temple alignment ─────────────────────────────
+ * Removes iOS blue/pink visual language from edit-task, past-day, and
+ * task-info modals. CSS-only, all selectors scoped to .modal context.
+ * No HTML or app.js changes. No task logic changes.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+/* Handle pill: warm separator tone instead of iOS cold gray */
+.modal-handle {
+  background: var(--separator-warm);
+}
+
+/* Title: DM Sans already inherited — lighten weight from 700 → 500 */
+.modal-title {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+}
+
+/* Field labels: mono eyebrow treatment matching bronze meta labels */
+.modal .field-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  color: var(--bronze);
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+/* Field inputs: underline-only style, removes iOS filled rounded-rect */
+.modal .field-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--separator-warm);
+  border-radius: 0;
+  padding: 10px 0;
+  font-size: 15px;
+  color: var(--oracle-text);
+  outline: none;
+}
+.modal .field-input:focus {
+  border-bottom-color: var(--bronze);
+  outline: none;
+}
+
+/* Select dropdown arrow: bronze-toned per theme (was iOS gray #8E8E93) */
+.modal select.field-input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23A07A4A' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  padding-right: 28px;
+  padding-left: 0;
+}
+@media (prefers-color-scheme: dark) {
+  .modal select.field-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C9A56B' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  }
+}
+
+/* Save button dark mode: bronze bg / near-black text (9.3:1 contrast).
+ * Mirrors .cycle-active-badge and .auth-cta patterns already in the codebase.
+ * Light mode handled by EA-20: .btn-primary { background: var(--obsidian) }. */
+@media (prefers-color-scheme: dark) {
+  .modal .btn-primary {
+    background: var(--bronze);
+    color: var(--bg);
+  }
+}
+
+/* Delete button: desaturated rust, matches concept danger row color */
+.modal .btn-secondary {
+  background: rgba(217, 122, 94, 0.12);
+  color: #d97a5e;
+}
+
+/* Cancel / Done / Got it: muted ink, removes iOS blue link appearance */
+.modal .btn-text {
+  color: var(--muted-text);
+}

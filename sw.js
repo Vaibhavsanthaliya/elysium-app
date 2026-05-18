@@ -1,11 +1,21 @@
 /* Skin — Service Worker
    Cache shell for offline + standalone install */
 
-const CACHE_NAME = 'elysium-v2';
+const CACHE_NAME = 'elysium-v3';
 const ASSETS = [
   './',
   './index.html',
-  './styles.css',
+  './css/base.css',
+  './css/layout.css',
+  './css/settings.css',
+  './css/modal.css',
+  './css/components.css',
+  './css/cycle.css',
+  './css/chronicle.css',
+  './css/progress.css',
+  './css/today.css',
+  './css/auth.css',
+  './css/temple.css',
   './main.js',
   './manifest.json',
   './icon-192.png',
@@ -54,7 +64,7 @@ self.addEventListener('fetch', (event) => {
   const sameOrigin = url.origin === self.location.origin;
   const shellPath = url.pathname === '/' ||
     url.pathname.endsWith('/index.html') ||
-    url.pathname.endsWith('/styles.css') ||
+    url.pathname.includes('/css/') ||
     url.pathname.endsWith('/main.js') ||
     url.pathname.endsWith('/manifest.json') ||
     url.pathname.includes('/js/');

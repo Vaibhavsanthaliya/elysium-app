@@ -1,0 +1,263 @@
+/* ==========================================================================
+   Elysium — layout: app shell, header, tab bar, main, boot shell
+   ========================================================================== */
+
+/* ============== APP ============== */
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ── EA-20: Ambient temple light — light mode only ───────────────────────── */
+@media (prefers-color-scheme: light) {
+  .app {
+    background: radial-gradient(
+      ellipse 120% 280px at 50% 0%,
+      rgba(160, 114, 42, 0.05) 0%,
+      transparent 100%
+    );
+  }
+}
+
+/* ── EA-24: Dark ambient temple light ────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .app {
+    background: radial-gradient(
+      ellipse 120% 280px at 50% 0%,
+      rgba(201, 165, 107, 0.07) 0%,
+      transparent 100%
+    );
+  }
+}
+
+/* ============== HEADER ============== */
+.header {
+  padding: calc(var(--safe-top) + 16px) 20px 12px;
+  background: rgba(242, 242, 247, 0.82);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid var(--separator);
+}
+
+@media (prefers-color-scheme: dark) {
+  .header { background: rgba(14, 14, 18, 0.88); }
+}
+
+/* ── EA-20: Header warm glass (light mode) ───────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  .header {
+    background: rgba(237, 232, 222, 0.88);
+    border-bottom-color: var(--separator-warm);
+  }
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.date-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--label-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+/* ── EA-21: Typography — date-label ─────────────────────────────────────── */
+.date-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.greeting {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.streak-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--orange-soft);
+  color: var(--orange);
+  padding: 8px 12px;
+  border-radius: 100px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  margin-top: 8px;
+}
+
+.streak-pill:active { transform: scale(0.95); }
+
+/* ── EA-23: Streak pill bronze ───────────────────────────────────────────── */
+.streak-pill {
+  background: var(--bronze-soft);
+  color: var(--bronze);
+}
+
+/* ============== BOTTOM TAB BAR ============== */
+.tabs {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  background: rgba(242, 242, 247, 0.88);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-top: 0.5px solid var(--separator-opaque);
+  padding: 10px 0 var(--safe-bottom);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tabs { background: rgba(14, 14, 18, 0.88); }
+}
+
+/* ── EA-20: Tab bar warm glass (light mode) ──────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  .tabs {
+    background: rgba(237, 232, 222, 0.92);
+    border-top-color: var(--separator-warm);
+  }
+}
+
+/* ── EA-26: Tab bar compositor stabilisation ─────────────────────────────── */
+/* Forces .tabs onto its own GPU composite layer. Prevents the 1–2 frame
+   lag during iOS keyboard-dismiss animation that shows a gap below the bar. */
+.tabs {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.tab {
+  flex: 1;
+  max-width: 90px;
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  color: var(--label-tertiary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tab svg {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  transition: transform 0.12s ease;
+}
+
+.tab span {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+.tab.active { color: var(--bronze); }
+.tab:active svg { transform: scale(0.86); }
+
+/* ============== MAIN ============== */
+.main {
+  flex: 1;
+  padding: 20px 16px;
+  padding-bottom: calc(49px + var(--safe-bottom) + 28px);
+}
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; animation: fadeIn 0.25s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── iOS safe area ───────────────────────────────────────────────────────── */
+@supports (padding: max(0px)) {
+  .header { padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
+  .main { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+}
+
+/* ── EA-26: Boot shell ───────────────────────────────────────────────────── */
+.boot-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  pointer-events: none;
+}
+
+.boot-shell[hidden] {
+  display: none;
+}
+
+.boot-mark {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1px solid var(--separator-warm);
+  background: var(--alabaster);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bronze);
+  box-shadow: var(--shadow-bronze);
+}
+
+@media (prefers-color-scheme: dark) {
+  .boot-mark {
+    background: var(--obsidian-elevated);
+  }
+}
+
+.boot-wordmark {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.boot-wordmark .ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--bronze);
+}
