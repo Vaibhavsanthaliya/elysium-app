@@ -202,41 +202,66 @@
   line-height: 1.35;
 }
 
-/* Mini arc column */
-#pane-temple .temple-featured-arc-col {
+/* Featured cycle state */
+#pane-temple .temple-featured-state-col {
   flex: 0 0 auto;
+  min-width: 42px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 6px;
 }
 
-#pane-temple .temple-arc-bg {
-  stroke: var(--separator-warm);
-  stroke-width: 2.5;
-  fill: none;
+#pane-temple .temple-cycle-marks {
+  height: 26px;
+  display: grid;
+  grid-template-columns: repeat(3, 6px);
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
 }
 
-#pane-temple .temple-arc-fg {
-  stroke: var(--bronze);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  fill: none;
-  transition: stroke-dashoffset 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+#pane-temple .temple-cycle-mark {
+  width: 6px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--separator-warm);
+  opacity: 0.85;
+  transition: height 180ms ease, background 180ms ease, opacity 180ms ease;
 }
 
-#pane-temple .temple-arc-pct {
-  display: flex;
-  align-items: baseline;
-  gap: 1px;
+#pane-temple .temple-cycle-mark.is-current {
+  height: 26px;
+  background: var(--bronze);
+  opacity: 1;
+}
+
+#pane-temple .temple-featured-state-col[data-care-state="kept"] .temple-cycle-mark.is-current {
+  box-shadow: var(--shadow-bronze);
+}
+
+#pane-temple .temple-featured-state-col[data-care-state="motion"] .temple-cycle-mark.is-current,
+#pane-temple .temple-featured-state-col[data-care-state="resting"] .temple-cycle-mark.is-current {
+  background: linear-gradient(180deg, var(--bronze), rgba(160, 122, 74, 0.24));
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-temple .temple-featured-state-col[data-care-state="motion"] .temple-cycle-mark.is-current,
+  #pane-temple .temple-featured-state-col[data-care-state="resting"] .temple-cycle-mark.is-current {
+    background: linear-gradient(180deg, var(--bronze), rgba(201, 165, 107, 0.22));
+  }
+}
+
+#pane-temple .temple-cycle-state {
+  min-height: 9px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--bronze);
   line-height: 1;
-}
-
-#pane-temple .temple-pct-sign {
-  font-size: 8px;
+  white-space: nowrap;
 }
 
 /* ─── Domain section ─────────────────────────────────────────────────────── */
@@ -426,9 +451,88 @@
   }
 }
 
-/* ── EA-44: Light domain modal ──────────────────────────────────────────── */
-#light-modal .light-modal-head {
-  margin-bottom: 24px;
+/* ── EA-47: Light witness modal ─────────────────────────────────────────── */
+#light-modal .light-modal-sheet {
+  padding: 0;
+  overflow: hidden;
+}
+
+#light-modal .light-sky {
+  position: relative;
+  height: 156px;
+  background: linear-gradient(180deg,
+    #0a0a16 0%,
+    #18143a 30%,
+    #4a3870 58%,
+    #b87a38 82%,
+    #d99a50 100%
+  );
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (prefers-color-scheme: light) {
+  #light-modal .light-sky {
+    background: linear-gradient(180deg,
+      #1a2b6e 0%,
+      #3a5caa 35%,
+      #7ea4d8 62%,
+      #d4a55c 84%,
+      #e8c07a 100%
+    );
+  }
+}
+
+#light-modal .light-sun {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 40%, #f5d88a, #c9a56b);
+  box-shadow: 0 0 18px rgba(201, 165, 107, 0.65), 0 0 36px rgba(201, 165, 107, 0.30);
+}
+
+#light-modal .light-horizon {
+  position: absolute;
+  bottom: 46px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(201, 165, 107, 0.35);
+}
+
+#light-modal .light-cursor {
+  position: absolute;
+  bottom: 46px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+#light-modal .light-cursor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c9a56b;
+  box-shadow: 0 0 6px rgba(201, 165, 107, 0.8);
+}
+
+#light-modal .light-cursor-time {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+  margin-top: 3px;
+}
+
+#light-modal .modal-handle {
+  margin: 8px auto 0;
 }
 
 #light-modal .light-modal-eyebrow {
@@ -437,83 +541,24 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--bronze);
-  margin-bottom: 6px;
-}
-
-#light-modal .light-modal-title {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 22px;
-  letter-spacing: -0.02em;
-  color: var(--oracle-text);
-  margin: 0 0 6px;
-}
-
-#light-modal .light-modal-sub {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  color: var(--muted-text);
-  margin: 0;
-}
-
-#light-modal .light-modal-witnessed {
-  margin-bottom: 20px;
-}
-
-#light-modal .light-witnessed-time {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 28px;
-  color: var(--bronze);
-  line-height: 1;
-}
-
-#light-modal .light-history-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 28px;
-}
-
-#light-modal .light-hist-day {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-#light-modal .light-hist-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1px solid var(--separator-warm);
-}
-
-#light-modal .light-hist-dot.witnessed {
-  background: var(--bronze);
-  border-color: var(--bronze);
-}
-
-#light-modal .light-hist-label {
-  font-family: var(--font-mono);
-  font-size: 7.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted-text);
-}
-
-#light-modal .light-hist-day.today .light-hist-label {
-  color: var(--bronze);
+  margin: 18px 20px 16px;
 }
 
 #light-modal .btn-primary {
-  width: 100%;
-  margin-bottom: 8px;
+  margin: 0 20px 14px;
+  width: calc(100% - 40px);
 }
 
 #light-modal .btn-primary:disabled {
   opacity: 0.45;
   cursor: default;
+}
+
+#light-modal .btn-text {
+  margin: 4px 20px 0;
+  display: block;
+  text-align: center;
+  padding-bottom: calc(var(--safe-bottom) + 4px);
 }
 
 /* ── EA-38: Dormant domain framing ─────────────────────────────────────── */

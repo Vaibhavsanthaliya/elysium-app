@@ -1,28 +1,21 @@
 import { MILESTONES, CYCLE_NAMES } from '../constants.js';
 import { ymd, escapeHtml } from '../utils.js';
-import { state, todayStr, today, saveState } from '../state.js';
+import { state, todayStr, today } from '../state.js';
 import { getMilestoneStage } from '../state.js';
-import { getStreak, getMorningTasksForDate, getDaysSinceStart, getCycleDayForDate } from '../domains/care.js';
-import { renderAllLists } from './today.js';
+import { getDaysSinceStart, getCycleDayForDate } from '../domains/care.js';
+import { getChronicleNote } from '../domains/chronicle.js';
 import { renderWeeklyPhotos } from '../services/photos.js';
 
 const ROMAN = ['I', 'II', 'III', 'IV'];
+const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
+const STAGE_TITLES = ['foundation', 'acne control', 'marks and texture', 'maintenance'];
 
 export function renderProgress() {
-  const streak = getStreak();
   const logged = state.loggedDays.length;
 
   const weekStart = new Date(today);
   weekStart.setDate(today.getDate() - today.getDay());
   weekStart.setHours(0, 0, 0, 0);
-  const thisWeek = state.loggedDays.filter(d => new Date(d + 'T00:00:00') >= weekStart).length;
-
-  const goalProgress = Math.min(logged, 21);
-
-  document.getElementById('stat-streak').textContent = streak;
-  document.getElementById('stat-logged').textContent = logged;
-  document.getElementById('stat-week').textContent = thisWeek;
-  document.getElementById('stat-goal').textContent = goalProgress;
 
   const cal = document.getElementById('cal-grid');
   cal.innerHTML = '';
@@ -65,32 +58,21 @@ export function renderProgress() {
 
   const daysSinceStart = getDaysSinceStart();
   const currentStage = getMilestoneStage(daysSinceStart);
-  const upgradedStage = Number.isInteger(state.milestoneStage) ? state.milestoneStage : 0;
   const stageMeta = document.getElementById('milestone-stage-meta');
-  if (stageMeta) stageMeta.textContent = `${ROMAN[currentStage] ?? currentStage} OF IV`;
+  if (stageMeta) stageMeta.textContent = 'CURRENT';
 
   const ml = document.getElementById('milestone-list');
   ml.innerHTML = '';
-  MILESTONES.forEach((m, i) => {
-    const done = i < currentStage;
-    const active = i === currentStage;
-    const routineUpdated = i > 0 && upgradedStage >= i;
-    const row = document.createElement('div');
-    row.className = 'milestone-row' + (done ? ' done' : active ? ' active' : '');
-    row.innerHTML = `
-      <div class="milestone-index">${ROMAN[i] ?? String(i + 1)}</div>
-      <div class="milestone-info">
-        <div class="milestone-week">${m.weeks}</div>
-        <div class="milestone-desc">${m.desc}</div>
-      </div>
-      <div class="milestone-badges">
-        ${done ? '<span class="milestone-badge">Completed</span>' : ''}
-        ${active ? '<span class="milestone-badge active">Active</span>' : ''}
-        ${routineUpdated ? '<span class="milestone-badge updated">Routine updated</span>' : ''}
-      </div>
-    `;
-    ml.appendChild(row);
-  });
+  const stageLine = document.createElement('p');
+  stageLine.className = 'stage-line';
+  const stageRoman = ROMAN[currentStage] ?? String(currentStage + 1);
+  const stageTitle = STAGE_TITLES[currentStage] ?? MILESTONES[currentStage]?.desc?.toLowerCase() ?? 'ritual';
+  stageLine.innerHTML = `
+    <span class="stage-line-meta">Stage ${stageRoman} of IV</span>
+    <span class="stage-line-separator">—</span>
+    <span class="stage-line-title">${escapeHtml(stageTitle)}</span>
+  `;
+  ml.appendChild(stageLine);
 }
 
 function renderConstellationLines() {
@@ -142,77 +124,75 @@ function renderConstellationLines() {
 }
 
 export function openPastDayModal(dateStr) {
-  const isToday = dateStr === todayStr;
   const date = new Date(dateStr + 'T00:00:00');
-  const cycleDay = isToday ? state.cycleDay : getCycleDayForDate(dateStr);
+  if (date > today) return;
 
-  document.getElementById('past-day-title').textContent = isToday
-    ? 'Today'
-    : date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+  const cycleDay = dateStr === todayStr ? state.cycleDay : getCycleDayForDate(dateStr);
+  document.getElementById('past-day-title').textContent = 'Day record';
 
-  renderPastDayBody(dateStr, cycleDay);
+  renderPastDayBody(dateStr, cycleDay, date);
   document.getElementById('past-day-modal').hidden = false;
 }
 
-export function renderPastDayBody(dateStr, cycleDay) {
-  const checks = state.checks[dateStr] || {};
-  const sections = [
-    { label: 'Morning', tasks: getMorningTasksForDate(dateStr) },
-    { label: `Night · ${CYCLE_NAMES[cycleDay]}`, tasks: state.tasks.night[cycleDay] || [] },
-    { label: 'Habits', tasks: state.tasks.habit },
-  ];
-
-  const body = document.getElementById('past-day-body');
-  body.innerHTML = sections.map(({ label, tasks }) => {
-    if (!tasks.length) return '';
-    const items = tasks.map(task => {
-      const done = checks[task.id] === true;
-      return `<li class="task-item ${done ? 'done' : ''}" data-id="${escapeHtml(task.id)}">
-        <div class="task-check">
-          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2.5 6.5 5 9 9.5 3.5"/></svg>
-        </div>
-        <span class="task-text">${escapeHtml(task.text)}</span>
-      </li>`;
-    }).join('');
-    return `<div class="past-day-section">
-      <p class="past-day-section-label">${label}</p>
-      <ul class="task-list">${items}</ul>
-    </div>`;
-  }).join('');
-
-  body.querySelectorAll('.task-item').forEach(li => {
-    li.addEventListener('click', () => togglePastDayTask(dateStr, li.dataset.id, cycleDay));
-  });
+function formatRecordDate(date) {
+  const weekday = date.toLocaleDateString(undefined, { weekday: 'long' }).toUpperCase();
+  const day = date.getDate();
+  const month = date.toLocaleDateString(undefined, { month: 'short' }).toUpperCase();
+  return `${weekday} · ${day} ${month}`;
 }
 
-export function togglePastDayTask(dateStr, taskId, cycleDay) {
-  if (!state.checks[dateStr]) state.checks[dateStr] = {};
-  const checks = state.checks[dateStr];
-  if (checks[taskId]) { delete checks[taskId]; } else { checks[taskId] = true; }
+function getRecordStatus(dateStr, date) {
+  const hasChecks = Object.keys(state.checks[dateStr] || {}).length > 0;
+  if (date > today) return { key: 'future', label: 'quiet' };
+  if (state.loggedDays.includes(dateStr)) return { key: 'kept', label: 'kept' };
+  if (hasChecks) return { key: 'partial', label: 'partial' };
+  if (dateStr === todayStr) return { key: 'quiet', label: 'quiet' };
+  return { key: 'missed', label: 'not kept' };
+}
 
-  const morningTasks = getMorningTasksForDate(dateStr);
-  const morningDone = morningTasks.length === 0 || morningTasks.every(t => checks[t.id]);
-  const nightTasks = state.tasks.night[cycleDay] || [];
-  const nightDone = nightTasks.length === 0 || nightTasks.every(t => checks[t.id]);
-  const dayComplete = morningDone && nightDone;
-
-  if (dayComplete && !state.loggedDays.includes(dateStr)) {
-    state.loggedDays.push(dateStr);
-  } else if (!dayComplete && state.loggedDays.includes(dateStr)) {
-    state.loggedDays = state.loggedDays.filter(d => d !== dateStr);
+function getProtocolLabels(cycleDay) {
+  const protocol = CYCLE_NAMES[cycleDay] || CYCLE_NAMES[0];
+  const roman = CARE_CYCLE_ROMAN[cycleDay] || String(cycleDay + 1);
+  if (protocol.toLowerCase().includes('rest')) {
+    return { context: 'Rest night', summary: 'Rest night' };
   }
+  return {
+    context: `Night ${roman} · ${protocol}`,
+    summary: `Night ${roman}`,
+  };
+}
 
-  saveState();
-  renderPastDayBody(dateStr, cycleDay);
-  if (dateStr === todayStr) {
-    renderAllLists();
-    document.getElementById('streak-num').textContent = getStreak();
-  }
+function getChronicleExcerpt(dateStr) {
+  const body = getChronicleNote(dateStr)?.body;
+  if (!body) return '';
+  const excerpt = body.replace(/\s+/g, ' ').trim();
+  if (!excerpt) return '';
+  return excerpt.length > 150 ? `${excerpt.slice(0, 147).trim()}...` : excerpt;
+}
+
+export function renderPastDayBody(dateStr, cycleDay, providedDate) {
+  const date = providedDate || new Date(dateStr + 'T00:00:00');
+  const status = getRecordStatus(dateStr, date);
+  const protocol = getProtocolLabels(cycleDay);
+  const chronicleExcerpt = getChronicleExcerpt(dateStr);
+  const body = document.getElementById('past-day-body');
+  body.innerHTML = `
+    <div class="past-day-record state-${status.key}">
+      <p class="past-day-date-meta">${escapeHtml(formatRecordDate(date))}</p>
+      <div class="past-day-memory-card">
+        <p class="past-day-protocol">${escapeHtml(protocol.context)}</p>
+        <p class="past-day-state-line">${escapeHtml(protocol.summary)} · <em>${escapeHtml(status.label)}</em></p>
+      </div>
+      ${chronicleExcerpt ? `<div class="past-day-chronicle">
+        <p class="past-day-chronicle-label">Chronicle</p>
+        <p class="past-day-chronicle-body">${escapeHtml(chronicleExcerpt)}</p>
+      </div>` : ''}
+    </div>
+  `;
 }
 
 export function closePastDayModal() {
   document.getElementById('past-day-modal').hidden = true;
-  document.getElementById('streak-num').textContent = getStreak();
   if (document.getElementById('pane-progress').classList.contains('active')) renderProgress();
 }
 

@@ -78,16 +78,6 @@
   height: 20px;
 }
 
-/* Section icon — remove colored pill, quiet glyph */
-#pane-today .section-icon {
-  background: transparent;
-  border-radius: 0;
-  width: auto;
-  height: auto;
-  font-size: 15px;
-  opacity: 0.45;
-}
-
 /* Section heading — Spectral italic */
 #pane-today .section-title h2 {
   font-family: var(--font-display);
@@ -108,4 +98,412 @@
   padding: 0;
   border-radius: 0;
   text-transform: uppercase;
+}
+
+/* ── EA-47: Care ritual detail transformation ─────────────────────────────── */
+
+/* Page heading */
+#pane-today .care-heading {
+  padding: 4px 0 12px;
+}
+
+#pane-today .care-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-bottom: 5px;
+}
+
+#pane-today .care-title {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+  margin: 0 0 6px;
+}
+
+#pane-today .care-title .ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--bronze);
+}
+
+#pane-today .care-blurb {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--muted-text);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Compact cycle state + meta row */
+#pane-today .care-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 0;
+  border-top: 1px solid var(--separator-warm);
+  border-bottom: 1px solid var(--separator-warm);
+  margin-bottom: 28px;
+}
+
+#pane-today .care-state-wrap {
+  width: 78px;
+  min-height: 72px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#pane-today .care-state-marks {
+  display: grid;
+  grid-template-columns: repeat(3, 22px);
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+#pane-today .care-state-mark {
+  width: 22px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--separator-warm);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-text);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+#pane-today .care-state-mark.is-current {
+  border-color: rgba(160, 122, 74, 0.42);
+  background: rgba(160, 122, 74, 0.10);
+  color: var(--bronze);
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-today .care-state-mark.is-current {
+    border-color: rgba(201, 165, 107, 0.44);
+    background: rgba(201, 165, 107, 0.10);
+  }
+}
+
+#pane-today .care-state-wrap[data-care-state="kept"] .care-state-mark.is-current {
+  background: var(--bronze);
+  border-color: var(--bronze);
+  color: var(--bg);
+}
+
+#pane-today .care-state-wrap[data-care-state="motion"] .care-state-mark.is-current {
+  box-shadow: var(--shadow-bronze);
+}
+
+#pane-today .care-state-label {
+  width: 100%;
+  min-height: 10px;
+  display: block;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+#pane-today .care-state-wrap[data-care-state="kept"] .care-state-label,
+#pane-today .care-state-wrap[data-care-state="motion"] .care-state-label,
+#pane-today .care-state-wrap[data-care-state="resting"] .care-state-label {
+  color: var(--bronze);
+}
+
+#pane-today .care-meta-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#pane-today .care-kv {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#pane-today .care-k {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+#pane-today .care-v {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--oracle-text);
+  letter-spacing: -0.005em;
+}
+
+/* Section headers — Spectral italic label / quiet add */
+#pane-today .care-section-hd {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0;
+  padding: 0 4px 2px;
+}
+
+#pane-today .care-section-label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--oracle-text);
+}
+
+#pane-today .care-section-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#pane-today .care-section-hd .add-btn {
+  font-size: 16px;
+  color: var(--muted-text);
+  background: transparent;
+  border: none;
+  padding: 0 2px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+#pane-today .care-section-hd .add-btn:hover {
+  color: var(--bronze);
+}
+
+/* Cycle strip */
+#pane-today .care-cycle-strip {
+  margin-top: 32px;
+  padding-bottom: 8px;
+}
+
+#pane-today .care-cycle-head {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin-bottom: 10px;
+}
+
+#pane-today .care-cycle-three {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+#pane-today .care-cycle-card {
+  border: 1px solid var(--separator-warm);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
+  text-align: center;
+  background: var(--bg-elevated);
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-today .care-cycle-card {
+    background: transparent;
+  }
+}
+
+#pane-today .care-cycle-card.active {
+  background: linear-gradient(180deg, rgba(201,165,107,0.12), rgba(201,165,107,0.03));
+  border-color: rgba(201,165,107,0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-today .care-cycle-card.active {
+    background: linear-gradient(180deg, rgba(201,165,107,0.10), rgba(201,165,107,0.02));
+  }
+}
+
+#pane-today .care-cycle-ix {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--bronze);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+#pane-today .care-cycle-nm {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--oracle-text);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+
+#pane-today .care-cycle-sm {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+#pane-today .care-cycle-card.active .care-cycle-sm {
+  color: var(--bronze);
+}
+
+/* ── EA-57: Care de-checklist — foreground the night protocol ───────────── */
+
+#pane-today .care-meta-row {
+  margin-bottom: 18px;
+}
+
+#pane-today .care-cycle-strip {
+  margin: 0 0 26px;
+  padding-bottom: 0;
+}
+
+#pane-today .care-night-section {
+  padding: 16px 14px 6px;
+  border: 1px solid rgba(160, 114, 42, 0.24);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(160, 114, 42, 0.08), rgba(160, 114, 42, 0.02));
+  margin-bottom: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-today .care-night-section {
+    border-color: rgba(201, 165, 107, 0.28);
+    background: linear-gradient(180deg, rgba(201, 165, 107, 0.10), rgba(201, 165, 107, 0.025));
+  }
+}
+
+#pane-today .care-night-section .care-section-hd {
+  padding: 0 0 8px;
+}
+
+#pane-today .care-night-section .care-section-label {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+
+#pane-today .care-night-section .task-item {
+  padding: 15px 0;
+  gap: 14px;
+}
+
+#pane-today .care-night-section .task-text {
+  font-size: 15.5px;
+}
+
+#pane-today .care-morning-section {
+  margin-bottom: 18px;
+  padding: 0 4px;
+}
+
+#pane-today .care-morning-section .care-section-hd {
+  padding: 0 0 2px;
+}
+
+#pane-today .care-morning-section .care-section-label {
+  font-size: 14px;
+  color: var(--muted-text);
+}
+
+#pane-today .care-morning-section .task-item {
+  padding: 11px 0;
+}
+
+#pane-today .care-morning-section .task-text {
+  font-size: 14px;
+  color: var(--muted-text);
+}
+
+#pane-today .care-morning-section .task-item.done .task-text {
+  color: var(--label-tertiary);
+}
+
+#pane-today .care-support-section {
+  margin: 6px 0 28px;
+  border-top: 1px solid var(--separator-warm);
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+#pane-today .care-support-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 4px;
+  cursor: pointer;
+  list-style: none;
+}
+
+#pane-today .care-support-summary::-webkit-details-marker {
+  display: none;
+}
+
+#pane-today .care-support-summary::after {
+  content: "+";
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--bronze);
+}
+
+#pane-today .care-support-section[open] .care-support-summary::after {
+  content: "-";
+}
+
+#pane-today .care-support-summary .care-section-label {
+  font-size: 14px;
+  color: var(--muted-text);
+}
+
+#pane-today .care-support-meta,
+#pane-today .care-support-note {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+#pane-today .care-support-body {
+  padding: 0 4px 8px;
+}
+
+#pane-today .care-support-hd {
+  padding: 0 0 4px;
+}
+
+#pane-today .care-support-section .task-item {
+  padding: 11px 0;
+}
+
+#pane-today .care-support-section .task-text {
+  font-size: 14px;
+  color: var(--muted-text);
 }

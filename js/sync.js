@@ -136,10 +136,22 @@ export async function syncFromSupabase() {
         ...(state.sleep?.entries || {}),
       };
 
+      const mergedLightEntries = {
+        ...(cloud.light?.entries || {}),
+        ...(state.light?.entries || {}),
+      };
+
+      const mindMap = new Map();
+      for (const s of (cloud.mind?.sessions || [])) mindMap.set(s.id, s);
+      for (const s of (state.mind?.sessions || [])) mindMap.set(s.id, s);
+      const mergedMindSessions = Array.from(mindMap.values());
+
       setState(cloud);
       state.loggedDays = mergedLoggedDays;
       state.checks = mergedChecks;
       state.sleep = { entries: mergedSleepEntries };
+      state.light = { entries: mergedLightEntries };
+      state.mind = { sessions: mergedMindSessions };
       if (!state.startDate) state.startDate = todayStr;
       migrateState(state);
       advanceCycleIfNeeded();

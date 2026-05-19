@@ -5,8 +5,9 @@
 import { TASK_INFO } from '../constants.js';
 import { escapeHtml } from '../utils.js';
 import { state, todayStr, saveState } from '../state.js';
-import { getMorningTasks, getNightTasks, getAllTodayTasks, getTodayChecks, getStreak } from '../domains/care.js';
-import { getSmartFeedback } from './temple.js';
+import { getMorningTasks, getNightTasks, getTodayChecks } from '../domains/care.js';
+import { renderTodayCycle } from './common.js';
+import { getSmartFeedback, renderTemple } from './temple.js';
 import { showToast } from '../ui/toast.js';
 import { openEditModal, openTaskInfoModal } from '../ui/modals.js';
 
@@ -62,23 +63,10 @@ export function renderAllLists() {
   renderTaskList('morning', document.getElementById('list-morning'));
   renderTaskList('night', document.getElementById('list-night'));
   renderTaskList('habit', document.getElementById('list-habit'));
-  updateRing();
+  renderTodayCycle();
+  renderTemple();
   const comfortTag = document.getElementById('comfort-tag');
   if (comfortTag) comfortTag.hidden = !state.comfortMode;
-}
-
-export function updateRing() {
-  const all = getAllTodayTasks();
-  const checks = getTodayChecks();
-  const done = all.filter(t => checks[t.id]).length;
-  const pct = all.length ? Math.round(done / all.length * 100) : 0;
-
-  const ring = document.getElementById('ring-fg');
-  const circumference = 326.7;
-  ring.style.strokeDashoffset = circumference - (circumference * pct / 100);
-
-  document.getElementById('ring-pct').textContent = pct;
-  document.getElementById('hero-status').textContent = getSmartFeedback(pct);
 }
 
 export function toggleTask(taskId) {
@@ -97,12 +85,11 @@ export function toggleTask(taskId) {
 
   if (dayComplete && !state.loggedDays.includes(todayStr)) {
     state.loggedDays.push(todayStr);
-    showToast('Day completed — streak +1');
+    showToast(getSmartFeedback());
   } else if (!dayComplete && state.loggedDays.includes(todayStr)) {
     state.loggedDays = state.loggedDays.filter(d => d !== todayStr);
   }
 
   saveState();
   renderAllLists();
-  document.getElementById('streak-num').textContent = getStreak();
 }

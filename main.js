@@ -10,11 +10,17 @@ import { renderHeader, renderTodayCycle } from './js/render/common.js';
 import { renderTemple } from './js/render/temple.js';
 import { renderAllLists } from './js/render/today.js';
 import { renderCycleList } from './js/render/cycle.js';
-import { renderChronicle, saveChronicleNote } from './js/render/chronicle.js';
+import {
+  renderChronicle,
+  saveChronicleNote,
+  scheduleChronicleAutosave,
+  flushPendingChronicleSave,
+} from './js/render/chronicle.js';
 import { getLightEntry, witnessLight } from './js/domains/light.js';
 import { renderProgress, renderWeeklyPhotos, closePastDayModal } from './js/render/progress.js';
 import { updateSettingsView, exportData, importData, resetAll, resetStartDate } from './js/render/settings.js';
-import { switchTab } from './js/ui/tabs.js';
+import { isClosedForToday } from './js/domains/sleep.js';
+import { registerClosedDayHandler, switchTab } from './js/ui/tabs.js';
 import {
   openAddModal,
   closeModal,
@@ -23,7 +29,9 @@ import {
   handleSectionChange,
   openSleepModal,
   closeSleepModal,
+  reopenSleepModal,
   saveSleepModal,
+  registerMindModal,
 } from './js/ui/modals.js';
 import { showToast } from './js/ui/toast.js';
 import { addWeeklyPhoto, hasPhotoThisWeek } from './js/services/photos.js';
@@ -44,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('pane-chronicle').classList.contains('active')) renderChronicle();
     if (document.getElementById('pane-progress').classList.contains('active')) renderProgress();
     if (document.getElementById('pane-settings').classList.contains('active')) updateSettingsView();
+    if (isClosedForToday()) openSleepModal();
     if (state.reminders?.enabled && 'Notification' in window && Notification.permission === 'granted') {
       scheduleReminders();
     } else {
@@ -63,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAllLists();
   renderCycleList();
   renderTemple();
+  registerClosedDayHandler(openSleepModal);
 
   // --- Tab clicks ---
   document.querySelectorAll('.tab').forEach(btn => {
@@ -113,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('morning-time-label').textContent = formatTime12(e.target.value);
     saveState();
     if (state.reminders.enabled) scheduleReminders();
-    showToast('Morning reminder updated');
+    showToast('Morning cue updated');
   });
   document.getElementById('night-time').addEventListener('change', (e) => {
     if (!isValidReminderTime(e.target.value)) { e.target.value = state.reminders.nightTime; showToast('Choose a valid time'); return; }
@@ -121,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('night-time-label').textContent = formatTime12(e.target.value);
     saveState();
     if (state.reminders.enabled) scheduleReminders();
-    showToast('Night reminder updated');
+    showToast('Night cue updated');
   });
   document.getElementById('checkin-time').addEventListener('change', (e) => {
     if (!isValidReminderTime(e.target.value)) { e.target.value = state.reminders.checkInTime; showToast('Choose a valid time'); return; }
@@ -129,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('checkin-time-label').textContent = formatTime12(e.target.value);
     saveState();
     if (state.reminders.enabled) scheduleReminders();
-    showToast('Check-in reminder updated');
+    showToast('Evening cue updated');
   });
   document.getElementById('notif-toggle').addEventListener('change', (e) => {
     toggleNotifications(e.target.checked);
@@ -269,53 +279,44 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Global nav shortcuts
-  document.getElementById('streak-pill').addEventListener('click', () => switchTab('progress'));
   document.getElementById('temple-goto-today').addEventListener('click', () => switchTab('today'));
   document.getElementById('temple-goto-chronicle').addEventListener('click', () => switchTab('chronicle'));
   document.getElementById('temple-goto-cycle').addEventListener('click', () => switchTab('cycle'));
   document.getElementById('temple-goto-progress').addEventListener('click', () => switchTab('progress'));
-  document.getElementById('chronicle-save-btn').addEventListener('click', saveChronicleNote);
+  const chronicleTextarea = document.getElementById('chronicle-textarea');
+  chronicleTextarea.addEventListener('input', scheduleChronicleAutosave);
+  chronicleTextarea.addEventListener('blur', saveChronicleNote);
   document.getElementById('temple-goto-sleep').addEventListener('click', openSleepModal);
   document.getElementById('sleep-modal-backdrop').addEventListener('click', closeSleepModal);
-  document.getElementById('sleep-cancel').addEventListener('click', closeSleepModal);
-  document.getElementById('sleep-save').addEventListener('click', saveSleepModal);
-  document.getElementById('sleep-bedtime').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); saveSleepModal(); }
+  document.getElementById('sleep-reopen').addEventListener('click', () => {
+    if (reopenSleepModal()) flushToSupabase();
   });
+  document.getElementById('sleep-save').addEventListener('click', saveSleepModal);
 
   // --- Light domain modal ---
-  const LIGHT_DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-
   function renderLightModal() {
     const entry = getLightEntry(todayStr);
     const btn = document.getElementById('light-witness-btn');
-    const witnessedEl = document.getElementById('light-witnessed');
-    const witnessedTimeEl = document.getElementById('light-witnessed-time');
+
     if (entry) {
-      btn.textContent = 'Witnessed';
+      btn.textContent = `Witnessed · ${formatTime12(entry.witnessedAt)}`;
       btn.disabled = true;
-      witnessedEl.hidden = false;
-      witnessedTimeEl.textContent = formatTime12(entry.witnessedAt);
     } else {
-      btn.textContent = 'I\'m here';
+      btn.textContent = "I'm here";
       btn.disabled = false;
-      witnessedEl.hidden = true;
     }
-    const histEl = document.getElementById('light-history');
-    if (!histEl) return;
+
+    // Position cursor at current time (0% = midnight, 100% = midnight)
     const now = new Date();
-    let html = '';
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(now);
-      d.setDate(d.getDate() - i);
-      const key = ymd(d);
-      const witnessed = !!getLightEntry(key);
-      html += `<div class="light-hist-day${i === 0 ? ' today' : ''}">` +
-        `<div class="light-hist-dot${witnessed ? ' witnessed' : ''}"></div>` +
-        `<div class="light-hist-label">${LIGHT_DAYS[d.getDay()]}</div>` +
-        `</div>`;
-    }
-    histEl.innerHTML = html;
+    const pct = ((now.getHours() * 60 + now.getMinutes()) / 1440 * 100).toFixed(1);
+    const cursor = document.getElementById('light-cursor');
+    if (cursor) cursor.style.left = `${pct}%`;
+
+    const hh = now.getHours();
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const displayH = hh % 12 || 12;
+    const timeEl = document.getElementById('light-cursor-time');
+    if (timeEl) timeEl.textContent = `${displayH}:${mm}`;
   }
 
   function openLightModal() {
@@ -339,10 +340,15 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Witnessed');
   });
 
+  // --- Mind domain modal ---
+  registerMindModal();
+
   // Schedule reminders if already enabled
   if (state.reminders.enabled && 'Notification' in window && Notification.permission === 'granted') {
     scheduleReminders();
   }
+
+  if (isClosedForToday()) openSleepModal();
 
   // Reload when calendar day rolls over (app left open overnight)
   setInterval(() => {
@@ -351,7 +357,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Flush to Supabase when tab is hidden or page unloads
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') flushToSupabase();
+    if (document.visibilityState === 'hidden') {
+      flushPendingChronicleSave();
+      flushToSupabase();
+    }
   });
-  window.addEventListener('pagehide', () => flushToSupabase());
+  window.addEventListener('pagehide', () => {
+    flushPendingChronicleSave();
+    flushToSupabase();
+  });
 });

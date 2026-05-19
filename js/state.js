@@ -127,7 +127,35 @@ export function migrateState(s) {
       !Array.isArray(entry) &&
       isValidReminderTime(entry.bedtime)
     )
-    .map(([date, entry]) => [date, { bedtime: entry.bedtime }]));
+    .map(([date, entry]) => {
+      const cleanEntry = { bedtime: entry.bedtime };
+      if (typeof entry.note === 'string' && entry.note.trim()) {
+        cleanEntry.note = entry.note.trim().slice(0, 500);
+      }
+      return [date, cleanEntry];
+    }));
+  s.mind = s.mind && typeof s.mind === 'object' && !Array.isArray(s.mind)
+    ? s.mind : {};
+  const _todayStr = ymd(new Date());
+  s.mind.sessions = Array.isArray(s.mind.sessions)
+    ? s.mind.sessions.filter(sess =>
+        sess &&
+        typeof sess === 'object' &&
+        typeof sess.id === 'string' && sess.id &&
+        isYmd(sess.date) &&
+        typeof sess.durationMinutes === 'number' && sess.durationMinutes > 0 &&
+        typeof sess.completed === 'boolean'
+      ).filter(sess => sess.completed || sess.date === _todayStr)
+      .map(sess => ({
+        id: sess.id,
+        date: sess.date,
+        startedAt: typeof sess.startedAt === 'string' ? sess.startedAt : new Date().toISOString(),
+        durationMinutes: sess.durationMinutes,
+        endedAt: typeof sess.endedAt === 'string' ? sess.endedAt : null,
+        completed: sess.completed,
+        reflection: typeof sess.reflection === 'string' ? sess.reflection.trim().slice(0, 500) : '',
+      }))
+    : [];
   return s;
 }
 

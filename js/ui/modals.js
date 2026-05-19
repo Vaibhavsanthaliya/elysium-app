@@ -3,17 +3,32 @@
 // consume the imports inside function bodies, never at module evaluation time.
 // Future EA: resolve via event delegation in main.js.
 import { TASK_INFO } from '../constants.js';
-import { formatTime12, isValidReminderTime, uid } from '../utils.js';
+import { daysBetween, formatTime12, isValidReminderTime, uid } from '../utils.js';
 import { state, saveState, todayStr } from '../state.js';
 import {
-  getRecentSleepHistory,
   getSleepEntry,
-  saveSleepBedtime as upsertSleepBedtime,
+  isClosedForToday,
+  reopenSleepClosure,
+  saveSleepClosure,
 } from '../domains/sleep.js';
+import {
+  beginMindSession,
+  endMindSession,
+  formatHeldMs,
+  getMostRecentReflectionSession,
+  getTodaySession,
+} from '../domains/mind.js';
 import { showToast } from './toast.js';
+import { renderTemple } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
 
-let editContext = null; // { mode: 'add'|'edit', section, task, cycleDay }
+let editContext = null;
+const MIND_MIN_HELD_MS = 60000;
+let mindSelectedDuration = 25;
+let mindActiveSessionId = null;
+let mindHolding = false;
+let mindHoldStartedAtMs = 0;
+let mindHoldTimer = null;
 
 export function openTaskInfoModal(taskId) {
   const info = TASK_INFO[taskId];
@@ -34,58 +49,213 @@ export function closeTaskInfoModal() {
 // with addEventListener wiring in main.js (future EA).
 window.closeTaskInfoModal = closeTaskInfoModal;
 
-function formatSleepHistoryDate(dateStr, index) {
-  if (index === 0) return 'TODAY';
-  return new Date(`${dateStr}T00:00:00`).toLocaleDateString(undefined, {
-    weekday: 'short',
-  }).toUpperCase();
-}
-
-function renderSleepHistory() {
-  const historyEl = document.getElementById('sleep-history-list');
-  if (!historyEl) return;
-
-  historyEl.innerHTML = getRecentSleepHistory().map(({ dateStr, entry }, index) => `
-    <div class="sleep-history-row${entry ? ' has-entry' : ''}">
-      <span class="sleep-history-date">${formatSleepHistoryDate(dateStr, index)}</span>
-      <span class="sleep-history-dot" aria-hidden="true"></span>
-      <span class="sleep-history-time">${entry ? formatTime12(entry.bedtime) : '—'}</span>
-    </div>
-  `).join('');
-}
-
 export function openSleepModal() {
   const modal = document.getElementById('sleep-modal');
-  const input = document.getElementById('sleep-bedtime');
+  const stateA = document.getElementById('sleep-state-a');
+  const stateB = document.getElementById('sleep-state-b');
   const entry = getSleepEntry(todayStr);
-  input.value = entry?.bedtime || '';
-  renderSleepHistory();
+
+  if (entry) {
+    stateA.hidden = true;
+    stateB.hidden = false;
+  } else {
+    stateA.hidden = false;
+    stateB.hidden = true;
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const eyebrow = document.getElementById('sleep-eyebrow');
+    if (eyebrow) eyebrow.textContent = `HYPNOS · ${hh}:${mm}`;
+    const lightsEl = document.getElementById('sleep-tonight-lights');
+    const bedEl = document.getElementById('sleep-tonight-bed');
+    if (lightsEl) lightsEl.textContent = isValidReminderTime(state.reminders?.checkInTime)
+      ? formatTime12(state.reminders.checkInTime) : '—';
+    if (bedEl) bedEl.textContent = isValidReminderTime(state.reminders?.nightTime)
+      ? formatTime12(state.reminders.nightTime) : '—';
+    const noteEl = document.getElementById('sleep-note');
+    if (noteEl) noteEl.value = '';
+  }
+
   modal.hidden = false;
-  setTimeout(() => input.focus(), 250);
 }
 
 export function closeSleepModal() {
+  if (isClosedForToday()) return false;
   document.getElementById('sleep-modal').hidden = true;
+  return true;
 }
 
 export function saveSleepModal() {
-  const input = document.getElementById('sleep-bedtime');
-  const bedtime = input.value.trim();
-  if (!isValidReminderTime(bedtime)) {
-    showToast('Enter a valid bedtime');
+  const noteText = document.getElementById('sleep-note')?.value?.trim() || '';
+  if (!saveSleepClosure(todayStr, noteText)) {
+    showToast('Could not save');
     return;
   }
-  if (!upsertSleepBedtime(todayStr, bedtime)) {
-    showToast('Could not save bedtime');
+  saveState();
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const sleepStateEl = document.getElementById('temple-sleep-state');
+  if (sleepStateEl) sleepStateEl.textContent = formatTime12(`${hh}:${mm}`);
+  document.getElementById('sleep-state-a').hidden = true;
+  document.getElementById('sleep-state-b').hidden = false;
+}
+
+export function reopenSleepModal() {
+  if (!reopenSleepClosure(todayStr)) {
+    showToast('Could not reopen');
+    return false;
+  }
+  saveState();
+  renderTemple();
+  document.getElementById('sleep-modal').hidden = true;
+  return true;
+}
+
+function clearMindHoldTimer() {
+  if (!mindHoldTimer) return;
+  clearInterval(mindHoldTimer);
+  mindHoldTimer = null;
+}
+
+function getMindHoldElapsedMs() {
+  if (!mindHoldStartedAtMs) return 0;
+  return Math.max(0, Date.now() - mindHoldStartedAtMs);
+}
+
+function updateMindHoldUi() {
+  const elapsedMs = getMindHoldElapsedMs();
+  const elapsedEl = document.getElementById('mind-held-elapsed');
+  const endBtn = document.getElementById('mind-end');
+  const fillEl = document.getElementById('mind-held-fill');
+  const durationMs = Math.max(1, mindSelectedDuration * 60000);
+  const progress = Math.min(1, elapsedMs / durationMs);
+
+  if (elapsedEl) elapsedEl.textContent = `Held · ${formatHeldMs(elapsedMs)}`;
+  if (fillEl) fillEl.style.setProperty('--mind-held-progress', String(progress));
+  if (endBtn) {
+    const canEnd = elapsedMs >= MIND_MIN_HELD_MS;
+    endBtn.disabled = !canEnd;
+    endBtn.textContent = canEnd ? 'End session' : 'Hold a little longer';
+    endBtn.setAttribute('aria-disabled', String(!canEnd));
+  }
+}
+
+function renderMindRecentReflection() {
+  const el = document.getElementById('mind-recent-reflection');
+  if (!el) return;
+
+  const recent = getMostRecentReflectionSession();
+  if (!recent) {
+    el.hidden = true;
+    el.textContent = '';
     return;
   }
 
-  saveState();
-  const sleepStateEl = document.getElementById('temple-sleep-state');
-  if (sleepStateEl) sleepStateEl.textContent = formatTime12(bedtime);
-  renderSleepHistory();
-  closeSleepModal();
-  showToast('Bedtime saved');
+  const dayDelta = daysBetween(recent.date, todayStr);
+  const label = dayDelta === 1 ? 'Yesterday' : 'Last held';
+  el.textContent = `${label}: "${recent.reflection.trim()}"`;
+  el.hidden = false;
+}
+
+function showMindState(stateName) {
+  document.getElementById('mind-state-a').hidden = stateName !== 'a';
+  document.getElementById('mind-state-b').hidden = stateName !== 'b';
+  document.getElementById('mind-state-c').hidden = stateName !== 'c';
+}
+
+function setMindDuration(durationMinutes) {
+  mindSelectedDuration = Number(durationMinutes) || 25;
+  document.querySelectorAll('#mind-modal .mind-dur').forEach(btn => {
+    btn.classList.toggle('active', Number(btn.dataset.min) === mindSelectedDuration);
+  });
+}
+
+function startMindHold(session) {
+  mindActiveSessionId = session.id;
+  mindHolding = true;
+  setMindDuration(session.durationMinutes);
+  const startMs = Date.parse(session.startedAt || '');
+  mindHoldStartedAtMs = Number.isFinite(startMs) ? startMs : Date.now();
+  showMindState('b');
+  updateMindHoldUi();
+  clearMindHoldTimer();
+  mindHoldTimer = setInterval(updateMindHoldUi, 1000);
+}
+
+function openMindModal() {
+  clearMindHoldTimer();
+  mindActiveSessionId = null;
+  mindHolding = false;
+  mindHoldStartedAtMs = 0;
+  setMindDuration(25);
+  renderMindRecentReflection();
+
+  const reflEl = document.getElementById('mind-reflection');
+  if (reflEl) reflEl.value = '';
+
+  const activeSession = getTodaySession();
+  if (activeSession && !activeSession.completed) {
+    startMindHold(activeSession);
+  } else {
+    showMindState('a');
+  }
+
+  document.getElementById('mind-modal').hidden = false;
+}
+
+function closeMindModal() {
+  if (mindHolding) return;
+  clearMindHoldTimer();
+  document.getElementById('mind-modal').hidden = true;
+  mindActiveSessionId = null;
+  mindHoldStartedAtMs = 0;
+}
+
+export function registerMindModal() {
+  document.getElementById('temple-goto-mind')?.addEventListener('click', openMindModal);
+  document.getElementById('mind-modal-backdrop')?.addEventListener('click', closeMindModal);
+
+  document.querySelectorAll('#mind-modal .mind-dur').forEach(btn => {
+    btn.addEventListener('click', () => setMindDuration(btn.dataset.min));
+  });
+
+  document.getElementById('mind-begin')?.addEventListener('click', () => {
+    const session = beginMindSession(mindSelectedDuration);
+    startMindHold(session);
+    saveState();
+  });
+
+  document.getElementById('mind-end')?.addEventListener('click', () => {
+    if (!mindHolding || getMindHoldElapsedMs() < MIND_MIN_HELD_MS) {
+      updateMindHoldUi();
+      return;
+    }
+
+    mindHolding = false;
+    clearMindHoldTimer();
+    if (mindActiveSessionId) {
+      endMindSession(mindActiveSessionId, '');
+      saveState();
+      renderTemple();
+    }
+    showMindState('c');
+    setTimeout(() => document.getElementById('mind-reflection')?.focus(), 200);
+  });
+
+  document.getElementById('mind-complete')?.addEventListener('click', () => {
+    const reflection = document.getElementById('mind-reflection')?.value?.trim() || '';
+    if (mindActiveSessionId) {
+      endMindSession(mindActiveSessionId, reflection);
+    }
+    saveState();
+    renderTemple();
+    document.getElementById('mind-modal').hidden = true;
+    mindActiveSessionId = null;
+    mindHolding = false;
+    mindHoldStartedAtMs = 0;
+    clearMindHoldTimer();
+  });
 }
 
 export function openEditModal(section, task) {

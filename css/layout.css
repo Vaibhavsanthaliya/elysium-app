@@ -87,43 +87,6 @@
   text-transform: uppercase;
 }
 
-.streak-pill {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: transparent;
-  color: var(--muted-text);
-  padding: 0;
-  border-radius: 0;
-  border: none;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 400;
-  letter-spacing: 0.16em;
-  line-height: 1.15;
-  text-transform: uppercase;
-  white-space: nowrap;
-  cursor: default;
-  margin: 0;
-}
-
-.streak-pill:active { transform: none; }
-
-/* ── EA-23: Streak pill bronze ───────────────────────────────────────────── */
-.streak-pill {
-  background: transparent;
-  color: var(--muted-text);
-}
-
-.streak-pill #streak-num {
-  color: var(--bronze);
-}
-
-.streak-label {
-  color: var(--muted-text);
-}
-
 /* ============== BOTTOM TAB BAR ============== */
 .tabs {
   position: fixed;

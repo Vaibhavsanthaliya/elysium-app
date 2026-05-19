@@ -1,7 +1,7 @@
 /* Skin — Service Worker
    Cache shell for offline + standalone install */
 
-const CACHE_NAME = 'elysium-v4';
+const CACHE_NAME = 'elysium-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -29,6 +29,7 @@ const ASSETS = [
   './js/domains/chronicle.js',
   './js/domains/light.js',
   './js/domains/sleep.js',
+  './js/domains/mind.js',
   './js/services/photos.js',
   './js/services/notifications.js',
   './js/render/common.js',

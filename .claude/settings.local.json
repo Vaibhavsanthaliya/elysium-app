@@ -30,7 +30,15 @@
       "Skill(vercel:deploy:*)",
       "Bash(gunzip -c \"/Users/macm92/.claude/projects/-Volumes-external-Projects-elysium-app/e5fd75c8-1f60-4ed1-922f-449e1e30ac7c/tool-results/webfetch-1779122196893-pkv77q.bin\")",
       "Bash(tar -t)",
-      "Bash(tar -x -C /tmp/elysium-design)"
+      "Bash(tar -x -C /tmp/elysium-design)",
+      "Bash(vercel --version)",
+      "Bash(vercel)",
+      "Bash(gunzip -c \"/Users/macm92/.claude/projects/-Volumes-external-Projects-elysium-app/635262d8-bc9d-49c8-8254-3438048f0e24/tool-results/webfetch-1779125675058-u30sna.bin\")",
+      "Bash(grep -E \"\\\\.html$|\\\\.css$|\\\\.jsx$|\\\\.js$\")",
+      "Bash(tar -xO \"elysium-app/project/Elysium - Ritual Philosophy.html\")",
+      "Bash(tar -xO \"elysium-app/project/philosophy-sketches.jsx\")",
+      "Bash(node --input-type=module)",
+      "Bash(node *)"
     ]
   }
 }

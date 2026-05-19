@@ -27,33 +27,6 @@ export function getTodayChecks() {
   return state.checks[todayStr];
 }
 
-export function getStreak() {
-  let streak = 0;
-  const d = new Date(todayStr + 'T00:00:00');
-  if (!state.loggedDays.includes(todayStr)) {
-    d.setDate(d.getDate() - 1);
-  }
-  while (true) {
-    const s = ymd(d);
-    if (state.loggedDays.includes(s)) {
-      streak++;
-      d.setDate(d.getDate() - 1);
-    } else break;
-  }
-  return streak;
-}
-
-export function getMissedDays() {
-  let missed = 0;
-  const d = new Date(todayStr + 'T00:00:00');
-  d.setDate(d.getDate() - 1);
-  for (let i = 0; i < 7; i++) {
-    if (!state.loggedDays.includes(ymd(d))) { missed++; d.setDate(d.getDate() - 1); }
-    else break;
-  }
-  return missed;
-}
-
 export function getDaysSinceStart() {
   const startDate = isYmd(state.startDate) ? state.startDate : todayStr;
   return Math.max(0, daysBetween(startDate, todayStr));

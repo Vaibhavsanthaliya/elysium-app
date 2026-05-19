@@ -66,14 +66,14 @@ export async function toggleNotifications(enable) {
       return;
     }
     state.reminders.enabled = true;
-    showToast('Reminders on');
+    showToast('Practice cues on');
     saveState();
     scheduleReminders();
-    fireNotification('Reminders enabled', 'Your ritual reminders are active.', 'skin-reminders-enabled');
+    fireNotification('Practice cues on', 'Your ritual cues are active.', 'skin-reminders-enabled');
   } else {
     state.reminders.enabled = false;
     clearScheduledReminders();
-    showToast('Reminders off');
+    showToast('Practice cues off');
     saveState();
   }
   updateNotifStatus();
@@ -85,7 +85,7 @@ export function scheduleReminders() {
 
   scheduleNextFor(state.reminders.morningTime, 'Morning care ritual', 'Time to wash your face and apply sunscreen ☀', 'skin-morning');
   scheduleNextFor(state.reminders.nightTime, () => `Tonight — ${CYCLE_NAMES[state.cycleDay]}`, () => `Cycle day ${state.cycleDay + 1}: ${CYCLE_DESC[state.cycleDay]}`, 'skin-night');
-  scheduleNextFor(state.reminders.checkInTime, 'Daily check-in', 'Did you complete your ritual today? Tap to log.', 'skin-checkin');
+  scheduleNextFor(state.reminders.checkInTime, 'Evening cue', 'Did you complete your ritual today? Tap to log.', 'skin-checkin');
 }
 
 export async function fireNotification(titleStr, bodyStr, tag) {

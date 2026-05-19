@@ -452,7 +452,7 @@
 }
 
 /* Disable text selection on UI chrome */
-.tab, .add-btn, .task-check, .section-icon, .streak-pill, .cycle-card-top, .cycle-active-badge {
+.tab, .add-btn, .task-check, .section-icon, .cycle-card-top, .cycle-active-badge {
   user-select: none;
   -webkit-user-select: none;
 }

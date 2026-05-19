@@ -16,6 +16,17 @@ export function getSleepEntry(dateStr = todayStr) {
   return entry && isValidReminderTime(entry.bedtime) ? entry : null;
 }
 
+export function isClosedForToday(dateStr = todayStr) {
+  return Boolean(getSleepEntry(dateStr));
+}
+
+export function reopenSleepClosure(dateStr = todayStr) {
+  if (!isYmd(dateStr)) return false;
+  ensureSleepState();
+  delete state.sleep.entries[dateStr];
+  return true;
+}
+
 export function getLastSleepEntry() {
   const entries = Object.entries(state.sleep?.entries || {})
     .filter(([dateStr, entry]) => isYmd(dateStr) && isValidReminderTime(entry?.bedtime))
@@ -43,5 +54,17 @@ export function saveSleepBedtime(dateStr, bedtime) {
   if (!isYmd(dateStr) || !isValidReminderTime(bedtime)) return false;
   ensureSleepState();
   state.sleep.entries[dateStr] = { bedtime };
+  return true;
+}
+
+export function saveSleepClosure(dateStr, noteText) {
+  if (!isYmd(dateStr)) return false;
+  ensureSleepState();
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const entry = { bedtime: `${hh}:${mm}` };
+  if (noteText) entry.note = noteText.trim().slice(0, 500);
+  state.sleep.entries[dateStr] = entry;
   return true;
 }

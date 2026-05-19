@@ -1,52 +1,90 @@
 import { state, todayStr } from '../state.js';
 import { formatTime12 } from '../utils.js';
-import { getAllTodayTasks, getTodayChecks, getStreak, getMissedDays } from '../domains/care.js';
+import { CYCLE_NAMES } from '../constants.js';
+import { getTodayChecks, getNightTasks } from '../domains/care.js';
 import { getLightEntry } from '../domains/light.js';
 import { getLastSleepEntry } from '../domains/sleep.js';
+import { formatHeldMs, getMostRecentSession, getSessionHeldMs } from '../domains/mind.js';
 
-// Returns a one-line status string for the Care ring hero area and Temple featured card.
-// Lives here because Temple is the primary consumer; Today's ring imports it for consistency.
-export function getSmartFeedback(pct) {
-  const streak = getStreak();
-  const missed = getMissedDays();
+// Returns a one-line status string for the Care hero area and Temple featured card.
+// Lives here because Temple is the primary consumer; Today imports it for consistency.
+const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
+const CARE_CYCLE_COPY = [
+  {
+    tonight: 'Niacinamide tonight.',
+    motion: 'Niacinamide — in motion.',
+    kept: 'Night I kept. Salicylic tomorrow.',
+  },
+  {
+    tonight: 'Salicylic tonight. A light hand.',
+    motion: 'Salicylic — in motion.',
+    kept: 'Night II kept. Rest tomorrow.',
+  },
+  {
+    tonight: 'Rest night.',
+    motion: 'Rest night. Niacinamide returns tomorrow.',
+    kept: 'Night III kept. Niacinamide returns tomorrow.',
+  },
+];
 
-  if (pct === 100) return 'Ritual complete.';
+function getCareCycleCopy(cycleDay = state.cycleDay) {
+  return CARE_CYCLE_COPY[cycleDay] || CARE_CYCLE_COPY[0];
+}
 
-  if (streak >= 21) return 'Twenty-one days. This is a habit now.';
-  if (streak >= 14) return 'Two weeks straight. Your skin is noticing.';
-  if (streak >= 10) return 'Consistency is forming. Don\'t break it.';
-  if (streak >= 7)  return 'One week streak. Real results start here.';
-  if (streak >= 5)  return 'You\'re doing better than most. Keep going.';
-  if (streak >= 3)  return 'Three days in. Momentum is building.';
+export function getCareCycleLabel(cycleDay = state.cycleDay) {
+  const roman = CARE_CYCLE_ROMAN[cycleDay] || CARE_CYCLE_ROMAN[0];
+  const name = CYCLE_NAMES[cycleDay] || CYCLE_NAMES[0];
+  return `Night ${roman} · ${name}`;
+}
 
-  if (missed >= 3) return 'A few days off. Start fresh with the basics.';
-  if (missed >= 2) return 'You slipped. Return to the basics.';
-  if (missed === 1 && pct > 0) return 'Back at it — good.';
-  if (missed === 1) return 'Yesterday was a miss. Start now.';
+export function getCareTurnState() {
+  const copy = getCareCycleCopy();
+  const checks = getTodayChecks();
+  const nightTasks = getNightTasks();
+  const nightDone = nightTasks.filter(t => checks[t.id]).length;
+  const nightKept = nightTasks.length > 0 && nightDone === nightTasks.length;
+  const protocol = CYCLE_NAMES[state.cycleDay] || CYCLE_NAMES[0];
+  const isRest = protocol.toLowerCase().includes('rest');
 
-  if (pct >= 67) return 'Almost there';
-  if (pct >= 34) return 'Halfway through';
-  if (pct > 0)   return 'Off to a good start';
-  if (streak === 1) return 'Day one. Show up again tomorrow.';
+  if (nightKept) {
+    return { key: 'kept', label: 'kept', copy: copy.kept };
+  }
 
-  return 'Begin the ritual.';
+  if (nightDone > 0) {
+    return { key: 'motion', label: 'in motion', copy: copy.motion };
+  }
+
+  if (isRest) {
+    return { key: 'resting', label: 'resting', copy: copy.tonight };
+  }
+
+  return { key: 'untouched', label: 'untouched', copy: copy.tonight };
+}
+
+export function getSmartFeedback() {
+  return getCareTurnState().copy;
+}
+
+function renderTempleCycleIndicator(turnState) {
+  const indicator = document.getElementById('temple-cycle-indicator');
+  if (!indicator) return;
+
+  indicator.dataset.careState = turnState.key;
+  indicator.querySelectorAll('[data-cycle-mark]').forEach(mark => {
+    const cycleMark = Number(mark.dataset.cycleMark);
+    mark.classList.toggle('is-current', cycleMark === state.cycleDay);
+  });
+
+  const label = document.getElementById('temple-cycle-state');
+  if (label) label.textContent = turnState.label;
 }
 
 export function renderTemple() {
-  const all = getAllTodayTasks();
-  const checks = getTodayChecks();
-  const done = all.filter(t => checks[t.id]).length;
-  const pct = all.length ? Math.round(done / all.length * 100) : 0;
+  const turnState = getCareTurnState();
 
-  const arc = document.getElementById('temple-ring-fg');
-  const circumference = 69.12;
-  arc.style.strokeDashoffset = circumference - (circumference * pct / 100);
-  document.getElementById('temple-ring-pct').textContent = pct;
-
-  document.getElementById('temple-status').textContent = getSmartFeedback(pct);
-
-  const blurbs = ['Niacinamide tonight.', 'Salicylic acid tonight.', 'Rest night.'];
-  document.getElementById('temple-hero-cycle').textContent = blurbs[state.cycleDay];
+  document.getElementById('temple-status').textContent = getCareCycleLabel();
+  document.getElementById('temple-hero-cycle').textContent = turnState.copy;
+  renderTempleCycleIndicator(turnState);
 
   const hasNote = !!(state.chronicle?.notes?.[todayStr]?.body);
   document.getElementById('temple-chronicle-state').textContent = hasNote ? 'Written' : 'Quiet';
@@ -61,5 +99,11 @@ export function renderTemple() {
   if (sleepStateEl) {
     const lastSleep = getLastSleepEntry();
     sleepStateEl.textContent = lastSleep ? formatTime12(lastSleep.bedtime) : 'Quiet';
+  }
+
+  const mindStateEl = document.getElementById('temple-mind-state');
+  if (mindStateEl) {
+    const recent = getMostRecentSession();
+    mindStateEl.textContent = recent ? `Held · ${formatHeldMs(getSessionHeldMs(recent))}` : '—';
   }
 }

@@ -10,18 +10,83 @@
   margin-bottom: 8px;
 }
 
-.past-day-section {
-  margin-bottom: 16px;
+.past-day-record {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.past-day-section-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--label-secondary);
+.past-day-date-meta,
+.past-day-protocol,
+.past-day-chronicle-label {
+  font-family: var(--font-mono);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0 4px;
-  margin-bottom: 6px;
+  font-weight: 400;
+}
+
+.past-day-date-meta {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--bronze);
+  margin: 0;
+}
+
+.past-day-memory-card {
+  border-top: 1px solid var(--separator-warm);
+  border-bottom: 1px solid var(--separator-warm);
+  padding: 18px 0;
+}
+
+.past-day-protocol {
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  color: var(--muted-text);
+  margin: 0 0 10px;
+}
+
+.past-day-state-line {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--oracle-text);
+  margin: 0;
+}
+
+.past-day-state-line em {
+  color: var(--bronze);
+  font-style: italic;
+}
+
+.past-day-record.state-partial .past-day-state-line em {
+  color: var(--bronze-dim);
+}
+
+.past-day-record.state-missed .past-day-state-line em,
+.past-day-record.state-quiet .past-day-state-line em {
+  color: var(--muted-text);
+}
+
+.past-day-chronicle {
+  border-top: 1px solid var(--separator-warm);
+  padding-top: 14px;
+}
+
+.past-day-chronicle-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--bronze);
+  margin: 0 0 8px;
+}
+
+.past-day-chronicle-body {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--muted-text);
+  margin: 0;
 }
 
 /* ── EA-26: Past-day scrollbar hiding ───────────────────────────────────── */
@@ -287,109 +352,377 @@ select.field-input {
   color: var(--muted-text);
 }
 
-/* ── EA-43: Sleep bedtime modal ─────────────────────────────────────────── */
-#sleep-modal .sleep-modal-eyebrow {
+/* ── EA-47: Sleep closure ritual modal ───────────────────────────────────── */
+#sleep-modal .sleep-eyebrow {
   font-family: var(--font-mono);
   font-size: 9.5px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--bronze);
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
-#sleep-modal .sleep-modal-title {
-  margin-bottom: 6px;
+#sleep-modal .sleep-title {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+  margin: 0 0 6px;
 }
 
-#sleep-modal .sleep-modal-help {
-  font-size: 13px;
+#sleep-modal .sleep-title em {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--bronze);
+}
+
+#sleep-modal .sleep-sub {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
   color: var(--muted-text);
   margin: 0 0 20px;
 }
 
-#sleep-modal .sleep-modal-body {
-  gap: 20px;
+#sleep-modal .sleep-note {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--separator-warm);
+  padding: 8px 0 12px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--oracle-text);
+  resize: none;
+  outline: none;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
 
-#sleep-modal .sleep-time-input {
+#sleep-modal .sleep-note::placeholder {
+  color: var(--muted-text);
+  opacity: 0.65;
+}
+
+#sleep-modal .sleep-handoff {
   font-family: var(--font-mono);
-  letter-spacing: 0.08em;
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  opacity: 0.65;
+  margin-bottom: 24px;
 }
 
-#sleep-modal .sleep-history {
+#sleep-modal .sleep-tonight {
   border-top: 1px solid var(--separator-warm);
   padding-top: 14px;
+  margin-bottom: 24px;
 }
 
-#sleep-modal .sleep-history-head {
+#sleep-modal .sleep-tonight-head {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin-bottom: 10px;
+}
+
+#sleep-modal .sleep-tonight-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+#sleep-modal .sleep-tonight-row:last-child {
+  border-bottom: none;
+}
+
+#sleep-modal .sleep-tonight-act {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--oracle-text);
+}
+
+#sleep-modal .sleep-tonight-time {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted-text);
+}
+
+/* State B — goodnight screen */
+#sleep-modal #sleep-state-b {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0 8px;
+  text-align: center;
+}
+
+#sleep-modal #sleep-state-b[hidden] {
+  display: none;
+}
+
+#sleep-modal .sleep-moon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid var(--separator-warm);
+  background: var(--bg-elevated);
+  box-shadow: inset -14px -6px 0 0 var(--bg);
+  margin: 0 auto 28px;
+}
+
+@media (prefers-color-scheme: dark) {
+  #sleep-modal .sleep-moon {
+    box-shadow: inset -14px -6px 0 0 #0a0a12;
+  }
+}
+
+#sleep-modal .sleep-goodnight {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+  margin: 0 0 10px;
+}
+
+#sleep-modal .sleep-goodnight em {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--bronze);
+}
+
+#sleep-modal .sleep-quiet {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin: 0 0 32px;
+}
+
+#sleep-modal .sleep-reopen {
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  opacity: 0.82;
+}
+
+/* ── EA-60/65: Mind domain modal ─────────────────────────────────────────── */
+#mind-modal .mind-modal-sheet {
+  overflow: hidden;
+}
+
+#mind-modal .mind-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-bottom: 12px;
+}
+
+#mind-modal .mind-title {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+  margin: 0 0 6px;
+}
+
+#mind-modal .mind-title em {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--bronze);
+}
+
+#mind-modal .mind-sub {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--muted-text);
+  margin: 0 0 28px;
+}
+
+#mind-modal .mind-dur-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+#mind-modal .mind-dur {
+  flex: 1;
+  padding: 14px 0;
+  background: transparent;
+  border: 1px solid var(--separator-warm);
+  border-radius: var(--r-md, 14px);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--muted-text);
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+#mind-modal .mind-dur.active {
+  border-color: var(--bronze);
+  color: var(--oracle-text);
+  background: rgba(201, 165, 107, 0.08);
+}
+
+@media (prefers-color-scheme: light) {
+  #mind-modal .mind-dur.active {
+    background: rgba(160, 122, 74, 0.09);
+  }
+}
+
+#mind-modal .mind-dur-unit {
   font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted-text);
-  margin-bottom: 8px;
+  margin-bottom: 22px;
 }
 
-#sleep-modal .sleep-history-list {
-  display: flex;
-  flex-direction: column;
-}
-
-#sleep-modal .sleep-history-row {
-  display: grid;
-  grid-template-columns: 52px 1fr 86px;
-  align-items: center;
-  gap: 12px;
-  min-height: 34px;
-  border-bottom: 1px solid var(--separator-warm);
-}
-
-#sleep-modal .sleep-history-row:last-child {
-  border-bottom: none;
-}
-
-#sleep-modal .sleep-history-date,
-#sleep-modal .sleep-history-time {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-#sleep-modal .sleep-history-date {
+#mind-modal .mind-recent-reflection {
+  border-top: 1px solid var(--separator-warm);
+  padding-top: 14px;
+  margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.45;
   color: var(--muted-text);
 }
 
-#sleep-modal .sleep-history-time {
-  color: var(--label-tertiary);
-  text-align: right;
+#mind-modal .mind-recent-reflection[hidden] {
+  display: none;
 }
 
-#sleep-modal .sleep-history-dot {
-  position: relative;
-  display: block;
-  height: 1px;
-  background: var(--separator-warm);
+/* State B — holding */
+#mind-modal #mind-state-b {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 8px;
+  text-align: center;
 }
 
-#sleep-modal .sleep-history-dot::before {
-  content: "";
+#mind-modal #mind-state-b[hidden] {
+  display: none;
+}
+
+#mind-modal #mind-state-b .mind-eyebrow {
+  margin-bottom: 28px;
+}
+
+#mind-modal .mind-holding {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--oracle-text);
+  margin: 0 0 16px;
+  line-height: 1;
+}
+
+#mind-modal .mind-holding-dur {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin-bottom: 44px;
+}
+
+/* "End session" — quiet text action, not a primary CTA */
+#mind-modal .mind-end-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  padding: 12px;
+  cursor: pointer;
+  opacity: 0.75;
+  min-height: 44px;
+}
+
+#mind-modal .mind-end-btn:disabled {
+  cursor: default;
+  opacity: 0.48;
+}
+
+#mind-modal .mind-held-line {
   position: absolute;
   left: 0;
-  top: 50%;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  border: 1px solid var(--separator-warm);
-  background: var(--bg-grouped);
-  transform: translateY(-50%);
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--separator-warm);
+  overflow: hidden;
 }
 
-#sleep-modal .sleep-history-row.has-entry .sleep-history-dot::before {
+#mind-modal .mind-held-line span {
+  display: block;
+  width: 100%;
+  height: 100%;
   background: var(--bronze);
-  border-color: var(--bronze);
+  opacity: 0.72;
+  transform: scaleX(var(--mind-held-progress, 0));
+  transform-origin: left center;
+  transition: transform 1000ms linear;
 }
 
-#sleep-modal .sleep-history-row.has-entry .sleep-history-time {
+@media (prefers-reduced-motion: reduce) {
+  #mind-modal .mind-held-line span {
+    transition: none;
+  }
+}
+
+/* State C — reflection */
+#mind-modal #mind-state-c[hidden] {
+  display: none;
+}
+
+#mind-modal .mind-reflection {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--separator-warm);
+  padding: 8px 0 12px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
   color: var(--oracle-text);
+  resize: none;
+  outline: none;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+#mind-modal .mind-reflection::placeholder {
+  color: var(--muted-text);
+  opacity: 0.65;
 }

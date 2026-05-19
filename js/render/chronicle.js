@@ -1,20 +1,15 @@
 import { state, todayStr, saveState } from '../state.js';
 import { formatTime12 } from '../utils.js';
-import { showToast } from '../ui/toast.js';
 import { getChronicleNote, upsertChronicleNote } from '../domains/chronicle.js';
 
-const PROMPTS = [
-  'What did today ask of you?',
-  'A moment worth keeping.',
-  'What held your attention?',
-  'How did the ritual feel?',
-  'What would you tell tomorrow?',
-  'Was anything different today?',
-  'What deserves to be remembered?',
-];
+const CHRONICLE_PROMPT = 'What asked something of you today?';
+const CHRONICLE_AUTOSAVE_DELAY = 800;
+const DRIFT_MAX = 12;
 
 const DAYS  = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+let chronicleSaveTimer = null;
+let chronicleDirty = false;
 
 function formatDriftDate(dateStr) {
   const [y, m, d] = dateStr.split('-').map(Number);
@@ -23,11 +18,18 @@ function formatDriftDate(dateStr) {
 }
 
 function escapeHtml(str) {
-  return str
+  return String(str)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function quietClass(index) {
+  if (index >= 9) return ' is-faint';
+  if (index >= 6) return ' is-quieter';
+  if (index >= 3) return ' is-quiet';
+  return '';
 }
 
 function getPastEntries() {
@@ -51,21 +53,20 @@ function renderDrift(el) {
 
   if (entries.length === 0) {
     if (riverHd) riverHd.hidden = true;
-    el.innerHTML = '<p class="chronicle-drift-empty">No earlier entries yet.</p>';
+    el.innerHTML = '';
     return;
   }
 
   if (riverHd) riverHd.hidden = false;
 
   const ago = getYearAgoEntry();
-  const MAX = 3;
   let shown = 0;
   let html = '';
 
   if (ago) {
     html += `<div class="chronicle-drift-ago">
       <div class="chronicle-drift-ago-label">A year ago today</div>
-      <div class="chronicle-drift-entry">
+      <div class="chronicle-drift-entry${quietClass(shown)}">
         <div class="chronicle-drift-date">${formatDriftDate(ago.dateStr)}</div>
         <div class="chronicle-drift-body">${escapeHtml(ago.note.body)}</div>
       </div>
@@ -74,9 +75,9 @@ function renderDrift(el) {
   }
 
   for (const [dateStr, note] of entries) {
-    if (shown >= MAX) break;
+    if (shown >= DRIFT_MAX) break;
     if (ago && dateStr === ago.dateStr) continue;
-    html += `<div class="chronicle-drift-entry">
+    html += `<div class="chronicle-drift-entry${quietClass(shown)}">
       <div class="chronicle-drift-date">${formatDriftDate(dateStr)}</div>
       <div class="chronicle-drift-body">${escapeHtml(note.body)}</div>
     </div>`;
@@ -93,25 +94,63 @@ export function renderChronicle() {
   const promptEl = document.getElementById('chronicle-prompt-q');
   const driftEl = document.getElementById('chronicle-drift');
 
-  textarea.value = note ? note.body : '';
-  if (promptEl) promptEl.textContent = PROMPTS[new Date().getDay()];
+  if (textarea && !chronicleDirty) textarea.value = note ? note.body : '';
+  if (promptEl) promptEl.textContent = CHRONICLE_PROMPT;
 
-  if (note && note.updatedAt) {
-    const d = new Date(note.updatedAt);
-    const hh = String(d.getHours()).padStart(2, '0');
-    const mm = String(d.getMinutes()).padStart(2, '0');
-    status.textContent = `Saved · ${formatTime12(`${hh}:${mm}`)}`;
-  } else {
-    status.textContent = 'No entry yet';
+  if (status) {
+    if (chronicleDirty) {
+      status.textContent = '';
+      status.hidden = true;
+    } else if (note && note.updatedAt) {
+      const d = new Date(note.updatedAt);
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      status.textContent = `Saved · ${formatTime12(`${hh}:${mm}`)}`;
+      status.hidden = false;
+    } else {
+      status.textContent = '';
+      status.hidden = true;
+    }
   }
 
   if (driftEl) renderDrift(driftEl);
 }
 
 export function saveChronicleNote() {
-  const body = document.getElementById('chronicle-textarea').value.trim();
+  if (!chronicleDirty) return false;
+  clearTimeout(chronicleSaveTimer);
+  chronicleSaveTimer = null;
+
+  const textarea = document.getElementById('chronicle-textarea');
+  if (!textarea) return false;
+  const body = textarea.value.trim();
+  const note = getChronicleNote(todayStr);
+  const existingBody = note ? note.body : '';
+
+  chronicleDirty = false;
+  if (body === existingBody) {
+    renderChronicle();
+    return false;
+  }
+
   upsertChronicleNote(todayStr, body);
   saveState();
   renderChronicle();
-  showToast(body ? 'Chronicle saved' : 'Entry cleared');
+  return true;
+}
+
+export function scheduleChronicleAutosave() {
+  chronicleDirty = true;
+  const status = document.getElementById('chronicle-status');
+  if (status) {
+    status.textContent = '';
+    status.hidden = true;
+  }
+  clearTimeout(chronicleSaveTimer);
+  chronicleSaveTimer = setTimeout(() => saveChronicleNote(), CHRONICLE_AUTOSAVE_DELAY);
+}
+
+export function flushPendingChronicleSave() {
+  if (!chronicleDirty) return false;
+  return saveChronicleNote();
 }

@@ -54,6 +54,9 @@ export const DEFAULT_DATA = {
   sleep: {
     entries: {},
   },
+  mind: {
+    sessions: [],
+  },
 };
 
 export const CYCLE_NAMES = ['Niacinamide', 'Salicylic', 'Rest night'];

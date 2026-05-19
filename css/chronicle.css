@@ -58,11 +58,6 @@
   margin: 10px 2px 18px;
 }
 
-#pane-chronicle .btn-primary {
-  width: 100%;
-  background: var(--divine-accent);
-}
-
 /* ── EA-17: Chronicle — Obsidian Temple polish ───────────────────────────── */
 
 /* Chronicle card — alabaster warmth (light), warm border, deeper shadow */
@@ -82,11 +77,6 @@
 /* Focus ring — bronze instead of iOS blue */
 #pane-chronicle .chronicle-card:focus-within {
   box-shadow: var(--shadow-card), 0 0 0 2.5px var(--bronze);
-}
-
-/* Save button — radius matches card */
-#pane-chronicle .btn-primary {
-  border-radius: var(--radius-lg);
 }
 
 /* ── EA-32: Chronicle heading ─────────────────────────────────────────────── */
@@ -163,17 +153,8 @@
   text-transform: uppercase;
 }
 
-/* ── EA-32: Save button — warm, not iOS blue ─────────────────────────────── */
-#pane-chronicle .btn-primary {
-  background: var(--obsidian);
-  color: var(--marble);
-}
-
-@media (prefers-color-scheme: dark) {
-  #pane-chronicle .btn-primary {
-    background: var(--bronze);
-    color: var(--bg);
-  }
+.chronicle-status[hidden] {
+  display: none;
 }
 
 /* ── EA-32: Softer focus ring on chronicle card ──────────────────────────── */
@@ -213,6 +194,18 @@
   color: var(--oracle-text);
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.chronicle-drift-entry.is-quiet {
+  opacity: 0.72;
+}
+
+.chronicle-drift-entry.is-quieter {
+  opacity: 0.52;
+}
+
+.chronicle-drift-entry.is-faint {
+  opacity: 0.34;
 }
 
 /* Year-ago surfacing */
