@@ -32,6 +32,8 @@ import {
   reopenSleepModal,
   saveSleepModal,
   registerMindModal,
+  registerConfirmModal,
+  openMindModalIfActive,
 } from './js/ui/modals.js';
 import { showToast } from './js/ui/toast.js';
 import { addWeeklyPhoto, hasPhotoThisWeek } from './js/services/photos.js';
@@ -342,6 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Mind domain modal ---
   registerMindModal();
+  registerConfirmModal();
+  openMindModalIfActive();
 
   // Schedule reminders if already enabled
   if (state.reminders.enabled && 'Notification' in window && Notification.permission === 'granted') {

@@ -449,7 +449,6 @@
 #pane-today .care-support-section {
   margin: 6px 0 28px;
   border-top: 1px solid var(--separator-warm);
-  border-bottom: 1px solid var(--separator-warm);
 }
 
 #pane-today .care-support-summary {

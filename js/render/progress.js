@@ -1,6 +1,6 @@
 import { MILESTONES, CYCLE_NAMES } from '../constants.js';
 import { ymd, escapeHtml } from '../utils.js';
-import { state, todayStr, today } from '../state.js';
+import { state, todayStr, today, saveState } from '../state.js';
 import { getMilestoneStage } from '../state.js';
 import { getDaysSinceStart, getCycleDayForDate } from '../domains/care.js';
 import { getChronicleNote } from '../domains/chronicle.js';
@@ -175,6 +175,8 @@ export function renderPastDayBody(dateStr, cycleDay, providedDate) {
   const status = getRecordStatus(dateStr, date);
   const protocol = getProtocolLabels(cycleDay);
   const chronicleExcerpt = getChronicleExcerpt(dateStr);
+  const isPast = dateStr !== todayStr && date <= today;
+  const isKept = status.key === 'kept';
   const body = document.getElementById('past-day-body');
   body.innerHTML = `
     <div class="past-day-record state-${status.key}">
@@ -187,8 +189,26 @@ export function renderPastDayBody(dateStr, cycleDay, providedDate) {
         <p class="past-day-chronicle-label">Chronicle</p>
         <p class="past-day-chronicle-body">${escapeHtml(chronicleExcerpt)}</p>
       </div>` : ''}
+      ${isPast ? `<div class="past-day-actions">
+        <button class="past-day-mark-btn" data-action="${isKept ? 'clear' : 'mark'}">${isKept ? 'Clear record' : 'Mark as kept'}</button>
+      </div>` : ''}
     </div>
   `;
+
+  if (isPast) {
+    const markBtn = body.querySelector('.past-day-mark-btn');
+    if (markBtn) {
+      markBtn.addEventListener('click', () => {
+        if (isKept) {
+          state.loggedDays = state.loggedDays.filter(d => d !== dateStr);
+        } else if (!state.loggedDays.includes(dateStr)) {
+          state.loggedDays.push(dateStr);
+        }
+        saveState();
+        renderPastDayBody(dateStr, cycleDay, date);
+      });
+    }
+  }
 }
 
 export function closePastDayModal() {

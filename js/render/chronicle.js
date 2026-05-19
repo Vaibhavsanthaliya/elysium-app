@@ -116,26 +116,38 @@ export function renderChronicle() {
   if (driftEl) renderDrift(driftEl);
 }
 
-export function saveChronicleNote() {
+export function saveChronicleNote(fromBlur = false) {
   if (!chronicleDirty) return false;
   clearTimeout(chronicleSaveTimer);
   chronicleSaveTimer = null;
 
   const textarea = document.getElementById('chronicle-textarea');
   if (!textarea) return false;
-  const body = textarea.value.trim();
+  const body = fromBlur ? textarea.value.trim() : textarea.value;
   const note = getChronicleNote(todayStr);
   const existingBody = note ? note.body : '';
 
   chronicleDirty = false;
   if (body === existingBody) {
-    renderChronicle();
+    if (fromBlur) renderChronicle();
     return false;
   }
 
   upsertChronicleNote(todayStr, body);
   saveState();
-  renderChronicle();
+
+  if (fromBlur) {
+    renderChronicle();
+  } else {
+    const status = document.getElementById('chronicle-status');
+    if (status) {
+      const d = new Date();
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      status.textContent = `Saved · ${formatTime12(`${hh}:${mm}`)}`;
+      status.hidden = false;
+    }
+  }
   return true;
 }
 
@@ -152,5 +164,5 @@ export function scheduleChronicleAutosave() {
 
 export function flushPendingChronicleSave() {
   if (!chronicleDirty) return false;
-  return saveChronicleNote();
+  return saveChronicleNote(true);
 }

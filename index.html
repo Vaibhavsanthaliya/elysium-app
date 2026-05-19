@@ -224,6 +224,22 @@
               <span class="temple-domain-state" id="temple-sleep-state">Quiet</span>
             </button>
 
+            <!-- Mind — active -->
+            <button class="temple-domain-card" id="temple-goto-mind">
+              <span class="temple-domain-medallion" aria-hidden="true">
+                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4 L28 16 L16 28 L4 16 Z"/>
+                  <line x1="4" y1="16" x2="28" y2="16"/>
+                </svg>
+              </span>
+              <span class="temple-domain-body">
+                <span class="temple-domain-name">Mind</span>
+                <span class="temple-domain-sub">hold</span>
+                <span class="temple-domain-archetype">Athena</span>
+              </span>
+              <span class="temple-domain-state" id="temple-mind-state">—</span>
+            </button>
+
             <!-- Dormant domain separator -->
             <div class="temple-dormant-head" aria-hidden="true">
               <span class="temple-dormant-label">IN STUDY</span>
@@ -243,22 +259,6 @@
                 <span class="temple-domain-archetype">Atlas</span>
               </span>
               <span class="temple-domain-state">—</span>
-            </button>
-
-            <!-- Mind — active -->
-            <button class="temple-domain-card" id="temple-goto-mind">
-              <span class="temple-domain-medallion" aria-hidden="true">
-                <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16 4 L28 16 L16 28 L4 16 Z"/>
-                  <line x1="4" y1="16" x2="28" y2="16"/>
-                </svg>
-              </span>
-              <span class="temple-domain-body">
-                <span class="temple-domain-name">Mind</span>
-                <span class="temple-domain-sub">hold</span>
-                <span class="temple-domain-archetype">Athena</span>
-              </span>
-              <span class="temple-domain-state" id="temple-mind-state">—</span>
             </button>
 
             <!-- Water — dormant -->
@@ -804,6 +804,20 @@
         <textarea class="mind-reflection" id="mind-reflection" rows="3" placeholder="A line —"></textarea>
         <button class="btn-primary" id="mind-complete">Save line</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Custom confirmation modal -->
+  <div class="modal" id="confirm-modal" hidden>
+    <div class="modal-backdrop" id="confirm-modal-backdrop"></div>
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <h3 class="modal-title" id="confirm-modal-title">Are you sure?</h3>
+      <p class="confirm-modal-body" id="confirm-modal-msg"></p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="confirm-modal-ok">Confirm</button>
+      </div>
+      <button class="btn-text" id="confirm-modal-cancel">Cancel</button>
     </div>
   </div>
 
