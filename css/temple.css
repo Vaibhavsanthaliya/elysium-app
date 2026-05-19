@@ -555,6 +555,7 @@
 }
 
 #light-modal .btn-text {
+  width: calc(100% - 40px);
   margin: 4px 20px 0;
   display: block;
   text-align: center;

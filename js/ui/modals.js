@@ -22,6 +22,29 @@ import { showToast } from './toast.js';
 import { renderTemple } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
 
+let _confirmResolve = null;
+
+export function showConfirm(message, confirmLabel) {
+  return new Promise((resolve) => {
+    _confirmResolve = resolve;
+    const msgEl = document.getElementById('confirm-modal-msg');
+    const okBtn = document.getElementById('confirm-modal-ok');
+    if (msgEl) msgEl.textContent = message;
+    if (okBtn) okBtn.textContent = confirmLabel || 'Confirm';
+    document.getElementById('confirm-modal').hidden = false;
+  });
+}
+
+export function registerConfirmModal() {
+  function close(result) {
+    document.getElementById('confirm-modal').hidden = true;
+    if (_confirmResolve) { _confirmResolve(result); _confirmResolve = null; }
+  }
+  document.getElementById('confirm-modal-ok')?.addEventListener('click', () => close(true));
+  document.getElementById('confirm-modal-cancel')?.addEventListener('click', () => close(false));
+  document.getElementById('confirm-modal-backdrop')?.addEventListener('click', () => close(false));
+}
+
 let editContext = null;
 const MIND_MIN_HELD_MS = 60000;
 let mindSelectedDuration = 25;
@@ -212,6 +235,13 @@ function closeMindModal() {
   mindHoldStartedAtMs = 0;
 }
 
+export function openMindModalIfActive() {
+  const activeSession = getTodaySession();
+  if (activeSession && !activeSession.completed) {
+    openMindModal();
+  }
+}
+
 export function registerMindModal() {
   document.getElementById('temple-goto-mind')?.addEventListener('click', openMindModal);
   document.getElementById('mind-modal-backdrop')?.addEventListener('click', closeMindModal);
@@ -375,9 +405,10 @@ export function removeTaskById(id) {
   }
 }
 
-export function deleteTask() {
+export async function deleteTask() {
   if (!editContext || editContext.mode !== 'edit') return;
-  if (!confirm('Delete this task?')) return;
+  const confirmed = await showConfirm('Delete this task?', 'Delete');
+  if (!confirmed) return;
   removeTaskById(editContext.task.id);
   saveState();
   renderAllLists();
