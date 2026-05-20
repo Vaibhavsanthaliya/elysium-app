@@ -1,0 +1,375 @@
+/* Elysium — Auth & Logo presentation chrome
+ * Styles for spec cards, logo cards, app-icon cards, etc.
+ * Reuses tokens.css variables. No new colors.
+ */
+
+/* Body must NOT flex-center — the DesignCanvas fills the viewport. */
+html, body {
+  margin: 0;
+  background: #1a1916;
+  font-family: var(--font-sans);
+  color: var(--ink);
+}
+body.canvas-page {
+  display: block;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+  min-height: 100vh;
+  overflow: hidden;
+}
+#root { display: block; height: 100vh; width: 100vw; }
+
+/* The auth phone wrapper — slightly tighter than the prototype's so it
+   centers nicely inside a DC artboard. */
+.auth-shell { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.auth-phone {
+  width: 390px;
+  height: 820px;
+  border-radius: 38px;
+  box-shadow:
+    0 0 0 8px rgba(20,18,14,0.7),
+    0 0 0 9px rgba(201,165,107,0.18),
+    0 40px 80px -20px rgba(0,0,0,0.55);
+}
+[data-theme="marble"] .auth-phone {
+  box-shadow:
+    0 0 0 8px rgba(235,225,205,0.85),
+    0 0 0 9px rgba(160,122,74,0.28),
+    0 40px 80px -20px rgba(70,55,30,0.22);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Spec card — used for diagnosis, copy, impl, risks, etc.
+   ───────────────────────────────────────────────────────────── */
+.spec-card {
+  height: 100%;
+  padding: 36px 36px 32px;
+  display: flex; flex-direction: column;
+  color: var(--ink);
+  overflow: auto;
+  scrollbar-width: none;
+}
+.spec-card::-webkit-scrollbar { display: none; }
+.spec-card .eyebrow { margin-bottom: 14px; }
+.spec-card .spec-title {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.015em;
+  margin: 0 0 18px;
+  color: var(--ink);
+}
+.spec-card .spec-body { font-size: 14px; line-height: 1.55; color: var(--ink-muted); }
+.spec-card .spec-body p { margin: 0 0 12px; }
+.spec-card .spec-body p:last-child { margin-bottom: 0; }
+.spec-card .spec-body b { color: var(--ink); font-weight: 500; }
+.spec-card .spec-body i, .spec-card .spec-body em {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--ink);
+  font-size: 1.02em;
+}
+.spec-card.accent { background: linear-gradient(180deg, rgba(201,165,107,0.05), transparent 60%); }
+.spec-card .ital-note {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-muted);
+  border-left: 1px solid var(--separator-strong);
+  padding-left: 12px;
+  margin-top: 16px;
+}
+
+.num-list, .bullet-list, .copy-list {
+  margin: 0 0 12px;
+  padding-left: 0;
+  list-style: none;
+}
+.num-list li, .bullet-list li, .copy-list li {
+  position: relative;
+  padding: 6px 0 6px 22px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+.num-list { counter-reset: n; }
+.num-list li::before {
+  counter-increment: n;
+  content: counter(n, upper-roman) ".";
+  position: absolute; left: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--bronze);
+  font-size: 14px;
+}
+.bullet-list li::before {
+  content: "";
+  position: absolute; left: 4px; top: 14px;
+  width: 6px; height: 1px;
+  background: var(--bronze);
+}
+.copy-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--separator);
+  color: var(--ink);
+  font-size: 15px;
+}
+.copy-list li:last-child { border-bottom: 0; }
+.copy-list li b {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--bronze);
+  margin-right: 8px;
+  font-weight: 500;
+}
+
+.mono-inline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--bronze);
+  background: rgba(201,165,107,0.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin: 0 2px;
+  white-space: nowrap;
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--separator);
+  align-items: baseline;
+}
+.kv:last-child { border-bottom: 0; }
+.kv .k {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.kv .v {
+  font-size: 13.5px;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+/* Comparison table */
+.cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0 18px;
+  font-size: 13px;
+}
+.cmp-table th, .cmp-table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--separator);
+}
+.cmp-table th {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.cmp-table td { color: var(--bronze); font-family: var(--font-display); font-style: italic; }
+.cmp-table td.row-h {
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Logo card — used for the three concepts
+   ───────────────────────────────────────────────────────────── */
+.logo-card {
+  height: 100%;
+  display: flex; flex-direction: column;
+  color: var(--ink);
+}
+.logo-stage {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  background: radial-gradient(ellipse at 50% 30%, rgba(201,165,107,0.08), transparent 65%);
+  padding: 20px;
+}
+.recommend-pip {
+  position: absolute;
+  top: 16px; right: 16px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  background: rgba(201,165,107,0.10);
+  border: 1px solid rgba(201,165,107,0.30);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.logo-meta {
+  padding: 22px 28px 26px;
+  border-top: 1px solid var(--separator);
+}
+.logo-meta .eyebrow { margin-bottom: 8px; }
+.logo-name {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.015em;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+.logo-body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Icon card — used for app-icon mode demos
+   ───────────────────────────────────────────────────────────── */
+.icon-card {
+  height: 100%;
+  display: flex; flex-direction: column;
+}
+.icon-stage {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px;
+  padding: 24px;
+}
+.icon-row { display: flex; align-items: flex-end; gap: 24px; }
+.icon-pair {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.icon-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.icon-meta {
+  padding: 20px 28px 24px;
+  border-top: 1px solid var(--separator);
+  text-align: center;
+}
+.icon-card[data-theme="marble"] .icon-meta { border-top-color: rgba(26,24,22,0.10); }
+.icon-card[data-theme="marble"] .icon-tag { color: rgba(26,24,22,0.5); }
+.icon-meta .eyebrow { margin-bottom: 6px; }
+.icon-label {
+  font-size: 13px;
+  color: var(--ink-muted);
+  font-family: var(--font-display);
+  font-style: italic;
+}
+.icon-card[data-theme="marble"] .icon-label { color: rgba(26,24,22,0.6); }
+
+/* Safe-area card */
+.safe-area-card {
+  height: 100%;
+  display: flex; flex-direction: column;
+  padding: 28px;
+  gap: 24px;
+}
+.sa-stage {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.sa-list { list-style: none; margin: 0; padding: 0; }
+.sa-list li {
+  display: flex; gap: 12px; align-items: baseline;
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--ink-muted);
+  border-bottom: 1px solid var(--separator);
+  line-height: 1.45;
+}
+.sa-list li:last-child { border-bottom: 0; }
+.sa-list li b { color: var(--ink); font-weight: 500; }
+.sa-list .sa-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--bronze);
+  flex-shrink: 0;
+  align-self: center;
+}
+.sa-list .sa-dot.a { opacity: 1; }
+.sa-list .sa-dot.b { opacity: 0.65; }
+.sa-list .sa-dot.c { opacity: 0.40; }
+.sa-list .sa-dot.d { opacity: 0.25; }
+
+/* ─────────────────────────────────────────────────────────────
+   Recommended hero
+   ───────────────────────────────────────────────────────────── */
+.rec-hero {
+  height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 30px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(201,165,107,0.10), transparent 60%);
+}
+.rec-row {
+  display: flex; align-items: center; gap: 40px;
+}
+.rec-pair {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.rec-pair > svg + svg, .rec-pair > svg + svg + svg {
+  margin-top: -6px;
+}
+.rec-pair .rec-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 10px;
+}
+.rec-light {
+  background: #F4EFE6;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px rgba(160,122,74,0.18);
+}
+
+/* Wordmark lockup card */
+.wm-lockup {
+  height: 100%;
+  display: flex; flex-direction: column; justify-content: center; align-items: stretch;
+  padding: 32px;
+  gap: 24px;
+}
+.wm-row-h {
+  display: flex; align-items: center; gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--separator);
+}
+.wm-row-v {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--separator);
+}
+.wordmark-trio { display: flex; flex-direction: column; gap: 14px; }
+.wm-row {
+  display: flex; align-items: baseline; gap: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--separator);
+}
+.wm-row:last-child { border-bottom: 0; }
+.wm-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-left: auto;
+}
