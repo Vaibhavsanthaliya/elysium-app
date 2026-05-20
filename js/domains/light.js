@@ -20,11 +20,25 @@ export function getLightEntry(dateStr) {
   return state.light?.entries?.[dateStr] ?? null;
 }
 
+// Returns the most recent witness time string ("HH:MM") for the given date, or null.
+export function getLastWitness(dateStr) {
+  const witnesses = state.light?.entries?.[dateStr]?.witnesses;
+  if (!Array.isArray(witnesses) || witnesses.length === 0) return null;
+  return witnesses[witnesses.length - 1];
+}
+
 export function witnessLight(dateStr) {
   if (!state.light) state.light = { entries: {} };
   if (!state.light.entries) state.light.entries = {};
+  if (!state.light.entries[dateStr]) state.light.entries[dateStr] = { witnesses: [] };
+  const entry = state.light.entries[dateStr];
+  if (!Array.isArray(entry.witnesses)) entry.witnesses = [];
   const now = new Date();
   const hh = String(now.getHours()).padStart(2, '0');
   const mm = String(now.getMinutes()).padStart(2, '0');
-  state.light.entries[dateStr] = { witnessedAt: `${hh}:${mm}` };
+  const timeStr = `${hh}:${mm}`;
+  // Deduplicate: only push if this minute hasn't been recorded yet
+  if (entry.witnesses[entry.witnesses.length - 1] !== timeStr) {
+    entry.witnesses.push(timeStr);
+  }
 }

@@ -525,6 +525,18 @@
   margin-top: 3px;
 }
 
+#light-modal .light-witness-mark {
+  position: absolute;
+  bottom: 43px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--bronze);
+  opacity: 0.55;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
 #light-modal .modal-handle {
   margin: 8px auto 0;
 }
