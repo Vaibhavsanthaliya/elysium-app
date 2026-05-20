@@ -280,6 +280,7 @@ Full implementation notes for every ticket: [`docs/ticket-log.md`](docs/ticket-l
 | EA-70 | Edit/Utility Modal Obsidian Pass — task-info modal: `.task-info-label` → mono bronze eyebrow, `.task-info-text` → Spectral italic `--muted-text`; edit modal: copy pass on field labels, cycle select options, delete button; confirm modal: "Are you sure?" → "Confirm"; JS: "Edit task"/"New task" → "Edit step"/"New step". CSS + copy only, no behavior change. |
 | EA-71 | Chronicle Silent-Night Atmosphere — removed `.chronicle-prompt` card block from HTML (question and label gone); textarea `rows="7"` → `rows="2"`; added `field-sizing: content` + `min-height` to `.chronicle-textarea` for natural auto-grow; removed dead `.chronicle-prompt` CSS. Autosave, drift, state, sync untouched. |
 | EA-72 | Past-Cycle Chronicle Surfacing — Care night protocol now quietly surfaces the newest prior Chronicle line from the same 3-night protocol, derived at render time with no new state. |
+| EA-75 | Light Witness Deepening II — `light.entries` migrated from `{ witnessedAt }` to `{ witnesses: [] }`; each tap pushes to the array (deduped by minute); sky renders small bronze horizon marks at each witness position; 3-second stillness pause after tap; sync union-merges arrays per date; Temple still shows qualitative period label from last witness. |
 
 ---
 

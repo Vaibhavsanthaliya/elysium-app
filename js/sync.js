@@ -136,10 +136,17 @@ export async function syncFromSupabase() {
         ...(state.sleep?.entries || {}),
       };
 
-      const mergedLightEntries = {
-        ...(cloud.light?.entries || {}),
-        ...(state.light?.entries || {}),
-      };
+      const mergedLightEntries = {};
+      const lightDates = new Set([
+        ...Object.keys(cloud.light?.entries || {}),
+        ...Object.keys(state.light?.entries || {}),
+      ]);
+      for (const date of lightDates) {
+        if (!isYmd(date)) continue;
+        const cw = cloud.light?.entries?.[date]?.witnesses || [];
+        const lw = state.light?.entries?.[date]?.witnesses || [];
+        mergedLightEntries[date] = { witnesses: Array.from(new Set([...cw, ...lw])).sort() };
+      }
 
       const mindMap = new Map();
       for (const s of (cloud.mind?.sessions || [])) mindMap.set(s.id, s);

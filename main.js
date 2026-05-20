@@ -341,6 +341,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayH = hh % 12 || 12;
     const timeEl = document.getElementById('light-cursor-time');
     if (timeEl) timeEl.textContent = `${displayH}:${mm}`;
+
+    const skyEl = document.getElementById('light-sky');
+    if (skyEl) {
+      skyEl.querySelectorAll('.light-witness-mark').forEach(el => el.remove());
+      const witnesses = state.light?.entries?.[todayStr]?.witnesses || [];
+      for (const t of witnesses) {
+        const [wh, wm] = t.split(':').map(Number);
+        if (!Number.isFinite(wh) || !Number.isFinite(wm)) continue;
+        const markPct = ((wh * 60 + wm) / 1440 * 100).toFixed(1);
+        const mark = document.createElement('div');
+        mark.className = 'light-witness-mark';
+        mark.style.left = `${markPct}%`;
+        skyEl.appendChild(mark);
+      }
+    }
   }
 
   function openLightModal() {
@@ -359,12 +374,18 @@ document.addEventListener('DOMContentLoaded', () => {
     witnessLight(todayStr);
     saveState();
     renderTemple();
-    const btn = document.getElementById('light-witness-btn');
-    if (btn) {
-      btn.textContent = 'Witnessed ·';
-      setTimeout(renderLightModal, 1500);
-    }
     showToast('Witnessed');
+    const btn = document.getElementById('light-witness-btn');
+    const closeBtn = document.getElementById('light-modal-close');
+    if (btn) { btn.textContent = '·'; btn.disabled = true; }
+    if (closeBtn) closeBtn.style.visibility = 'hidden';
+    setTimeout(() => {
+      renderLightModal();
+      if (closeBtn) closeBtn.style.visibility = '';
+      const b = document.getElementById('light-witness-btn');
+      if (b) { b.textContent = 'Witnessed ·'; b.disabled = false; }
+      setTimeout(renderLightModal, 1500);
+    }, 3000);
   });
 
   // --- Mind domain modal ---

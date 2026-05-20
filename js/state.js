@@ -115,6 +115,21 @@ export function migrateState(s) {
     ? s.light : {};
   s.light.entries = s.light.entries && typeof s.light.entries === 'object' && !Array.isArray(s.light.entries)
     ? s.light.entries : {};
+  // Migrate old { witnessedAt } entries to { witnesses: [] } and validate each entry.
+  for (const date of Object.keys(s.light.entries)) {
+    if (!isYmd(date)) { delete s.light.entries[date]; continue; }
+    const entry = s.light.entries[date];
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+      s.light.entries[date] = { witnesses: [] };
+      continue;
+    }
+    if (typeof entry.witnessedAt === 'string' && !Array.isArray(entry.witnesses)) {
+      entry.witnesses = [entry.witnessedAt];
+      delete entry.witnessedAt;
+    }
+    if (!Array.isArray(entry.witnesses)) entry.witnesses = [];
+    entry.witnesses = entry.witnesses.filter(t => typeof t === 'string' && /^\d{2}:\d{2}$/.test(t));
+  }
   s.sleep = s.sleep && typeof s.sleep === 'object' && !Array.isArray(s.sleep)
     ? s.sleep : {};
   s.sleep.entries = s.sleep.entries && typeof s.sleep.entries === 'object' && !Array.isArray(s.sleep.entries)

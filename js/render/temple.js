@@ -2,7 +2,7 @@ import { state, todayStr } from '../state.js';
 import { formatTime12 } from '../utils.js';
 import { CYCLE_NAMES } from '../constants.js';
 import { getTodayChecks, getNightTasks } from '../domains/care.js';
-import { getLightEntry, getLightPeriodLabel } from '../domains/light.js';
+import { getLightPeriodLabel, getLastWitness } from '../domains/light.js';
 import { getLastSleepEntry } from '../domains/sleep.js';
 import { formatHeldMs, getMostRecentSession, getSessionHeldMs } from '../domains/mind.js';
 
@@ -89,11 +89,11 @@ export function renderTemple() {
   const hasNote = !!(state.chronicle?.notes?.[todayStr]?.body);
   document.getElementById('temple-chronicle-state').textContent = hasNote ? 'Written' : 'Quiet';
 
-  const lightEntry = getLightEntry(todayStr);
+  const lastWitness = getLastWitness(todayStr);
   const lightStateEl = document.getElementById('temple-light-state');
   if (lightStateEl) {
-    if (lightEntry) {
-      const h = parseInt(lightEntry.witnessedAt.split(':')[0], 10);
+    if (lastWitness) {
+      const h = parseInt(lastWitness.split(':')[0], 10);
       lightStateEl.textContent = getLightPeriodLabel(Number.isFinite(h) ? h : 0);
     } else {
       lightStateEl.textContent = '—';
