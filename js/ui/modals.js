@@ -348,7 +348,7 @@ export function handleSectionChange(newSection) {
 export function saveTask() {
   if (!editContext) return;
   const text = document.getElementById('edit-text').value.trim();
-  if (!text) { showToast('Task name is required'); return; }
+  if (!text) { showToast('Name your step'); return; }
 
   const newSection = document.getElementById('edit-section').value;
   const cycleVal = document.getElementById('edit-cycle').value;
@@ -374,7 +374,6 @@ export function saveTask() {
     } else {
       state.tasks[newSection].push(task);
     }
-    showToast('Task added');
   } else {
     removeTaskById(editContext.task.id);
     const task = { ...editContext.task, text };
@@ -389,7 +388,6 @@ export function saveTask() {
     } else {
       state.tasks[newSection].push(task);
     }
-    showToast('Task saved');
   }
 
   saveState();
@@ -413,5 +411,4 @@ export async function deleteTask() {
   saveState();
   renderAllLists();
   closeModal();
-  showToast('Task deleted');
 }

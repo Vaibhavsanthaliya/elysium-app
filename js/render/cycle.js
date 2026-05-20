@@ -36,7 +36,7 @@ export function renderCycleList() {
       renderCycleList();
       renderTodayCycle();
       renderAllLists();
-      showToast(`Switched to ${CYCLE_NAMES[i]} night`);
+      showToast(CYCLE_NAMES[i]);
     });
     wrap.appendChild(btn);
   });

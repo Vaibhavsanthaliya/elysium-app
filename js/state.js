@@ -240,6 +240,6 @@ export function updateMilestoneStage() {
   }
   state.milestoneStage = newStage;
   saveState();
-  showToast(`Ritual updated for ${MILESTONES[newStage].weeks}`);
+  showToast('A new season begins');
   return true;
 }
