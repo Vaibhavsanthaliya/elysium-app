@@ -16,7 +16,7 @@ import {
   scheduleChronicleAutosave,
   flushPendingChronicleSave,
 } from './js/render/chronicle.js';
-import { getLightEntry, witnessLight } from './js/domains/light.js';
+import { witnessLight } from './js/domains/light.js';
 import { renderProgress, renderWeeklyPhotos, closePastDayModal } from './js/render/progress.js';
 import { updateSettingsView, exportData, importData, resetAll, resetStartDate } from './js/render/settings.js';
 import { isClosedForToday } from './js/domains/sleep.js';
@@ -296,20 +296,42 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('sleep-save').addEventListener('click', saveSleepModal);
 
   // --- Light domain modal ---
-  function renderLightModal() {
-    const entry = getLightEntry(todayStr);
-    const btn = document.getElementById('light-witness-btn');
+  const LIGHT_PERIODS = [
+    { start: 0,  end: 4,  label: 'Night',       top: '#0E0E12', mid: '#131318', bot: '#1A1A21' },
+    { start: 4,  end: 6,  label: 'First light', top: '#1A0E18', mid: '#6B2820', bot: '#C9734A' },
+    { start: 6,  end: 10, label: 'Morning',     top: '#C9734A', mid: '#D49A5C', bot: '#E8C07A' },
+    { start: 10, end: 15, label: 'Midday',      top: '#C9A56B', mid: '#D4B87A', bot: '#E8C07A' },
+    { start: 15, end: 18, label: 'Afternoon',   top: '#C9A56B', mid: '#C47840', bot: '#D49A5C' },
+    { start: 18, end: 20, label: 'Golden hour', top: '#8B3A20', mid: '#C9734A', bot: '#C9A56B' },
+    { start: 20, end: 22, label: 'Dusk',        top: '#2A1228', mid: '#6B2820', bot: '#8B5A3A' },
+    { start: 22, end: 24, label: 'Night',       top: '#0E0E12', mid: '#131318', bot: '#1A1A21' },
+  ];
 
-    if (entry) {
-      btn.textContent = `Witnessed · ${formatTime12(entry.witnessedAt)}`;
-      btn.disabled = true;
-    } else {
+  function getCurrentLightPeriod() {
+    const h = new Date().getHours();
+    return LIGHT_PERIODS.find(p => h >= p.start && h < p.end) || LIGHT_PERIODS[0];
+  }
+
+  function renderLightModal() {
+    const now = new Date();
+    const period = getCurrentLightPeriod();
+
+    const sky = document.getElementById('light-sky');
+    if (sky) {
+      sky.style.setProperty('--light-sky-top', period.top);
+      sky.style.setProperty('--light-sky-mid', period.mid);
+      sky.style.setProperty('--light-sky-bot', period.bot);
+    }
+
+    const eyebrow = document.getElementById('light-eyebrow');
+    if (eyebrow) eyebrow.textContent = `APOLLO · ${period.label.toUpperCase()}`;
+
+    const btn = document.getElementById('light-witness-btn');
+    if (btn) {
       btn.textContent = "I'm here";
       btn.disabled = false;
     }
 
-    // Position cursor at current time (0% = midnight, 100% = midnight)
-    const now = new Date();
     const pct = ((now.getHours() * 60 + now.getMinutes()) / 1440 * 100).toFixed(1);
     const cursor = document.getElementById('light-cursor');
     if (cursor) cursor.style.left = `${pct}%`;
@@ -334,11 +356,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('light-modal-backdrop').addEventListener('click', closeLightModal);
   document.getElementById('light-modal-close').addEventListener('click', closeLightModal);
   document.getElementById('light-witness-btn').addEventListener('click', () => {
-    if (getLightEntry(todayStr)) return;
     witnessLight(todayStr);
     saveState();
     renderTemple();
-    renderLightModal();
+    const btn = document.getElementById('light-witness-btn');
+    if (btn) {
+      btn.textContent = 'Witnessed ·';
+      setTimeout(renderLightModal, 1500);
+    }
     showToast('Witnessed');
   });
 

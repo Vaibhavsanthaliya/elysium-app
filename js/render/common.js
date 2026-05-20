@@ -1,8 +1,11 @@
 import { CYCLE_NAMES } from '../constants.js';
 import { state, today } from '../state.js';
+import { getLastChronicleNoteForCycleDay } from '../domains/chronicle.js';
 import { getCareTurnState } from './temple.js';
 
 const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
+const CARE_MEMORY_LABELS = ['Last Niacinamide night', 'Last Salicylic night', 'Last rest night'];
+const CARE_MEMORY_MAX = 160;
 
 function getCareCycleLabel(cycleDay) {
   return `Night ${CARE_CYCLE_ROMAN[cycleDay]} · ${CYCLE_NAMES[cycleDay]}`;
@@ -19,6 +22,36 @@ function getNightProtocolLabel(cycleDay) {
 
 function titleCaseState(label) {
   return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
+function getMemoryExcerpt(body) {
+  const text = String(body || '').replace(/\s+/g, ' ').trim();
+  if (!text) return '';
+  return text.length > CARE_MEMORY_MAX ? `${text.slice(0, CARE_MEMORY_MAX - 3).trim()}...` : text;
+}
+
+function renderCareTurnMemory(cycleDay) {
+  const wrap = document.getElementById('care-turn-memory');
+  if (!wrap) return;
+
+  const label = document.getElementById('care-turn-memory-label');
+  const body = document.getElementById('care-turn-memory-body');
+  const section = wrap.closest('.care-night-section');
+  const memory = getLastChronicleNoteForCycleDay(cycleDay);
+  const excerpt = getMemoryExcerpt(memory?.note?.body);
+
+  if (!excerpt) {
+    wrap.hidden = true;
+    section?.classList.remove('has-care-memory');
+    if (label) label.textContent = '';
+    if (body) body.textContent = '';
+    return;
+  }
+
+  if (label) label.textContent = CARE_MEMORY_LABELS[cycleDay] || CARE_MEMORY_LABELS[0];
+  if (body) body.textContent = excerpt;
+  section?.classList.add('has-care-memory');
+  wrap.hidden = false;
 }
 
 function renderTodayCycleIndicator(cycleDay, turnState) {
@@ -52,6 +85,7 @@ export function renderTodayCycle() {
   const protocolLabel = document.getElementById('night-protocol-label');
   if (protocolLabel) protocolLabel.textContent = getNightProtocolLabel(cycleDay);
   renderTodayCycleIndicator(cycleDay, turnState);
+  renderCareTurnMemory(cycleDay);
   const strip = document.getElementById('care-cycle-strip');
   if (!strip) return;
   strip.innerHTML = CYCLE_NAMES.map((name, i) => {

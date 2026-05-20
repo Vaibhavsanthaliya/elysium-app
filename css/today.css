@@ -419,6 +419,39 @@
   font-size: 15.5px;
 }
 
+#pane-today .care-night-section.has-care-memory .task-item:last-child {
+  border-bottom: none;
+}
+
+#pane-today .care-turn-memory {
+  margin: 2px 0 0;
+  padding: 13px 0 2px;
+  border-top: 1px solid var(--separator-warm);
+}
+
+#pane-today .care-turn-memory[hidden] {
+  display: none;
+}
+
+#pane-today .care-turn-memory-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  color: var(--bronze);
+  margin: 0 0 6px;
+}
+
+#pane-today .care-turn-memory-body {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted-text);
+  margin: 0;
+  white-space: normal;
+  word-break: break-word;
+}
+
 #pane-today .care-morning-section {
   margin-bottom: 18px;
   padding: 0 4px;

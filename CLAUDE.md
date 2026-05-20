@@ -275,6 +275,11 @@ Full implementation notes for every ticket: [`docs/ticket-log.md`](docs/ticket-l
 | EA-63 | Decommissioned numeric Care completion: Today and Temple Care surfaces now use three-night cycle-state indicators and protocol/state copy. |
 | EA-64 | Past-day Stars modal kept-turn rewrite: historical dates now open a read-only day record with cycle/status context, not task checkboxes. |
 | EA-65 | Mind Hold-the-Time: State B now visibly holds elapsed time, end-session is locked for 60 seconds, reflections surface quietly in State A, and Temple Mind uses actual held duration from timestamps. |
+| EA-68 | Light Witness Deepening — Temporal Sky: sky gradient dynamically reflects time of day via CSS custom props set from JS; eyebrow changes to `APOLLO · [PERIOD]` (8 light periods); repeat witnessing allowed — button never disabled; Temple Light state shows qualitative period label instead of raw timestamp. |
+| EA-69 | Stars Stop Counting — removed `X RECORDED` count and `CURRENT` status indicator; renamed "Ritual stage" section to "Season"; simplified stage line to Spectral italic season title only (no "Stage I of IV" fraction). CSS-only dead rules for `.stage-line-meta`/`.stage-line-separator` removed. |
+| EA-70 | Edit/Utility Modal Obsidian Pass — task-info modal: `.task-info-label` → mono bronze eyebrow, `.task-info-text` → Spectral italic `--muted-text`; edit modal: copy pass on field labels, cycle select options, delete button; confirm modal: "Are you sure?" → "Confirm"; JS: "Edit task"/"New task" → "Edit step"/"New step". CSS + copy only, no behavior change. |
+| EA-71 | Chronicle Silent-Night Atmosphere — removed `.chronicle-prompt` card block from HTML (question and label gone); textarea `rows="7"` → `rows="2"`; added `field-sizing: content` + `min-height` to `.chronicle-textarea` for natural auto-grow; removed dead `.chronicle-prompt` CSS. Autosave, drift, state, sync untouched. |
+| EA-72 | Past-Cycle Chronicle Surfacing — Care night protocol now quietly surfaces the newest prior Chronicle line from the same 3-night protocol, derived at render time with no new state. |
 
 ---
 

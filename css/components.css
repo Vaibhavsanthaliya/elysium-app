@@ -375,17 +375,21 @@
 }
 
 .task-info-label {
-  font-size: 11px;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--label-tertiary);
+  color: var(--bronze);
+  font-weight: 400;
 }
 
 .task-info-text {
+  font-family: var(--font-display);
+  font-style: italic;
   font-size: 15px;
   line-height: 1.5;
-  color: var(--label-secondary);
+  color: var(--muted-text);
+  margin: 0;
 }
 
 .empty-list {

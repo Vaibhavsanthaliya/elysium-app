@@ -2,7 +2,7 @@ import { state, todayStr } from '../state.js';
 import { formatTime12 } from '../utils.js';
 import { CYCLE_NAMES } from '../constants.js';
 import { getTodayChecks, getNightTasks } from '../domains/care.js';
-import { getLightEntry } from '../domains/light.js';
+import { getLightEntry, getLightPeriodLabel } from '../domains/light.js';
 import { getLastSleepEntry } from '../domains/sleep.js';
 import { formatHeldMs, getMostRecentSession, getSessionHeldMs } from '../domains/mind.js';
 
@@ -92,7 +92,12 @@ export function renderTemple() {
   const lightEntry = getLightEntry(todayStr);
   const lightStateEl = document.getElementById('temple-light-state');
   if (lightStateEl) {
-    lightStateEl.textContent = lightEntry ? formatTime12(lightEntry.witnessedAt) : '—';
+    if (lightEntry) {
+      const h = parseInt(lightEntry.witnessedAt.split(':')[0], 10);
+      lightStateEl.textContent = getLightPeriodLabel(Number.isFinite(h) ? h : 0);
+    } else {
+      lightStateEl.textContent = '—';
+    }
   }
 
   const sleepStateEl = document.getElementById('temple-sleep-state');

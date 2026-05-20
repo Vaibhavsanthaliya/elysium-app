@@ -28,6 +28,8 @@
   resize: none;
   font-family: inherit;
   -webkit-appearance: none;
+  field-sizing: content;
+  min-height: calc(2 * 1.6 * 15px + 32px); /* 2 lines × line-height + top/bottom padding */
 }
 
 /* ── EA-21: Typography — chronicle textarea ──────────────────────────────── */
@@ -111,39 +113,6 @@
   color: var(--bronze);
 }
 
-/* ── EA-32: Prompt card ──────────────────────────────────────────────────── */
-.chronicle-prompt {
-  border: 1px dashed rgba(160, 122, 74, 0.30);
-  border-radius: var(--radius-md);
-  padding: 16px 18px;
-  margin-bottom: 12px;
-  background: rgba(160, 122, 74, 0.05);
-}
-
-@media (prefers-color-scheme: dark) {
-  .chronicle-prompt {
-    background: rgba(201, 165, 107, 0.04);
-    border-color: rgba(201, 165, 107, 0.25);
-  }
-}
-
-.chronicle-prompt-label {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
-  color: var(--bronze);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.chronicle-prompt-q {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 18px;
-  color: var(--oracle-text);
-  line-height: 1.35;
-  margin: 0;
-}
 
 /* ── EA-32: Chronicle status — mono meta label ───────────────────────────── */
 .chronicle-status {

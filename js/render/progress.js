@@ -6,7 +6,6 @@ import { getDaysSinceStart, getCycleDayForDate } from '../domains/care.js';
 import { getChronicleNote } from '../domains/chronicle.js';
 import { renderWeeklyPhotos } from '../services/photos.js';
 
-const ROMAN = ['I', 'II', 'III', 'IV'];
 const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
 const STAGE_TITLES = ['foundation', 'acne control', 'marks and texture', 'maintenance'];
 
@@ -48,7 +47,7 @@ export function renderProgress() {
   }
 
   const meta = document.getElementById('star-field-meta');
-  if (meta) meta.textContent = `${logged} RECORDED`;
+  if (meta) meta.textContent = '';
 
   requestAnimationFrame(() => {
     if (document.getElementById('pane-progress').classList.contains('active')) {
@@ -59,19 +58,14 @@ export function renderProgress() {
   const daysSinceStart = getDaysSinceStart();
   const currentStage = getMilestoneStage(daysSinceStart);
   const stageMeta = document.getElementById('milestone-stage-meta');
-  if (stageMeta) stageMeta.textContent = 'CURRENT';
+  if (stageMeta) stageMeta.textContent = '';
 
   const ml = document.getElementById('milestone-list');
   ml.innerHTML = '';
   const stageLine = document.createElement('p');
   stageLine.className = 'stage-line';
-  const stageRoman = ROMAN[currentStage] ?? String(currentStage + 1);
   const stageTitle = STAGE_TITLES[currentStage] ?? MILESTONES[currentStage]?.desc?.toLowerCase() ?? 'ritual';
-  stageLine.innerHTML = `
-    <span class="stage-line-meta">Stage ${stageRoman} of IV</span>
-    <span class="stage-line-separator">—</span>
-    <span class="stage-line-title">${escapeHtml(stageTitle)}</span>
-  `;
+  stageLine.innerHTML = `<span class="stage-line-title">${escapeHtml(stageTitle)}</span>`;
   ml.appendChild(stageLine);
 }
 

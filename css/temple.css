@@ -461,11 +461,9 @@
   position: relative;
   height: 156px;
   background: linear-gradient(180deg,
-    #0a0a16 0%,
-    #18143a 30%,
-    #4a3870 58%,
-    #b87a38 82%,
-    #d99a50 100%
+    var(--light-sky-top, #0a0a16) 0%,
+    var(--light-sky-mid, #4a3870) 55%,
+    var(--light-sky-bot, #d99a50) 100%
   );
   overflow: hidden;
   flex-shrink: 0;
@@ -473,13 +471,9 @@
 
 @media (prefers-color-scheme: light) {
   #light-modal .light-sky {
-    background: linear-gradient(180deg,
-      #1a2b6e 0%,
-      #3a5caa 35%,
-      #7ea4d8 62%,
-      #d4a55c 84%,
-      #e8c07a 100%
-    );
+    --light-sky-top: #1a2b6e;
+    --light-sky-mid: #7ea4d8;
+    --light-sky-bot: #e8c07a;
   }
 }
 
@@ -549,10 +543,6 @@
   width: calc(100% - 40px);
 }
 
-#light-modal .btn-primary:disabled {
-  opacity: 0.45;
-  cursor: default;
-}
 
 #light-modal .btn-text {
   width: calc(100% - 40px);

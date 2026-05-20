@@ -290,7 +290,7 @@ export function registerMindModal() {
 
 export function openEditModal(section, task) {
   editContext = { mode: 'edit', section, task };
-  document.getElementById('modal-title').textContent = 'Edit task';
+  document.getElementById('modal-title').textContent = 'Edit step';
   document.getElementById('edit-text').value = task.text;
   document.getElementById('edit-section').value = section;
   document.getElementById('section-field').hidden = false;
@@ -315,7 +315,7 @@ export function openEditModal(section, task) {
 
 export function openAddModal(section) {
   editContext = { mode: 'add', section };
-  document.getElementById('modal-title').textContent = 'New task';
+  document.getElementById('modal-title').textContent = 'New step';
   document.getElementById('edit-text').value = '';
   document.getElementById('edit-section').value = section;
   document.getElementById('section-field').hidden = false;

@@ -338,6 +338,10 @@
             </div>
           </div>
           <ul class="task-list" id="list-night"></ul>
+          <div class="care-turn-memory" id="care-turn-memory" hidden>
+            <p class="care-turn-memory-label" id="care-turn-memory-label"></p>
+            <p class="care-turn-memory-body" id="care-turn-memory-body"></p>
+          </div>
         </div>
 
         <!-- Morning section -->
@@ -444,13 +448,8 @@
 
         <!-- Today: writing surface (secondary motion) -->
         <div class="chronicle-today">
-          <div class="chronicle-prompt">
-            <div class="chronicle-prompt-label">A quiet record of the day</div>
-            <p class="chronicle-prompt-q" id="chronicle-prompt-q">What asked something of you today?</p>
-          </div>
-
           <div class="chronicle-card">
-            <textarea class="chronicle-textarea" id="chronicle-textarea" rows="7" placeholder="A line, if one came."></textarea>
+            <textarea class="chronicle-textarea" id="chronicle-textarea" rows="2" placeholder="A line, if one came."></textarea>
           </div>
 
           <p class="chronicle-status" id="chronicle-status" hidden></p>
@@ -481,7 +480,7 @@
 
         <div class="section">
           <div class="section-hd">
-            <span class="section-lbl-ital"><em>Ritual stage</em></span>
+            <span class="section-lbl-ital"><em>Season</em></span>
             <span class="section-meta-mono" id="milestone-stage-meta"></span>
           </div>
           <div class="milestone-list" id="milestone-list"></div>
@@ -645,7 +644,7 @@
       <h3 class="modal-title" id="modal-title">Edit task</h3>
       <div class="modal-body">
         <label class="field">
-          <span class="field-label">Task</span>
+          <span class="field-label">Name</span>
           <input type="text" id="edit-text" class="field-input" placeholder="Task name" />
         </label>
         <label class="field" id="section-field">
@@ -653,21 +652,21 @@
           <select id="edit-section" class="field-input">
             <option value="morning">Morning</option>
             <option value="night">Night</option>
-            <option value="habit">Daily habit</option>
+            <option value="habit">Daily</option>
           </select>
         </label>
         <label class="field" id="cycle-field" hidden>
-          <span class="field-label">Cycle day</span>
+          <span class="field-label">Cycle</span>
           <select id="edit-cycle" class="field-input">
-            <option value="0">Day 1 — Niacinamide</option>
-            <option value="1">Day 2 — Salicylic</option>
-            <option value="2">Day 3 — Rest</option>
-            <option value="all">All cycle days</option>
+            <option value="0">I · Niacinamide</option>
+            <option value="1">II · Salicylic</option>
+            <option value="2">III · Rest</option>
+            <option value="all">All turns</option>
           </select>
         </label>
       </div>
       <div class="modal-actions">
-        <button class="btn-secondary" id="modal-delete" hidden>Delete</button>
+        <button class="btn-secondary" id="modal-delete" hidden>Remove</button>
         <button class="btn-primary" id="modal-save">Save</button>
       </div>
       <button class="btn-text" data-close>Cancel</button>
@@ -761,7 +760,7 @@
         </div>
       </div>
       <div class="modal-handle"></div>
-      <div class="light-modal-eyebrow">THE FIRST HOUR</div>
+      <div class="light-modal-eyebrow" id="light-eyebrow">APOLLO · MORNING</div>
       <button class="btn-primary" id="light-witness-btn">I'm here</button>
       <button class="btn-text" id="light-modal-close">Close</button>
     </div>
@@ -812,7 +811,7 @@
     <div class="modal-backdrop" id="confirm-modal-backdrop"></div>
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <h3 class="modal-title" id="confirm-modal-title">Are you sure?</h3>
+      <h3 class="modal-title" id="confirm-modal-title">Confirm</h3>
       <p class="confirm-modal-body" id="confirm-modal-msg"></p>
       <div class="modal-actions">
         <button class="btn-secondary" id="confirm-modal-ok">Confirm</button>
