@@ -184,12 +184,24 @@ export function renderPastDayBody(dateStr, cycleDay, providedDate) {
         <p class="past-day-chronicle-body">${escapeHtml(chronicleExcerpt)}</p>
       </div>` : ''}
       ${isPast ? `<div class="past-day-actions">
-        <button class="past-day-mark-btn" data-action="${isKept ? 'clear' : 'mark'}">${isKept ? 'Clear record' : 'Mark as kept'}</button>
+        <button class="past-day-correct-link">correct record</button>
+        <div class="past-day-correction-panel" hidden>
+          <p class="past-day-correction-note">Use only if the day was kept in life but missed in the app.</p>
+          <button class="past-day-mark-btn" data-action="${isKept ? 'clear' : 'mark'}">${isKept ? 'Clear record' : 'Mark as kept'}</button>
+        </div>
       </div>` : ''}
     </div>
   `;
 
   if (isPast) {
+    const correctLink = body.querySelector('.past-day-correct-link');
+    const correctionPanel = body.querySelector('.past-day-correction-panel');
+    if (correctLink && correctionPanel) {
+      correctLink.addEventListener('click', () => {
+        correctLink.hidden = true;
+        correctionPanel.hidden = false;
+      });
+    }
     const markBtn = body.querySelector('.past-day-mark-btn');
     if (markBtn) {
       markBtn.addEventListener('click', () => {

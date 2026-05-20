@@ -728,9 +728,45 @@ select.field-input {
   opacity: 0.65;
 }
 
-/* ── EA-67: Past-day mark-as-kept affordance ─────────────────────────────── */
+/* ── EA-73: Past-day read-only by default ────────────────────────────────── */
 .past-day-actions {
   padding-top: 16px;
+}
+
+.past-day-correct-link {
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--muted-text);
+  opacity: 0.55;
+  padding: 6px 0;
+  cursor: pointer;
+  display: block;
+  text-align: left;
+}
+
+.past-day-correction-panel[hidden] {
+  display: none;
+}
+
+.past-day-correction-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.past-day-correction-note {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted-text);
+  opacity: 0.75;
+  margin: 0;
 }
 
 .past-day-mark-btn {
