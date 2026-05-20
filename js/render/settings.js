@@ -30,7 +30,6 @@ export function exportData() {
   a.download = `skincare-data-${todayStr}.json`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 100);
-  showToast('Data exported');
 }
 
 export function importData(file) {

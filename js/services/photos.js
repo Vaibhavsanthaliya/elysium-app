@@ -111,7 +111,6 @@ export async function addWeeklyPhoto(file) {
 
     saveState();
     await renderWeeklyPhotos();
-    showToast('Photo saved');
   } catch (e) {
     console.warn('Photo save failed', e);
     showToast('Could not save photo');
@@ -125,7 +124,6 @@ export async function deleteWeeklyPhoto(id) {
     state.weeklyPhotos = state.weeklyPhotos.filter(p => p.id !== id);
     saveState();
     await renderWeeklyPhotos();
-    showToast('Photo deleted');
   } catch (e) {
     console.warn('Photo delete failed', e);
     showToast('Could not delete photo');

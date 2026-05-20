@@ -281,6 +281,7 @@ Full implementation notes for every ticket: [`docs/ticket-log.md`](docs/ticket-l
 | EA-71 | Chronicle Silent-Night Atmosphere — removed `.chronicle-prompt` card block from HTML (question and label gone); textarea `rows="7"` → `rows="2"`; added `field-sizing: content` + `min-height` to `.chronicle-textarea` for natural auto-grow; removed dead `.chronicle-prompt` CSS. Autosave, drift, state, sync untouched. |
 | EA-72 | Past-Cycle Chronicle Surfacing — Care night protocol now quietly surfaces the newest prior Chronicle line from the same 3-night protocol, derived at render time with no new state. |
 | EA-73 | Past Day Read-Only by Default — Day Record hides correction buttons behind a quiet "correct record" text link; tapping reveals qualifying copy and subdued mark/clear actions. No state, sync, or logic changes. |
+| EA-74 | Toast tone pass — 6 CRUD confirmation toasts removed (task added/saved/deleted, photo saved/deleted, data exported); 3 toasts reworded: "Task name is required" → "Name your step", milestone toast → "A new season begins", cycle override → cycle name only. JS-only, no CSS/state/sync changes. |
 | EA-75 | Light Witness Deepening II — `light.entries` migrated from `{ witnessedAt }` to `{ witnesses: [] }`; each tap pushes to the array (deduped by minute); sky renders small bronze horizon marks at each witness position; 3-second stillness pause after tap; sync union-merges arrays per date; Temple still shows qualitative period label from last witness. |
 
 ---
