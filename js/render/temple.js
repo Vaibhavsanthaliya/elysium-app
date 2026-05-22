@@ -17,6 +17,32 @@ const TEMPLE_PERIOD_BUCKETS = [
   { start: 22, end: 24, key: 'night' },
 ];
 
+// ── EA-90: Transient domain trace ────────────────────────────────────────────
+let _pendingTrace = null;
+let _pendingTraceAt = 0;
+const TRACE_TTL_MS = 90000;
+
+const TRACE_CARD_IDS = {
+  light: 'temple-goto-light',
+  sleep: 'temple-goto-sleep',
+  mind:  'temple-goto-mind',
+  care:  'temple-goto-today',
+};
+
+export function applyTempleTrace(domain) {
+  const card = document.getElementById(TRACE_CARD_IDS[domain]);
+  if (!card) return;
+  card.classList.remove('just-touched');
+  void card.offsetWidth;
+  card.classList.add('just-touched');
+  card.addEventListener('animationend', () => card.classList.remove('just-touched'), { once: true });
+}
+
+export function queueTempleTrace(domain) {
+  _pendingTrace = domain;
+  _pendingTraceAt = Date.now();
+}
+
 // Returns a one-line status string for the Care hero area and Temple featured card.
 // Lives here because Temple is the primary consumer; Today imports it for consistency.
 const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
@@ -93,6 +119,11 @@ function renderTempleCycleIndicator(turnState) {
 function getDailyLine() {
   if (getSleepEntry(todayStr)) return 'The day has been closed.';
 
+  const yd = new Date();
+  yd.setDate(yd.getDate() - 1);
+  const yesterdayStr = `${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, '0')}-${String(yd.getDate()).padStart(2, '0')}`;
+  if (getSleepEntry(yesterdayStr) && new Date().getHours() < 11) return 'The night has passed.';
+
   const turnState = getCareTurnState();
   if (turnState.key === 'kept') return 'The night has been kept.';
   if (turnState.key === 'motion') return 'The night moves quietly.';
@@ -108,6 +139,18 @@ function getDailyLine() {
 }
 
 export function renderTemple() {
+  if (_pendingTrace) {
+    if (Date.now() - _pendingTraceAt < TRACE_TTL_MS) {
+      const domain = _pendingTrace;
+      _pendingTrace = null;
+      _pendingTraceAt = 0;
+      applyTempleTrace(domain);
+    } else {
+      _pendingTrace = null;
+      _pendingTraceAt = 0;
+    }
+  }
+
   const h = new Date().getHours();
   const period = TEMPLE_PERIOD_BUCKETS.find(p => h >= p.start && h < p.end) ?? TEMPLE_PERIOD_BUCKETS[0];
   const paneEl = document.getElementById('pane-temple');

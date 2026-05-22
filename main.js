@@ -7,8 +7,8 @@ import {
   hideBootShell, showAuthView, sb, registerPostSyncCallback,
 } from './js/sync.js';
 import { renderHeader, renderTodayCycle } from './js/render/common.js';
-import { renderTemple } from './js/render/temple.js';
-import { keepNightProtocol, renderAllLists } from './js/render/today.js';
+import { renderTemple, applyTempleTrace } from './js/render/temple.js';
+import { keepMorningProtocol, keepNightProtocol, renderAllLists } from './js/render/today.js';
 import { renderCycleList } from './js/render/cycle.js';
 import {
   renderChronicle,
@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
       openAddModal(btn.dataset.section);
     });
   });
+  document.getElementById('care-morning-action')?.addEventListener('click', keepMorningProtocol);
   document.getElementById('care-night-action')?.addEventListener('click', keepNightProtocol);
 
   // --- Edit modal ---
@@ -359,13 +360,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  let _lightWitnessedThisSession = false;
+
   function openLightModal() {
+    _lightWitnessedThisSession = false;
     renderLightModal();
     document.getElementById('light-modal').hidden = false;
   }
 
   function closeLightModal() {
     document.getElementById('light-modal').hidden = true;
+    if (_lightWitnessedThisSession) {
+      _lightWitnessedThisSession = false;
+      applyTempleTrace('light');
+    }
   }
 
   document.getElementById('temple-goto-light').addEventListener('click', openLightModal);
@@ -373,6 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('light-modal-close').addEventListener('click', closeLightModal);
   document.getElementById('light-witness-btn').addEventListener('click', () => {
     witnessLight(todayStr);
+    _lightWitnessedThisSession = true;
     saveState();
     renderTemple();
     const btn = document.getElementById('light-witness-btn');

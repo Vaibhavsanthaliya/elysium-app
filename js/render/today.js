@@ -7,7 +7,7 @@ import { escapeHtml } from '../utils.js';
 import { state, todayStr, saveState } from '../state.js';
 import { getMorningTasks, getNightTasks, getTodayChecks } from '../domains/care.js';
 import { renderTodayCycle } from './common.js';
-import { getSmartFeedback, renderTemple } from './temple.js';
+import { getSmartFeedback, renderTemple, queueTempleTrace } from './temple.js';
 import { showToast } from '../ui/toast.js';
 import { openEditModal, openTaskInfoModal } from '../ui/modals.js';
 
@@ -20,7 +20,7 @@ export function renderTaskList(section, listEl) {
   const checks = getTodayChecks();
 
   if (!tasks.length) {
-    const noun = section === 'night' ? 'steps' : 'tasks';
+    const noun = section === 'night' || section === 'morning' || section === 'habit' ? 'steps' : 'tasks';
     listEl.innerHTML = `<li class="empty-list">No ${noun}. Tap ＋ to add one.</li>`;
     return;
   }
@@ -29,8 +29,9 @@ export function renderTaskList(section, listEl) {
     const li = document.createElement('li');
     li.className = 'task-item' + (checks[task.id] ? ' done' : '');
     const hasInfo = Boolean(TASK_INFO[task.id]);
-    const infoLabel = section === 'night' ? 'Step info' : 'Task info';
-    const editLabel = section === 'night' ? 'Edit step' : 'Edit task';
+    const usesStepLanguage = section === 'night' || section === 'morning' || section === 'habit';
+    const infoLabel = usesStepLanguage ? 'Step info' : 'Task info';
+    const editLabel = usesStepLanguage ? 'Edit step' : 'Edit task';
     li.innerHTML = `
       <div class="task-check">
         <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -101,6 +102,28 @@ export function toggleTask(taskId) {
   renderAllLists();
 }
 
+export function keepMorningProtocol() {
+  const checks = getTodayChecks();
+  const morningTasks = getMorningTasks();
+  if (!morningTasks.length) return;
+
+  let changed = false;
+  morningTasks.forEach(task => {
+    if (!checks[task.id]) {
+      checks[task.id] = true;
+      changed = true;
+    }
+  });
+
+  if (!changed) return;
+
+  reconcileDayCompletion(checks);
+
+  saveState();
+  renderAllLists();
+  queueTempleTrace('care');
+}
+
 export function keepNightProtocol() {
   const checks = getTodayChecks();
   const nightTasks = getNightTasks();
@@ -120,4 +143,5 @@ export function keepNightProtocol() {
 
   saveState();
   renderAllLists();
+  queueTempleTrace('care');
 }

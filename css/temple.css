@@ -618,3 +618,27 @@
     font-size: 16px;
   }
 }
+
+/* ── EA-90: Temple state-carry — transient bronze trace on return ─────────── */
+#pane-temple { --bronze-trace-glow: rgba(160, 122, 74, 0.28); }
+@media (prefers-color-scheme: dark) {
+  #pane-temple { --bronze-trace-glow: rgba(201, 165, 107, 0.32); }
+}
+
+@keyframes templeTrace {
+  0%   { box-shadow: var(--shadow-card); }
+  20%  { box-shadow: var(--shadow-card), 0 0 14px -3px var(--bronze-trace-glow); }
+  100% { box-shadow: var(--shadow-card); }
+}
+
+#pane-temple .temple-featured.just-touched,
+#pane-temple .temple-domain-card.just-touched {
+  animation: templeTrace 2.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pane-temple .temple-featured.just-touched,
+  #pane-temple .temple-domain-card.just-touched {
+    animation: none;
+  }
+}

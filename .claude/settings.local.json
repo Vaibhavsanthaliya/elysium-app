@@ -38,7 +38,9 @@
       "Bash(tar -xO \"elysium-app/project/Elysium - Ritual Philosophy.html\")",
       "Bash(tar -xO \"elysium-app/project/philosophy-sketches.jsx\")",
       "Bash(node --input-type=module)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(echo \"exit: $?\")"
     ]
   }
 }

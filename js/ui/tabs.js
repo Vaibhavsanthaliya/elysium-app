@@ -1,6 +1,6 @@
 import { renderTemple } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
-import { renderCycleList } from '../render/cycle.js';
+import { renderCycleList, cancelCycleArm } from '../render/cycle.js';
 import { renderChronicle } from '../render/chronicle.js';
 import { renderProgress, renderWeeklyPhotos } from '../render/progress.js';
 import { updateSettingsView } from '../render/settings.js';
@@ -31,6 +31,7 @@ export function switchTab(name) {
   if (!newPane) return false;
 
   const currentPane = document.querySelector('.tab-pane.active:not(.is-leaving)');
+  if (currentPane?.id === 'pane-cycle') cancelCycleArm();
 
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   const tabBtn = document.querySelector(`.tab[data-tab="${name}"]`);

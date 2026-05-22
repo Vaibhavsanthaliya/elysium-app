@@ -2,16 +2,67 @@ import { CYCLE_NAMES } from '../constants.js';
 import { state, todayStr, saveState } from '../state.js';
 import { renderAllLists } from './today.js';
 import { renderTodayCycle } from './common.js';
-import { showToast } from '../ui/toast.js';
 
 const ROMAN = ['I', 'II', 'III'];
 const NODE_NAMES = ['Niacinamide', 'Salicylic', 'Rest'];
 
+let _armTimer = null;
+let _armedIndex = null;
+
+function commitCycle(i) {
+  clearTimeout(_armTimer);
+  _armTimer = null;
+  _armedIndex = null;
+  state.cycleDay = i;
+  state.lastCycleDate = todayStr;
+  saveState();
+  renderCycleList();
+  renderTodayCycle();
+  renderAllLists();
+}
+
+function armNode(i, nodeEl) {
+  clearTimeout(_armTimer);
+  _armTimer = null;
+  _armedIndex = null;
+  document.querySelectorAll('.al-node').forEach(n => n.classList.remove('is-armed'));
+  const center = document.querySelector('.al-center');
+  if (center) center.classList.remove('is-preview');
+  nodeEl.classList.add('is-armed');
+  const numEl = document.getElementById('al-numeral');
+  const lblEl = document.getElementById('al-lbl');
+  if (numEl) numEl.textContent = ROMAN[i];
+  if (lblEl) lblEl.textContent = NODE_NAMES[i].toUpperCase();
+  if (center) center.classList.add('is-preview');
+  _armedIndex = i;
+  _armTimer = setTimeout(() => commitCycle(i), 1500);
+}
+
+export function cancelCycleArm() {
+  clearTimeout(_armTimer);
+  _armTimer = null;
+  _armedIndex = null;
+  document.querySelectorAll('.al-node').forEach(n => n.classList.remove('is-armed'));
+  const center = document.querySelector('.al-center');
+  if (center) center.classList.remove('is-preview');
+  const numEl = document.getElementById('al-numeral');
+  const lblEl = document.getElementById('al-lbl');
+  if (numEl) numEl.textContent = ROMAN[state.cycleDay];
+  if (lblEl) lblEl.textContent = NODE_NAMES[state.cycleDay].toUpperCase();
+}
+
 export function renderCycleList() {
+  clearTimeout(_armTimer);
+  _armTimer = null;
+  _armedIndex = null;
+
   const wrap = document.getElementById('cycle-astrolabe');
   if (!wrap) return;
 
   wrap.querySelectorAll('.al-node').forEach(n => n.remove());
+
+  const center = document.querySelector('.al-center');
+  if (center) center.classList.remove('is-preview');
 
   const radius = 102;
   NODE_NAMES.forEach((name, i) => {
@@ -30,13 +81,12 @@ export function renderCycleList() {
       <span class="al-node-name">${name}</span>
     `;
     btn.addEventListener('click', () => {
-      state.cycleDay = i;
-      state.lastCycleDate = todayStr;
-      saveState();
-      renderCycleList();
-      renderTodayCycle();
-      renderAllLists();
-      showToast(CYCLE_NAMES[i]);
+      if (isActive) return;
+      if (i === _armedIndex) {
+        commitCycle(i);
+      } else {
+        armNode(i, btn);
+      }
     });
     wrap.appendChild(btn);
   });

@@ -328,6 +328,10 @@
         <div class="care-cycle-strip">
           <div class="care-cycle-head">Cycle of three nights</div>
           <div class="care-cycle-three" id="care-cycle-strip"></div>
+          <div class="care-rhythm">
+            <div class="care-rhythm-bars" id="care-rhythm-bars"></div>
+            <div class="care-rhythm-l">3-night rhythm</div>
+          </div>
         </div>
 
         <!-- Night section -->
@@ -369,21 +373,38 @@
             <span class="care-section-label">Morning</span>
             <div class="care-section-right">
               <span class="comfort-tag" id="comfort-tag" hidden>Minimal</span>
-              <button class="add-btn" data-section="morning" aria-label="Add task">+</button>
             </div>
           </div>
-          <ul class="task-list" id="list-morning"></ul>
+          <div class="care-morning-keeper" id="care-morning-keeper">
+            <button class="care-morning-action" id="care-morning-action" type="button">Open the day</button>
+            <p class="care-morning-state" id="care-morning-state" aria-live="polite">Use after the morning has been kept.</p>
+          </div>
+          <details class="care-morning-steps" id="care-morning-steps">
+            <summary class="care-morning-steps-summary">
+              <span class="care-morning-steps-label">Steps</span>
+              <span class="care-morning-steps-meta" id="care-morning-steps-meta">View morning</span>
+            </summary>
+            <div class="care-morning-steps-body">
+              <div class="care-section-hd care-morning-steps-hd">
+                <span class="care-support-note">Morning steps</span>
+                <div class="care-section-right">
+                  <button class="add-btn" data-section="morning" aria-label="Add step">+</button>
+                </div>
+              </div>
+              <ul class="task-list" id="list-morning"></ul>
+            </div>
+          </details>
         </div>
 
         <!-- Supporting rituals section -->
         <details class="section care-support-section">
           <summary class="care-support-summary">
-            <span class="care-section-label">Supporting rituals</span>
-            <span class="care-support-meta">Quiet layer</span>
+            <span class="care-section-label">Additional</span>
+            <span class="care-support-meta">Kept aside</span>
           </summary>
           <div class="care-support-body">
             <div class="care-section-hd care-support-hd">
-              <span class="care-support-note">Kept outside the nightly turn.</span>
+              <span class="care-support-note">Kept aside from the turn.</span>
               <div class="care-section-right">
                 <button class="add-btn" data-section="habit" aria-label="Add supporting ritual">+</button>
               </div>
@@ -492,7 +513,7 @@
 
         <div class="section">
           <div class="section-hd">
-            <span class="section-lbl-ital"><em>Weekly photos</em></span>
+            <span class="section-lbl-ital"><em>Skin memory</em></span>
             <button class="section-meta-mono photo-add-action" id="add-photo-btn" aria-label="Add weekly photo">Add photo</button>
           </div>
           <input type="file" id="weekly-photo-input" accept="image/*" hidden />
@@ -505,33 +526,31 @@
       <!-- SETTINGS TAB -->
       <section class="tab-pane" id="pane-settings">
         <div class="settings-head">
-          <p class="settings-eyebrow">ACCOUNT &amp; RITUAL</p>
-          <h1 class="settings-title"><span class="ital">Settings</span></h1>
+          <p class="settings-eyebrow">RITUAL MECHANICS</p>
+          <h1 class="settings-title">The <span class="ital">workshop</span></h1>
+          <p class="settings-stanza">The quiet machinery beneath the ritual.</p>
         </div>
 
-        <div class="section">
-          <h2 class="section-h">Account</h2>
+        <div class="section workshop-block">
+          <div class="workshop-block-head">
+            <h2 class="section-h">Threshold</h2>
+            <p class="workshop-block-copy">Account access and care softness.</p>
+          </div>
           <div class="setting-card">
             <div class="setting-row">
               <div>
                 <p class="setting-name">Signed in</p>
-                <p class="setting-sub" id="account-email">—</p>
+                <p class="setting-sub" id="account-email">&mdash;</p>
               </div>
             </div>
             <button class="setting-row btn-row danger" id="sign-out-btn">
               <span class="setting-name">Sign out</span>
-              <span class="chevron">›</span>
+              <span class="chevron">&rsaquo;</span>
             </button>
-          </div>
-        </div>
-
-        <div class="section">
-          <h2 class="section-h">Care</h2>
-          <div class="setting-card">
             <div class="setting-row">
               <div>
                 <p class="setting-name">Comfort mode</p>
-                <p class="setting-sub">Warm months — face wash and sunscreen only</p>
+                <p class="setting-sub">Warm months &mdash; face wash and sunscreen only</p>
               </div>
               <label class="toggle">
                 <input type="checkbox" id="comfort-toggle" />
@@ -541,8 +560,11 @@
           </div>
         </div>
 
-        <div class="section">
-          <h2 class="section-h">Practice cues</h2>
+        <div class="section workshop-block">
+          <div class="workshop-block-head">
+            <h2 class="section-h">Cues</h2>
+            <p class="workshop-block-copy">When the ritual may call for attention.</p>
+          </div>
           <div class="setting-card">
             <div class="setting-row">
               <div>
@@ -567,7 +589,7 @@
             </div>
             <div class="setting-row">
               <div>
-                <p class="setting-name">Notifications</p>
+                <p class="setting-name">Cues</p>
                 <p class="setting-sub" id="notif-status">Tap to enable</p>
               </div>
               <label class="toggle">
@@ -576,49 +598,48 @@
               </label>
             </div>
           </div>
-          <p class="hint" id="notif-hint">Cues fire while the app is running. On iPhone, install to Home Screen for background delivery.</p>
+          <p class="hint workshop-note" id="notif-hint">Cues fire while the app is running. On iPhone, install to Home Screen for background delivery.</p>
         </div>
 
-        <div class="section">
-          <h2 class="section-h">Home Screen</h2>
-          <div class="install-card">
-            <p class="install-text" id="install-text">iPhone: Share → Add to Home Screen. Mac: File → Add to Dock. Chrome: install icon in the address bar.</p>
-          </div>
-        </div>
-
-        <div class="section">
-          <h2 class="section-h">Start date</h2>
+        <details class="section workshop-block workshop-archive">
+          <summary class="workshop-summary">
+            <span>
+              <span class="section-h">Archive</span>
+              <span class="workshop-block-copy">Install, beginning, export, import, reset.</span>
+            </span>
+            <span class="workshop-summary-mark" aria-hidden="true"></span>
+          </summary>
           <div class="setting-card">
+            <div class="setting-row workshop-text-row">
+              <div>
+                <p class="setting-name">Install</p>
+                <p class="setting-sub install-text" id="install-text">iPhone: Share &rarr; Add to Home Screen. Mac: File &rarr; Add to Dock. Chrome: install icon in the address bar.</p>
+              </div>
+            </div>
             <div class="setting-row">
               <div>
                 <p class="setting-name">Ritual started</p>
-                <p class="setting-sub" id="start-date-label">—</p>
+                <p class="setting-sub" id="start-date-label">&mdash;</p>
               </div>
               <button class="text-btn" id="reset-start">Reset</button>
             </div>
-          </div>
-        </div>
-
-        <div class="section">
-          <h2 class="section-h">Records</h2>
-          <div class="setting-card">
             <button class="setting-row btn-row" id="export-btn">
               <span class="setting-name">Export</span>
-              <span class="chevron">›</span>
+              <span class="chevron">&rsaquo;</span>
             </button>
             <label class="setting-row btn-row" for="import-file">
               <span class="setting-name">Import</span>
-              <span class="chevron">›</span>
+              <span class="chevron">&rsaquo;</span>
             </label>
             <input type="file" id="import-file" accept=".json" hidden />
             <button class="setting-row btn-row danger" id="reset-all-btn">
               <span class="setting-name">Reset everything</span>
-              <span class="chevron">›</span>
+              <span class="chevron">&rsaquo;</span>
             </button>
           </div>
-        </div>
+        </details>
 
-        <p class="version">Elysium · v0.1</p>
+        <p class="version">Elysium &middot; v0.1</p>
         <div class="footer-spacer"></div>
       </section>
     </main>
@@ -656,7 +677,7 @@
           <select id="edit-section" class="field-input">
             <option value="morning">Morning</option>
             <option value="night">Night</option>
-            <option value="habit">Daily</option>
+            <option value="habit">Additional</option>
           </select>
         </label>
         <label class="field" id="cycle-field" hidden>

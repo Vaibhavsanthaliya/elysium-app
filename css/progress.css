@@ -360,3 +360,98 @@
 #pane-progress .constellation-svg line {
   opacity: 0.42;
 }
+
+/* EA-93: Stars grid recede */
+#pane-progress .star-field-card .cal-weekdays {
+  display: none;
+}
+
+#pane-progress .cal-grid {
+  gap: 7px;
+}
+
+#pane-progress .cal-day {
+  z-index: 2;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: transparent;
+  font-size: 0;
+  overflow: visible;
+}
+
+#pane-progress .cal-day::before,
+#pane-progress .cal-day::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+#pane-progress .cal-day::before {
+  width: 16px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+  border: 1px solid transparent;
+}
+
+#pane-progress .cal-day::after {
+  width: 2px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+  background: var(--muted-text);
+  opacity: 0.16;
+}
+
+#pane-progress .cal-day.logged {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: transparent;
+}
+
+#pane-progress .cal-day.logged::after {
+  width: 7px;
+  height: 7px;
+  background: var(--bronze);
+  opacity: 1;
+  box-shadow: 0 0 9px rgba(201, 165, 107, 0.55), 0 0 2px rgba(201, 165, 107, 0.45);
+}
+
+#pane-progress .cal-day.partial {
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+#pane-progress .cal-day.partial::after {
+  width: 5px;
+  height: 5px;
+  background: var(--bronze);
+  opacity: 0.38;
+  box-shadow: 0 0 5px rgba(201, 165, 107, 0.20);
+}
+
+#pane-progress .cal-day.future {
+  opacity: 1;
+}
+
+#pane-progress .cal-day.future::after {
+  opacity: 0;
+}
+
+#pane-progress .cal-day.today,
+#pane-progress .cal-day.today.logged {
+  box-shadow: none;
+}
+
+#pane-progress .cal-day.today::before {
+  border-color: rgba(201, 165, 107, 0.48);
+  box-shadow: 0 0 8px rgba(201, 165, 107, 0.14);
+}
+
+#pane-progress .constellation-svg {
+  z-index: 1;
+}

@@ -1,7 +1,7 @@
 import { CYCLE_NAMES } from '../constants.js';
 import { state, today } from '../state.js';
 import { getLastChronicleNoteForCycleDay } from '../domains/chronicle.js';
-import { getNightTasks, getTodayChecks } from '../domains/care.js';
+import { getMorningTasks, getNightTasks, getTodayChecks } from '../domains/care.js';
 import { getCareTurnState } from './temple.js';
 
 const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
@@ -115,6 +115,50 @@ function renderNightProtocolControl(turnState) {
   }
 }
 
+function renderMorningProtocolControl() {
+  const keeper = document.getElementById('care-morning-keeper');
+  const action = document.getElementById('care-morning-action');
+  const stateLine = document.getElementById('care-morning-state');
+  const steps = document.getElementById('care-morning-steps');
+  const stepsMeta = document.getElementById('care-morning-steps-meta');
+  if (!keeper && !action && !stateLine && !steps && !stepsMeta) return;
+
+  const checks = getTodayChecks();
+  const morningTasks = getMorningTasks();
+  const morningDone = morningTasks.filter(t => checks[t.id]).length;
+  const morningKept = morningTasks.length > 0 && morningDone === morningTasks.length;
+  const inMotion = morningDone > 0 && !morningKept;
+  const stateKey = morningKept ? 'kept' : inMotion ? 'motion' : 'untouched';
+
+  if (keeper) keeper.dataset.morningState = stateKey;
+
+  if (action) {
+    action.disabled = morningKept || morningTasks.length === 0;
+    action.textContent = morningKept ? 'Morning kept' : 'Open the day';
+  }
+
+  if (stateLine) {
+    if (!morningTasks.length) {
+      stateLine.textContent = 'Add a step to keep the morning.';
+    } else if (morningKept) {
+      stateLine.textContent = 'Morning kept.';
+    } else if (inMotion) {
+      stateLine.textContent = 'The morning is in motion.';
+    } else {
+      stateLine.textContent = 'Use after the morning has been kept.';
+    }
+  }
+
+  if (steps) {
+    steps.dataset.morningState = stateKey;
+    if (inMotion) steps.open = true;
+  }
+
+  if (stepsMeta) {
+    stepsMeta.textContent = morningKept ? 'Kept' : inMotion ? 'In motion' : 'View morning';
+  }
+}
+
 export function renderHeader() {
   const dl = document.getElementById('date-label');
   dl.textContent = today.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
@@ -132,6 +176,7 @@ export function renderTodayCycle() {
   const protocolLabel = document.getElementById('night-protocol-label');
   if (protocolLabel) protocolLabel.textContent = getNightProtocolLabel(cycleDay);
   renderTodayCycleIndicator(cycleDay, turnState);
+  renderMorningProtocolControl();
   renderNightProtocolControl(turnState);
   renderCareTurnMemory(cycleDay);
   const strip = document.getElementById('care-cycle-strip');
@@ -145,4 +190,26 @@ export function renderTodayCycle() {
       `<div class="care-cycle-sm">${label}</div>` +
       `</div>`;
   }).join('');
+  renderCareRhythm(cycleDay);
+}
+
+function renderCareRhythm(cycleDay) {
+  const barsEl = document.getElementById('care-rhythm-bars');
+  if (!barsEl) return;
+  barsEl.innerHTML = '';
+  // 21 bars: positions 0–13 = past turns, 14 = tonight, 15–20 = upcoming turns.
+  // Cycle type derived from state.cycleDay only — no loggedDays, no checks.
+  for (let i = 0; i < 21; i++) {
+    const offset = i - 14;
+    const pos = ((cycleDay + offset) % 3 + 3) % 3;
+    const isRest = pos === 2;
+    const isPast = offset < 0;
+    const isNow = offset === 0;
+    const bar = document.createElement('div');
+    bar.className = 'care-bar' +
+      (isRest ? ' rest' : ' on') +
+      (isPast ? ' past' : '') +
+      (isNow ? ' now' : '');
+    barsEl.appendChild(bar);
+  }
 }

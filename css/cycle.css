@@ -343,3 +343,32 @@
   text-align: center;
   padding: 4px 0 28px;
 }
+
+/* ── EA-89: Astrolabe commit gesture ─────────────────────────────────────── */
+.al-node.is-armed {
+  border-color: var(--bronze);
+  background: var(--bronze-soft);
+  color: var(--bronze);
+  transform: none;
+}
+
+.al-node.is-armed .al-node-name {
+  color: var(--bronze);
+}
+
+@keyframes alBreath {
+  0%   { opacity: 0.6; box-shadow: none; }
+  50%  { opacity: 0.6; box-shadow: 0 0 0 1.5px var(--bronze); }
+  100% { opacity: 1;   box-shadow: none; }
+}
+
+.al-center.is-preview {
+  animation: alBreath 1.5s ease-in-out 1 forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .al-center.is-preview {
+    animation: none;
+    opacity: 0.6;
+  }
+}

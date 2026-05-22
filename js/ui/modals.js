@@ -19,7 +19,7 @@ import {
   getTodaySession,
 } from '../domains/mind.js';
 import { showToast } from './toast.js';
-import { renderTemple } from '../render/temple.js';
+import { renderTemple, applyTempleTrace } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
 
 let _confirmResolve = null;
@@ -122,6 +122,7 @@ export function saveSleepModal() {
   if (sleepStateEl) sleepStateEl.textContent = formatTime12(`${hh}:${mm}`);
   document.getElementById('sleep-state-a').hidden = true;
   document.getElementById('sleep-state-b').hidden = false;
+  applyTempleTrace('sleep');
 }
 
 export function reopenSleepModal() {
@@ -280,6 +281,7 @@ export function registerMindModal() {
     }
     saveState();
     renderTemple();
+    applyTempleTrace('mind');
     document.getElementById('mind-modal').hidden = true;
     mindActiveSessionId = null;
     mindHolding = false;

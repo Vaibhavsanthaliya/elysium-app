@@ -10,8 +10,6 @@ const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
 const STAGE_TITLES = ['foundation', 'acne control', 'marks and texture', 'maintenance'];
 
 export function renderProgress() {
-  const logged = state.loggedDays.length;
-
   const weekStart = new Date(today);
   weekStart.setDate(today.getDate() - today.getDay());
   weekStart.setHours(0, 0, 0, 0);
@@ -139,9 +137,9 @@ function getRecordStatus(dateStr, date) {
   const hasChecks = Object.keys(state.checks[dateStr] || {}).length > 0;
   if (date > today) return { key: 'future', label: 'quiet' };
   if (state.loggedDays.includes(dateStr)) return { key: 'kept', label: 'kept' };
-  if (hasChecks) return { key: 'partial', label: 'partial' };
+  if (hasChecks) return { key: 'partial', label: 'in motion' };
   if (dateStr === todayStr) return { key: 'quiet', label: 'quiet' };
-  return { key: 'missed', label: 'not kept' };
+  return { key: 'missed', label: 'quiet' };
 }
 
 function getProtocolLabels(cycleDay) {

@@ -442,9 +442,124 @@
   color: var(--label-tertiary);
 }
 
-#pane-today .care-support-section {
-  margin: 6px 0 28px;
+/* ── EA-91: Morning de-checklist — one quiet opening action ─────────────── */
+
+#pane-today .care-morning-keeper {
+  padding: 8px 0 10px;
+}
+
+#pane-today .care-morning-action {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--separator-warm);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-text);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 150ms ease;
+}
+
+#pane-today .care-morning-action:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+#pane-today .care-morning-action:disabled {
+  cursor: default;
+}
+
+#pane-today .care-morning-keeper[data-morning-state="kept"] .care-morning-action {
+  border-color: rgba(160, 114, 42, 0.22);
+  background: rgba(160, 114, 42, 0.04);
+  color: var(--bronze);
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-today .care-morning-keeper[data-morning-state="kept"] .care-morning-action {
+    border-color: rgba(201, 165, 107, 0.24);
+    background: rgba(201, 165, 107, 0.045);
+  }
+}
+
+#pane-today .care-morning-state {
+  margin: 8px 0 0;
+  color: var(--muted-text);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.45;
+  text-align: center;
+}
+
+#pane-today .care-morning-keeper[data-morning-state="kept"] .care-morning-state {
+  color: var(--bronze);
+}
+
+#pane-today .care-morning-steps {
   border-top: 1px solid var(--separator-warm);
+  margin-top: 2px;
+}
+
+#pane-today .care-morning-steps-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+#pane-today .care-morning-steps-summary::-webkit-details-marker {
+  display: none;
+}
+
+#pane-today .care-morning-steps-summary::after {
+  content: "+";
+  color: var(--bronze);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin-left: 2px;
+}
+
+#pane-today .care-morning-steps[open] .care-morning-steps-summary::after {
+  content: "-";
+}
+
+#pane-today .care-morning-steps-label {
+  color: var(--muted-text);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-style: italic;
+}
+
+#pane-today .care-morning-steps-meta {
+  color: var(--muted-text);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+#pane-today .care-morning-steps[data-morning-state="kept"] .care-morning-steps-meta,
+#pane-today .care-morning-steps[data-morning-state="motion"] .care-morning-steps-meta {
+  color: var(--bronze);
+}
+
+#pane-today .care-morning-steps-body {
+  padding: 0 0 2px;
+}
+
+#pane-today .care-morning-section .care-morning-steps-hd {
+  padding: 0 0 2px;
+}
+
+#pane-today .care-support-section {
+  margin: 2px 0 22px;
+  border-top: 1px solid var(--separator);
 }
 
 #pane-today .care-support-summary {
@@ -452,7 +567,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 14px 4px;
+  padding: 10px 2px;
   cursor: pointer;
   list-style: none;
 }
@@ -465,7 +580,8 @@
   content: "+";
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--bronze);
+  color: var(--bronze-dim);
+  opacity: 0.72;
 }
 
 #pane-today .care-support-section[open] .care-support-summary::after {
@@ -473,7 +589,7 @@
 }
 
 #pane-today .care-support-summary .care-section-label {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--muted-text);
 }
 
@@ -484,22 +600,23 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted-text);
+  opacity: 0.72;
 }
 
 #pane-today .care-support-body {
-  padding: 0 4px 8px;
+  padding: 0 2px 4px;
 }
 
 #pane-today .care-support-hd {
-  padding: 0 0 4px;
+  padding: 0 0 2px;
 }
 
 #pane-today .care-support-section .task-item {
-  padding: 11px 0;
+  padding: 9px 0;
 }
 
 #pane-today .care-support-section .task-text {
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--muted-text);
 }
 
@@ -621,4 +738,69 @@
 
 #pane-today .care-night-section .care-night-steps-hd {
   padding: 0 0 2px;
+}
+
+/* ── EA-88: Care rhythm bars ─────────────────────────────────────────────────
+   21 positional bars representing 7 weeks of the 3-night cycle pattern.
+   Past 14 turns | tonight | next 6 turns. Derived from state.cycleDay only.
+   No completion tracking. No dates. No labels per bar. No interaction.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+#pane-today .care-rhythm {
+  margin-top: 14px;
+}
+
+#pane-today .care-rhythm-bars {
+  display: grid;
+  grid-template-columns: repeat(21, 1fr);
+  gap: 2px;
+  height: 28px;
+}
+
+#pane-today .care-bar {
+  border-radius: 2px;
+  background: var(--separator);
+}
+
+/* Past active turns — warm bronze presence */
+#pane-today .care-bar.on.past {
+  background: var(--bronze);
+  opacity: 0.82;
+}
+
+/* Past rest turns — quiet bronze echo */
+#pane-today .care-bar.rest.past {
+  background: var(--bronze);
+  opacity: 0.22;
+}
+
+/* Current active turn — full bronze with subtle glow */
+#pane-today .care-bar.on.now {
+  background: var(--bronze);
+  box-shadow: 0 0 5px rgba(201, 165, 107, 0.45);
+}
+
+/* Current rest turn — softer presence, no glow */
+#pane-today .care-bar.rest.now {
+  background: var(--bronze);
+  opacity: 0.40;
+}
+
+/* Upcoming active turns — ghost */
+#pane-today .care-bar.on {
+  background: var(--separator-strong);
+}
+
+/* Upcoming rest turns — dimmer ghost */
+#pane-today .care-bar.rest {
+  background: var(--separator);
+}
+
+#pane-today .care-rhythm-l {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin-top: 6px;
 }
