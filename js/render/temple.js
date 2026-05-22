@@ -1,10 +1,21 @@
 import { state, todayStr } from '../state.js';
-import { formatTime12 } from '../utils.js';
 import { CYCLE_NAMES } from '../constants.js';
 import { getTodayChecks, getNightTasks } from '../domains/care.js';
 import { getLightPeriodLabel, getLastWitness } from '../domains/light.js';
-import { getLastSleepEntry } from '../domains/sleep.js';
+import { getSleepEntry } from '../domains/sleep.js';
 import { formatHeldMs, getMostRecentSession, getSessionHeldMs } from '../domains/mind.js';
+
+// Time-of-day period buckets — used to set data-period on #pane-temple for ambient CSS shift.
+const TEMPLE_PERIOD_BUCKETS = [
+  { start: 0,  end: 4,  key: 'night' },
+  { start: 4,  end: 6,  key: 'first-light' },
+  { start: 6,  end: 10, key: 'morning' },
+  { start: 10, end: 15, key: 'midday' },
+  { start: 15, end: 18, key: 'afternoon' },
+  { start: 18, end: 20, key: 'golden-hour' },
+  { start: 20, end: 22, key: 'dusk' },
+  { start: 22, end: 24, key: 'night' },
+];
 
 // Returns a one-line status string for the Care hero area and Temple featured card.
 // Lives here because Temple is the primary consumer; Today imports it for consistency.
@@ -79,7 +90,32 @@ function renderTempleCycleIndicator(turnState) {
   if (label) label.textContent = turnState.label;
 }
 
+function getDailyLine() {
+  if (getSleepEntry(todayStr)) return 'The day has been closed.';
+
+  const turnState = getCareTurnState();
+  if (turnState.key === 'kept') return 'The night has been kept.';
+  if (turnState.key === 'motion') return 'The night moves quietly.';
+
+  if (state.chronicle?.notes?.[todayStr]?.body) return 'A line was left.';
+
+  const recent = getMostRecentSession();
+  if (recent && recent.date === todayStr) return 'A time was held.';
+
+  if (getLastWitness(todayStr)) return 'Light was seen.';
+
+  return '';
+}
+
 export function renderTemple() {
+  const h = new Date().getHours();
+  const period = TEMPLE_PERIOD_BUCKETS.find(p => h >= p.start && h < p.end) ?? TEMPLE_PERIOD_BUCKETS[0];
+  const paneEl = document.getElementById('pane-temple');
+  if (paneEl) paneEl.dataset.period = period.key;
+
+  const lineEl = document.getElementById('temple-daily-line');
+  if (lineEl) lineEl.textContent = getDailyLine();
+
   const turnState = getCareTurnState();
 
   document.getElementById('temple-status').textContent = getCareCycleLabel();
@@ -87,7 +123,7 @@ export function renderTemple() {
   renderTempleCycleIndicator(turnState);
 
   const hasNote = !!(state.chronicle?.notes?.[todayStr]?.body);
-  document.getElementById('temple-chronicle-state').textContent = hasNote ? 'Written' : 'Quiet';
+  document.getElementById('temple-chronicle-state').textContent = hasNote ? 'A line' : 'Quiet';
 
   const lastWitness = getLastWitness(todayStr);
   const lightStateEl = document.getElementById('temple-light-state');
@@ -96,19 +132,19 @@ export function renderTemple() {
       const h = parseInt(lastWitness.split(':')[0], 10);
       lightStateEl.textContent = getLightPeriodLabel(Number.isFinite(h) ? h : 0);
     } else {
-      lightStateEl.textContent = '—';
+      lightStateEl.textContent = 'Unseen';
     }
   }
 
   const sleepStateEl = document.getElementById('temple-sleep-state');
   if (sleepStateEl) {
-    const lastSleep = getLastSleepEntry();
-    sleepStateEl.textContent = lastSleep ? formatTime12(lastSleep.bedtime) : 'Quiet';
+    const todaySleep = getSleepEntry(todayStr);
+    sleepStateEl.textContent = todaySleep ? 'Closed' : '—';
   }
 
   const mindStateEl = document.getElementById('temple-mind-state');
   if (mindStateEl) {
     const recent = getMostRecentSession();
-    mindStateEl.textContent = recent ? `Held · ${formatHeldMs(getSessionHeldMs(recent))}` : '—';
+    mindStateEl.textContent = recent ? `Held · ${formatHeldMs(getSessionHeldMs(recent))}` : 'Unheld';
   }
 }

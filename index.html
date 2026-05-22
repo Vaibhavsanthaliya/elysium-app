@@ -138,6 +138,10 @@
     <main class="main">
       <!-- TEMPLE TAB -->
       <section class="tab-pane active" id="pane-temple">
+        <div class="temple-greeting">
+          <p class="temple-greeting-line" id="temple-daily-line"></p>
+        </div>
+
         <!-- Featured Care card -->
         <button class="temple-featured" id="temple-goto-today">
           <span class="temple-featured-medallion" aria-hidden="true">
@@ -241,9 +245,7 @@
             </button>
 
             <!-- Dormant domain separator -->
-            <div class="temple-dormant-head" aria-hidden="true">
-              <span class="temple-dormant-label">IN STUDY</span>
-            </div>
+            <div class="temple-dormant-head" aria-hidden="true"></div>
 
             <!-- Body — dormant -->
             <button class="temple-domain-card" disabled>
@@ -258,7 +260,7 @@
                 <span class="temple-domain-sub">arrive</span>
                 <span class="temple-domain-archetype">Atlas</span>
               </span>
-              <span class="temple-domain-state">—</span>
+              <span class="temple-domain-state">Still</span>
             </button>
 
             <!-- Water — dormant -->
@@ -274,7 +276,7 @@
                 <span class="temple-domain-sub">notice</span>
                 <span class="temple-domain-archetype">Poseidon</span>
               </span>
-              <span class="temple-domain-state">—</span>
+              <span class="temple-domain-state">Still</span>
             </button>
 
           </div>
@@ -334,10 +336,27 @@
             <span class="care-section-label" id="night-protocol-label">Tonight · Niacinamide</span>
             <div class="care-section-right">
               <span class="cycle-tag" id="cycle-tag">Night I</span>
-              <button class="add-btn" data-section="night" aria-label="Add task">+</button>
             </div>
           </div>
-          <ul class="task-list" id="list-night"></ul>
+          <div class="care-night-keeper" id="care-night-keeper">
+            <button class="care-night-action" id="care-night-action" type="button">Keep tonight</button>
+            <p class="care-night-state" id="care-night-state" aria-live="polite">Keep the protocol when the steps are done in life.</p>
+          </div>
+          <details class="care-night-steps" id="care-night-steps">
+            <summary class="care-night-steps-summary">
+              <span class="care-night-steps-label">Steps</span>
+              <span class="care-night-steps-meta" id="care-night-steps-meta">View protocol</span>
+            </summary>
+            <div class="care-night-steps-body">
+              <div class="care-section-hd care-night-steps-hd">
+                <span class="care-support-note">Protocol steps</span>
+                <div class="care-section-right">
+                  <button class="add-btn" data-section="night" aria-label="Add step">+</button>
+                </div>
+              </div>
+              <ul class="task-list" id="list-night"></ul>
+            </div>
+          </details>
           <div class="care-turn-memory" id="care-turn-memory" hidden>
             <p class="care-turn-memory-label" id="care-turn-memory-label"></p>
             <p class="care-turn-memory-body" id="care-turn-memory-body"></p>
@@ -401,31 +420,7 @@
           <div class="al-legend-item"><span class="al-dot al-dot-pending"></span><span>Upcoming</span></div>
         </div>
 
-        <div class="section">
-          <div class="section-hd">
-            <span class="section-lbl-ital"><em>Sweat management</em></span>
-            <span class="section-meta-mono">CARE NOTE</span>
-          </div>
-          <div class="info-card">
-            <div class="info-row">Dab sweat with clean tissue — never rub</div>
-            <div class="info-row">Rinse with plain water 1–2× if needed</div>
-            <div class="info-row">Keep hands away from face</div>
-            <div class="info-row">Beard: keep short, clean with face wash</div>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="section-hd">
-            <span class="section-lbl-ital"><em>Active rules</em></span>
-            <span class="section-meta-mono">CARE NOTE</span>
-          </div>
-          <div class="info-card">
-            <div class="info-row">Salicylic max 3–4×/week, never daily</div>
-            <div class="info-row">Never layer multiple actives</div>
-            <div class="info-row">Pea-sized serum amount only</div>
-            <div class="info-row">No scrubbing, no picking</div>
-          </div>
-        </div>
+        <p class="cycle-note">One active per night. Pea-sized. Nothing layered.</p>
 
         <div class="footer-spacer"></div>
       </section>
@@ -436,6 +431,15 @@
         <div class="chronicle-heading">
           <div class="chronicle-eyebrow">CHRONICLE</div>
           <h1 class="chronicle-title">The <span class="ital">chronicle</span></h1>
+        </div>
+
+        <!-- From the well: a single resurfaced memory (JS shows/hides) -->
+        <div class="chronicle-well" id="chronicle-well" hidden>
+          <div class="chronicle-well-divider"><span>From the well</span></div>
+          <div class="chronicle-well-entry">
+            <div class="chronicle-well-eyebrow" id="chronicle-well-eyebrow"></div>
+            <div class="chronicle-well-body" id="chronicle-well-body"></div>
+          </div>
         </div>
 
         <!-- River: section header for past entries (JS shows/hides) -->
@@ -510,7 +514,7 @@
           <div class="setting-card">
             <div class="setting-row">
               <div>
-                <p class="setting-name">Signed in as</p>
+                <p class="setting-name">Signed in</p>
                 <p class="setting-sub" id="account-email">—</p>
               </div>
             </div>
@@ -522,12 +526,12 @@
         </div>
 
         <div class="section">
-          <h2 class="section-h">Care ritual</h2>
+          <h2 class="section-h">Care</h2>
           <div class="setting-card">
             <div class="setting-row">
               <div>
                 <p class="setting-name">Comfort mode</p>
-                <p class="setting-sub">Summer / sweat friendly — shows only face wash and sunscreen in the morning</p>
+                <p class="setting-sub">Warm months — face wash and sunscreen only</p>
               </div>
               <label class="toggle">
                 <input type="checkbox" id="comfort-toggle" />
@@ -572,13 +576,13 @@
               </label>
             </div>
           </div>
-          <p class="hint" id="notif-hint">Practice cues fire while the app is open or running in the background. Install to Home Screen for the most reliable experience on iPhone.</p>
+          <p class="hint" id="notif-hint">Cues fire while the app is running. On iPhone, install to Home Screen for background delivery.</p>
         </div>
 
         <div class="section">
-          <h2 class="section-h">Install</h2>
+          <h2 class="section-h">Home Screen</h2>
           <div class="install-card">
-            <p class="install-text" id="install-text">On iPhone/iPad: tap Share → "Add to Home Screen". On Mac Safari: File → Add to Dock. On Chrome: install icon in URL bar.</p>
+            <p class="install-text" id="install-text">iPhone: Share → Add to Home Screen. Mac: File → Add to Dock. Chrome: install icon in the address bar.</p>
           </div>
         </div>
 
@@ -596,14 +600,14 @@
         </div>
 
         <div class="section">
-          <h2 class="section-h">Data</h2>
+          <h2 class="section-h">Records</h2>
           <div class="setting-card">
             <button class="setting-row btn-row" id="export-btn">
-              <span class="setting-name">Export data</span>
+              <span class="setting-name">Export</span>
               <span class="chevron">›</span>
             </button>
             <label class="setting-row btn-row" for="import-file">
-              <span class="setting-name">Import data</span>
+              <span class="setting-name">Import</span>
               <span class="chevron">›</span>
             </label>
             <input type="file" id="import-file" accept=".json" hidden />
@@ -641,7 +645,7 @@
     <div class="modal-backdrop" data-close></div>
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <h3 class="modal-title" id="modal-title">Edit task</h3>
+      <h3 class="modal-title" id="modal-title">Edit step</h3>
       <div class="modal-body">
         <label class="field">
           <span class="field-label">Name</span>

@@ -399,33 +399,6 @@
   font-size: 14px;
 }
 
-/* ============== INFO CARDS ============== */
-.info-card {
-  background: var(--bg-elevated);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-}
-
-/* ── EA-20: Info card alabaster surface ──────────────────────────────────── */
-.info-card {
-  background: var(--alabaster);
-  box-shadow: var(--shadow-card);
-}
-@media (prefers-color-scheme: dark) {
-  .info-card { background: var(--bg-elevated); }
-}
-
-.info-row {
-  padding: 12px 16px;
-  font-size: 15px;
-  color: var(--label);
-  border-bottom: 0.5px solid var(--separator);
-  line-height: 1.4;
-}
-
-.info-row:last-child { border-bottom: none; }
-
 /* ============== TOAST ============== */
 .toast {
   position: fixed;

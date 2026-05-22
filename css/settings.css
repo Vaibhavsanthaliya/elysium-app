@@ -36,7 +36,7 @@
 .btn-row.danger { color: var(--red); }
 
 .setting-name {
-  font-size: 16px;
+  font-size: 14.5px;
   color: var(--label);
 }
 
@@ -46,7 +46,7 @@
 }
 
 .setting-sub {
-  font-size: 13px;
+  font-size: 11.5px;
   color: var(--label-secondary);
   margin-top: 1px;
 }
@@ -114,7 +114,7 @@
 }
 
 .toggle input:checked + .toggle-slider {
-  background: var(--green);
+  background: var(--bronze);
 }
 
 .toggle input:checked + .toggle-slider::before {
@@ -191,6 +191,18 @@
   color: var(--bronze);
 }
 
+/* ── EA-80: Section headings — quiet mono eyebrows ─────────────────────── */
+#pane-settings .section-h {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze-dim);
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+
 /* ── EA-19: Settings — Obsidian Temple polish ───────────────────────────── */
 
 /* Setting cards and install card — alabaster (light), warm border, deeper shadow, refined radius */
@@ -212,9 +224,9 @@
   color: var(--oracle-text);
 }
 
-/* Danger rows — preserve red (required: #pane-settings ID raises specificity above .btn-row.danger) */
+/* Danger rows — desaturated rust (prototype spec), softer than iOS red */
 #pane-settings .btn-row.danger {
-  color: var(--red);
+  color: #d97a5e;
 }
 
 /* Chevrons — bronze */
@@ -222,9 +234,9 @@
   color: var(--bronze);
 }
 
-/* Danger chevrons — red to match danger row */
+/* Danger chevrons — match danger row */
 #pane-settings .btn-row.danger .chevron {
-  color: var(--red);
+  color: #d97a5e;
 }
 
 /* Reset text button — bronze instead of iOS blue */

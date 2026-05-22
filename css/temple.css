@@ -131,7 +131,7 @@
   gap: 14px;
   padding: 18px;
   margin-bottom: 24px;
-  background: linear-gradient(180deg, rgba(160, 122, 74, 0.10), rgba(160, 122, 74, 0.02));
+  background: linear-gradient(180deg, rgba(160, 122, 74, var(--temple-grad-alpha, 0.10)), rgba(160, 122, 74, 0.02));
   border: 1px solid rgba(160, 122, 74, 0.32);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-card);
@@ -328,7 +328,7 @@
 
 /* Dormant (disabled) domain cards */
 #pane-temple .temple-domain-card:disabled {
-  opacity: 0.38;
+  opacity: 0.45;
   cursor: default;
   pointer-events: none;
 }
@@ -431,7 +431,7 @@
 /* ─── Dark mode overrides ────────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   #pane-temple .temple-featured {
-    background: linear-gradient(180deg, rgba(201, 165, 107, 0.11), rgba(201, 165, 107, 0.02));
+    background: linear-gradient(180deg, rgba(201, 165, 107, var(--temple-grad-alpha, 0.10)), rgba(201, 165, 107, 0.02));
     border-color: rgba(201, 165, 107, 0.24);
     box-shadow: var(--shadow-card), 0 0 28px -12px rgba(201, 165, 107, 0.18);
   }
@@ -555,6 +555,11 @@
   width: calc(100% - 40px);
 }
 
+#light-modal .btn-primary.is-still {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 
 #light-modal .btn-text {
   width: calc(100% - 40px);
@@ -571,14 +576,30 @@
   border-top: 1px solid var(--separator-warm);
 }
 
-#pane-temple .temple-dormant-label {
-  font-family: var(--font-mono);
-  font-size: 8.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--muted-text);
-  opacity: 0.55;
+
+/* ── EA-84: Temple daily opening line ───────────────────────────────────── */
+#pane-temple .temple-greeting {
+  margin-bottom: var(--space-md);
+  text-align: center;
 }
+
+#pane-temple .temple-greeting-line {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--muted-text);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ── EA-85: Temporal breath — ambient featured-card glow shift by time period ── */
+#pane-temple[data-period="night"]        { --temple-grad-alpha: 0.06; }
+#pane-temple[data-period="first-light"]  { --temple-grad-alpha: 0.09; }
+#pane-temple[data-period="morning"]      { --temple-grad-alpha: 0.12; }
+#pane-temple[data-period="midday"]       { --temple-grad-alpha: 0.08; }
+#pane-temple[data-period="afternoon"]    { --temple-grad-alpha: 0.10; }
+#pane-temple[data-period="golden-hour"]  { --temple-grad-alpha: 0.14; }
+#pane-temple[data-period="dusk"]         { --temple-grad-alpha: 0.11; }
 
 /* ─── Small viewport ─────────────────────────────────────────────────────── */
 @media (max-width: 360px) {

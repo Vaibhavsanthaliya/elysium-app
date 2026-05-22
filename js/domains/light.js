@@ -16,10 +16,6 @@ export function getLightPeriodLabel(h) {
   return p ? p.label : 'Night';
 }
 
-export function getLightEntry(dateStr) {
-  return state.light?.entries?.[dateStr] ?? null;
-}
-
 // Returns the most recent witness time string ("HH:MM") for the given date, or null.
 export function getLastWitness(dateStr) {
   const witnesses = state.light?.entries?.[dateStr]?.witnesses;

@@ -332,3 +332,14 @@
   text-transform: uppercase;
   color: var(--muted-text);
 }
+
+/* ── EA-77: Cycle note — quiet prose, replaces Active rules info card ─────── */
+.cycle-note {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--muted-text);
+  line-height: 1.5;
+  text-align: center;
+  padding: 4px 0 28px;
+}

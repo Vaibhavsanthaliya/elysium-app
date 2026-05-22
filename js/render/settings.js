@@ -27,7 +27,7 @@ export function exportData() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `skincare-data-${todayStr}.json`;
+  a.download = `elysium-data-${todayStr}.json`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 100);
 }

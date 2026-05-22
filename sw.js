@@ -1,7 +1,7 @@
 /* Skin — Service Worker
    Cache shell for offline + standalone install */
 
-const CACHE_NAME = 'elysium-v7';
+const CACHE_NAME = 'elysium-v9';
 const ASSETS = [
   './',
   './index.html',

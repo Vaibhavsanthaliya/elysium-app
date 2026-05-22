@@ -4,39 +4,10 @@
 
 /* ── EA-16: Today/Care — Obsidian Temple polish ──────────────────────────── */
 
-/* Hero card — alabaster warmth (light), warm border, deeper shadow */
-#pane-today .hero-card {
-  background: var(--alabaster);
-  border: 0.5px solid var(--separator-warm);
-  box-shadow: var(--shadow-card);
-}
-
-/* Hero card — restore dark surface in dark mode (alabaster is a light colour) */
-@media (prefers-color-scheme: dark) {
-  #pane-today .hero-card {
-    background: var(--bg-elevated);
-  }
-}
-
-/* Ring track — warm bronze ghost (matches Temple ring treatment) */
-#pane-today .ring-bg {
-  stroke: var(--separator-warm);
-}
-
-/* Hero eyebrow label — bronze (matches Temple eyebrow) */
-#pane-today .hero-label {
-  color: var(--bronze);
-}
-
 /* Task list cards — refined radius and deeper shadow */
 #pane-today .task-list {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-}
-
-/* ── EA-23: Today progress ring bronze ───────────────────────────────────── */
-#pane-today .ring-fg {
-  stroke: var(--bronze);
 }
 
 /* ── EA-33: Today/Care task surface refinement ───────────────────────────────
@@ -76,14 +47,6 @@
 #pane-today .task-check {
   width: 20px;
   height: 20px;
-}
-
-/* Section heading — Spectral italic */
-#pane-today .section-title h2 {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 17px;
-  font-weight: 400;
 }
 
 /* Cycle and comfort tags — mono bronze meta label, no pill */
@@ -538,4 +501,124 @@
 #pane-today .care-support-section .task-text {
   font-size: 14px;
   color: var(--muted-text);
+}
+
+/* ── EA-76: Care de-checklist II — one kept Night protocol ──────────────── */
+
+#pane-today .care-night-keeper {
+  padding: 8px 0 12px;
+}
+
+#pane-today .care-night-action {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(160, 114, 42, 0.34);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(160, 114, 42, 0.12), rgba(160, 114, 42, 0.04));
+  color: var(--oracle-text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 150ms ease;
+}
+
+#pane-today .care-night-action:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+#pane-today .care-night-action:disabled {
+  cursor: default;
+}
+
+#pane-today .care-night-keeper[data-night-state="kept"] .care-night-action {
+  border-color: rgba(160, 114, 42, 0.22);
+  background: rgba(160, 114, 42, 0.06);
+  color: var(--bronze);
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-today .care-night-action {
+    border-color: rgba(201, 165, 107, 0.36);
+    background: linear-gradient(180deg, rgba(201, 165, 107, 0.13), rgba(201, 165, 107, 0.035));
+  }
+
+  #pane-today .care-night-keeper[data-night-state="kept"] .care-night-action {
+    border-color: rgba(201, 165, 107, 0.24);
+    background: rgba(201, 165, 107, 0.055);
+  }
+}
+
+#pane-today .care-night-state {
+  margin: 9px 0 0;
+  color: var(--muted-text);
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-style: italic;
+  line-height: 1.45;
+  text-align: center;
+}
+
+#pane-today .care-night-keeper[data-night-state="kept"] .care-night-state {
+  color: var(--bronze);
+}
+
+#pane-today .care-night-steps {
+  border-top: 1px solid var(--separator-warm);
+  margin-top: 2px;
+}
+
+#pane-today .care-night-steps-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+#pane-today .care-night-steps-summary::-webkit-details-marker {
+  display: none;
+}
+
+#pane-today .care-night-steps-summary::after {
+  content: "+";
+  color: var(--bronze);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  margin-left: 2px;
+}
+
+#pane-today .care-night-steps[open] .care-night-steps-summary::after {
+  content: "-";
+}
+
+#pane-today .care-night-steps-label {
+  color: var(--muted-text);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-style: italic;
+}
+
+#pane-today .care-night-steps-meta {
+  color: var(--muted-text);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+#pane-today .care-night-steps[data-night-state="kept"] .care-night-steps-meta,
+#pane-today .care-night-steps[data-night-state="motion"] .care-night-steps-meta {
+  color: var(--bronze);
+}
+
+#pane-today .care-night-steps-body {
+  padding: 0 0 4px;
+}
+
+#pane-today .care-night-section .care-night-steps-hd {
+  padding: 0 0 2px;
 }

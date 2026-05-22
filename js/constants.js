@@ -60,7 +60,6 @@ export const DEFAULT_DATA = {
 };
 
 export const CYCLE_NAMES = ['Niacinamide', 'Salicylic', 'Rest night'];
-export const CYCLE_FULL_NAMES = ['Day 1 — Niacinamide', 'Day 2 — Salicylic', 'Day 3 — Rest'];
 export const CYCLE_DESC = [
   'Face wash → Niacinamide serum → Moisturizer',
   'Face wash → Salicylic serum → Moisturizer',

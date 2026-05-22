@@ -8,7 +8,7 @@ import {
 } from './js/sync.js';
 import { renderHeader, renderTodayCycle } from './js/render/common.js';
 import { renderTemple } from './js/render/temple.js';
-import { renderAllLists } from './js/render/today.js';
+import { keepNightProtocol, renderAllLists } from './js/render/today.js';
 import { renderCycleList } from './js/render/cycle.js';
 import {
   renderChronicle,
@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
       openAddModal(btn.dataset.section);
     });
   });
+  document.getElementById('care-night-action')?.addEventListener('click', keepNightProtocol);
 
   // --- Edit modal ---
   document.querySelectorAll('[data-close]').forEach(el => {
@@ -329,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('light-witness-btn');
     if (btn) {
       btn.textContent = "I'm here";
-      btn.disabled = false;
+      btn.classList.remove('is-still');
     }
 
     const pct = ((now.getHours() * 60 + now.getMinutes()) / 1440 * 100).toFixed(1);
@@ -374,16 +375,15 @@ document.addEventListener('DOMContentLoaded', () => {
     witnessLight(todayStr);
     saveState();
     renderTemple();
-    showToast('Witnessed');
     const btn = document.getElementById('light-witness-btn');
     const closeBtn = document.getElementById('light-modal-close');
-    if (btn) { btn.textContent = '·'; btn.disabled = true; }
+    if (btn) { btn.textContent = '·'; btn.classList.add('is-still'); }
     if (closeBtn) closeBtn.style.visibility = 'hidden';
     setTimeout(() => {
       renderLightModal();
       if (closeBtn) closeBtn.style.visibility = '';
       const b = document.getElementById('light-witness-btn');
-      if (b) { b.textContent = 'Witnessed ·'; b.disabled = false; }
+      if (b) b.textContent = 'Witnessed ·';
       setTimeout(renderLightModal, 1500);
     }, 3000);
   });

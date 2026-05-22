@@ -1,4 +1,4 @@
-import { CYCLE_NAMES, CYCLE_DESC } from '../constants.js';
+import { CYCLE_NAMES } from '../constants.js';
 import { isValidReminderTime } from '../utils.js';
 import { state, saveState } from '../state.js';
 import { showToast } from '../ui/toast.js';
@@ -83,8 +83,8 @@ export function scheduleReminders() {
   clearScheduledReminders();
   if (!('Notification' in window) || !state.reminders.enabled || Notification.permission !== 'granted') return;
 
-  scheduleNextFor(state.reminders.morningTime, 'Morning care ritual', 'Time to wash your face and apply sunscreen ☀', 'skin-morning');
-  scheduleNextFor(state.reminders.nightTime, () => `Tonight — ${CYCLE_NAMES[state.cycleDay]}`, () => `Cycle day ${state.cycleDay + 1}: ${CYCLE_DESC[state.cycleDay]}`, 'skin-night');
+  scheduleNextFor(state.reminders.morningTime, 'Morning cue', 'Time to wash your face and apply sunscreen ☀', 'skin-morning');
+  scheduleNextFor(state.reminders.nightTime, () => `Tonight — ${CYCLE_NAMES[state.cycleDay]}`, () => `Tonight — ${CYCLE_NAMES[state.cycleDay]}`, 'skin-night');
   scheduleNextFor(state.reminders.checkInTime, 'Evening cue', 'Did you complete your ritual today? Tap to log.', 'skin-checkin');
 }
 

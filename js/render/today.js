@@ -20,7 +20,8 @@ export function renderTaskList(section, listEl) {
   const checks = getTodayChecks();
 
   if (!tasks.length) {
-    listEl.innerHTML = `<li class="empty-list">No tasks. Tap ＋ to add one.</li>`;
+    const noun = section === 'night' ? 'steps' : 'tasks';
+    listEl.innerHTML = `<li class="empty-list">No ${noun}. Tap ＋ to add one.</li>`;
     return;
   }
 
@@ -28,6 +29,8 @@ export function renderTaskList(section, listEl) {
     const li = document.createElement('li');
     li.className = 'task-item' + (checks[task.id] ? ' done' : '');
     const hasInfo = Boolean(TASK_INFO[task.id]);
+    const infoLabel = section === 'night' ? 'Step info' : 'Task info';
+    const editLabel = section === 'night' ? 'Edit step' : 'Edit task';
     li.innerHTML = `
       <div class="task-check">
         <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -35,12 +38,12 @@ export function renderTaskList(section, listEl) {
         </svg>
       </div>
       <span class="task-text">${escapeHtml(task.text)}</span>
-      ${hasInfo ? `<button class="task-info-btn" aria-label="Task info" data-info>
+      ${hasInfo ? `<button class="task-info-btn" aria-label="${infoLabel}" data-info>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
         </svg>
       </button>` : ''}
-      <button class="task-edit-btn" aria-label="Edit task" data-edit>
+      <button class="task-edit-btn" aria-label="${editLabel}" data-edit>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
         </svg>
@@ -69,14 +72,7 @@ export function renderAllLists() {
   if (comfortTag) comfortTag.hidden = !state.comfortMode;
 }
 
-export function toggleTask(taskId) {
-  const checks = getTodayChecks();
-  if (checks[taskId]) {
-    delete checks[taskId];
-  } else {
-    checks[taskId] = true;
-  }
-
+function reconcileDayCompletion(checks, announce = false) {
   const morning = getMorningTasks();
   const morningDone = morning.length === 0 || morning.every(t => checks[t.id]);
   const nightTasks = getNightTasks();
@@ -85,10 +81,42 @@ export function toggleTask(taskId) {
 
   if (dayComplete && !state.loggedDays.includes(todayStr)) {
     state.loggedDays.push(todayStr);
-    showToast(getSmartFeedback());
+    if (announce) showToast(getSmartFeedback());
   } else if (!dayComplete && state.loggedDays.includes(todayStr)) {
     state.loggedDays = state.loggedDays.filter(d => d !== todayStr);
   }
+}
+
+export function toggleTask(taskId) {
+  const checks = getTodayChecks();
+  if (checks[taskId]) {
+    delete checks[taskId];
+  } else {
+    checks[taskId] = true;
+  }
+
+  reconcileDayCompletion(checks, true);
+
+  saveState();
+  renderAllLists();
+}
+
+export function keepNightProtocol() {
+  const checks = getTodayChecks();
+  const nightTasks = getNightTasks();
+  if (!nightTasks.length) return;
+
+  let changed = false;
+  nightTasks.forEach(task => {
+    if (!checks[task.id]) {
+      checks[task.id] = true;
+      changed = true;
+    }
+  });
+
+  if (!changed) return;
+
+  reconcileDayCompletion(checks);
 
   saveState();
   renderAllLists();

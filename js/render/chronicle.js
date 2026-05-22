@@ -2,7 +2,6 @@ import { state, todayStr, saveState } from '../state.js';
 import { formatTime12 } from '../utils.js';
 import { getChronicleNote, upsertChronicleNote } from '../domains/chronicle.js';
 
-const CHRONICLE_PROMPT = 'What asked something of you today?';
 const CHRONICLE_AUTOSAVE_DELAY = 800;
 const DRIFT_MAX = 12;
 
@@ -39,17 +38,89 @@ function getPastEntries() {
     .sort((a, b) => b[0].localeCompare(a[0]));
 }
 
-function getYearAgoEntry() {
-  const notes = state.chronicle?.notes || {};
-  const d = new Date();
-  d.setFullYear(d.getFullYear() - 1);
-  const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  return notes[key] ? { dateStr: key, note: notes[key] } : null;
+function ymdOffset(baseStr, dayOffset) {
+  const [y, m, d] = baseStr.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  dt.setDate(dt.getDate() + dayOffset);
+  return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
 }
 
-function renderDrift(el) {
+function daysApart(laterStr, earlierStr) {
+  const [ly, lm, ld] = laterStr.split('-').map(Number);
+  const [ey, em, ed] = earlierStr.split('-').map(Number);
+  const later = new Date(ly, lm - 1, ld);
+  const earlier = new Date(ey, em - 1, ed);
+  return Math.round((later - earlier) / 86400000);
+}
+
+function isLivingNote(note) {
+  return note && typeof note.body === 'string' && note.body.trim();
+}
+
+// One resurfaced memory at a time. Derived deterministically from chronicle.notes.
+// Order:
+//   1. exact same-date one year ago
+//   2. ±3-day window around that anchor (closest first)
+//   3. oldest entry ≥ 60d old AND ≥ 14d older than the newest non-today entry
+//   4. otherwise null (silence)
+function getWellEntry() {
+  const notes = state.chronicle?.notes || {};
+
+  const t = new Date();
+  const anchor = new Date(t.getFullYear() - 1, t.getMonth(), t.getDate());
+  const anchorStr = `${anchor.getFullYear()}-${String(anchor.getMonth() + 1).padStart(2, '0')}-${String(anchor.getDate()).padStart(2, '0')}`;
+
+  const exact = notes[anchorStr];
+  if (isLivingNote(exact) && anchorStr !== todayStr) {
+    return { dateStr: anchorStr, note: exact, label: 'A year ago today' };
+  }
+
+  for (const off of [1, -1, 2, -2, 3, -3]) {
+    const candStr = ymdOffset(anchorStr, off);
+    if (candStr === todayStr) continue;
+    const cand = notes[candStr];
+    if (isLivingNote(cand)) {
+      return { dateStr: candStr, note: cand, label: 'A year ago this week' };
+    }
+  }
+
+  const pastAsc = Object.entries(notes)
+    .filter(([d, n]) => d !== todayStr && isLivingNote(n))
+    .sort((a, b) => a[0].localeCompare(b[0]));
+  if (pastAsc.length === 0) return null;
+  const newestNonToday = pastAsc[pastAsc.length - 1][0];
+  for (const [dateStr, note] of pastAsc) {
+    if (daysApart(todayStr, dateStr) >= 60 && daysApart(newestNonToday, dateStr) >= 14) {
+      return { dateStr, note, label: 'From an earlier turn' };
+    }
+  }
+
+  return null;
+}
+
+function renderWell() {
+  const wellEl = document.getElementById('chronicle-well');
+  const eyebrowEl = document.getElementById('chronicle-well-eyebrow');
+  const bodyEl = document.getElementById('chronicle-well-body');
+  if (!wellEl) return null;
+
+  const candidate = getWellEntry();
+  if (!candidate) {
+    wellEl.hidden = true;
+    if (eyebrowEl) eyebrowEl.textContent = '';
+    if (bodyEl) bodyEl.textContent = '';
+    return null;
+  }
+
+  if (eyebrowEl) eyebrowEl.textContent = candidate.label;
+  if (bodyEl) bodyEl.textContent = candidate.note.body;
+  wellEl.hidden = false;
+  return candidate.dateStr;
+}
+
+function renderDrift(el, excludeDateStr) {
   const riverHd = document.getElementById('chronicle-river-hd');
-  const entries = getPastEntries();
+  const entries = getPastEntries().filter(([d]) => d !== excludeDateStr);
 
   if (entries.length === 0) {
     if (riverHd) riverHd.hidden = true;
@@ -59,24 +130,10 @@ function renderDrift(el) {
 
   if (riverHd) riverHd.hidden = false;
 
-  const ago = getYearAgoEntry();
   let shown = 0;
   let html = '';
-
-  if (ago) {
-    html += `<div class="chronicle-drift-ago">
-      <div class="chronicle-drift-ago-label">A year ago today</div>
-      <div class="chronicle-drift-entry${quietClass(shown)}">
-        <div class="chronicle-drift-date">${formatDriftDate(ago.dateStr)}</div>
-        <div class="chronicle-drift-body">${escapeHtml(ago.note.body)}</div>
-      </div>
-    </div>`;
-    shown++;
-  }
-
   for (const [dateStr, note] of entries) {
     if (shown >= DRIFT_MAX) break;
-    if (ago && dateStr === ago.dateStr) continue;
     html += `<div class="chronicle-drift-entry${quietClass(shown)}">
       <div class="chronicle-drift-date">${formatDriftDate(dateStr)}</div>
       <div class="chronicle-drift-body">${escapeHtml(note.body)}</div>
@@ -91,11 +148,9 @@ export function renderChronicle() {
   const note = getChronicleNote(todayStr);
   const textarea = document.getElementById('chronicle-textarea');
   const status = document.getElementById('chronicle-status');
-  const promptEl = document.getElementById('chronicle-prompt-q');
   const driftEl = document.getElementById('chronicle-drift');
 
   if (textarea && !chronicleDirty) textarea.value = note ? note.body : '';
-  if (promptEl) promptEl.textContent = CHRONICLE_PROMPT;
 
   if (status) {
     if (chronicleDirty) {
@@ -113,7 +168,8 @@ export function renderChronicle() {
     }
   }
 
-  if (driftEl) renderDrift(driftEl);
+  const wellDateStr = renderWell();
+  if (driftEl) renderDrift(driftEl, wellDateStr);
 }
 
 export function saveChronicleNote(fromBlur = false) {

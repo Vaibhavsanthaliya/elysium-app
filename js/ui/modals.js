@@ -405,7 +405,7 @@ export function removeTaskById(id) {
 
 export async function deleteTask() {
   if (!editContext || editContext.mode !== 'edit') return;
-  const confirmed = await showConfirm('Delete this task?', 'Delete');
+  const confirmed = await showConfirm('Remove this step?', 'Remove');
   if (!confirmed) return;
   removeTaskById(editContext.task.id);
   saveState();

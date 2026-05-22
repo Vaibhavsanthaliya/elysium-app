@@ -65,6 +65,7 @@
 
   /* ── Obsidian Temple: bronze accents ─────────────────────────────────── */
   --bronze-soft: rgba(160, 114, 42, 0.14);  /* low-opacity bronze fill for badges/highlights */
+  --bronze-dim: rgba(160, 114, 42, 0.55);   /* mid-opacity bronze for muted accents */
 
   /* ── Obsidian Temple: ink text material ──────────────────────────────── */
   --ink: #111210;                           /* warm near-black for display headings */
@@ -75,6 +76,7 @@
 
   /* ── Obsidian Temple: gradients and glows ────────────────────────────── */
   --temple-gradient: linear-gradient(160deg, #1a1a1a 0%, #2a2218 100%);
+  --temple-grad-alpha: 0.10;                 /* ambient featured-card glow — shifted by period */
   --shadow-bronze: 0 0 24px rgba(160, 114, 42, 0.22);
   --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.10), 0 1px 3px rgba(0, 0, 0, 0.07);
 
@@ -140,6 +142,7 @@
 
     /* ── Obsidian Temple: bronze accents (dark) ──────────────────────────── */
     --bronze-soft: rgba(201, 165, 107, 0.18); /* dark-mode champagne bronze fill */
+    --bronze-dim: rgba(201, 165, 107, 0.55);  /* mid-opacity bronze for muted accents */
 
     /* ── Obsidian Temple: ink text material (dark) ───────────────────────── */
     --ink: #ECE6D9;                           /* warm off-white ink — concept value */
@@ -150,6 +153,7 @@
 
     /* ── Obsidian Temple: gradients and glows (dark) ─────────────────────── */
     --temple-gradient: linear-gradient(160deg, #000000 0%, #190f03 100%);
+    --temple-grad-alpha: 0.10;               /* ambient featured-card glow — shifted by period */
     --shadow-bronze: 0 0 24px -4px rgba(201, 165, 107, 0.28);
     --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.40);
   }

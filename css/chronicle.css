@@ -177,31 +177,6 @@
   opacity: 0.34;
 }
 
-/* Year-ago surfacing */
-.chronicle-drift-ago {
-  margin-bottom: 0;
-}
-
-.chronicle-drift-ago-label {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--bronze);
-  opacity: 0.75;
-  padding: 12px 2px 0;
-}
-
-.chronicle-drift-ago .chronicle-drift-entry:first-child {
-  border-top-color: rgba(160, 122, 74, 0.45);
-}
-
-@media (prefers-color-scheme: dark) {
-  .chronicle-drift-ago .chronicle-drift-entry:first-child {
-    border-top-color: rgba(201, 165, 107, 0.35);
-  }
-}
-
 /* Empty state (no past entries) */
 .chronicle-drift-empty {
   font-family: var(--font-display);
@@ -230,4 +205,61 @@
   font-size: 17px;
   font-weight: 400;
   color: var(--oracle-text);
+}
+
+/* ── EA-87: From the well — single resurfaced memory above Drift ─────────── */
+.chronicle-well {
+  margin: 0 0 24px;
+}
+
+.chronicle-well[hidden] {
+  display: none;
+}
+
+.chronicle-well-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 8px 0 14px;
+}
+
+.chronicle-well-divider::before,
+.chronicle-well-divider::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--separator-warm);
+}
+
+.chronicle-well-divider span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze-dim);
+  font-weight: 400;
+  padding: 0 14px;
+}
+
+.chronicle-well-entry {
+  padding: 4px 2px 18px;
+}
+
+.chronicle-well-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  opacity: 0.75;
+  margin-bottom: 6px;
+}
+
+.chronicle-well-body {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--oracle-text);
+  white-space: pre-wrap;
+  word-break: break-word;
 }

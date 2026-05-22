@@ -1,6 +1,7 @@
 import { CYCLE_NAMES } from '../constants.js';
 import { state, today } from '../state.js';
 import { getLastChronicleNoteForCycleDay } from '../domains/chronicle.js';
+import { getNightTasks, getTodayChecks } from '../domains/care.js';
 import { getCareTurnState } from './temple.js';
 
 const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
@@ -68,6 +69,52 @@ function renderTodayCycleIndicator(cycleDay, turnState) {
   if (label) label.textContent = turnState.label;
 }
 
+function renderNightProtocolControl(turnState) {
+  const keeper = document.getElementById('care-night-keeper');
+  const action = document.getElementById('care-night-action');
+  const stateLine = document.getElementById('care-night-state');
+  const steps = document.getElementById('care-night-steps');
+  const stepsMeta = document.getElementById('care-night-steps-meta');
+  if (!keeper && !action && !stateLine && !steps && !stepsMeta) return;
+
+  const checks = getTodayChecks();
+  const nightTasks = getNightTasks();
+  const nightDone = nightTasks.filter(t => checks[t.id]).length;
+  const nightKept = nightTasks.length > 0 && nightDone === nightTasks.length;
+  const inMotion = nightDone > 0 && !nightKept;
+  const stateKey = nightKept ? 'kept' : inMotion ? 'motion' : turnState.key;
+
+  if (keeper) keeper.dataset.nightState = stateKey;
+
+  if (action) {
+    action.disabled = nightKept || nightTasks.length === 0;
+    action.textContent = nightKept ? 'Kept' : 'Keep tonight';
+  }
+
+  if (stateLine) {
+    if (!nightTasks.length) {
+      stateLine.textContent = 'Add a step to keep this night.';
+    } else if (nightKept) {
+      stateLine.textContent = 'Night kept.';
+    } else if (inMotion) {
+      stateLine.textContent = 'The protocol is in motion.';
+    } else if (turnState.key === 'resting') {
+      stateLine.textContent = 'A quiet rest turn.';
+    } else {
+      stateLine.textContent = 'Keep the protocol when the steps are done in life.';
+    }
+  }
+
+  if (steps) {
+    steps.dataset.nightState = stateKey;
+    if (inMotion) steps.open = true;
+  }
+
+  if (stepsMeta) {
+    stepsMeta.textContent = nightKept ? 'Kept' : inMotion ? 'In motion' : 'View protocol';
+  }
+}
+
 export function renderHeader() {
   const dl = document.getElementById('date-label');
   dl.textContent = today.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
@@ -85,6 +132,7 @@ export function renderTodayCycle() {
   const protocolLabel = document.getElementById('night-protocol-label');
   if (protocolLabel) protocolLabel.textContent = getNightProtocolLabel(cycleDay);
   renderTodayCycleIndicator(cycleDay, turnState);
+  renderNightProtocolControl(turnState);
   renderCareTurnMemory(cycleDay);
   const strip = document.getElementById('care-cycle-strip');
   if (!strip) return;
