@@ -502,6 +502,10 @@
 }
 
 /* ── EA-85: Temporal breath — ambient featured-card glow shift by time period ── */
+/* Note: these period baselines are mirrored in TEMPLE_PERIOD_ALPHA in
+   js/render/temple.js. renderTemple() sets --temple-grad-alpha as an inline
+   style on #pane-temple, overriding these attribute-selector rules at runtime.
+   To recalibrate period feel, edit TEMPLE_PERIOD_ALPHA in temple.js. */
 #pane-temple[data-period="night"]        { --temple-grad-alpha: 0.06; }
 #pane-temple[data-period="first-light"]  { --temple-grad-alpha: 0.09; }
 #pane-temple[data-period="morning"]      { --temple-grad-alpha: 0.12; }
@@ -550,4 +554,96 @@
   #pane-temple .temple-domain-card.just-touched {
     animation: none;
   }
+}
+
+/* ── EA-109: Body domain modal — Atlas's Standing ────────────────────────── */
+#body-modal .body-modal-sheet {
+  background-image: radial-gradient(ellipse at 50% 120%, rgba(160, 122, 74, 0.10), transparent 60%);
+  background-color: var(--bg-grouped);
+}
+
+@media (prefers-color-scheme: dark) {
+  #body-modal .body-modal-sheet {
+    background-image: radial-gradient(ellipse at 50% 120%, rgba(201, 165, 107, 0.08), transparent 60%);
+  }
+}
+
+#body-modal .body-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin: 20px 20px 4px;
+}
+
+#body-modal .body-title {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: 400;
+  margin: 0 20px 6px;
+  color: var(--oracle-text);
+}
+
+#body-modal .body-title em {
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+#body-modal .body-sub {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--muted-text);
+  margin: 0 20px 24px;
+}
+
+#body-modal .body-horizon-wrap {
+  position: relative;
+  height: 16px;
+  margin: 0 20px 28px;
+}
+
+#body-modal .body-horizon {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--separator-strong);
+  transform: translateY(-50%);
+}
+
+#body-modal .body-marks {
+  position: absolute;
+  inset: 0;
+}
+
+#body-modal .body-arrival-mark {
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--bronze);
+  opacity: 0.60;
+  border-radius: 1px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#body-modal .btn-primary {
+  margin: 0 20px 14px;
+  width: calc(100% - 40px);
+}
+
+#body-modal .btn-primary.is-still {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+#body-modal .btn-text {
+  width: calc(100% - 40px);
+  margin: 4px 20px 0;
+  display: block;
+  text-align: center;
+  padding-bottom: calc(var(--safe-bottom) + 4px);
 }

@@ -17,6 +17,7 @@ import {
   getMostRecentReflectionSession,
   getTodaySession,
 } from '../domains/mind.js';
+import { arriveBody, getBodyArrivals } from '../domains/body.js';
 import { showToast } from './toast.js';
 import { renderTemple, applyTempleTrace } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
@@ -45,6 +46,7 @@ export function registerConfirmModal() {
 }
 
 let editContext = null;
+let _bodyArrivedThisSession = false;
 const MIND_MIN_HELD_MS = 60000;
 let mindSelectedDuration = 25;
 let mindActiveSessionId = null;
@@ -286,6 +288,56 @@ export function registerMindModal() {
     mindHolding = false;
     mindHoldStartedAtMs = 0;
     clearMindHoldTimer();
+  });
+}
+
+function renderBodyHorizonMarks() {
+  const marksEl = document.getElementById('body-marks');
+  if (!marksEl) return;
+  marksEl.querySelectorAll('.body-arrival-mark').forEach(el => el.remove());
+  const arrivals = getBodyArrivals(todayStr);
+  for (const a of arrivals) {
+    const [wh, wm] = a.at.split(':').map(Number);
+    if (!Number.isFinite(wh) || !Number.isFinite(wm)) continue;
+    const pct = ((wh * 60 + wm) / 1440 * 100).toFixed(1);
+    const mark = document.createElement('div');
+    mark.className = 'body-arrival-mark';
+    mark.style.left = `${pct}%`;
+    marksEl.appendChild(mark);
+  }
+}
+
+export function openBodyModal() {
+  _bodyArrivedThisSession = false;
+  renderBodyHorizonMarks();
+  const btn = document.getElementById('body-arrive-btn');
+  if (btn) { btn.textContent = 'Returned'; btn.classList.remove('is-still'); }
+  document.getElementById('body-modal').hidden = false;
+}
+
+export function closeBodyModal() {
+  document.getElementById('body-modal').hidden = true;
+  if (_bodyArrivedThisSession) {
+    _bodyArrivedThisSession = false;
+    applyTempleTrace('body');
+  }
+}
+
+export function registerBodyModal() {
+  document.getElementById('body-modal-backdrop')?.addEventListener('click', closeBodyModal);
+  document.getElementById('body-modal-close')?.addEventListener('click', closeBodyModal);
+  document.getElementById('body-arrive-btn')?.addEventListener('click', () => {
+    arriveBody(todayStr);
+    _bodyArrivedThisSession = true;
+    saveState();
+    renderTemple();
+    renderBodyHorizonMarks();
+    const btn = document.getElementById('body-arrive-btn');
+    if (btn) btn.classList.add('is-still');
+    setTimeout(() => {
+      const b = document.getElementById('body-arrive-btn');
+      if (b) b.classList.remove('is-still');
+    }, 3000);
   });
 }
 

@@ -153,12 +153,31 @@ export async function syncFromSupabase() {
       for (const s of (state.mind?.sessions || [])) mindMap.set(s.id, s);
       const mergedMindSessions = Array.from(mindMap.values());
 
+      const mergedBodyArrivals = {};
+      const bodyDates = new Set([
+        ...Object.keys(cloud.body?.arrivals || {}),
+        ...Object.keys(state.body?.arrivals || {}),
+      ]);
+      for (const date of bodyDates) {
+        if (!isYmd(date)) continue;
+        const ca = cloud.body?.arrivals?.[date] || [];
+        const la = state.body?.arrivals?.[date] || [];
+        const seen = new Set();
+        mergedBodyArrivals[date] = [...ca, ...la].filter(e => {
+          if (!e?.at) return false;
+          if (seen.has(e.at)) return false;
+          seen.add(e.at);
+          return true;
+        });
+      }
+
       setState(cloud);
       state.loggedDays = mergedLoggedDays;
       state.checks = mergedChecks;
       state.sleep = { entries: mergedSleepEntries };
       state.light = { entries: mergedLightEntries };
       state.mind = { sessions: mergedMindSessions };
+      state.body = { arrivals: mergedBodyArrivals };
       if (!state.startDate) state.startDate = todayStr;
       migrateState(state);
       advanceCycleIfNeeded();

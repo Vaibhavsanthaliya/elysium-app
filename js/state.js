@@ -185,6 +185,20 @@ export function migrateState(s) {
         return out;
       })
     : [];
+  s.body = s.body && typeof s.body === 'object' && !Array.isArray(s.body)
+    ? s.body : {};
+  s.body.arrivals = s.body.arrivals && typeof s.body.arrivals === 'object' && !Array.isArray(s.body.arrivals)
+    ? s.body.arrivals : {};
+  for (const date of Object.keys(s.body.arrivals)) {
+    if (!isYmd(date)) { delete s.body.arrivals[date]; continue; }
+    const arr = s.body.arrivals[date];
+    if (!Array.isArray(arr)) { s.body.arrivals[date] = []; continue; }
+    s.body.arrivals[date] = arr.filter(e =>
+      e && typeof e === 'object' &&
+      typeof e.at === 'string' && /^\d{2}:\d{2}$/.test(e.at) &&
+      (e.period === undefined || _VALID_PERIODS.has(e.period))
+    );
+  }
   return s;
 }
 

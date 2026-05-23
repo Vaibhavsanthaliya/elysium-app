@@ -1,9 +1,11 @@
 import { state, todayStr } from '../state.js';
+import { dayNumber, isYmd } from '../utils.js';
 import { CYCLE_NAMES } from '../constants.js';
 import { getTodayChecks, getNightTasks } from '../domains/care.js';
 import { getLightPeriodLabel, getLastWitness } from '../domains/light.js';
 import { getSleepEntry } from '../domains/sleep.js';
 import { getMostRecentSession, getMostRecentReflectionSession } from '../domains/mind.js';
+import { hasArrivedToday } from '../domains/body.js';
 
 // Time-of-day period buckets — used to set data-period on #pane-temple for ambient CSS shift.
 const TEMPLE_PERIOD_BUCKETS = [
@@ -17,6 +19,24 @@ const TEMPLE_PERIOD_BUCKETS = [
   { start: 22, end: 24, key: 'night' },
 ];
 
+// Must mirror the EA-85 period baselines in css/temple.css.
+const TEMPLE_PERIOD_ALPHA = {
+  night: 0.06,
+  'first-light': 0.09,
+  morning: 0.12,
+  midday: 0.08,
+  afternoon: 0.10,
+  'golden-hour': 0.14,
+  dusk: 0.11,
+};
+
+const TEMPLE_WARMTH_PRESENCE_GAIN = 0.006;
+const TEMPLE_WARMTH_DAILY_DECAY = 0.9945;
+const TEMPLE_WARMTH_MAX_ALPHA_LIFT = 0.0240;
+const TEMPLE_WARMTH_FLOOR_BASE = 0.012;
+const TEMPLE_WARMTH_FLOOR_SCALE = 80;
+const TEMPLE_WARMTH_FLOOR_CAP = 0.10;
+
 // ── EA-90: Transient domain trace ────────────────────────────────────────────
 let _pendingTrace = null;
 let _pendingTraceAt = 0;
@@ -27,6 +47,7 @@ const TRACE_CARD_IDS = {
   sleep: 'temple-goto-sleep',
   mind:  'temple-goto-mind',
   care:  'temple-goto-today',
+  body:  'temple-goto-body',
 };
 
 export function applyTempleTrace(domain) {
@@ -116,6 +137,109 @@ function renderTempleCycleIndicator(turnState) {
   if (label) label.textContent = turnState.label;
 }
 
+function addPresenceDay(days, dateStr, todayDayNum) {
+  if (!isYmd(dateStr)) return;
+  const n = dayNumber(dateStr);
+  if (n === null || n > todayDayNum) return;
+  days.add(n);
+}
+
+function collectTemplePresenceDays(todayDayNum) {
+  const days = new Set();
+
+  if (Array.isArray(state.loggedDays)) {
+    state.loggedDays.forEach(dateStr => addPresenceDay(days, dateStr, todayDayNum));
+  }
+
+  const checks = state.checks || {};
+  for (const [dateStr, dayChecks] of Object.entries(checks)) {
+    if (dayChecks && typeof dayChecks === 'object' && Object.values(dayChecks).some(Boolean)) {
+      addPresenceDay(days, dateStr, todayDayNum);
+    }
+  }
+
+  const notes = state.chronicle?.notes || {};
+  for (const [dateStr, note] of Object.entries(notes)) {
+    if (typeof note?.body === 'string' && note.body.trim()) {
+      addPresenceDay(days, dateStr, todayDayNum);
+    }
+  }
+
+  const lightEntries = state.light?.entries || {};
+  for (const [dateStr, entry] of Object.entries(lightEntries)) {
+    if (Array.isArray(entry?.witnesses) && entry.witnesses.length) {
+      addPresenceDay(days, dateStr, todayDayNum);
+    }
+  }
+
+  const sleepEntries = state.sleep?.entries || {};
+  for (const dateStr of Object.keys(sleepEntries)) {
+    addPresenceDay(days, dateStr, todayDayNum);
+  }
+
+  const sessions = state.mind?.sessions;
+  if (Array.isArray(sessions)) {
+    sessions.forEach(session => {
+      if (session?.completed || session?.date === todayStr) {
+        addPresenceDay(days, session.date, todayDayNum);
+      }
+    });
+  }
+
+  if (Array.isArray(state.weeklyPhotos)) {
+    state.weeklyPhotos.forEach(photo => addPresenceDay(days, photo?.date, todayDayNum));
+  }
+
+  const bodyArrivals = state.body?.arrivals || {};
+  for (const [dateStr, arr] of Object.entries(bodyArrivals)) {
+    if (Array.isArray(arr) && arr.length) {
+      addPresenceDay(days, dateStr, todayDayNum);
+    }
+  }
+
+  return Array.from(days).sort((a, b) => a - b);
+}
+
+function softenTempleWarmth(value, floor, absentDays) {
+  if (absentDays <= 0 || value <= floor) return value;
+  return floor + (value - floor) * Math.pow(TEMPLE_WARMTH_DAILY_DECAY, absentDays);
+}
+
+function deriveTempleWarmthCoefficient() {
+  const todayDayNum = dayNumber(todayStr);
+  if (todayDayNum === null) return 0;
+
+  const presenceDays = collectTemplePresenceDays(todayDayNum);
+  if (!presenceDays.length) return 0;
+
+  const floor = Math.min(
+    TEMPLE_WARMTH_FLOOR_CAP,
+    TEMPLE_WARMTH_FLOOR_BASE + (Math.log1p(presenceDays.length) / TEMPLE_WARMTH_FLOOR_SCALE)
+  );
+
+  let warmth = 0;
+  let cursor = presenceDays[0];
+
+  for (const presenceDay of presenceDays) {
+    warmth = softenTempleWarmth(warmth, floor, presenceDay - cursor);
+    warmth += (1 - warmth) * TEMPLE_WARMTH_PRESENCE_GAIN;
+    cursor = presenceDay + 1;
+  }
+
+  warmth = softenTempleWarmth(warmth, floor, todayDayNum - cursor + 1);
+  return Math.min(1, Math.max(floor, warmth));
+}
+
+function formatTempleAlpha(value) {
+  return value.toFixed(4).replace(/0+$/, '').replace(/\.$/, '');
+}
+
+function getTempleGradientAlpha(periodKey) {
+  const baseAlpha = TEMPLE_PERIOD_ALPHA[periodKey] ?? 0.10;
+  const lift = deriveTempleWarmthCoefficient() * TEMPLE_WARMTH_MAX_ALPHA_LIFT;
+  return baseAlpha + lift;
+}
+
 function ymdFromOffset(daysBack) {
   const d = new Date();
   d.setDate(d.getDate() - daysBack);
@@ -188,7 +312,10 @@ export function renderTemple() {
   const h = new Date().getHours();
   const period = TEMPLE_PERIOD_BUCKETS.find(p => h >= p.start && h < p.end) ?? TEMPLE_PERIOD_BUCKETS[0];
   const paneEl = document.getElementById('pane-temple');
-  if (paneEl) paneEl.dataset.period = period.key;
+  if (paneEl) {
+    paneEl.dataset.period = period.key;
+    paneEl.style.setProperty('--temple-grad-alpha', formatTempleAlpha(getTempleGradientAlpha(period.key)));
+  }
 
   const line = getDailyLine();
   const lineEl = document.getElementById('temple-daily-line');
@@ -240,5 +367,10 @@ export function renderTemple() {
       mindLineEl.textContent = '';
       mindLineEl.hidden = true;
     }
+  }
+
+  const bodyStateEl = document.getElementById('temple-body-state');
+  if (bodyStateEl) {
+    bodyStateEl.textContent = hasArrivedToday() ? 'Stood' : '—';
   }
 }
