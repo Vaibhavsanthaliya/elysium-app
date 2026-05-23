@@ -111,6 +111,12 @@ export function migrateState(s) {
     ? s.chronicle : {};
   s.chronicle.notes = s.chronicle.notes && typeof s.chronicle.notes === 'object' && !Array.isArray(s.chronicle.notes)
     ? s.chronicle.notes : {};
+  const _VALID_PERIODS = new Set(['night','first-light','morning','midday','afternoon','golden-hour','dusk']);
+  for (const n of Object.values(s.chronicle.notes)) {
+    if (!n || typeof n !== 'object') continue;
+    if (n.period !== undefined && (typeof n.period !== 'string' || !_VALID_PERIODS.has(n.period))) delete n.period;
+    if (n.cycleDay !== undefined && ![0,1,2].includes(n.cycleDay)) delete n.cycleDay;
+  }
   s.light = s.light && typeof s.light === 'object' && !Array.isArray(s.light)
     ? s.light : {};
   s.light.entries = s.light.entries && typeof s.light.entries === 'object' && !Array.isArray(s.light.entries)
@@ -147,6 +153,9 @@ export function migrateState(s) {
       if (typeof entry.note === 'string' && entry.note.trim()) {
         cleanEntry.note = entry.note.trim().slice(0, 500);
       }
+      if (typeof entry.period === 'string' && _VALID_PERIODS.has(entry.period)) {
+        cleanEntry.period = entry.period;
+      }
       return [date, cleanEntry];
     }));
   s.mind = s.mind && typeof s.mind === 'object' && !Array.isArray(s.mind)
@@ -161,15 +170,20 @@ export function migrateState(s) {
         typeof sess.durationMinutes === 'number' && sess.durationMinutes > 0 &&
         typeof sess.completed === 'boolean'
       ).filter(sess => sess.completed || sess.date === _todayStr)
-      .map(sess => ({
-        id: sess.id,
-        date: sess.date,
-        startedAt: typeof sess.startedAt === 'string' ? sess.startedAt : new Date().toISOString(),
-        durationMinutes: sess.durationMinutes,
-        endedAt: typeof sess.endedAt === 'string' ? sess.endedAt : null,
-        completed: sess.completed,
-        reflection: typeof sess.reflection === 'string' ? sess.reflection.trim().slice(0, 500) : '',
-      }))
+      .map(sess => {
+        const out = {
+          id: sess.id,
+          date: sess.date,
+          startedAt: typeof sess.startedAt === 'string' ? sess.startedAt : new Date().toISOString(),
+          durationMinutes: sess.durationMinutes,
+          endedAt: typeof sess.endedAt === 'string' ? sess.endedAt : null,
+          completed: sess.completed,
+          reflection: typeof sess.reflection === 'string' ? sess.reflection.trim().slice(0, 500) : '',
+        };
+        if (typeof sess.period === 'string' && _VALID_PERIODS.has(sess.period)) out.period = sess.period;
+        if ([0, 1, 2].includes(sess.cycleDay)) out.cycleDay = sess.cycleDay;
+        return out;
+      })
     : [];
   return s;
 }

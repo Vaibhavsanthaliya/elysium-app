@@ -190,8 +190,13 @@ export function renderTemple() {
   const paneEl = document.getElementById('pane-temple');
   if (paneEl) paneEl.dataset.period = period.key;
 
+  const line = getDailyLine();
   const lineEl = document.getElementById('temple-daily-line');
-  if (lineEl) lineEl.textContent = getDailyLine();
+  if (lineEl) {
+    lineEl.textContent = line;
+    const greetingEl = lineEl.parentElement;
+    if (greetingEl) greetingEl.hidden = !line;
+  }
 
   const turnState = getCareTurnState();
 

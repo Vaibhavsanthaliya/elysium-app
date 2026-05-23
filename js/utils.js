@@ -51,3 +51,16 @@ export function escapeHtml(str) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
   }[c]));
 }
+
+// Maps hour (0-23) to the same period-key vocabulary used by TEMPLE_PERIOD_BUCKETS.
+// Used at write time to imprint atmospheric coordinates on entries.
+export function getPeriodKey(hour = new Date().getHours()) {
+  if (hour < 4)  return 'night';
+  if (hour < 6)  return 'first-light';
+  if (hour < 10) return 'morning';
+  if (hour < 15) return 'midday';
+  if (hour < 18) return 'afternoon';
+  if (hour < 20) return 'golden-hour';
+  if (hour < 22) return 'dusk';
+  return 'night';
+}

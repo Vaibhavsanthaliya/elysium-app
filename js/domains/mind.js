@@ -1,5 +1,5 @@
 import { state, todayStr } from '../state.js';
-import { uid, isYmd } from '../utils.js';
+import { uid, isYmd, getPeriodKey } from '../utils.js';
 
 function ensureMindState() {
   if (!state.mind || typeof state.mind !== 'object' || Array.isArray(state.mind)) {
@@ -59,6 +59,34 @@ export function formatHeldMs(ms) {
   return rest ? `${hours}h ${rest}m` : `${hours}h`;
 }
 
+export function getMindReflectionEntries() {
+  const sessions = state.mind?.sessions;
+  if (!Array.isArray(sessions)) return [];
+  const byDate = new Map();
+  for (const s of sessions) {
+    if (!s?.completed) continue;
+    if (!isYmd(s.date)) continue;
+    const body = typeof s.reflection === 'string' ? s.reflection.trim() : '';
+    if (!body) continue;
+    const prev = byDate.get(s.date);
+    if (!prev || (s.startedAt || '') > (prev.startedAt || '')) {
+      byDate.set(s.date, {
+        dateStr: s.date,
+        body,
+        startedAt: s.startedAt,
+        period: s.period,
+        cycleDay: s.cycleDay,
+      });
+    }
+  }
+  return Array.from(byDate.values()).map(({ dateStr, body, period, cycleDay }) => ({
+    dateStr,
+    body,
+    period,
+    cycleDay,
+  }));
+}
+
 export function beginMindSession(durationMinutes) {
   ensureMindState();
   const session = {
@@ -83,5 +111,8 @@ export function endMindSession(sessionId, reflection) {
   }
   session.completed = true;
   session.reflection = typeof reflection === 'string' ? reflection.trim().slice(0, 500) : '';
+  // Imprint atmospheric coordinates at completion time.
+  if (session.period === undefined)   session.period   = getPeriodKey();
+  if (session.cycleDay === undefined) session.cycleDay = state.cycleDay;
   return true;
 }

@@ -1,14 +1,22 @@
 import { state, todayStr, saveState } from '../state.js';
-import { formatTime12 } from '../utils.js';
+import { formatTime12, getPeriodKey } from '../utils.js';
 import { getChronicleNote, upsertChronicleNote } from '../domains/chronicle.js';
+import { getSleepNoteEntries } from '../domains/sleep.js';
+import { getMindReflectionEntries } from '../domains/mind.js';
 
 const CHRONICLE_AUTOSAVE_DELAY = 800;
 const DRIFT_MAX = 12;
+const DEEP_TIME_MIN_AGE = 60;
+const CROSS_DOMAIN_MIN_AGE = 120;
+const CROSS_DOMAIN_LEGACY_MIN_AGE = 180;
+const BEGINNING_AGE = 365;
 
 const DAYS  = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 let chronicleSaveTimer = null;
 let chronicleDirty = false;
+let wellSessionSignature = null;
+let wellSessionCandidate = undefined;
 
 function formatDriftDate(dateStr) {
   const [y, m, d] = dateStr.split('-').map(Number);
@@ -58,12 +66,104 @@ function isLivingNote(note) {
   return note && typeof note.body === 'string' && note.body.trim();
 }
 
-// One resurfaced memory at a time. Derived deterministically from chronicle.notes.
+// Tie-break precedence for same-date entries across sources in the deep-time pool.
+// Chronicle is the deep well; static, content-blind precedence.
+const SOURCE_RANK = { chronicle: 0, mind: 1, sleep: 2 };
+
+function hashKey(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function gateOpen(kind, modulo, threshold, dateStr = '') {
+  return hashKey(`${kind}:${todayStr}:${dateStr}`) % modulo < threshold;
+}
+
+function pickByPhase(candidates, kind) {
+  if (!candidates.length) return null;
+  const ordered = [...candidates].sort((a, b) => {
+    if (a.dateStr !== b.dateStr) return a.dateStr.localeCompare(b.dateStr);
+    return SOURCE_RANK[a.source] - SOURCE_RANK[b.source];
+  });
+  return ordered[hashKey(`${kind}:${todayStr}`) % ordered.length];
+}
+
+function hasCoordinateResonance(entry) {
+  const currentPeriod = getPeriodKey();
+  if (entry.source === 'sleep') {
+    return entry.period === currentPeriod;
+  }
+  if (entry.source === 'mind') {
+    return entry.period === currentPeriod || entry.cycleDay === state.cycleDay;
+  }
+  return true;
+}
+
+function hasKnownCoordinate(entry) {
+  if (entry.source === 'sleep') return typeof entry.period === 'string';
+  if (entry.source === 'mind') {
+    return typeof entry.period === 'string' || [0, 1, 2].includes(entry.cycleDay);
+  }
+  return true;
+}
+
+function isDeepTimeEligible(entry, newestNonTodayInUnion) {
+  const age = daysApart(todayStr, entry.dateStr);
+  if (age < DEEP_TIME_MIN_AGE) return false;
+  if (daysApart(newestNonTodayInUnion, entry.dateStr) < 14) return false;
+  if (entry.source === 'chronicle') return true;
+  if (age < CROSS_DOMAIN_MIN_AGE) return false;
+  if (hasKnownCoordinate(entry)) return hasCoordinateResonance(entry);
+  return age >= CROSS_DOMAIN_LEGACY_MIN_AGE &&
+    gateOpen(`well-legacy-${entry.source}`, 7, 1, entry.dateStr);
+}
+
+function collapseSameDate(candidates) {
+  const byDate = new Map();
+  for (const c of candidates) {
+    const prev = byDate.get(c.dateStr);
+    if (!prev || SOURCE_RANK[c.source] < SOURCE_RANK[prev.source]) {
+      byDate.set(c.dateStr, c);
+    }
+  }
+  return Array.from(byDate.values());
+}
+
+function getWellPoolSignature() {
+  const notes = state.chronicle?.notes || {};
+  const parts = [];
+  for (const [dateStr, note] of Object.entries(notes)) {
+    if (dateStr !== todayStr && dateStr <= todayStr && isLivingNote(note)) {
+      parts.push(`chronicle:${dateStr}:${hashKey(note.body)}:${note.period || ''}:${note.cycleDay ?? ''}`);
+    }
+  }
+  for (const e of getSleepNoteEntries()) {
+    if (e.dateStr !== todayStr && e.dateStr <= todayStr) {
+      parts.push(`sleep:${e.dateStr}:${hashKey(e.body)}:${e.period || ''}`);
+    }
+  }
+  for (const e of getMindReflectionEntries()) {
+    if (e.dateStr !== todayStr && e.dateStr <= todayStr) {
+      parts.push(`mind:${e.dateStr}:${hashKey(e.body)}:${e.period || ''}:${e.cycleDay ?? ''}`);
+    }
+  }
+  return `${todayStr}|${parts.sort().join('|')}`;
+}
+
+// One resurfaced memory at a time. Deterministic selection.
 // Order:
-//   1. exact same-date one year ago
-//   2. ±3-day window around that anchor (closest first)
-//   3. oldest entry ≥ 60d old AND ≥ 14d older than the newest non-today entry
+//   1. exact same-date one year ago (Chronicle only)
+//   2. ±3-day window around that anchor, day-of-year-rotated (Chronicle only)
+//   3. deep-time pool — Chronicle ∪ Sleep ∪ Mind, age ≥ 60d AND ≥ 14d older than
+//      the newest non-today entry across the union
+//      — label: 'From the beginning' (≥365d) or 'From an earlier season' (60–364d)
 //   4. otherwise null (silence)
+// Returns: { source, dateStr, body, label } or null.
+// Rarity gates are deterministic; renderWell holds the result for the session.
 function getWellEntry() {
   const notes = state.chronicle?.notes || {};
 
@@ -73,30 +173,79 @@ function getWellEntry() {
 
   const exact = notes[anchorStr];
   if (isLivingNote(exact) && anchorStr !== todayStr) {
-    return { dateStr: anchorStr, note: exact, label: 'A year ago today' };
+    return { source: 'chronicle', dateStr: anchorStr, body: exact.body, label: 'A year ago today' };
   }
 
-  for (const off of [1, -1, 2, -2, 3, -3]) {
+  // Rotate ±3 window order by day-of-year so the selection varies day-to-day.
+  const startOfYear = new Date(t.getFullYear(), 0, 0);
+  const dayOfYear = Math.round((t - startOfYear) / 86400000);
+  const baseOffsets = [1, -1, 2, -2, 3, -3];
+  const rotStart = dayOfYear % baseOffsets.length;
+  const offsets = [...baseOffsets.slice(rotStart), ...baseOffsets.slice(0, rotStart)];
+  const windowGateOpen = gateOpen('well-window', 5, 1, anchorStr);
+
+  for (const off of offsets) {
+    if (!windowGateOpen) continue;
     const candStr = ymdOffset(anchorStr, off);
     if (candStr === todayStr) continue;
     const cand = notes[candStr];
     if (isLivingNote(cand)) {
-      return { dateStr: candStr, note: cand, label: 'A year ago this week' };
+      return { source: 'chronicle', dateStr: candStr, body: cand.body, label: 'A year ago this week' };
     }
   }
 
-  const pastAsc = Object.entries(notes)
-    .filter(([d, n]) => d !== todayStr && isLivingNote(n))
-    .sort((a, b) => a[0].localeCompare(b[0]));
-  if (pastAsc.length === 0) return null;
-  const newestNonToday = pastAsc[pastAsc.length - 1][0];
-  for (const [dateStr, note] of pastAsc) {
-    if (daysApart(todayStr, dateStr) >= 60 && daysApart(newestNonToday, dateStr) >= 14) {
-      return { dateStr, note, label: 'From an earlier turn' };
-    }
+  // Deep-time pool — Chronicle ∪ Sleep ∪ Mind.
+  const pool = [];
+  for (const [dateStr, note] of Object.entries(notes)) {
+    if (dateStr === todayStr || dateStr > todayStr) continue;
+    if (!isLivingNote(note)) continue;
+    pool.push({
+      source: 'chronicle',
+      dateStr,
+      body: note.body,
+      period: note.period,
+      cycleDay: note.cycleDay,
+    });
   }
+  for (const e of getSleepNoteEntries()) {
+    if (e.dateStr === todayStr || e.dateStr > todayStr) continue;
+    pool.push({ source: 'sleep', dateStr: e.dateStr, body: e.body, period: e.period });
+  }
+  for (const e of getMindReflectionEntries()) {
+    if (e.dateStr === todayStr || e.dateStr > todayStr) continue;
+    pool.push({
+      source: 'mind',
+      dateStr: e.dateStr,
+      body: e.body,
+      period: e.period,
+      cycleDay: e.cycleDay,
+    });
+  }
+  if (pool.length === 0) return null;
 
-  return null;
+  // Newest non-today across the union, computed before exclusion filtering.
+  const newestNonTodayInUnion = pool
+    .map(c => c.dateStr)
+    .sort((a, b) => b.localeCompare(a))[0];
+  if (!newestNonTodayInUnion) return null;
+
+  const eligible = collapseSameDate(pool.filter(c => isDeepTimeEligible(c, newestNonTodayInUnion)));
+  if (eligible.length === 0) return null;
+
+  const seasonal = eligible.filter(c => daysApart(todayStr, c.dateStr) < BEGINNING_AGE);
+  const beginning = eligible.filter(c => daysApart(todayStr, c.dateStr) >= BEGINNING_AGE);
+
+  let pick = null;
+  if (seasonal.length && gateOpen('well-seasonal', 7, 1)) {
+    pick = pickByPhase(seasonal, 'well-seasonal-pick');
+  } else if (beginning.length && gateOpen('well-beginning', 17, 1)) {
+    pick = pickByPhase(beginning, 'well-beginning-pick');
+  }
+  if (!pick) return null;
+
+  const age = daysApart(todayStr, pick.dateStr);
+  const label = age >= BEGINNING_AGE ? 'From the beginning' : 'From an earlier season';
+  return { source: pick.source, dateStr: pick.dateStr, body: pick.body, label };
 }
 
 function renderWell() {
@@ -105,7 +254,12 @@ function renderWell() {
   const bodyEl = document.getElementById('chronicle-well-body');
   if (!wellEl) return null;
 
-  const candidate = getWellEntry();
+  const signature = getWellPoolSignature();
+  if (wellSessionSignature !== signature) {
+    wellSessionSignature = signature;
+    wellSessionCandidate = getWellEntry();
+  }
+  const candidate = wellSessionCandidate;
   if (!candidate) {
     wellEl.hidden = true;
     if (eyebrowEl) eyebrowEl.textContent = '';
@@ -114,9 +268,9 @@ function renderWell() {
   }
 
   if (eyebrowEl) eyebrowEl.textContent = candidate.label;
-  if (bodyEl) bodyEl.textContent = candidate.note.body;
+  if (bodyEl) bodyEl.textContent = candidate.body;
   wellEl.hidden = false;
-  return candidate.dateStr;
+  return candidate.source === 'chronicle' ? candidate.dateStr : null;
 }
 
 function renderDrift(el, excludeDateStr) {

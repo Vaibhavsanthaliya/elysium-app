@@ -1,6 +1,6 @@
 import { state, todayStr } from '../state.js';
 import { getCycleDayForDate } from './care.js';
-import { isYmd } from '../utils.js';
+import { isYmd, getPeriodKey } from '../utils.js';
 
 export function getChronicleNote(dateStr) {
   return state.chronicle?.notes?.[dateStr] ?? null;
@@ -28,7 +28,12 @@ export function upsertChronicleNote(dateStr, body) {
   if (!state.chronicle) state.chronicle = { notes: {} };
   if (!state.chronicle.notes) state.chronicle.notes = {};
   if (body) {
-    state.chronicle.notes[dateStr] = { body, updatedAt: new Date().toISOString() };
+    const existing = state.chronicle.notes[dateStr];
+    const entry = { body, updatedAt: new Date().toISOString() };
+    // Imprint atmospheric coordinates at first write; preserve on subsequent saves.
+    entry.period   = existing?.period   ?? getPeriodKey();
+    entry.cycleDay = existing?.cycleDay ?? state.cycleDay;
+    state.chronicle.notes[dateStr] = entry;
   } else {
     delete state.chronicle.notes[dateStr];
   }
