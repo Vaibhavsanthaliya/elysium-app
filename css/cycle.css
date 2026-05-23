@@ -2,98 +2,6 @@
    Elysium — cycle: cycle tab components
    ========================================================================== */
 
-/* ============== CYCLE CARDS ============== */
-.cycle-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.cycle-card {
-  background: var(--bg-elevated);
-  border-radius: 14px;
-  padding: 16px 18px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 2px solid transparent;
-  box-shadow: var(--shadow-sm);
-}
-
-.cycle-card.active {
-  border-color: var(--green);
-  background: var(--green-soft);
-}
-
-.cycle-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.cycle-day-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--label-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-/* ── EA-21: Typography — cycle-day-label ─────────────────────────────────── */
-.cycle-day-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.cycle-active-badge {
-  display: none;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 100px;
-  background: var(--green);
-  color: white;
-}
-
-.cycle-card.active .cycle-active-badge { display: inline-block; }
-
-.cycle-name {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  letter-spacing: -0.01em;
-}
-
-.cycle-steps-text {
-  font-size: 14px;
-  color: var(--label-secondary);
-  line-height: 1.5;
-}
-
-/* ── EA-20: Cycle card (inactive) alabaster surface ──────────────────────── */
-.cycle-card:not(.active) {
-  background: var(--alabaster);
-  box-shadow: var(--shadow-card);
-}
-@media (prefers-color-scheme: dark) {
-  .cycle-card:not(.active) { background: var(--bg-elevated); }
-}
-
-/* ── EA-23: Cycle active card bronze ─────────────────────────────────────── */
-.cycle-card.active {
-  border-color: var(--bronze);
-  background: var(--bronze-soft);
-}
-
-/* ── EA-23: Cycle active badge bronze ────────────────────────────────────── */
-.cycle-active-badge {
-  background: var(--bronze);
-  color: var(--bg);
-}
-
 /* ── EA-31: Astrolabe layout ─────────────────────────────────────────────── */
 
 .cycle-heading {
@@ -273,42 +181,6 @@
 
 .al-node.active .al-node-name { color: var(--bronze); }
 
-/* Legend */
-.al-legend {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 22px 0 4px;
-}
-
-.al-legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  color: var(--muted-text);
-  text-transform: uppercase;
-}
-
-.al-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.al-dot-active {
-  background: var(--bronze);
-  border: 1px solid var(--bronze);
-}
-
-.al-dot-pending {
-  background: transparent;
-  border: 1px solid var(--separator-warm);
-}
-
 /* ── EA-40: Cycle info section headers ──────────────────────────────────── */
 #pane-cycle .section-hd {
   display: flex;
@@ -363,7 +235,7 @@
 }
 
 .al-center.is-preview {
-  animation: alBreath 1.5s ease-in-out 1 forwards;
+  animation: alBreath 2.5s ease-in-out 1 forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

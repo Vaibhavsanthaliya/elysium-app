@@ -177,18 +177,6 @@
   opacity: 0.34;
 }
 
-/* Empty state (no past entries) */
-.chronicle-drift-empty {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 15px;
-  color: var(--muted-text);
-  opacity: 0.6;
-  text-align: center;
-  padding: 20px 0 28px;
-  margin: 0;
-}
-
 /* Writing surface wrapper */
 .chronicle-today {
   /* inherits pane padding */

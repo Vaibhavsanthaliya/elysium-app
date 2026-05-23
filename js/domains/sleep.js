@@ -27,16 +27,6 @@ export function reopenSleepClosure(dateStr = todayStr) {
   return true;
 }
 
-export function getLastSleepEntry() {
-  const entries = Object.entries(state.sleep?.entries || {})
-    .filter(([dateStr, entry]) => isYmd(dateStr) && isValidReminderTime(entry?.bedtime))
-    .sort(([a], [b]) => b.localeCompare(a));
-
-  if (!entries.length) return null;
-  const [dateStr, entry] = entries[0];
-  return { dateStr, bedtime: entry.bedtime };
-}
-
 export function saveSleepClosure(dateStr, noteText) {
   if (!isYmd(dateStr)) return false;
   ensureSleepState();

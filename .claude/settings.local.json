@@ -40,7 +40,10 @@
       "Bash(node --input-type=module)",
       "Bash(node *)",
       "Bash(echo \"EXIT:$?\")",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "Bash(git push *)",
+      "Skill(vercel:status)",
+      "Bash(git check-ignore *)"
     ]
   }
 }

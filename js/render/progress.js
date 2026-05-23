@@ -1,4 +1,4 @@
-import { MILESTONES, CYCLE_NAMES } from '../constants.js';
+import { CYCLE_NAMES } from '../constants.js';
 import { ymd, escapeHtml } from '../utils.js';
 import { state, todayStr, today, saveState } from '../state.js';
 import { getMilestoneStage } from '../state.js';
@@ -62,7 +62,7 @@ export function renderProgress() {
   ml.innerHTML = '';
   const stageLine = document.createElement('p');
   stageLine.className = 'stage-line';
-  const stageTitle = STAGE_TITLES[currentStage] ?? MILESTONES[currentStage]?.desc?.toLowerCase() ?? 'ritual';
+  const stageTitle = STAGE_TITLES[currentStage] ?? 'ritual';
   stageLine.innerHTML = `<span class="stage-line-title">${escapeHtml(stageTitle)}</span>`;
   ml.appendChild(stageLine);
 }

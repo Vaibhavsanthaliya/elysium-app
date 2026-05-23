@@ -3,7 +3,7 @@ import { CYCLE_NAMES } from '../constants.js';
 import { getTodayChecks, getNightTasks } from '../domains/care.js';
 import { getLightPeriodLabel, getLastWitness } from '../domains/light.js';
 import { getSleepEntry } from '../domains/sleep.js';
-import { formatHeldMs, getMostRecentSession, getSessionHeldMs } from '../domains/mind.js';
+import { getMostRecentSession, getMostRecentReflectionSession } from '../domains/mind.js';
 
 // Time-of-day period buckets — used to set data-period on #pane-temple for ambient CSS shift.
 const TEMPLE_PERIOD_BUCKETS = [
@@ -116,12 +116,44 @@ function renderTempleCycleIndicator(turnState) {
   if (label) label.textContent = turnState.label;
 }
 
+function ymdFromOffset(daysBack) {
+  const d = new Date();
+  d.setDate(d.getDate() - daysBack);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function hasSignalOn(dateStr) {
+  if (state.chronicle?.notes?.[dateStr]?.body) return true;
+  if (state.sleep?.entries?.[dateStr]) return true;
+  if (state.light?.entries?.[dateStr]?.witnesses?.length) return true;
+  const sessions = state.mind?.sessions;
+  if (Array.isArray(sessions) && sessions.some(s => s.completed && s.date === dateStr)) return true;
+  return false;
+}
+
+function hasAnyHistory() {
+  const notes = state.chronicle?.notes;
+  if (notes && Object.keys(notes).some(d => d !== todayStr && notes[d]?.body)) return true;
+  const sleep = state.sleep?.entries;
+  if (sleep && Object.keys(sleep).some(d => d !== todayStr)) return true;
+  const light = state.light?.entries;
+  if (light && Object.keys(light).some(d => d !== todayStr && light[d]?.witnesses?.length)) return true;
+  const sessions = state.mind?.sessions;
+  if (Array.isArray(sessions) && sessions.some(s => s.completed && s.date !== todayStr)) return true;
+  return false;
+}
+
+function isQuietStretch(lookbackDays = 7) {
+  for (let i = 1; i <= lookbackDays; i++) {
+    if (hasSignalOn(ymdFromOffset(i))) return false;
+  }
+  return true;
+}
+
 function getDailyLine() {
   if (getSleepEntry(todayStr)) return 'The day has been closed.';
 
-  const yd = new Date();
-  yd.setDate(yd.getDate() - 1);
-  const yesterdayStr = `${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, '0')}-${String(yd.getDate()).padStart(2, '0')}`;
+  const yesterdayStr = ymdFromOffset(1);
   if (getSleepEntry(yesterdayStr) && new Date().getHours() < 11) return 'The night has passed.';
 
   const turnState = getCareTurnState();
@@ -134,6 +166,8 @@ function getDailyLine() {
   if (recent && recent.date === todayStr) return 'A time was held.';
 
   if (getLastWitness(todayStr)) return 'Light was seen.';
+
+  if (isQuietStretch() && hasAnyHistory()) return 'The room has waited.';
 
   return '';
 }
@@ -188,6 +222,18 @@ export function renderTemple() {
   const mindStateEl = document.getElementById('temple-mind-state');
   if (mindStateEl) {
     const recent = getMostRecentSession();
-    mindStateEl.textContent = recent ? `Held · ${formatHeldMs(getSessionHeldMs(recent))}` : 'Unheld';
+    mindStateEl.textContent = recent ? 'Held' : 'Unheld';
+  }
+
+  const mindLineEl = document.getElementById('temple-mind-line');
+  if (mindLineEl) {
+    const reflectionSession = getMostRecentReflectionSession();
+    if (reflectionSession && reflectionSession.reflection) {
+      mindLineEl.textContent = reflectionSession.reflection.trim();
+      mindLineEl.hidden = false;
+    } else {
+      mindLineEl.textContent = '';
+      mindLineEl.hidden = true;
+    }
   }
 }

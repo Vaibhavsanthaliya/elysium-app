@@ -1,139 +1,119 @@
-# Skin · Skincare Routine Tracker
+# Elysium
 
-A minimal, Apple-styled skincare tracker. Static PWA — no backend, no database, no build step. Deploy to Vercel in under 2 minutes and access from any device.
+Elysium is a quiet ritual operating system: a small personal PWA for keeping daily domains without turning them into scores, dashboards, or performance theater.
 
-## Features
-- Editable tasks for morning, night, and habits
-- 3-day night cycle (Niacinamide → Salicylic → Rest), each with its own task list
-- Daily reminders (local notifications, configurable times)
-- Streak tracking, 6-week calendar, milestone tracker
-- Auto light/dark mode, full Apple aesthetic, safe-area handling
-- Works offline once loaded, installable as a real app on iPhone/iPad/Mac/PC
-- Data export/import as JSON
-- All data stored locally in your browser — nothing leaves your device
+It began as a skincare tracker, but that is no longer the product identity. Care remains one domain inside the system. The wider app is organized around Temple, Care, Chronicle, Light, Sleep, Mind, Stars, and the Workshop.
 
----
+## What Elysium Is Not
 
-## Deploy to Vercel
+- Not a skincare tracker.
+- Not a productivity dashboard.
+- Not a wellness SaaS.
+- Not a habit-streak machine.
+- Not a scorecard for self-optimization.
 
-### Easiest path — GitHub + Vercel (recommended)
+## Product Shape
 
-This way you push updates by editing files and `git push`, and Vercel redeploys automatically.
+Elysium treats each domain as its own mode of attention:
 
-**1. Put it on GitHub**
+- **Temple** - the quiet entry surface and daily state.
+- **Care** - the three-night care cycle and its practical protocol.
+- **Chronicle** - a reading-first memory surface that occasionally accepts a line.
+- **Light** - a witness surface for daylight and time of day.
+- **Sleep** - a closure ritual that lets the app go quiet.
+- **Mind** - a held session, not a productivity timer.
+- **Stars** - a restrained constellation of kept days and seasons.
+- **Workshop** - account, cues, install, import/export, and reset machinery.
 
-In Terminal, from the unzipped folder:
+Care can mention skin because skin is one domain. The repository should not describe the whole app as skincare software.
+
+## Architecture
+
+- Vanilla JavaScript PWA.
+- No framework, bundler, or build step.
+- Modular CSS under `css/`, loaded in the documented cascade order.
+- Modular JavaScript under `js/`, with `main.js` as the entry point.
+- Static deployment target, currently Vercel.
+- Supabase sync for signed-in users.
+- Local-first state stored in `localStorage`.
+- Weekly photo binaries stored in IndexedDB.
+- Service worker shell for offline loading and installability.
+
+## Data Model Notes
+
+The app intentionally keeps legacy storage names for compatibility.
+
+- `localStorage` key: `skincare_app_v1`
+- IndexedDB database: `skin-photos-v1`
+- Supabase table: `user_data`
+
+Do not rename these without an explicit migration plan. Identity copy can evolve without changing stored user data.
+
+## Repository Layout
+
+```text
+elysium-app/
+|-- index.html
+|-- main.js
+|-- manifest.json
+|-- sw.js
+|-- vercel.json
+|-- css/
+|   |-- base.css
+|   |-- layout.css
+|   |-- settings.css
+|   |-- modal.css
+|   |-- components.css
+|   |-- cycle.css
+|   |-- chronicle.css
+|   |-- progress.css
+|   |-- today.css
+|   |-- auth.css
+|   `-- temple.css
+|-- js/
+|   |-- constants.js
+|   |-- utils.js
+|   |-- state.js
+|   |-- sync.js
+|   |-- domains/
+|   |-- services/
+|   |-- render/
+|   `-- ui/
+|-- docs/
+|   `-- ticket-log.md
+|-- design/
+|   `-- obsidian-temple/
+|-- icon-192.png
+|-- icon-512.png
+`-- icon-maskable.png
+```
+
+## Local Development
+
+Because the app is static, any simple local web server works:
+
 ```bash
-cd skincare-app
-git init
-git add .
-git commit -m "Initial skin tracker"
+python -m http.server 8080
 ```
 
-Go to [github.com/new](https://github.com/new), create a new private repo called `skincare-app`. Then back in Terminal:
-```bash
-git remote add origin https://github.com/YOUR-USERNAME/skincare-app.git
-git branch -M main
-git push -u origin main
-```
+Then open `http://localhost:8080`.
 
-**2. Connect to Vercel**
+## Deployment
 
-1. Go to [vercel.com](https://vercel.com) → sign up with your GitHub account (free)
-2. Click **Add New → Project**
-3. Pick the `skincare-app` repo → click **Import**
-4. Leave all settings as-is (it auto-detects: framework = Other, root = ./, no build needed)
-5. Click **Deploy**
+Deploy the repository as a static site. On Vercel, use the default settings:
 
-Done. In ~30 seconds you'll get a URL like `skincare-app-yourname.vercel.app`. That URL is your app, served over HTTPS, accessible anywhere.
+- Framework preset: Other
+- Build command: none
+- Output directory: project root
 
-### Faster path — Vercel CLI (no GitHub needed)
+The app shell, manifest, icons, CSS, and JavaScript are served as static files. Supabase is loaded client-side and used only for signed-in sync.
 
-If you'd rather skip GitHub:
-```bash
-npm install -g vercel
-cd skincare-app
-vercel
-```
+## PWA Install
 
-Follow the prompts (login with email, accept defaults). It deploys to a temporary URL. Run `vercel --prod` to deploy to the permanent production URL.
+After deployment over HTTPS:
 
-### Custom domain (optional)
+- iPhone / iPad: Safari -> Share -> Add to Home Screen.
+- Mac Safari: File -> Add to Dock.
+- Chrome / Edge / Brave: use the browser install icon.
 
-In your Vercel project settings → **Domains** → add your own. Vercel handles HTTPS automatically.
-
----
-
-## Installing as an app (after deploying)
-
-Once deployed, open your Vercel URL on the device:
-
-### iPhone / iPad (Safari)
-1. Open the URL
-2. Tap **Share** → **Add to Home Screen**
-3. Tap **Add**
-4. Open it from your Home Screen → looks and feels native
-
-### Mac (Safari 17+)
-1. Open the URL in Safari
-2. **File → Add to Dock**
-3. Becomes a windowed Mac app with its own Dock icon
-
-### Mac / Windows (Chrome/Edge/Brave)
-1. Open the URL
-2. Click the install icon in the URL bar (computer with arrow)
-3. Click **Install**
-
----
-
-## Using it
-
-**Today tab** — circular ring shows daily progress. Tap a task to check it off, tap the pencil to edit, tap **＋** to add. Day completes (streak +1) when all morning + night tasks are done.
-
-**Cycle tab** — three cards for the night rotation. Tap one to make it tonight's routine; today's tab updates automatically. Each cycle day has its own editable task list — edit a night task and pick which cycle day(s) it belongs to.
-
-**Progress tab** — streak, total days logged, this week (vs 7), 21-day goal, 6-week calendar (green = day complete), milestones tied to your start date.
-
-**Settings tab** — set reminder times, toggle notifications, export/import data, reset start date.
-
----
-
-## Notifications — what to know
-
-- **iOS 16.4+:** notifications work *only* after you install to Home Screen. Then enable in Settings tab. Apple's restriction.
-- **Mac/Desktop:** works in any modern browser. Permission prompts on first toggle.
-- **Background reminders:** because there's no backend, reminders schedule via JS timers — they fire reliably while the app is open or has been opened recently. For true OS-level lock-screen reminders that fire when the app's never been opened that day, you'd need push notifications via a server (out of scope for a personal tool).
-
-In practice: install to Home Screen → open it once a day → reminders work fine.
-
----
-
-## File structure
-```
-skincare-app/
-├── index.html       # Main app
-├── styles.css       # Apple-style theming (light + dark)
-├── app.js           # State, render, reminders, edit modal
-├── sw.js            # Service worker (offline + install)
-├── manifest.json    # PWA manifest
-├── vercel.json      # Vercel headers config
-├── icon-192.png     # App icons
-├── icon-512.png
-├── icon-maskable.png
-├── .gitignore
-└── README.md
-```
-
-No build step. No dependencies. Pure HTML/CSS/JS. Vercel just serves the files.
-
----
-
-## Local dev (optional)
-
-If you want to test changes before pushing:
-```bash
-python3 -m http.server 8080
-# open http://localhost:8080
-```
-
-Edit any file → reload browser → see changes. When happy, `git push` and Vercel redeploys.
+The service worker caches the app shell so Elysium can reopen offline after the first successful load.

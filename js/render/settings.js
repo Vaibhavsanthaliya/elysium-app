@@ -1,6 +1,6 @@
 import { DEFAULT_DATA, STORAGE_KEY } from '../constants.js';
 import { isValidReminderTime, formatTime12 } from '../utils.js';
-import { state, todayStr, saveState, migrateState, mergeDefaults, advanceCycleIfNeeded, updateMilestoneStage } from '../state.js';
+import { state, todayStr, saveState, migrateState, mergeDefaults, advanceCycleIfNeeded } from '../state.js';
 import { sb, sbUserId, flushToSupabase } from '../sync.js';
 import { deepClone } from '../utils.js';
 import { clearAllPhotoData } from '../services/photos.js';
@@ -43,7 +43,6 @@ export function importData(file) {
       // setState not needed here — we mutate state's properties to preserve the live binding
       Object.assign(state, newState);
       advanceCycleIfNeeded();
-      updateMilestoneStage();
       saveState();
       flushToSupabase();
       renderHeader();
@@ -86,7 +85,6 @@ export function resetStartDate() {
   if (!confirm('Reset the ritual start date to today.')) return;
   state.startDate = todayStr;
   state.milestoneStage = 0;
-  updateMilestoneStage();
   saveState();
   updateSettingsView();
   renderProgress();

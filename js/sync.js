@@ -3,7 +3,7 @@ import { deepClone, isYmd } from './utils.js';
 import {
   state, setState, todayStr,
   saveState, migrateState, mergeDefaults,
-  advanceCycleIfNeeded, updateMilestoneStage,
+  advanceCycleIfNeeded,
 } from './state.js';
 
 export let sb = null;
@@ -162,7 +162,6 @@ export async function syncFromSupabase() {
       if (!state.startDate) state.startDate = todayStr;
       migrateState(state);
       advanceCycleIfNeeded();
-      updateMilestoneStage();
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       _postSyncCallback?.();

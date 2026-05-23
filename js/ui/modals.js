@@ -3,7 +3,7 @@
 // consume the imports inside function bodies, never at module evaluation time.
 // Future EA: resolve via event delegation in main.js.
 import { TASK_INFO } from '../constants.js';
-import { daysBetween, formatTime12, isValidReminderTime, uid } from '../utils.js';
+import { daysBetween, uid } from '../utils.js';
 import { state, saveState, todayStr } from '../state.js';
 import {
   getSleepEntry,
@@ -14,7 +14,6 @@ import {
 import {
   beginMindSession,
   endMindSession,
-  formatHeldMs,
   getMostRecentReflectionSession,
   getTodaySession,
 } from '../domains/mind.js';
@@ -89,14 +88,24 @@ export function openSleepModal() {
     const mm = String(now.getMinutes()).padStart(2, '0');
     const eyebrow = document.getElementById('sleep-eyebrow');
     if (eyebrow) eyebrow.textContent = `HYPNOS · ${hh}:${mm}`;
-    const lightsEl = document.getElementById('sleep-tonight-lights');
-    const bedEl = document.getElementById('sleep-tonight-bed');
-    if (lightsEl) lightsEl.textContent = isValidReminderTime(state.reminders?.checkInTime)
-      ? formatTime12(state.reminders.checkInTime) : '—';
-    if (bedEl) bedEl.textContent = isValidReminderTime(state.reminders?.nightTime)
-      ? formatTime12(state.reminders.nightTime) : '—';
     const noteEl = document.getElementById('sleep-note');
     if (noteEl) noteEl.value = '';
+
+    const recentEl = document.getElementById('sleep-recent');
+    if (recentEl) {
+      const yd = new Date();
+      yd.setDate(yd.getDate() - 1);
+      const yesterdayStr = `${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, '0')}-${String(yd.getDate()).padStart(2, '0')}`;
+      const yesterdayEntry = getSleepEntry(yesterdayStr);
+      const yesterdayNote = yesterdayEntry && typeof yesterdayEntry.note === 'string' ? yesterdayEntry.note.trim() : '';
+      if (yesterdayNote) {
+        recentEl.textContent = yesterdayNote;
+        recentEl.hidden = false;
+      } else {
+        recentEl.textContent = '';
+        recentEl.hidden = true;
+      }
+    }
   }
 
   modal.hidden = false;
@@ -115,11 +124,8 @@ export function saveSleepModal() {
     return;
   }
   saveState();
-  const now = new Date();
-  const hh = String(now.getHours()).padStart(2, '0');
-  const mm = String(now.getMinutes()).padStart(2, '0');
   const sleepStateEl = document.getElementById('temple-sleep-state');
-  if (sleepStateEl) sleepStateEl.textContent = formatTime12(`${hh}:${mm}`);
+  if (sleepStateEl) sleepStateEl.textContent = 'Closed';
   document.getElementById('sleep-state-a').hidden = true;
   document.getElementById('sleep-state-b').hidden = false;
   applyTempleTrace('sleep');
@@ -149,20 +155,13 @@ function getMindHoldElapsedMs() {
 
 function updateMindHoldUi() {
   const elapsedMs = getMindHoldElapsedMs();
-  const elapsedEl = document.getElementById('mind-held-elapsed');
   const endBtn = document.getElementById('mind-end');
   const fillEl = document.getElementById('mind-held-fill');
   const durationMs = Math.max(1, mindSelectedDuration * 60000);
   const progress = Math.min(1, elapsedMs / durationMs);
 
-  if (elapsedEl) elapsedEl.textContent = `Held · ${formatHeldMs(elapsedMs)}`;
   if (fillEl) fillEl.style.setProperty('--mind-held-progress', String(progress));
-  if (endBtn) {
-    const canEnd = elapsedMs >= MIND_MIN_HELD_MS;
-    endBtn.disabled = !canEnd;
-    endBtn.textContent = canEnd ? 'End session' : 'Hold a little longer';
-    endBtn.setAttribute('aria-disabled', String(!canEnd));
-  }
+  if (endBtn) endBtn.hidden = elapsedMs < MIND_MIN_HELD_MS;
 }
 
 function renderMindRecentReflection() {

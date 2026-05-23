@@ -240,6 +240,7 @@
                 <span class="temple-domain-name">Mind</span>
                 <span class="temple-domain-sub">hold</span>
                 <span class="temple-domain-archetype">Athena</span>
+                <span class="temple-mind-line" id="temple-mind-line" hidden></span>
               </span>
               <span class="temple-domain-state" id="temple-mind-state">—</span>
             </button>
@@ -422,7 +423,7 @@
         <div class="cycle-heading">
           <div class="cycle-eyebrow" id="cycle-eyebrow">NIGHT I · NIACINAMIDE</div>
           <h1 class="cycle-title">The <span class="ital">wheel</span></h1>
-          <p class="cycle-sub">Three nights. Tap to set tonight's ritual.</p>
+          <p class="cycle-sub">Three nights.</p>
         </div>
 
         <div class="astrolabe-wrap" id="cycle-astrolabe">
@@ -434,11 +435,6 @@
             <div class="al-numeral" id="al-numeral">I</div>
             <div class="al-lbl" id="al-lbl">NIACINAMIDE</div>
           </div>
-        </div>
-
-        <div class="al-legend">
-          <div class="al-legend-item"><span class="al-dot al-dot-active"></span><span>Tonight</span></div>
-          <div class="al-legend-item"><span class="al-dot al-dot-pending"></span><span>Upcoming</span></div>
         </div>
 
         <p class="cycle-note">One active per night. Pea-sized. Nothing layered.</p>
@@ -550,7 +546,7 @@
             <div class="setting-row">
               <div>
                 <p class="setting-name">Comfort mode</p>
-                <p class="setting-sub">Warm months &mdash; face wash and sunscreen only</p>
+                <p class="setting-sub">Reduces morning Care to essentials</p>
               </div>
               <label class="toggle">
                 <input type="checkbox" id="comfort-toggle" />
@@ -719,23 +715,9 @@
         <div class="sleep-eyebrow" id="sleep-eyebrow">HYPNOS · —</div>
         <h3 class="sleep-title">A last <em>note</em></h3>
         <p class="sleep-sub">One line and the temple goes quiet.</p>
+        <p class="sleep-recent" id="sleep-recent" hidden></p>
         <textarea class="sleep-note" id="sleep-note" rows="3" placeholder="A line for today —"></textarea>
         <div class="sleep-handoff">THEN THE SCREEN DIMS. NO MORE CHECKS.</div>
-        <div class="sleep-tonight">
-          <div class="sleep-tonight-head">TONIGHT</div>
-          <div class="sleep-tonight-row">
-            <span class="sleep-tonight-act">Lights dimmed</span>
-            <span class="sleep-tonight-time" id="sleep-tonight-lights">—</span>
-          </div>
-          <div class="sleep-tonight-row">
-            <span class="sleep-tonight-act">Phones to greyscale</span>
-            <span class="sleep-tonight-time">Sunset</span>
-          </div>
-          <div class="sleep-tonight-row">
-            <span class="sleep-tonight-act">Night cue</span>
-            <span class="sleep-tonight-time" id="sleep-tonight-bed">—</span>
-          </div>
-        </div>
         <button class="btn-primary" id="sleep-save">Close the day</button>
       </div>
       <!-- State B: goodnight -->
@@ -814,8 +796,7 @@
       <div id="mind-state-b" hidden>
         <div class="mind-eyebrow">ATHENA</div>
         <p class="mind-holding">Hold.</p>
-        <div class="mind-holding-dur" id="mind-held-elapsed">Held · &lt;1m</div>
-        <button class="mind-end-btn" id="mind-end" disabled>Hold a little longer</button>
+        <button class="mind-end-btn" id="mind-end" hidden>End session</button>
         <div class="mind-held-line" aria-hidden="true">
           <span id="mind-held-fill"></span>
         </div>

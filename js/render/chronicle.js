@@ -24,10 +24,11 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-function quietClass(index) {
-  if (index >= 9) return ' is-faint';
-  if (index >= 6) return ' is-quieter';
-  if (index >= 3) return ' is-quiet';
+function quietClass(dateStr) {
+  const age = daysApart(todayStr, dateStr);
+  if (age >= 181) return ' is-faint';
+  if (age >= 61) return ' is-quieter';
+  if (age >= 15) return ' is-quiet';
   return '';
 }
 
@@ -134,7 +135,7 @@ function renderDrift(el, excludeDateStr) {
   let html = '';
   for (const [dateStr, note] of entries) {
     if (shown >= DRIFT_MAX) break;
-    html += `<div class="chronicle-drift-entry${quietClass(shown)}">
+    html += `<div class="chronicle-drift-entry${quietClass(dateStr)}">
       <div class="chronicle-drift-date">${formatDriftDate(dateStr)}</div>
       <div class="chronicle-drift-body">${escapeHtml(note.body)}</div>
     </div>`;

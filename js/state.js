@@ -1,4 +1,4 @@
-import { STORAGE_KEY, DEFAULT_DATA, MILESTONES, MILESTONE_UPGRADES } from './constants.js';
+import { STORAGE_KEY, DEFAULT_DATA } from './constants.js';
 import { deepClone, ymd, isYmd, daysBetween, isValidReminderTime, uid } from './utils.js';
 import { showToast } from './ui/toast.js';
 
@@ -195,51 +195,4 @@ export function getMilestoneStage(daysSinceStart) {
   if (daysSinceStart >= 28) return 2;
   if (daysSinceStart >= 14) return 1;
   return 0;
-}
-
-// Internal helpers used only by updateMilestoneStage; not exported.
-function getAllTaskGroups() {
-  return [
-    state.tasks.morning,
-    state.tasks.habit,
-    state.tasks.night?.[0] || [],
-    state.tasks.night?.[1] || [],
-    state.tasks.night?.[2] || [],
-  ];
-}
-
-function taskExistsByKey(upgradeKey, text) {
-  const normalizedText = text.trim().toLowerCase();
-  return getAllTaskGroups().some(group =>
-    Array.isArray(group) && group.some(task =>
-      task.upgradeKey === upgradeKey || task.text?.trim().toLowerCase() === normalizedText
-    )
-  );
-}
-
-function applyMilestoneRoutine(stage) {
-  const upgrades = MILESTONE_UPGRADES[stage] || [];
-  upgrades.forEach(upgrade => {
-    if (upgrade.requiresComfortOff && state.comfortMode) return;
-    if (taskExistsByKey(upgrade.upgradeKey, upgrade.text)) return;
-    const task = { id: upgrade.id, text: upgrade.text, upgradeKey: upgrade.upgradeKey };
-    if (upgrade.section === 'morning') state.tasks.morning.push(task);
-    if (upgrade.section === 'habit') state.tasks.habit.push(task);
-  });
-}
-
-export function updateMilestoneStage() {
-  const currentStage = Number.isInteger(state.milestoneStage) ? state.milestoneStage : 0;
-  const daysSince = state.startDate && isYmd(state.startDate)
-    ? Math.max(0, daysBetween(state.startDate, todayStr))
-    : 0;
-  const newStage = getMilestoneStage(daysSince);
-  if (newStage <= currentStage) return false;
-  for (let stage = currentStage + 1; stage <= newStage; stage++) {
-    applyMilestoneRoutine(stage);
-  }
-  state.milestoneStage = newStage;
-  saveState();
-  showToast('A new season begins');
-  return true;
 }

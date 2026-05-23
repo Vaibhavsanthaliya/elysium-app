@@ -1,4 +1,4 @@
-import { initState, registerSyncCallback, updateMilestoneStage, state, todayStr, saveState } from './js/state.js';
+import { initState, registerSyncCallback, state, todayStr, saveState } from './js/state.js';
 import { deepClone } from './js/utils.js';
 import { DEFAULT_DATA, STORAGE_KEY } from './js/constants.js';
 import { isValidReminderTime, formatTime12, ymd } from './js/utils.js';
@@ -66,8 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Safety net: auto-clear boot shell if normal paths fail (fires only on exception)
   setTimeout(hideBootShell, 4000);
-
-  updateMilestoneStage();
 
   renderHeader();
   renderTodayCycle();
@@ -347,6 +345,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const skyEl = document.getElementById('light-sky');
     if (skyEl) {
       skyEl.querySelectorAll('.light-witness-mark').forEach(el => el.remove());
+      const yd = new Date();
+      yd.setDate(yd.getDate() - 1);
+      const yesterdayStr = `${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, '0')}-${String(yd.getDate()).padStart(2, '0')}`;
+      const lingerWitnesses = state.light?.entries?.[yesterdayStr]?.witnesses || [];
+      for (const t of lingerWitnesses) {
+        const [wh, wm] = t.split(':').map(Number);
+        if (!Number.isFinite(wh) || !Number.isFinite(wm)) continue;
+        const markPct = ((wh * 60 + wm) / 1440 * 100).toFixed(1);
+        const mark = document.createElement('div');
+        mark.className = 'light-witness-mark is-linger';
+        mark.style.left = `${markPct}%`;
+        skyEl.appendChild(mark);
+      }
       const witnesses = state.light?.entries?.[todayStr]?.witnesses || [];
       for (const t of witnesses) {
         const [wh, wm] = t.split(':').map(Number);

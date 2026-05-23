@@ -1,5 +1,5 @@
-import { state, todayStr, today } from '../state.js';
-import { isYmd, ymd, daysBetween } from '../utils.js';
+import { state, todayStr } from '../state.js';
+import { isYmd, daysBetween } from '../utils.js';
 
 export function getMorningTasks() {
   if (state.comfortMode) return state.tasks.morning.filter(t => t.comfortSafe);
@@ -8,18 +8,6 @@ export function getMorningTasks() {
 
 export function getNightTasks() {
   return state.tasks.night[state.cycleDay] || [];
-}
-
-export function getMorningTasksForDate(dateStr) {
-  return dateStr === todayStr ? getMorningTasks() : state.tasks.morning;
-}
-
-export function getAllTodayTasks() {
-  return [
-    ...getMorningTasks(),
-    ...getNightTasks(),
-    ...state.tasks.habit,
-  ];
 }
 
 export function getTodayChecks() {

@@ -6,7 +6,7 @@ This file is the authoritative context document for every Claude session working
 
 ## 1 · App overview
 
-Elysium is an evolutionary refactor of a vanilla JavaScript skincare tracker PWA. The goal is a premium, Greek-mythology-inspired personal ritual OS — a calm daily companion for maintaining skincare and wellness habits. The approach is strictly incremental: each ticket adds one small, reversible layer on top of the existing app. This is never a rewrite. All existing skincare behavior is permanently protected and must continue to work correctly after every change.
+Elysium is a quiet ritual operating system — a calm daily companion for keeping personal domains without turning them into productivity dashboards, wellness SaaS, or self-optimization scorecards. It evolved from a vanilla JavaScript skincare tracker PWA, and that origin remains protected as the Care domain. The approach is strictly incremental: each ticket adds one small, reversible layer on top of the existing app. This is never a rewrite. Legacy Care behavior, storage compatibility, and existing user data must continue to work correctly after every change.
 
 ---
 
@@ -115,7 +115,7 @@ When adding new state keys in future tickets: add to `DEFAULT_DATA` (auto-inject
 | `syncFromSupabase()` | Fetches cloud state on sign-in; union-merges progress; cloud wins for tasks/settings |
 | `flushToSupabase()` | Immediate Supabase write — called on page hide and unload |
 | `advanceCycleIfNeeded()` | Auto-advances `cycleDay` based on days elapsed since `lastCycleDate` |
-| `updateMilestoneStage()` | Checks `daysSinceStart`, advances `milestoneStage`, injects milestone task upgrades |
+| `getMilestoneStage(daysSinceStart)` | Returns the passive season index for Stars display without mutating state |
 | `switchTab(name)` | Activates tab pane, deactivates others, calls tab-specific render function |
 | `renderHeader()` | Updates streak pill and header display |
 | `renderTodayCycle()` | Updates the cycle indicator on the Today tab |
@@ -170,6 +170,16 @@ Elysium - Ritual Philosophy.html
 philosophy-presentation.jsx
 philosophy-sketches.jsx
 ```
+
+### Continuity Constitution — read before any continuity, memory, resurfacing, or temporal-atmosphere ticket
+
+The binding philosophical reference for all work touching continuity, memory, persistence, resurfacing, or temporal atmosphere lives in:
+
+```
+docs/continuity-constitution.md  — 27 articles, six binding tests, prohibited directions
+```
+
+The constitution is doctrinal, not advisory. Any continuity proposal must pass the **Six Tests** in §27.2 (felt-not-read, no-counter, reversibility, silence, non-actionable, productivity-app). Failing any one is sufficient grounds for rejection. When the constitution and a proposal disagree, the proposal is wrong. The constitution supersedes contradicting instructions in tickets and prompts unless it is itself amended.
 
 ### Visual
 
@@ -303,6 +313,13 @@ Full implementation notes for every ticket: [`docs/ticket-log.md`](docs/ticket-l
 | EA-93 | Stars Grid Recede — Stars keeps the 42-day, 7-column constellation/tap structure but hides weekday/date calendar cues, renders star marks through pseudo-elements, quiets Day Record missed/partial copy, and renames photos to Skin memory. No state, sync, storage, future-date, Day Record, or photo behavior changes. |
 | EA-95 | Sleep First-Light Reciprocity — `getDailyLine()` in `temple.js` gains a first-light branch: when yesterday was closed and today is open and the hour is before 11am, surfaces `"The night has passed."` in the Temple greeting line. JS-only, one function, no new state. |
 | EA-94 | Settings Workshop Reframe — Settings visible heading becomes `The workshop`; the pane is reduced from seven small iOS-style sections into three larger surfaces: Threshold, Cues, and an Archive disclosure for install/beginning/export/import/reset. Existing IDs/classes and all auth, cue, export/import/reset behavior preserved. |
+| EA-96 | Identity Surface Reset — public/project identity surfaces now describe Elysium as a quiet ritual operating system, not a skincare tracker/productivity/wellness app; manifest metadata, README, SW comment/cache, package lock name, and QA checklist title updated. No state, sync, Supabase, IndexedDB, task IDs/text, or runtime behavior changes. |
+| EA-97 | Dead Code / Architecture Cleanup — removed confirmed-unused JS exports/imports/constants and orphaned CSS rollback selectors from old Care/Temple/Auth/Cycle surfaces. Compatibility state names, storage keys, sync, IndexedDB, service worker behavior, visible copy, and dormant Body/Water domains untouched. |
+| EA-98 | Milestone Reframe — removed automatic milestone progression and task injection while retaining passive Stars season framing, dormant milestone metadata, existing task data, storage compatibility, and sync behavior. |
+| EA-99 | Cycle / Sleep / Mind Philosophical Fixes — Cycle legend and extra instruction copy removed; astrolabe arm-to-commit breath slowed to 2.5s; Sleep Tonight reminder surface removed; Mind now uses qualitative `Held` state and hides `End session` until the 60-second minimum. No new state, sync, schema, IndexedDB, Body/Water activation, or Care behavior changes. |
+| EA-100 | Mechanical Cleanup — removed orphaned `MILESTONES` export from `constants.js`; removed dead green `.task-item.done .task-check` rule and dead `color: white` svg line from `components.css`; fixed `saveSleepModal()` Temple state inconsistency (writes `'Closed'` not a time string); removed now-unused `formatTime12` import from `modals.js`; softened comfort mode sub-copy from skincare product language to Care-neutral; bumped SW cache to `elysium-v15`. |
+| EA-101 | First Continuity Primitive — Light Yesterday's Witness Linger. `renderLightModal()` in `main.js` now renders yesterday's witnesses as 3px `is-linger` marks at opacity 0.18 (DOM-ordered before today's 4px 0.55 marks so today paints on top). One CSS rule added to `temple.css` beside the existing `.light-witness-mark` rule. Yesterday is computed inline via the same date arithmetic pattern used in `getDailyLine()`. No state shape, sync, schema, IndexedDB, helper, animation, or other-domain changes. |
+| EA-102 | Sedimentary Phase I — Presence & Residue. Four small continuity gestures across Mind / Sleep / Temple / Chronicle, derived entirely from existing state. Mind: most recent reflection surfaces as a single Spectral italic sub-line on the Temple Mind card (`#temple-mind-line`, line-clamped, hidden when none). Sleep: yesterday's sleep note surfaces once as a faint italic line above tonight's textarea inside Sleep modal State A (`#sleep-recent`). Temple: `getDailyLine()` gains a final branch — `"The room has waited."` when today has no signal AND the last 7 days have no signal AND any history exists; derived via private `hasSignalOn` / `hasAnyHistory` / `isQuietStretch` helpers reading `chronicle.notes`, `sleep.entries`, `light.entries`, `mind.sessions`. Chronicle: Drift `quietClass()` now keys by age (`daysApart`) instead of list index — `≤14d` vivid, `15–60d` quiet, `61–180d` quieter, `181d+` faint. Light's yesterday-witness linger (EA-101) untouched. No new top-level state, no new tab/modal, no count/summary/AI/notification change, no Supabase/IndexedDB/STORAGE_KEY/schema change, no Body/Water activation, no Care reshape. SW cache bumped `elysium-v16` → `elysium-v17`. |
 
 ---
 
@@ -315,7 +332,10 @@ Every future Claude session working on an EA ticket must follow these steps in o
    - `design/obsidian-temple/README.md`
    - `design/obsidian-temple/design-system.md`
    - `design/obsidian-temple/implementation-map.md`
-3. **Read relevant source files.** Inspect only the files and sections relevant to the ticket scope.
+3. **For any continuity, memory, resurfacing, or temporal-atmosphere ticket, read the Continuity Constitution before proposing changes:**
+   - `docs/continuity-constitution.md`
+   - The proposal must pass the Six Tests in §27.2 (felt-not-read, no-counter, reversibility, silence, non-actionable, productivity-app). Failing any one is grounds for rejection.
+4. **Read relevant source files.** Inspect only the files and sections relevant to the ticket scope.
 3. **Propose before editing.** List exact changes (copy strings, function signatures, HTML structure) and wait for explicit user approval. Do not apply any edit before approval is given.
 4. **Keep changes small and reversible.** One concern per ticket. Do not refactor surrounding code, add speculative features, or clean up unrelated sections.
 5. **After implementation, provide:**

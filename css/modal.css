@@ -275,9 +275,8 @@ select.field-input {
 }
 
 /* ── EA-27: Modal Obsidian Temple alignment ─────────────────────────────
- * Removes iOS blue/pink visual language from edit-task, past-day, and
- * task-info modals. CSS-only, all selectors scoped to .modal context.
- * No HTML or app.js changes. No task logic changes.
+ * Removes iOS blue/pink visual language from edit, past-day, and task-info
+ * modals. All selectors are scoped to .modal context.
  * ─────────────────────────────────────────────────────────────────────── */
 
 /* Handle pill: warm separator tone instead of iOS cold gray */
@@ -333,7 +332,7 @@ select.field-input {
 }
 
 /* Save button dark mode: bronze bg / near-black text (9.3:1 contrast).
- * Mirrors .cycle-active-badge and .auth-cta patterns already in the codebase.
+ * Mirrors .auth-cta patterns already in the codebase.
  * Light mode handled by EA-20: .btn-primary { background: var(--obsidian) }. */
 @media (prefers-color-scheme: dark) {
   .modal .btn-primary {
@@ -386,6 +385,22 @@ select.field-input {
   margin: 0 0 20px;
 }
 
+/* ── EA-102: Previous night whisper — single faint line above tonight's note ── */
+#sleep-modal .sleep-recent {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted-text);
+  opacity: 0.55;
+  margin: 0 0 14px;
+}
+
 #sleep-modal .sleep-note {
   width: 100%;
   box-sizing: border-box;
@@ -416,46 +431,6 @@ select.field-input {
   color: var(--bronze);
   opacity: 0.65;
   margin-bottom: 24px;
-}
-
-#sleep-modal .sleep-tonight {
-  border-top: 1px solid var(--separator-warm);
-  padding-top: 14px;
-  margin-bottom: 24px;
-}
-
-#sleep-modal .sleep-tonight-head {
-  font-family: var(--font-mono);
-  font-size: 8.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted-text);
-  margin-bottom: 10px;
-}
-
-#sleep-modal .sleep-tonight-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 7px 0;
-  border-bottom: 1px solid var(--separator-warm);
-}
-
-#sleep-modal .sleep-tonight-row:last-child {
-  border-bottom: none;
-}
-
-#sleep-modal .sleep-tonight-act {
-  font-family: var(--font-sans);
-  font-size: 14px;
-  color: var(--oracle-text);
-}
-
-#sleep-modal .sleep-tonight-time {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--muted-text);
 }
 
 /* State B — goodnight screen */
@@ -642,15 +617,6 @@ select.field-input {
   color: var(--oracle-text);
   margin: 0 0 16px;
   line-height: 1;
-}
-
-#mind-modal .mind-holding-dur {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted-text);
-  margin-bottom: 44px;
 }
 
 /* "End session" — quiet text action, not a primary CTA */

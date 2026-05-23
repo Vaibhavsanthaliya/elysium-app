@@ -2,119 +2,6 @@
    Elysium — temple: temple tab — ritual domain entry screen
    ========================================================================== */
 
-/* ── EA-10: Temple visual polish ─────────────────────────────────────────── */
-#pane-temple .hero-card {
-  padding: 24px;
-  border-radius: 20px;
-  box-shadow: var(--shadow-md);
-  gap: 24px;
-}
-
-#pane-temple .ring-wrap {
-  width: 100px;
-  height: 100px;
-}
-
-#pane-temple .ring-fg {
-  stroke: var(--divine-accent);
-}
-
-#pane-temple .hero-label {
-  color: var(--bronze);
-  letter-spacing: 0.06em;
-}
-
-#pane-temple .btn-row .setting-name {
-  color: var(--oracle-text);
-  font-weight: 500;
-}
-
-#pane-temple .chevron {
-  color: var(--bronze);
-}
-
-/* ── EA-14: Stacked Medallion layout (Temple tab only) ───────────────────── */
-
-/* Hero card — column layout, centered medallion */
-#pane-temple .hero-card {
-  background: var(--alabaster);
-  border: 0.5px solid var(--separator-warm);
-  border-radius: var(--radius-2xl);
-  padding: var(--space-lg);
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-md);
-  box-shadow: var(--shadow-card), var(--shadow-bronze);
-  margin-bottom: var(--space-lg);
-}
-
-@media (prefers-color-scheme: dark) {
-  #pane-temple .hero-card {
-    background: var(--temple-gradient);
-  }
-}
-
-/* Hero meta — centered text block under the ring */
-#pane-temple .hero-meta {
-  flex: initial;
-  text-align: center;
-  width: 100%;
-}
-
-/* Ring — larger medallion presence */
-#pane-temple .ring-wrap {
-  width: 120px;
-  height: 120px;
-}
-
-/* Ring track — warm bronze ghost */
-#pane-temple .ring-bg {
-  stroke: var(--separator-warm);
-}
-
-/* Ring fill — bronze */
-#pane-temple .ring-fg {
-  stroke: var(--bronze);
-}
-
-/* Hero label — centered, bronze eyebrow */
-#pane-temple .hero-label {
-  color: var(--bronze);
-  letter-spacing: 0.06em;
-  text-align: center;
-}
-
-/* Hero status and cycle — centered under ring */
-#pane-temple .hero-status {
-  text-align: center;
-}
-
-#pane-temple .hero-cycle {
-  text-align: center;
-}
-
-/* Quick-action card — warm shadow and radius scale */
-#pane-temple .setting-card {
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-}
-
-/* Quick-action rows — warm bronze separator */
-#pane-temple .setting-row {
-  border-bottom-color: var(--separator-warm);
-}
-
-/* Chevron — bronze (carries forward from EA-10) */
-#pane-temple .chevron {
-  color: var(--bronze);
-}
-
-/* Nav name — oracle text, medium weight (carries forward from EA-10) */
-#pane-temple .btn-row .setting-name {
-  color: var(--oracle-text);
-  font-weight: 500;
-}
-
 /* ── EA-28: Temple ritual-domain entry screen ───────────────────────────── */
 
 /* Bronze token per mode */
@@ -537,6 +424,12 @@
   pointer-events: none;
 }
 
+#light-modal .light-witness-mark.is-linger {
+  width: 3px;
+  height: 3px;
+  opacity: 0.18;
+}
+
 #light-modal .modal-handle {
   margin: 8px auto 0;
 }
@@ -590,6 +483,22 @@
   color: var(--muted-text);
   line-height: 1.4;
   margin: 0;
+}
+
+/* ── EA-102: Mind inscription — most recent reflection on Temple Mind card ── */
+#pane-temple .temple-mind-line {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted-text);
+  opacity: 0.78;
+  margin-top: 2px;
 }
 
 /* ── EA-85: Temporal breath — ambient featured-card glow shift by time period ── */

@@ -1,4 +1,3 @@
-import { CYCLE_NAMES } from '../constants.js';
 import { state, todayStr, saveState } from '../state.js';
 import { renderAllLists } from './today.js';
 import { renderTodayCycle } from './common.js';
@@ -35,7 +34,7 @@ function armNode(i, nodeEl) {
   if (lblEl) lblEl.textContent = NODE_NAMES[i].toUpperCase();
   if (center) center.classList.add('is-preview');
   _armedIndex = i;
-  _armTimer = setTimeout(() => commitCycle(i), 1500);
+  _armTimer = setTimeout(() => commitCycle(i), 2500);
 }
 
 export function cancelCycleArm() {

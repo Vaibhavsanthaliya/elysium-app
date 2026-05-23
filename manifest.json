@@ -1,13 +1,13 @@
 {
   "name": "Elysium",
   "short_name": "Elysium",
-  "description": "Your personal ritual OS",
+  "description": "A quiet ritual operating system for a rhythm of living.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#0E0E12",
+  "theme_color": "#0E0E12",
   "icons": [
     {
       "src": "icon-192.png",
@@ -28,5 +28,5 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["health", "lifestyle", "productivity"]
+  "categories": ["lifestyle", "utilities"]
 }

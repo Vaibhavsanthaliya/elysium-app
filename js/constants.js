@@ -60,34 +60,6 @@ export const DEFAULT_DATA = {
 };
 
 export const CYCLE_NAMES = ['Niacinamide', 'Salicylic', 'Rest night'];
-export const CYCLE_DESC = [
-  'Face wash → Niacinamide serum → Moisturizer',
-  'Face wash → Salicylic serum → Moisturizer',
-  'Face wash → Moisturizer only',
-];
-
-export const MILESTONES = [
-  { weeks: 'Week 1–2', desc: 'Reduced oiliness', days: 14 },
-  { weeks: 'Week 3–4', desc: 'Fewer new pimples', days: 28 },
-  { weeks: 'Week 6–8', desc: 'Marks begin fading', days: 56 },
-  { weeks: 'Week 8–12', desc: 'Noticeably smoother skin', days: 84 },
-];
-
-export const MILESTONE_UPGRADES = {
-  1: [
-    { section: 'habit', id: 'ms1_h_active_pimples', upgradeKey: 'ms1-active-pimples', text: 'Check active pimples before bed' },
-    { section: 'habit', id: 'ms1_h_pimple_patch', upgradeKey: 'ms1-pimple-patch', text: 'Use pimple patch only on active whiteheads' },
-  ],
-  2: [
-    { section: 'habit', id: 'ms2_h_track_marks', upgradeKey: 'ms2-track-marks', text: 'Track marks and texture weekly' },
-    { section: 'morning', id: 'ms2_m_marks_treatment', upgradeKey: 'ms2-marks-treatment', text: 'Apply marks treatment only if skin is calm', requiresComfortOff: true },
-  ],
-  3: [
-    { section: 'habit', id: 'ms3_h_review_routine', upgradeKey: 'ms3-review-routine', text: 'Review routine: keep what works, remove what irritates' },
-    { section: 'habit', id: 'ms3_h_comparison_photo', upgradeKey: 'ms3-comparison-photo', text: 'Take comparison photo' },
-  ],
-};
-
 export const TASK_INFO = {
   m1: {
     title: 'Salicylic acid face wash',
