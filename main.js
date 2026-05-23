@@ -36,6 +36,8 @@ import {
   openMindModalIfActive,
   openBodyModal,
   registerBodyModal,
+  openWaterModal,
+  registerWaterModal,
 } from './js/ui/modals.js';
 import { showToast } from './js/ui/toast.js';
 import { addWeeklyPhoto, hasPhotoThisWeek } from './js/services/photos.js';
@@ -418,6 +420,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Body domain modal ---
   registerBodyModal();
   document.getElementById('temple-goto-body')?.addEventListener('click', openBodyModal);
+
+  // --- Water domain modal ---
+  registerWaterModal();
+  document.getElementById('temple-goto-water')?.addEventListener('click', openWaterModal);
 
   // Schedule reminders if already enabled
   if (state.reminders.enabled && 'Notification' in window && Notification.permission === 'granted') {

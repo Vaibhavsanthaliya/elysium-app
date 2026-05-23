@@ -264,8 +264,8 @@
               <span class="temple-domain-state" id="temple-body-state">—</span>
             </button>
 
-            <!-- Water — dormant -->
-            <button class="temple-domain-card" disabled>
+            <!-- Water -->
+            <button class="temple-domain-card" id="temple-goto-water">
               <span class="temple-domain-medallion" aria-hidden="true">
                 <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M4 13 Q10 8 16 13 Q22 18 28 13"/>
@@ -275,9 +275,9 @@
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Water</span>
                 <span class="temple-domain-sub">notice</span>
-                <span class="temple-domain-archetype">Poseidon</span>
+                <span class="temple-domain-archetype">Hydros</span>
               </span>
-              <span class="temple-domain-state">Still</span>
+              <span class="temple-domain-state" id="temple-water-state">Unstirred</span>
             </button>
 
           </div>
@@ -826,6 +826,23 @@
       </div>
       <button class="btn-primary" id="body-arrive-btn">Returned</button>
       <button class="btn-text" id="body-modal-close">Close</button>
+    </div>
+  </div>
+
+  <!-- Water domain modal -->
+  <div class="modal" id="water-modal" hidden>
+    <div class="modal-backdrop" id="water-modal-backdrop"></div>
+    <div class="modal-sheet water-modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="water-eyebrow">HYDROS</div>
+      <h3 class="water-title"><em>Held.</em></h3>
+      <p class="water-sub">A pause at the surface.</p>
+      <div class="water-surface-wrap">
+        <div class="water-surface-line"></div>
+        <div class="water-marks" id="water-marks"></div>
+      </div>
+      <button class="btn-primary" id="water-hold-btn">Held</button>
+      <button class="btn-text" id="water-modal-close">Close</button>
     </div>
   </div>
 

@@ -6,6 +6,7 @@ import { getLightPeriodLabel, getLastWitness } from '../domains/light.js';
 import { getSleepEntry } from '../domains/sleep.js';
 import { getMostRecentSession, getMostRecentReflectionSession } from '../domains/mind.js';
 import { hasArrivedToday } from '../domains/body.js';
+import { hasHeldToday } from '../domains/water.js';
 
 // Time-of-day period buckets — used to set data-period on #pane-temple for ambient CSS shift.
 const TEMPLE_PERIOD_BUCKETS = [
@@ -48,6 +49,7 @@ const TRACE_CARD_IDS = {
   mind:  'temple-goto-mind',
   care:  'temple-goto-today',
   body:  'temple-goto-body',
+  water: 'temple-goto-water',
 };
 
 export function applyTempleTrace(domain) {
@@ -192,6 +194,13 @@ function collectTemplePresenceDays(todayDayNum) {
 
   const bodyArrivals = state.body?.arrivals || {};
   for (const [dateStr, arr] of Object.entries(bodyArrivals)) {
+    if (Array.isArray(arr) && arr.length) {
+      addPresenceDay(days, dateStr, todayDayNum);
+    }
+  }
+
+  const waterHoldings = state.water?.holdings || {};
+  for (const [dateStr, arr] of Object.entries(waterHoldings)) {
     if (Array.isArray(arr) && arr.length) {
       addPresenceDay(days, dateStr, todayDayNum);
     }
@@ -372,5 +381,10 @@ export function renderTemple() {
   const bodyStateEl = document.getElementById('temple-body-state');
   if (bodyStateEl) {
     bodyStateEl.textContent = hasArrivedToday() ? 'Stood' : '—';
+  }
+
+  const waterStateEl = document.getElementById('temple-water-state');
+  if (waterStateEl) {
+    waterStateEl.textContent = hasHeldToday() ? 'Stilled' : 'Unstirred';
   }
 }

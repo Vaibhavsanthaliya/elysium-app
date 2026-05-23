@@ -60,6 +60,9 @@ export const DEFAULT_DATA = {
   body: {
     arrivals: {},
   },
+  water: {
+    holdings: {},
+  },
 };
 
 export const CYCLE_NAMES = ['Niacinamide', 'Salicylic', 'Rest night'];

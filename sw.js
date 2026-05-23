@@ -1,7 +1,7 @@
 /* Elysium — Service Worker
    Cache shell for offline + standalone install */
 
-const CACHE_NAME = 'elysium-v23';
+const CACHE_NAME = 'elysium-v24';
 const ASSETS = [
   './',
   './index.html',
@@ -31,6 +31,7 @@ const ASSETS = [
   './js/domains/sleep.js',
   './js/domains/mind.js',
   './js/domains/body.js',
+  './js/domains/water.js',
   './js/services/photos.js',
   './js/services/notifications.js',
   './js/render/common.js',

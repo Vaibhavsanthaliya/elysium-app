@@ -171,6 +171,25 @@ export async function syncFromSupabase() {
         });
       }
 
+      const mergedWaterHoldings = {};
+      const waterDates = new Set([
+        ...Object.keys(cloud.water?.holdings || {}),
+        ...Object.keys(state.water?.holdings || {}),
+      ]);
+      for (const date of waterDates) {
+        if (!isYmd(date)) continue;
+        const ch = cloud.water?.holdings?.[date] || [];
+        const lh = state.water?.holdings?.[date] || [];
+        const seen = new Set();
+        const merged = [...ch, ...lh].filter(e => {
+          if (!e?.at) return false;
+          if (seen.has(e.at)) return false;
+          seen.add(e.at);
+          return true;
+        }).map(e => ({ at: e.at }));
+        if (merged.length) mergedWaterHoldings[date] = merged;
+      }
+
       setState(cloud);
       state.loggedDays = mergedLoggedDays;
       state.checks = mergedChecks;
@@ -178,6 +197,7 @@ export async function syncFromSupabase() {
       state.light = { entries: mergedLightEntries };
       state.mind = { sessions: mergedMindSessions };
       state.body = { arrivals: mergedBodyArrivals };
+      state.water = { holdings: mergedWaterHoldings };
       if (!state.startDate) state.startDate = todayStr;
       migrateState(state);
       advanceCycleIfNeeded();

@@ -3,7 +3,7 @@
 // consume the imports inside function bodies, never at module evaluation time.
 // Future EA: resolve via event delegation in main.js.
 import { TASK_INFO } from '../constants.js';
-import { daysBetween, uid } from '../utils.js';
+import { daysBetween, uid, ymd } from '../utils.js';
 import { state, saveState, todayStr } from '../state.js';
 import {
   getSleepEntry,
@@ -18,6 +18,7 @@ import {
   getTodaySession,
 } from '../domains/mind.js';
 import { arriveBody, getBodyArrivals } from '../domains/body.js';
+import { getWaterHoldings, holdWater } from '../domains/water.js';
 import { showToast } from './toast.js';
 import { renderTemple, applyTempleTrace } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
@@ -47,6 +48,7 @@ export function registerConfirmModal() {
 
 let editContext = null;
 let _bodyArrivedThisSession = false;
+let _waterHeldThisSession = false;
 const MIND_MIN_HELD_MS = 60000;
 let mindSelectedDuration = 25;
 let mindActiveSessionId = null;
@@ -336,6 +338,63 @@ export function registerBodyModal() {
     if (btn) btn.classList.add('is-still');
     setTimeout(() => {
       const b = document.getElementById('body-arrive-btn');
+      if (b) b.classList.remove('is-still');
+    }, 3000);
+  });
+}
+
+function renderWaterSurfaceMarks() {
+  const marksEl = document.getElementById('water-marks');
+  if (!marksEl) return;
+  marksEl.querySelectorAll('.water-holding-mark').forEach(el => el.remove());
+
+  const yd = new Date();
+  yd.setDate(yd.getDate() - 1);
+  const yesterdayStr = ymd(yd);
+
+  const appendMark = (entry, linger = false) => {
+    if (!entry || typeof entry.at !== 'string') return;
+    const [wh, wm] = entry.at.split(':').map(Number);
+    if (!Number.isFinite(wh) || !Number.isFinite(wm)) return;
+    const pct = ((wh * 60 + wm) / 1440 * 100).toFixed(1);
+    const mark = document.createElement('div');
+    mark.className = linger ? 'water-holding-mark is-linger' : 'water-holding-mark';
+    mark.style.left = `${pct}%`;
+    marksEl.appendChild(mark);
+  };
+
+  getWaterHoldings(yesterdayStr).forEach(entry => appendMark(entry, true));
+  getWaterHoldings(todayStr).forEach(entry => appendMark(entry, false));
+}
+
+export function openWaterModal() {
+  _waterHeldThisSession = false;
+  renderWaterSurfaceMarks();
+  const btn = document.getElementById('water-hold-btn');
+  if (btn) { btn.textContent = 'Held'; btn.classList.remove('is-still'); }
+  document.getElementById('water-modal').hidden = false;
+}
+
+export function closeWaterModal() {
+  document.getElementById('water-modal').hidden = true;
+  if (_waterHeldThisSession) {
+    _waterHeldThisSession = false;
+    applyTempleTrace('water');
+  }
+}
+
+export function registerWaterModal() {
+  document.getElementById('water-modal-backdrop')?.addEventListener('click', closeWaterModal);
+  document.getElementById('water-modal-close')?.addEventListener('click', closeWaterModal);
+  document.getElementById('water-hold-btn')?.addEventListener('click', () => {
+    holdWater(todayStr);
+    _waterHeldThisSession = true;
+    renderTemple();
+    renderWaterSurfaceMarks();
+    const btn = document.getElementById('water-hold-btn');
+    if (btn) btn.classList.add('is-still');
+    setTimeout(() => {
+      const b = document.getElementById('water-hold-btn');
       if (b) b.classList.remove('is-still');
     }, 3000);
   });
