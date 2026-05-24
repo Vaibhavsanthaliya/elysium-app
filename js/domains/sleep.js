@@ -1,5 +1,6 @@
 import { state, todayStr } from '../state.js';
 import { isValidReminderTime, isYmd, getPeriodKey } from '../utils.js';
+import { SLEEP_RITUALS } from '../constants.js';
 
 function ensureSleepState() {
   if (!state.sleep || typeof state.sleep !== 'object' || Array.isArray(state.sleep)) {
@@ -37,6 +38,17 @@ export function getSleepNoteEntries() {
     out.push({ dateStr, body, period: entry.period });
   }
   return out;
+}
+
+function getDayOfYear(date) {
+  const start = new Date(date.getFullYear(), 0, 0);
+  return Math.floor((date - start) / 86400000);
+}
+
+export function getSleepRitual() {
+  const now = new Date();
+  const idx = (now.getHours() + getDayOfYear(now) * 24) % SLEEP_RITUALS.length;
+  return SLEEP_RITUALS[idx];
 }
 
 export function saveSleepClosure(dateStr, noteText) {

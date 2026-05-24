@@ -265,14 +265,6 @@
   padding-bottom: 8px;
 }
 
-#pane-today .care-cycle-head {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--muted-text);
-  margin-bottom: 10px;
-}
 
 #pane-today .care-cycle-three {
   display: grid;

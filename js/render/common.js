@@ -145,7 +145,7 @@ function renderMorningProtocolControl() {
     } else if (inMotion) {
       stateLine.textContent = 'The morning is in motion.';
     } else {
-      stateLine.textContent = 'Use after the morning has been kept.';
+      stateLine.textContent = 'When the morning has been kept.';
     }
   }
 
@@ -171,8 +171,6 @@ export function renderTodayCycle() {
   if (cycleTag) cycleTag.textContent = getCareCycleTurn(cycleDay);
   const ctn = document.getElementById('care-tonight');
   if (ctn) ctn.textContent = getCareCycleLabel(cycleDay);
-  const status = document.getElementById('hero-status');
-  if (status) status.textContent = turnState.copy;
   const protocolLabel = document.getElementById('night-protocol-label');
   if (protocolLabel) protocolLabel.textContent = getNightProtocolLabel(cycleDay);
   renderTodayCycleIndicator(cycleDay, turnState);

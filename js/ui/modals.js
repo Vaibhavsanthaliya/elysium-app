@@ -7,6 +7,7 @@ import { daysBetween, uid, ymd } from '../utils.js';
 import { state, saveState, todayStr } from '../state.js';
 import {
   getSleepEntry,
+  getSleepRitual,
   isClosedForToday,
   reopenSleepClosure,
   saveSleepClosure,
@@ -17,8 +18,8 @@ import {
   getMostRecentReflectionSession,
   getTodaySession,
 } from '../domains/mind.js';
-import { arriveBody, getBodyArrivals } from '../domains/body.js';
-import { getWaterHoldings, holdWater } from '../domains/water.js';
+import { arriveBody, getBodyArrivals, getBodyRitual } from '../domains/body.js';
+import { getWaterHoldings, holdWater, getWaterRitual } from '../domains/water.js';
 import { showToast } from './toast.js';
 import { renderTemple, applyTempleTrace } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
@@ -94,6 +95,9 @@ export function openSleepModal() {
     if (eyebrow) eyebrow.textContent = `HYPNOS · ${hh}:${mm}`;
     const noteEl = document.getElementById('sleep-note');
     if (noteEl) noteEl.value = '';
+
+    const ritualEl = document.getElementById('sleep-ritual');
+    if (ritualEl) ritualEl.textContent = getSleepRitual();
 
     const recentEl = document.getElementById('sleep-recent');
     if (recentEl) {
@@ -322,6 +326,8 @@ export function openBodyModal() {
   renderBodyHorizonMarks();
   const btn = document.getElementById('body-arrive-btn');
   if (btn) { btn.textContent = 'Returned'; btn.classList.remove('is-still'); }
+  const ritualEl = document.getElementById('body-ritual');
+  if (ritualEl) ritualEl.textContent = getBodyRitual();
   document.getElementById('body-modal').hidden = false;
 }
 
@@ -380,6 +386,8 @@ export function openWaterModal() {
   renderWaterSurfaceMarks();
   const btn = document.getElementById('water-hold-btn');
   if (btn) { btn.textContent = 'Held'; btn.classList.remove('is-still'); }
+  const ritualEl = document.getElementById('water-ritual');
+  if (ritualEl) ritualEl.textContent = getWaterRitual();
   document.getElementById('water-modal').hidden = false;
 }
 

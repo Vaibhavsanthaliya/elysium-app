@@ -1,5 +1,6 @@
 import { state, todayStr } from '../state.js';
 import { getPeriodKey } from '../utils.js';
+import { BODY_RITUALS } from '../constants.js';
 
 function ensureBodyState() {
   if (!state.body || typeof state.body !== 'object' || Array.isArray(state.body)) {
@@ -30,4 +31,15 @@ export function getBodyArrivals(dateStr) {
 
 export function hasArrivedToday(dateStr = todayStr) {
   return getBodyArrivals(dateStr).length > 0;
+}
+
+function getDayOfYear(date) {
+  const start = new Date(date.getFullYear(), 0, 0);
+  return Math.floor((date - start) / 86400000);
+}
+
+export function getBodyRitual() {
+  const now = new Date();
+  const idx = (now.getHours() + getDayOfYear(now) * 24) % BODY_RITUALS.length;
+  return BODY_RITUALS[idx];
 }

@@ -44,9 +44,6 @@ export function renderProgress() {
     cal.appendChild(cell);
   }
 
-  const meta = document.getElementById('star-field-meta');
-  if (meta) meta.textContent = '';
-
   requestAnimationFrame(() => {
     if (document.getElementById('pane-progress').classList.contains('active')) {
       renderConstellationLines();
@@ -55,9 +52,6 @@ export function renderProgress() {
 
   const daysSinceStart = getDaysSinceStart();
   const currentStage = getMilestoneStage(daysSinceStart);
-  const stageMeta = document.getElementById('milestone-stage-meta');
-  if (stageMeta) stageMeta.textContent = '';
-
   const ml = document.getElementById('milestone-list');
   ml.innerHTML = '';
   const stageLine = document.createElement('p');
@@ -175,10 +169,8 @@ export function renderPastDayBody(dateStr, cycleDay, providedDate) {
       <p class="past-day-date-meta">${escapeHtml(formatRecordDate(date))}</p>
       <div class="past-day-memory-card">
         <p class="past-day-protocol">${escapeHtml(protocol.context)}</p>
-        <p class="past-day-state-line">${escapeHtml(protocol.summary)} · <em>${escapeHtml(status.label)}</em></p>
       </div>
       ${chronicleExcerpt ? `<div class="past-day-chronicle">
-        <p class="past-day-chronicle-label">Chronicle</p>
         <p class="past-day-chronicle-body">${escapeHtml(chronicleExcerpt)}</p>
       </div>` : ''}
       ${isPast ? `<div class="past-day-actions">
