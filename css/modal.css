@@ -323,6 +323,12 @@ select.field-input {
 }
 
 /* ── EA-47: Sleep closure ritual modal ───────────────────────────────────── */
+#sleep-modal .sleep-modal-sheet {
+  background: var(--ritual-surface);
+  border: 1px solid var(--separator-warm);
+  box-shadow: var(--shadow-card);
+}
+
 #sleep-modal .sleep-eyebrow {
   font-family: var(--font-mono);
   font-size: 9.5px;
@@ -351,21 +357,50 @@ select.field-input {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 14px;
+  line-height: 1.5;
   color: var(--muted-text);
-  margin: 0 0 16px;
-}
-
-#sleep-modal .sleep-ritual {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--muted-text);
-  opacity: 0.72;
   margin: 0 0 20px;
 }
 
-/* ── EA-102: Previous night whisper — single faint line above tonight's note ── */
+#sleep-modal .sleep-invitations {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--separator-warm);
+  border-bottom: 1px solid var(--separator-warm);
+  margin: 0 0 18px;
+}
+
+#sleep-modal .sleep-invitation {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+#sleep-modal .sleep-invitation:last-child {
+  border-bottom: 0;
+}
+
+#sleep-modal .sleep-invitation-index {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--bronze);
+  opacity: 0.72;
+}
+
+#sleep-modal .sleep-invitation-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--oracle-text);
+  opacity: 0.86;
+}
+
+/* ── EA-102: Previous night whisper — single faint line inside closure ── */
 #sleep-modal .sleep-recent {
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -379,28 +414,6 @@ select.field-input {
   color: var(--muted-text);
   opacity: 0.55;
   margin: 0 0 14px;
-}
-
-#sleep-modal .sleep-note {
-  width: 100%;
-  box-sizing: border-box;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--separator-warm);
-  padding: 8px 0 12px;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 16px;
-  color: var(--oracle-text);
-  resize: none;
-  outline: none;
-  line-height: 1.5;
-  margin-bottom: 16px;
-}
-
-#sleep-modal .sleep-note::placeholder {
-  color: var(--muted-text);
-  opacity: 0.65;
 }
 
 #sleep-modal .sleep-handoff {
@@ -479,7 +492,7 @@ select.field-input {
 
 /* ── EA-60/65: Mind domain modal ─────────────────────────────────────────── */
 #mind-modal .mind-modal-sheet {
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 #mind-modal .mind-eyebrow {
@@ -511,74 +524,63 @@ select.field-input {
   font-style: italic;
   font-size: 14px;
   color: var(--muted-text);
-  margin: 0 0 16px;
-}
-
-#mind-modal .mind-ritual {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--muted-text);
-  opacity: 0.70;
   margin: 0 0 20px;
 }
 
-#mind-modal .mind-dur-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 8px;
+#mind-modal .mind-stage {
+  border-top: 1px solid var(--separator-warm);
+  padding: 16px 0;
 }
 
-#mind-modal .mind-dur {
-  flex: 1;
-  padding: 14px 0;
-  background: transparent;
-  border: 1px solid var(--separator-warm);
-  border-radius: var(--r-md, 14px);
-  font-family: var(--font-mono);
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  color: var(--muted-text);
-  cursor: pointer;
-  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
-}
-
-#mind-modal .mind-dur.active {
-  border-color: var(--bronze);
-  color: var(--oracle-text);
-  background: rgba(201, 165, 107, 0.08);
-}
-
-@media (prefers-color-scheme: light) {
-  #mind-modal .mind-dur.active {
-    background: rgba(160, 122, 74, 0.09);
-  }
-}
-
-#mind-modal .mind-dur-unit {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted-text);
+#mind-modal .mind-stage:last-of-type {
+  border-bottom: 1px solid var(--separator-warm);
   margin-bottom: 22px;
 }
 
-#mind-modal .mind-recent-reflection {
-  border-top: 1px solid var(--separator-warm);
-  padding-top: 14px;
-  margin: 0 0 24px;
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-style: italic;
-  line-height: 1.45;
-  color: var(--muted-text);
+#mind-modal .mind-stage-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-bottom: 8px;
 }
 
-#mind-modal .mind-recent-reflection[hidden] {
-  display: none;
+#mind-modal .mind-stage-invitation {
+  display: block;
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--oracle-text);
+}
+
+#mind-modal .mind-ephemeral-field {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--separator-warm);
+  padding: 10px 0 11px;
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--oracle-text);
+  resize: none;
+  outline: none;
+}
+
+#mind-modal .mind-ephemeral-field::placeholder {
+  color: var(--muted-text);
+  opacity: 0.58;
+}
+
+#mind-modal .mind-ephemeral-field:focus {
+  border-bottom-color: rgba(201, 165, 107, 0.48);
 }
 
 /* State B — holding */
@@ -609,7 +611,33 @@ select.field-input {
   line-height: 1;
 }
 
-/* "End session" — quiet text action, not a primary CTA */
+#mind-modal .mind-held-thread {
+  max-width: 260px;
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--oracle-text);
+  opacity: 0.82;
+}
+
+#mind-modal .mind-held-thread[hidden] {
+  display: none;
+}
+
+#mind-modal .mind-holding-invitation {
+  max-width: 280px;
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted-text);
+  opacity: 0.76;
+}
+
+/* Inscribing action — quiet text action, not a primary CTA */
 #mind-modal .mind-end-btn {
   background: transparent;
   border: none;
@@ -623,38 +651,6 @@ select.field-input {
   cursor: pointer;
   opacity: 0.75;
   min-height: 44px;
-}
-
-#mind-modal .mind-end-btn:disabled {
-  cursor: default;
-  opacity: 0.48;
-}
-
-#mind-modal .mind-held-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--separator-warm);
-  overflow: hidden;
-}
-
-#mind-modal .mind-held-line span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--bronze);
-  opacity: 0.72;
-  transform: scaleX(var(--mind-held-progress, 0));
-  transform-origin: left center;
-  transition: transform 1000ms linear;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #mind-modal .mind-held-line span {
-    transition: none;
-  }
 }
 
 /* State C — reflection */
@@ -682,6 +678,58 @@ select.field-input {
 #mind-modal .mind-reflection::placeholder {
   color: var(--muted-text);
   opacity: 0.65;
+}
+
+/* ── EA-139: Mind recent threads surface ────────────────────────────────── */
+#mind-modal .mind-threads {
+  margin-top: 24px;
+  border-top: 1px solid var(--separator-warm);
+  padding-top: 16px;
+  padding-bottom: 4px;
+}
+
+#mind-modal .mind-threads-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  opacity: 0.55;
+  margin-bottom: 14px;
+}
+
+#mind-modal .mind-thread {
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+#mind-modal .mind-thread:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+#mind-modal .mind-thread-meta {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted-text);
+  opacity: 0.55;
+  margin-bottom: 5px;
+}
+
+#mind-modal .mind-thread-body {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--oracle-text);
+  opacity: 0.72;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ── EA-73: Past-day read-only by default ────────────────────────────────── */

@@ -1,6 +1,6 @@
 import { state, todayStr } from '../state.js';
 import { getPeriodKey } from '../utils.js';
-import { BODY_RITUALS } from '../constants.js';
+import { BODY_RITUALS, BODY_SOMATIC_INVITATIONS } from '../constants.js';
 
 function ensureBodyState() {
   if (!state.body || typeof state.body !== 'object' || Array.isArray(state.body)) {
@@ -26,11 +26,16 @@ export function arriveBody(dateStr) {
 }
 
 export function getBodyArrivals(dateStr) {
-  return state.body?.arrivals?.[dateStr] || [];
+  const arrivals = state.body?.arrivals?.[dateStr];
+  return Array.isArray(arrivals) ? arrivals : [];
+}
+
+export function getBodyArrivalCount(dateStr = todayStr) {
+  return getBodyArrivals(dateStr).length;
 }
 
 export function hasArrivedToday(dateStr = todayStr) {
-  return getBodyArrivals(dateStr).length > 0;
+  return getBodyArrivalCount(dateStr) > 0;
 }
 
 function getDayOfYear(date) {
@@ -42,4 +47,10 @@ export function getBodyRitual() {
   const now = new Date();
   const idx = (now.getHours() + getDayOfYear(now) * 24) % BODY_RITUALS.length;
   return BODY_RITUALS[idx];
+}
+
+export function getBodySomaticInvitations() {
+  const now = new Date();
+  const idx = getDayOfYear(now) % BODY_SOMATIC_INVITATIONS.length;
+  return BODY_SOMATIC_INVITATIONS[idx];
 }

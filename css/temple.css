@@ -345,100 +345,20 @@
   }
 }
 
-/* ── EA-47: Light witness modal ─────────────────────────────────────────── */
+/* ── EA-133: Light opening ritual modal ─────────────────────────────────── */
 #light-modal .light-modal-sheet {
-  padding: 0;
-  overflow: hidden;
+  background-color: var(--bg-grouped);
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(201, 165, 107, 0.10), transparent 65%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 38%);
 }
 
-#light-modal .light-sky {
-  position: relative;
-  height: 156px;
-  background: linear-gradient(180deg,
-    var(--light-sky-top, #0a0a16) 0%,
-    var(--light-sky-mid, #4a3870) 55%,
-    var(--light-sky-bot, #d99a50) 100%
-  );
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-@media (prefers-color-scheme: light) {
-  #light-modal .light-sky {
-    --light-sky-top: #1a2b6e;
-    --light-sky-mid: #7ea4d8;
-    --light-sky-bot: #e8c07a;
+@media (prefers-color-scheme: dark) {
+  #light-modal .light-modal-sheet {
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(201, 165, 107, 0.08), transparent 65%),
+      linear-gradient(180deg, rgba(236, 230, 217, 0.025), transparent 38%);
   }
-}
-
-#light-modal .light-sun {
-  position: absolute;
-  bottom: 34px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 45% 40%, #f5d88a, #c9a56b);
-  box-shadow: 0 0 18px rgba(201, 165, 107, 0.65), 0 0 36px rgba(201, 165, 107, 0.30);
-}
-
-#light-modal .light-horizon {
-  position: absolute;
-  bottom: 46px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(201, 165, 107, 0.35);
-}
-
-#light-modal .light-cursor {
-  position: absolute;
-  bottom: 46px;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  pointer-events: none;
-}
-
-#light-modal .light-cursor-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #c9a56b;
-  box-shadow: 0 0 6px rgba(201, 165, 107, 0.8);
-}
-
-#light-modal .light-cursor-time {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.75);
-  white-space: nowrap;
-  margin-top: 3px;
-}
-
-#light-modal .light-witness-mark {
-  position: absolute;
-  bottom: 43px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--bronze);
-  opacity: 0.55;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-#light-modal .light-witness-mark.is-linger {
-  width: 3px;
-  height: 3px;
-  opacity: 0.18;
-}
-
-#light-modal .modal-handle {
-  margin: 8px auto 0;
 }
 
 #light-modal .light-modal-eyebrow {
@@ -446,8 +366,60 @@
   font-size: 9.5px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+  text-align: center;
   color: var(--bronze);
-  margin: 18px 20px 16px;
+  margin: 22px 20px 4px;
+}
+
+#light-modal .light-invitation {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: var(--oracle-text);
+  opacity: 0.80;
+  margin: 0 24px 28px;
+}
+
+#light-modal .light-horizon-wrap {
+  position: relative;
+  height: 36px;
+  margin: 0 20px 28px;
+  overflow: hidden;
+}
+
+#light-modal .light-threshold-line {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 165, 107, 0.32), transparent);
+  transform: translateY(-50%);
+}
+
+#light-modal .light-marks {
+  position: absolute;
+  inset: 0;
+}
+
+#light-modal .light-witness-mark {
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--bronze);
+  opacity: 0.60;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#light-modal .light-witness-mark.is-linger {
+  width: 3px;
+  height: 3px;
+  opacity: 0.18;
 }
 
 #light-modal .btn-primary {
@@ -459,7 +431,6 @@
   opacity: 0.4;
   pointer-events: none;
 }
-
 
 #light-modal .btn-text {
   width: calc(100% - 40px);
@@ -699,6 +670,53 @@
   padding-bottom: calc(var(--safe-bottom) + 4px);
 }
 
+#body-modal .body-rhythm {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--muted-text);
+  opacity: 0.62;
+  margin: -10px 20px 18px;
+}
+
+/* ── EA-130: Body somatic invitations ──────────────────────────────────────── */
+#body-modal .body-somatic-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--separator-warm);
+  margin: 0 0 18px;
+}
+
+#body-modal .body-somatic-item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+#body-modal .body-somatic-item:last-child {
+  border-bottom: 0;
+}
+
+#body-modal .body-somatic-index {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--bronze);
+  opacity: 0.72;
+  padding-top: 3px;
+}
+
+#body-modal .body-somatic-text {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--oracle-text);
+}
+
 /* ── EA-110: Water domain modal — Hydros's Holding ───────────────────────── */
 #water-modal .water-modal-sheet {
   background-color: var(--bg-grouped);
@@ -739,18 +757,21 @@
   font-style: italic;
 }
 
-#water-modal .water-sub {
-  font-family: var(--font-sans);
-  font-size: 13px;
+#water-modal .water-invitation {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.55;
   text-align: center;
-  color: var(--muted-text);
-  margin: 0 20px 24px;
+  color: var(--oracle-text);
+  opacity: 0.80;
+  margin: 0 24px 28px;
 }
 
 #water-modal .water-surface-wrap {
   position: relative;
   height: 92px;
-  margin: 0 20px 28px;
+  margin: 0 20px 32px;
   overflow: hidden;
   border-radius: var(--radius-lg);
   background:
@@ -810,6 +831,17 @@
   margin: 0 20px 20px;
 }
 
+#water-modal .water-rhythm {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--muted-text);
+  opacity: 0.62;
+  margin: -4px 20px 18px;
+}
+
 #water-modal .btn-primary {
   margin: 0 20px 14px;
   width: calc(100% - 40px);
@@ -826,4 +858,77 @@
   display: block;
   text-align: center;
   padding-bottom: calc(var(--safe-bottom) + 4px);
+}
+
+/* ── EA-141: Day Thread — quiet trace of what the day has held ─────────── */
+#pane-temple .temple-day-thread {
+  margin-bottom: 14px;
+}
+
+#pane-temple .temple-day-thread-sep {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--separator-warm), transparent);
+  margin: 4px 0 12px;
+  opacity: 0.60;
+}
+
+#pane-temple .temple-day-thread-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#pane-temple .temple-day-thread-line {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--muted-text);
+  opacity: 0.72;
+  margin: 0;
+}
+
+/* ── EA-140: Evening closing summary ─────────────────────────────────────── */
+#pane-temple .temple-closing {
+  margin-bottom: 16px;
+}
+
+#pane-temple .temple-closing-sep {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--separator-warm), transparent);
+  margin: 4px 0 14px;
+  opacity: 0.70;
+}
+
+#pane-temple .temple-closing-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+#pane-temple .temple-closing-line {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+#pane-temple .temple-closing-line--open {
+  color: var(--oracle-text);
+  opacity: 0.80;
+}
+
+#pane-temple .temple-closing-line--kept {
+  color: var(--muted-text);
+  opacity: 0.65;
+}
+
+/* ── EA-137: Temple daily rhythm — period-aware card ordering ─────────────── */
+#pane-temple .temple-domain-card[data-rhythm="now"]   { order: 0; border-color: rgba(160, 122, 74, 0.38); }
+#pane-temple .temple-domain-card[data-rhythm="kept"]  { order: 1; }
+#pane-temple .temple-domain-card[data-rhythm="later"] { order: 2; }
+
+@media (prefers-color-scheme: dark) {
+  #pane-temple .temple-domain-card[data-rhythm="now"] { border-color: rgba(201, 165, 107, 0.30); }
 }

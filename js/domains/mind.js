@@ -1,13 +1,15 @@
 import { state, todayStr } from '../state.js';
-import { uid, isYmd, getPeriodKey } from '../utils.js';
-import { MIND_RITUALS } from '../constants.js';
+import { isYmd, isValidReminderTime, getPeriodKey, uid } from '../utils.js';
 
 function ensureMindState() {
   if (!state.mind || typeof state.mind !== 'object' || Array.isArray(state.mind)) {
-    state.mind = { sessions: [] };
+    state.mind = { sessions: [], arrivals: {} };
   }
   if (!Array.isArray(state.mind.sessions)) {
     state.mind.sessions = [];
+  }
+  if (!state.mind.arrivals || typeof state.mind.arrivals !== 'object' || Array.isArray(state.mind.arrivals)) {
+    state.mind.arrivals = {};
   }
 }
 
@@ -25,39 +27,6 @@ export function getMostRecentReflectionSession() {
   return sessions
     .filter(s => s.completed && typeof s.reflection === 'string' && s.reflection.trim())
     .sort((a, b) => (b.startedAt > a.startedAt ? 1 : -1))[0] || null;
-}
-
-export function getTodaySession() {
-  const sessions = state.mind?.sessions;
-  if (!Array.isArray(sessions)) return null;
-  return sessions
-    .filter(s => s.date === todayStr)
-    .sort((a, b) => (b.startedAt > a.startedAt ? 1 : -1))[0] || null;
-}
-
-export function getSessionHeldMs(session, nowMs = Date.now()) {
-  const startMs = Date.parse(session?.startedAt || '');
-  if (!Number.isFinite(startMs)) return 0;
-
-  if (typeof session?.endedAt === 'string') {
-    const endMs = Date.parse(session.endedAt);
-    return Number.isFinite(endMs) ? Math.max(0, endMs - startMs) : 0;
-  }
-
-  if (session?.completed) {
-    return Math.max(0, Number(session.durationMinutes || 0) * 60000);
-  }
-
-  return Math.max(0, nowMs - startMs);
-}
-
-export function formatHeldMs(ms) {
-  const minutes = Math.floor(Math.max(0, ms) / 60000);
-  if (minutes < 1) return '<1m';
-  if (minutes < 60) return `${minutes}m`;
-  const hours = Math.floor(minutes / 60);
-  const rest = minutes % 60;
-  return rest ? `${hours}h ${rest}m` : `${hours}h`;
 }
 
 export function getMindReflectionEntries() {
@@ -88,43 +57,51 @@ export function getMindReflectionEntries() {
   }));
 }
 
-function getDayOfYear(date) {
-  const start = new Date(date.getFullYear(), 0, 0);
-  return Math.floor((date - start) / 86400000);
+function currentTime24(now = new Date()) {
+  return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 }
 
-export function getMindRitual() {
+export function getMindArrival(dateStr = todayStr) {
+  ensureMindState();
+  if (!isYmd(dateStr)) return null;
+  const arrival = state.mind.arrivals[dateStr];
+  return arrival && typeof arrival === 'object' && !Array.isArray(arrival) ? arrival : null;
+}
+
+export function hasMindArrival(dateStr = todayStr) {
+  return Boolean(getMindArrival(dateStr));
+}
+
+export function saveMindReflection(dateStr = todayStr, body = '') {
+  ensureMindState();
+  if (!isYmd(dateStr)) return false;
+  const reflection = typeof body === 'string' ? body.trim().slice(0, 500) : '';
+  if (!reflection) return false;
   const now = new Date();
-  const idx = (now.getHours() + getDayOfYear(now) * 24) % MIND_RITUALS.length;
-  return MIND_RITUALS[idx];
-}
-
-export function beginMindSession(durationMinutes) {
-  ensureMindState();
-  const session = {
+  state.mind.sessions.push({
     id: uid(),
-    date: todayStr,
-    startedAt: new Date().toISOString(),
-    durationMinutes: Number(durationMinutes),
-    endedAt: null,
-    completed: false,
-    reflection: '',
-  };
-  state.mind.sessions.push(session);
-  return session;
-}
-
-export function endMindSession(sessionId, reflection) {
-  ensureMindState();
-  const session = state.mind.sessions.find(s => s.id === sessionId);
-  if (!session) return false;
-  if (typeof session.endedAt !== 'string') {
-    session.endedAt = new Date().toISOString();
-  }
-  session.completed = true;
-  session.reflection = typeof reflection === 'string' ? reflection.trim().slice(0, 500) : '';
-  // Imprint atmospheric coordinates at completion time.
-  if (session.period === undefined)   session.period   = getPeriodKey();
-  if (session.cycleDay === undefined) session.cycleDay = state.cycleDay;
+    date: dateStr,
+    startedAt: now.toISOString(),
+    durationMinutes: 1,
+    endedAt: now.toISOString(),
+    completed: true,
+    reflection,
+    period: getPeriodKey(now.getHours()),
+  });
   return true;
 }
+
+export function arriveMind(dateStr = todayStr) {
+  ensureMindState();
+  if (!isYmd(dateStr)) return false;
+
+  const now = new Date();
+  const at = currentTime24(now);
+  if (!isValidReminderTime(at)) return false;
+
+  if (!state.mind.arrivals[dateStr]) {
+    state.mind.arrivals[dateStr] = { at, period: getPeriodKey(now.getHours()) };
+  }
+  return true;
+}
+

@@ -1,12 +1,12 @@
 import { state, todayStr } from '../state.js';
 import { dayNumber, isYmd } from '../utils.js';
 import { CYCLE_NAMES } from '../constants.js';
-import { getTodayChecks, getNightTasks } from '../domains/care.js';
-import { getLightPeriodLabel, getLastWitness } from '../domains/light.js';
+import { getTodayChecks, getNightTasks, getMorningTasks } from '../domains/care.js';
+import { getLastWitness } from '../domains/light.js';
 import { getSleepEntry } from '../domains/sleep.js';
-import { getMostRecentSession, getMostRecentReflectionSession } from '../domains/mind.js';
-import { hasArrivedToday } from '../domains/body.js';
-import { hasHeldToday } from '../domains/water.js';
+import { getMostRecentSession, getMostRecentReflectionSession, hasMindArrival } from '../domains/mind.js';
+import { hasArrivedToday, getBodyArrivalCount } from '../domains/body.js';
+import { hasHeldToday, getWaterHoldCount } from '../domains/water.js';
 
 // Time-of-day period buckets — used to set data-period on #pane-temple for ambient CSS shift.
 const TEMPLE_PERIOD_BUCKETS = [
@@ -188,6 +188,13 @@ function collectTemplePresenceDays(todayDayNum) {
     });
   }
 
+  const mindArrivals = state.mind?.arrivals || {};
+  for (const [dateStr, arrival] of Object.entries(mindArrivals)) {
+    if (arrival && typeof arrival === 'object' && !Array.isArray(arrival)) {
+      addPresenceDay(days, dateStr, todayDayNum);
+    }
+  }
+
   if (Array.isArray(state.weeklyPhotos)) {
     state.weeklyPhotos.forEach(photo => addPresenceDay(days, photo?.date, todayDayNum));
   }
@@ -261,6 +268,8 @@ function hasSignalOn(dateStr) {
   if (state.light?.entries?.[dateStr]?.witnesses?.length) return true;
   const sessions = state.mind?.sessions;
   if (Array.isArray(sessions) && sessions.some(s => s.completed && s.date === dateStr)) return true;
+  const arrival = state.mind?.arrivals?.[dateStr];
+  if (arrival && typeof arrival === 'object' && !Array.isArray(arrival)) return true;
   return false;
 }
 
@@ -273,6 +282,8 @@ function hasAnyHistory() {
   if (light && Object.keys(light).some(d => d !== todayStr && light[d]?.witnesses?.length)) return true;
   const sessions = state.mind?.sessions;
   if (Array.isArray(sessions) && sessions.some(s => s.completed && s.date !== todayStr)) return true;
+  const arrivals = state.mind?.arrivals;
+  if (arrivals && Object.keys(arrivals).some(d => d !== todayStr && arrivals[d])) return true;
   return false;
 }
 
@@ -283,7 +294,75 @@ function isQuietStretch(lookbackDays = 7) {
   return true;
 }
 
-function getDailyLine() {
+const TEMPLE_PERIOD_ORIENTATION = {
+  'first-light': 'The day is still quiet.',
+  morning: 'The morning is open.',
+  midday: 'The day has been moving.',
+  afternoon: 'The afternoon holds what morning left.',
+  'golden-hour': 'The turning begins.',
+  dusk: 'Evening gathers.',
+  night: 'The room goes quiet.',
+};
+
+// ── EA-137: Daily rhythm — period-keyed headings and card prioritization ────
+
+const TEMPLE_RHYTHM_HEADINGS = {
+  'first-light': 'The morning approaches',
+  morning:       'This morning',
+  midday:        'The day is moving',
+  afternoon:     'What the afternoon holds',
+  'golden-hour': 'As the day turns',
+  dusk:          'What remains tonight',
+  night:         'For the night',
+};
+
+const RHYTHM_CARD_IDS = {
+  light:     'temple-goto-light',
+  sleep:     'temple-goto-sleep',
+  mind:      'temple-goto-mind',
+  body:      'temple-goto-body',
+  water:     'temple-goto-water',
+  chronicle: 'temple-goto-chronicle',
+};
+
+function getMorningCareState() {
+  const tasks = getMorningTasks();
+  const checks = getTodayChecks();
+  const done = tasks.filter(t => checks[t.id]).length;
+  if (tasks.length > 0 && done === tasks.length) return 'kept';
+  if (done > 0) return 'motion';
+  return 'open';
+}
+
+function getRhythmMap(periodKey) {
+  const lightDone     = !!getLastWitness(todayStr);
+  const sleepDone     = !!getSleepEntry(todayStr);
+  const mindDone      = hasMindArrival(todayStr) || getMostRecentSession()?.date === todayStr;
+  const bodyDone      = hasArrivedToday();
+  const waterDone     = hasHeldToday();
+  const chronicleDone = !!(state.chronicle?.notes?.[todayStr]?.body);
+
+  const now   = done => done ? 'kept' : 'now';
+  const later = done => done ? 'kept' : 'later';
+
+  switch (periodKey) {
+    case 'first-light':
+      return { light: now(lightDone), mind: later(mindDone), body: later(bodyDone), water: later(waterDone), chronicle: later(chronicleDone), sleep: later(sleepDone) };
+    case 'morning':
+      return { light: now(lightDone), mind: now(mindDone), body: later(bodyDone), water: later(waterDone), chronicle: later(chronicleDone), sleep: later(sleepDone) };
+    case 'midday':
+    case 'afternoon':
+      return { water: now(waterDone), body: now(bodyDone), mind: now(mindDone), light: later(lightDone), chronicle: later(chronicleDone), sleep: later(sleepDone) };
+    case 'golden-hour':
+      return { chronicle: now(chronicleDone), water: now(waterDone), body: now(bodyDone), light: later(lightDone), mind: later(mindDone), sleep: later(sleepDone) };
+    case 'dusk':
+      return { chronicle: now(chronicleDone), sleep: now(sleepDone), water: later(waterDone), body: later(bodyDone), light: later(lightDone), mind: later(mindDone) };
+    default:
+      return { sleep: now(sleepDone), chronicle: now(chronicleDone), water: later(waterDone), body: later(bodyDone), light: later(lightDone), mind: later(mindDone) };
+  }
+}
+
+function getDailyLine(periodKey) {
   if (getSleepEntry(todayStr)) return 'The day has been closed.';
 
   const yesterdayStr = ymdFromOffset(1);
@@ -296,13 +375,118 @@ function getDailyLine() {
   if (state.chronicle?.notes?.[todayStr]?.body) return 'A line was left.';
 
   const recent = getMostRecentSession();
-  if (recent && recent.date === todayStr) return 'A time was held.';
+  if (hasMindArrival(todayStr) || (recent && recent.date === todayStr)) return 'The thread was gathered.';
 
   if (getLastWitness(todayStr)) return 'Light was seen.';
 
   if (isQuietStretch() && hasAnyHistory()) return 'The room has waited.';
 
-  return '';
+  return TEMPLE_PERIOD_ORIENTATION[periodKey] ?? '';
+}
+
+function deriveTodayTraces() {
+  const traces = [];
+
+  if (getLastWitness(todayStr)) {
+    traces.push('Light entered.');
+  }
+
+  if (getMorningCareState() === 'kept') {
+    traces.push('Morning care kept.');
+  }
+
+  const waterCount = getWaterHoldCount();
+  if (waterCount === 1)      traces.push('Water held.');
+  else if (waterCount === 2) traces.push('Water held twice.');
+  else if (waterCount >= 3)  traces.push('Water held three times.');
+
+  const bodyCount = getBodyArrivalCount();
+  if (bodyCount === 1)      traces.push('Body returned.');
+  else if (bodyCount === 2) traces.push('Body returned twice.');
+  else if (bodyCount >= 3)  traces.push('Body returned three times.');
+
+  const hasMind = hasMindArrival(todayStr) || getMostRecentSession()?.date === todayStr;
+  if (hasMind) {
+    const reflection = getMostRecentReflectionSession();
+    traces.push(reflection?.date === todayStr ? 'A thread was left.' : 'A thread was gathered.');
+  }
+
+  if (state.chronicle?.notes?.[todayStr]?.body) {
+    traces.push('A line was left.');
+  }
+
+  if (getCareTurnState().key === 'kept') {
+    traces.push('Night care kept.');
+  }
+
+  if (getSleepEntry(todayStr)) {
+    traces.push('The day closed.');
+  }
+
+  return traces;
+}
+
+function renderDayThread() {
+  const el = document.getElementById('temple-day-thread');
+  if (!el) return;
+
+  const traces = deriveTodayTraces();
+  if (!traces.length) {
+    el.hidden = true;
+    return;
+  }
+
+  const linesEl = document.getElementById('temple-day-thread-lines');
+  if (!linesEl) return;
+
+  linesEl.innerHTML = '';
+  for (const text of traces) {
+    const p = document.createElement('p');
+    p.className = 'temple-day-thread-line';
+    p.textContent = text;
+    linesEl.appendChild(p);
+  }
+
+  el.hidden = false;
+}
+
+function renderTempleClosing(periodKey) {
+  const closingEl = document.getElementById('temple-closing');
+  if (!closingEl) return;
+
+  const isEvening = periodKey === 'dusk' || periodKey === 'night';
+  if (!isEvening || getSleepEntry(todayStr)) {
+    closingEl.hidden = true;
+    return;
+  }
+
+  const lines = [];
+
+  const turnState = getCareTurnState();
+  if (turnState.key === 'untouched' || turnState.key === 'resting') {
+    lines.push({ text: 'Care still waits.', kind: 'open' });
+  } else if (turnState.key === 'motion') {
+    lines.push({ text: 'Care is in motion.', kind: 'open' });
+  }
+
+  if (!state.chronicle?.notes?.[todayStr]?.body) {
+    lines.push({ text: 'Chronicle is still open.', kind: 'open' });
+  }
+
+  lines.push({ text: 'Sleep has not closed.', kind: 'open' });
+
+  const linesEl = document.getElementById('temple-closing-lines');
+  if (!linesEl) return;
+
+  linesEl.innerHTML = '';
+  for (const { text, kind } of lines) {
+    const p = document.createElement('p');
+    p.className = `temple-closing-line temple-closing-line--${kind}`;
+    p.textContent = text;
+    linesEl.appendChild(p);
+  }
+
+  closingEl.hidden = false;
 }
 
 export function renderTemple() {
@@ -326,7 +510,7 @@ export function renderTemple() {
     paneEl.style.setProperty('--temple-grad-alpha', formatTempleAlpha(getTempleGradientAlpha(period.key)));
   }
 
-  const line = getDailyLine();
+  const line = getDailyLine(period.key);
   const lineEl = document.getElementById('temple-daily-line');
   if (lineEl) {
     lineEl.textContent = line;
@@ -337,7 +521,17 @@ export function renderTemple() {
   const turnState = getCareTurnState();
 
   document.getElementById('temple-status').textContent = getCareCycleLabel();
-  document.getElementById('temple-hero-cycle').textContent = turnState.copy;
+
+  let heroCycleText;
+  if (period.key === 'first-light' || period.key === 'morning') {
+    const morningState = getMorningCareState();
+    if (morningState === 'kept')        heroCycleText = 'Morning kept.';
+    else if (morningState === 'motion') heroCycleText = 'Morning in motion.';
+    else                                heroCycleText = 'Morning awaits.';
+  } else {
+    heroCycleText = turnState.copy;
+  }
+  document.getElementById('temple-hero-cycle').textContent = heroCycleText;
   renderTempleCycleIndicator(turnState);
 
   const hasNote = !!(state.chronicle?.notes?.[todayStr]?.body);
@@ -346,24 +540,19 @@ export function renderTemple() {
   const lastWitness = getLastWitness(todayStr);
   const lightStateEl = document.getElementById('temple-light-state');
   if (lightStateEl) {
-    if (lastWitness) {
-      const h = parseInt(lastWitness.split(':')[0], 10);
-      lightStateEl.textContent = getLightPeriodLabel(Number.isFinite(h) ? h : 0);
-    } else {
-      lightStateEl.textContent = 'Unseen';
-    }
+    lightStateEl.textContent = lastWitness ? 'Entered' : 'Open';
   }
 
   const sleepStateEl = document.getElementById('temple-sleep-state');
   if (sleepStateEl) {
     const todaySleep = getSleepEntry(todayStr);
-    sleepStateEl.textContent = todaySleep ? 'Closed' : 'Unclosed';
+    sleepStateEl.textContent = todaySleep ? 'Closed' : 'Open';
   }
 
   const mindStateEl = document.getElementById('temple-mind-state');
   if (mindStateEl) {
     const recent = getMostRecentSession();
-    mindStateEl.textContent = recent ? 'Held' : 'Quiet';
+    mindStateEl.textContent = hasMindArrival(todayStr) || recent?.date === todayStr ? 'Gathered' : 'Quiet';
   }
 
   const mindLineEl = document.getElementById('temple-mind-line');
@@ -380,11 +569,25 @@ export function renderTemple() {
 
   const bodyStateEl = document.getElementById('temple-body-state');
   if (bodyStateEl) {
-    bodyStateEl.textContent = hasArrivedToday() ? 'Stood' : 'Unreturned';
+    bodyStateEl.textContent = hasArrivedToday() ? 'Returned' : 'Return';
   }
 
   const waterStateEl = document.getElementById('temple-water-state');
   if (waterStateEl) {
-    waterStateEl.textContent = hasHeldToday() ? 'Stilled' : 'Unstirred';
+    waterStateEl.textContent = hasHeldToday() ? 'Held' : 'Unstirred';
   }
+
+  const domainLabelEl = document.getElementById('temple-domain-label');
+  if (domainLabelEl) {
+    domainLabelEl.textContent = TEMPLE_RHYTHM_HEADINGS[period.key] ?? 'The other paths';
+  }
+
+  const rhythmMap = getRhythmMap(period.key);
+  for (const [domain, cardId] of Object.entries(RHYTHM_CARD_IDS)) {
+    const card = document.getElementById(cardId);
+    if (card) card.dataset.rhythm = rhythmMap[domain] ?? 'later';
+  }
+
+  renderDayThread();
+  renderTempleClosing(period.key);
 }

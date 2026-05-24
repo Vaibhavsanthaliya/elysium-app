@@ -252,6 +252,68 @@
   word-break: break-word;
 }
 
+/* ── EA-126: Chronicle resurfacing card ─────────────────────────────────── */
+.chronicle-resurfaced {
+  margin: 0 0 18px;
+  padding: 13px 15px 14px;
+  border: 1px solid var(--separator-warm);
+  border-left: 2px solid rgba(160, 122, 74, 0.42);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(160, 122, 74, 0.055), rgba(160, 122, 74, 0.018));
+}
+
+.chronicle-resurfaced[hidden] {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .chronicle-resurfaced {
+    border-left-color: rgba(201, 165, 107, 0.34);
+    background: linear-gradient(180deg, rgba(201, 165, 107, 0.05), rgba(201, 165, 107, 0.014));
+  }
+}
+
+.chronicle-resurfaced-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.chronicle-resurfaced-kicker,
+.chronicle-resurfaced-when {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.chronicle-resurfaced-kicker {
+  color: var(--bronze);
+  opacity: 0.78;
+}
+
+.chronicle-resurfaced-when {
+  color: var(--muted-text);
+  opacity: 0.62;
+  text-align: right;
+}
+
+.chronicle-resurfaced-body {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--oracle-text);
+  opacity: 0.78;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 /* ── EA-125: Reflective prompt card ─────────────────────────────────────── */
 .chronicle-prompt {
   margin-bottom: 14px;

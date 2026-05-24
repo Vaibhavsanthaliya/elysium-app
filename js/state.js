@@ -146,10 +146,13 @@ export function migrateState(s) {
       entry &&
       typeof entry === 'object' &&
       !Array.isArray(entry) &&
-      isValidReminderTime(entry.bedtime)
+      (entry.closed === true || isValidReminderTime(entry.bedtime))
     )
     .map(([date, entry]) => {
-      const cleanEntry = { bedtime: entry.bedtime };
+      const cleanEntry = {};
+      if (entry.closed === true) cleanEntry.closed = true;
+      if (isValidReminderTime(entry.bedtime)) cleanEntry.bedtime = entry.bedtime;
+      if (!cleanEntry.closed && !cleanEntry.bedtime) cleanEntry.closed = true;
       if (typeof entry.note === 'string' && entry.note.trim()) {
         cleanEntry.note = entry.note.trim().slice(0, 500);
       }
@@ -185,6 +188,30 @@ export function migrateState(s) {
         return out;
       })
     : [];
+  s.mind.arrivals = s.mind.arrivals && typeof s.mind.arrivals === 'object' && !Array.isArray(s.mind.arrivals)
+    ? s.mind.arrivals : {};
+  for (const date of Object.keys(s.mind.arrivals)) {
+    if (!isYmd(date)) { delete s.mind.arrivals[date]; continue; }
+    const raw = s.mind.arrivals[date];
+    const arr = Array.isArray(raw) ? raw : [raw];
+    const seen = new Set();
+    const clean = arr
+      .filter(e => {
+        if (!e || typeof e !== 'object' || Array.isArray(e)) return false;
+        if (!isValidReminderTime(e.at)) return false;
+        if (e.period !== undefined && (typeof e.period !== 'string' || !_VALID_PERIODS.has(e.period))) return false;
+        if (seen.has(e.at)) return false;
+        seen.add(e.at);
+        return true;
+      })
+      .map(e => {
+        const out = { at: e.at };
+        if (typeof e.period === 'string') out.period = e.period;
+        return out;
+      });
+    if (clean.length) s.mind.arrivals[date] = clean[0];
+    else delete s.mind.arrivals[date];
+  }
   s.body = s.body && typeof s.body === 'object' && !Array.isArray(s.body)
     ? s.body : {};
   s.body.arrivals = s.body.arrivals && typeof s.body.arrivals === 'object' && !Array.isArray(s.body.arrivals)

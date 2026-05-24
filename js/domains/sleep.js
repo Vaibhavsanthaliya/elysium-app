@@ -1,6 +1,6 @@
 import { state, todayStr } from '../state.js';
 import { isValidReminderTime, isYmd, getPeriodKey } from '../utils.js';
-import { SLEEP_RITUALS } from '../constants.js';
+import { SLEEP_CLOSURE_INVITATIONS } from '../constants.js';
 
 function ensureSleepState() {
   if (!state.sleep || typeof state.sleep !== 'object' || Array.isArray(state.sleep)) {
@@ -14,7 +14,8 @@ function ensureSleepState() {
 export function getSleepEntry(dateStr = todayStr) {
   if (!isYmd(dateStr)) return null;
   const entry = state.sleep?.entries?.[dateStr];
-  return entry && isValidReminderTime(entry.bedtime) ? entry : null;
+  if (!entry || typeof entry !== 'object' || Array.isArray(entry)) return null;
+  return entry.closed === true || isValidReminderTime(entry.bedtime) ? entry : null;
 }
 
 export function isClosedForToday(dateStr = todayStr) {
@@ -45,19 +46,17 @@ function getDayOfYear(date) {
   return Math.floor((date - start) / 86400000);
 }
 
-export function getSleepRitual() {
-  const now = new Date();
-  const idx = (now.getHours() + getDayOfYear(now) * 24) % SLEEP_RITUALS.length;
-  return SLEEP_RITUALS[idx];
+export function getSleepClosureInvitations(date = new Date()) {
+  const pool = SLEEP_CLOSURE_INVITATIONS;
+  const offset = getDayOfYear(date) % pool.length;
+  return Array.from({ length: 4 }, (_, i) => pool[(offset + i) % pool.length]);
 }
 
 export function saveSleepClosure(dateStr, noteText) {
   if (!isYmd(dateStr)) return false;
   ensureSleepState();
   const now = new Date();
-  const hh = String(now.getHours()).padStart(2, '0');
-  const mm = String(now.getMinutes()).padStart(2, '0');
-  const entry = { bedtime: `${hh}:${mm}`, period: getPeriodKey(now.getHours()) };
+  const entry = { closed: true, period: getPeriodKey(now.getHours()) };
   if (noteText) entry.note = noteText.trim().slice(0, 500);
   state.sleep.entries[dateStr] = entry;
   return true;

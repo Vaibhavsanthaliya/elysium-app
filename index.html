@@ -169,7 +169,7 @@
         <!-- Ritual domain cards -->
         <div class="temple-domains">
           <div class="temple-domain-head">
-            <span class="temple-domain-label">The other paths</span>
+            <span class="temple-domain-label" id="temple-domain-label">The other paths</span>
           </div>
           <div class="temple-domain-list">
 
@@ -207,13 +207,13 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Light</span>
-                <span class="temple-domain-sub">witness</span>
+                <span class="temple-domain-sub">open</span>
                 <span class="temple-domain-archetype">Apollo</span>
               </span>
-              <span class="temple-domain-state" id="temple-light-state">Unseen</span>
+              <span class="temple-domain-state" id="temple-light-state">Open</span>
             </button>
 
-            <!-- Sleep — real bedtime state -->
+            <!-- Sleep - closure state -->
             <button class="temple-domain-card" id="temple-goto-sleep">
               <span class="temple-domain-medallion" aria-hidden="true">
                 <svg viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
@@ -225,7 +225,7 @@
                 <span class="temple-domain-sub">close</span>
                 <span class="temple-domain-archetype">Hypnos</span>
               </span>
-              <span class="temple-domain-state" id="temple-sleep-state">Unclosed</span>
+              <span class="temple-domain-state" id="temple-sleep-state">Open</span>
             </button>
 
             <!-- Mind — active -->
@@ -238,7 +238,7 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Mind</span>
-                <span class="temple-domain-sub">hold</span>
+                <span class="temple-domain-sub">gather</span>
                 <span class="temple-domain-archetype">Athena</span>
                 <span class="temple-mind-line" id="temple-mind-line" hidden></span>
               </span>
@@ -255,10 +255,10 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Body</span>
-                <span class="temple-domain-sub">arrive</span>
+                <span class="temple-domain-sub">jaw · shoulders · breath</span>
                 <span class="temple-domain-archetype">Atlas</span>
               </span>
-              <span class="temple-domain-state" id="temple-body-state">Unreturned</span>
+              <span class="temple-domain-state" id="temple-body-state">Return</span>
             </button>
 
             <!-- Water -->
@@ -278,6 +278,18 @@
             </button>
 
           </div>
+        </div>
+
+        <!-- Day Thread — what the day has held so far -->
+        <div class="temple-day-thread" id="temple-day-thread" hidden>
+          <div class="temple-day-thread-sep" aria-hidden="true"></div>
+          <div class="temple-day-thread-lines" id="temple-day-thread-lines"></div>
+        </div>
+
+        <!-- Evening closing summary — dusk/night only, hidden otherwise -->
+        <div class="temple-closing" id="temple-closing" hidden>
+          <div class="temple-closing-sep" aria-hidden="true"></div>
+          <div class="temple-closing-lines" id="temple-closing-lines"></div>
         </div>
 
         <!-- Secondary navigation -->
@@ -436,6 +448,15 @@
         <div class="chronicle-heading">
           <div class="chronicle-eyebrow">CHRONICLE</div>
           <h1 class="chronicle-title">The <span class="ital">chronicle</span></h1>
+        </div>
+
+        <!-- Resurfaced: one small prior Chronicle fragment (JS shows/hides) -->
+        <div class="chronicle-resurfaced" id="chronicle-resurfaced" hidden>
+          <div class="chronicle-resurfaced-meta">
+            <span class="chronicle-resurfaced-kicker">Resurfaced</span>
+            <span class="chronicle-resurfaced-when" id="chronicle-resurfaced-when">From before</span>
+          </div>
+          <p class="chronicle-resurfaced-body" id="chronicle-resurfaced-body"></p>
         </div>
 
         <!-- From the well: a single resurfaced memory (JS shows/hides) -->
@@ -706,20 +727,19 @@
       <div class="modal-handle"></div>
       <!-- State A: closure ritual -->
       <div id="sleep-state-a">
-        <div class="sleep-eyebrow" id="sleep-eyebrow">HYPNOS · —</div>
-        <h3 class="sleep-title">A last <em>note</em></h3>
-        <p class="sleep-sub">One line and the temple goes quiet.</p>
-        <p class="sleep-ritual" id="sleep-ritual"></p>
+        <div class="sleep-eyebrow" id="sleep-eyebrow">HYPNOS / CLOSURE</div>
+        <h3 class="sleep-title">Let the day <em>end</em></h3>
+        <p class="sleep-sub">Nothing has to be solved before the room goes quiet.</p>
+        <div class="sleep-invitations" id="sleep-invitations"></div>
         <p class="sleep-recent" id="sleep-recent" hidden></p>
-        <textarea class="sleep-note" id="sleep-note" rows="3" placeholder="A line for today —"></textarea>
-        <div class="sleep-handoff">THEN THE SCREEN DIMS. NO MORE CHECKS.</div>
-        <button class="btn-primary" id="sleep-save">Close the day</button>
+        <div class="sleep-handoff">WHAT REMAINS CAN WAIT</div>
+        <button class="btn-primary" id="sleep-save">Let the day end</button>
       </div>
       <!-- State B: goodnight -->
       <div id="sleep-state-b" hidden>
         <div class="sleep-moon" aria-hidden="true"></div>
-        <p class="sleep-goodnight">Good<em>night.</em></p>
-        <p class="sleep-quiet">SEE YOU AT FIRST LIGHT.</p>
+        <p class="sleep-goodnight">The day has <em>ended.</em></p>
+        <p class="sleep-quiet">THE ROOM IS QUIET.</p>
         <button class="btn-text sleep-reopen" id="sleep-reopen">Reopen the day</button>
       </div>
     </div>
@@ -753,17 +773,14 @@
   <div class="modal" id="light-modal" hidden>
     <div class="modal-backdrop" id="light-modal-backdrop"></div>
     <div class="modal-sheet light-modal-sheet">
-      <div class="light-sky" id="light-sky">
-        <div class="light-sun"></div>
-        <div class="light-horizon"></div>
-        <div class="light-cursor" id="light-cursor">
-          <div class="light-cursor-dot"></div>
-          <div class="light-cursor-time" id="light-cursor-time"></div>
-        </div>
-      </div>
       <div class="modal-handle"></div>
-      <div class="light-modal-eyebrow" id="light-eyebrow">APOLLO · MORNING</div>
-      <button class="btn-primary" id="light-witness-btn">I'm here</button>
+      <div class="light-modal-eyebrow">LIGHT / OPENING</div>
+      <p class="light-invitation" id="light-invitation"></p>
+      <div class="light-horizon-wrap">
+        <div class="light-threshold-line"></div>
+        <div class="light-marks" id="light-marks"></div>
+      </div>
+      <button class="btn-primary" id="light-witness-btn">Entered</button>
       <button class="btn-text" id="light-modal-close">Close</button>
     </div>
   </div>
@@ -773,37 +790,39 @@
     <div class="modal-backdrop" id="mind-modal-backdrop"></div>
     <div class="modal-sheet mind-modal-sheet">
       <div class="modal-handle"></div>
-      <!-- State A: begin -->
+      <!-- State A: gathering -->
       <div id="mind-state-a">
-        <div class="mind-eyebrow">ATHENA</div>
-        <h3 class="mind-title">Hold one <em>thing</em></h3>
-        <p class="mind-sub">One held block. Nothing tracked.</p>
-        <p class="mind-ritual" id="mind-ritual"></p>
-        <div class="mind-dur-row">
-          <button class="mind-dur active" data-min="25">25</button>
-          <button class="mind-dur" data-min="40">40</button>
-          <button class="mind-dur" data-min="90">90</button>
+        <div class="mind-eyebrow">MIND / GATHERING</div>
+        <h3 class="mind-title">Gather one <em>thread</em></h3>
+        <p class="mind-sub">Attention narrows by being named.</p>
+        <div class="mind-stage">
+          <div class="mind-stage-label">Gathering</div>
+          <label class="mind-stage-invitation" for="mind-one-thing">Name the one thing.</label>
+          <textarea class="mind-ephemeral-field" id="mind-one-thing" rows="2" placeholder="One thing."></textarea>
         </div>
-        <div class="mind-dur-unit">minutes</div>
-        <p class="mind-recent-reflection" id="mind-recent-reflection" hidden></p>
-        <button class="btn-primary" id="mind-begin">Begin</button>
+        <div class="mind-stage">
+          <div class="mind-stage-label">Holding</div>
+          <p class="mind-stage-invitation">Close the unnecessary doors.</p>
+        </div>
+        <button class="btn-primary" id="mind-begin">Enter the hold</button>
+        <!-- EA-139: recent threads surface -->
+        <div class="mind-threads" id="mind-threads" hidden></div>
       </div>
       <!-- State B: holding -->
       <div id="mind-state-b" hidden>
-        <div class="mind-eyebrow">ATHENA</div>
+        <div class="mind-eyebrow">MIND / HOLDING</div>
         <p class="mind-holding">Hold.</p>
-        <button class="mind-end-btn" id="mind-end" hidden>End session</button>
-        <div class="mind-held-line" aria-hidden="true">
-          <span id="mind-held-fill"></span>
-        </div>
+        <p class="mind-held-thread" id="mind-held-thread"></p>
+        <p class="mind-holding-invitation">Let the first ten minutes be protected.</p>
+        <button class="mind-end-btn" id="mind-end">Inscribe</button>
       </div>
-      <!-- State C: reflection -->
+      <!-- State C: inscribing -->
       <div id="mind-state-c" hidden>
-        <div class="mind-eyebrow">ATHENA</div>
-        <h3 class="mind-title"><em>Held.</em></h3>
-        <p class="mind-sub">What stayed with you?</p>
-        <textarea class="mind-reflection" id="mind-reflection" rows="3" placeholder="A line —"></textarea>
-        <button class="btn-primary" id="mind-complete">Save line</button>
+        <div class="mind-eyebrow">MIND / INSCRIBING</div>
+        <h3 class="mind-title">Write the <em>thread</em></h3>
+        <p class="mind-sub">Write the thread before entering.</p>
+        <textarea class="mind-reflection" id="mind-reflection" rows="3" placeholder="A line for the threshold."></textarea>
+        <button class="btn-primary" id="mind-complete">Enter</button>
       </div>
     </div>
   </div>
@@ -816,11 +835,13 @@
       <div class="body-eyebrow">ATLAS</div>
       <h3 class="body-title"><em>Standing</em></h3>
       <p class="body-sub">The fact of being here.</p>
+      <div class="body-somatic-list" id="body-somatic-list"></div>
       <p class="body-ritual" id="body-ritual"></p>
       <div class="body-horizon-wrap">
         <div class="body-horizon"></div>
         <div class="body-marks" id="body-marks"></div>
       </div>
+      <p class="body-rhythm" id="body-rhythm" hidden></p>
       <button class="btn-primary" id="body-arrive-btn">Returned</button>
       <button class="btn-text" id="body-modal-close">Close</button>
     </div>
@@ -833,12 +854,13 @@
       <div class="modal-handle"></div>
       <div class="water-eyebrow">HYDROS</div>
       <h3 class="water-title"><em>Held.</em></h3>
-      <p class="water-sub">A pause at the surface.</p>
+      <p class="water-invitation" id="water-invitation"></p>
       <div class="water-surface-wrap">
         <div class="water-surface-line"></div>
         <div class="water-marks" id="water-marks"></div>
       </div>
       <p class="water-ritual" id="water-ritual"></p>
+      <p class="water-rhythm" id="water-rhythm" hidden></p>
       <button class="btn-primary" id="water-hold-btn">Held</button>
       <button class="btn-text" id="water-modal-close">Close</button>
     </div>

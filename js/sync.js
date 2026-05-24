@@ -153,6 +153,23 @@ export async function syncFromSupabase() {
       for (const s of (state.mind?.sessions || [])) mindMap.set(s.id, s);
       const mergedMindSessions = Array.from(mindMap.values());
 
+      const mergedMindArrivals = {};
+      const mindArrivalDates = new Set([
+        ...Object.keys(cloud.mind?.arrivals || {}),
+        ...Object.keys(state.mind?.arrivals || {}),
+      ]);
+      for (const date of mindArrivalDates) {
+        if (!isYmd(date)) continue;
+        const ca = cloud.mind?.arrivals?.[date];
+        const la = state.mind?.arrivals?.[date];
+        const merged = la || ca;
+        if (merged?.at) {
+          const out = { at: merged.at };
+          if (typeof merged.period === 'string') out.period = merged.period;
+          mergedMindArrivals[date] = out;
+        }
+      }
+
       const mergedBodyArrivals = {};
       const bodyDates = new Set([
         ...Object.keys(cloud.body?.arrivals || {}),
@@ -195,7 +212,7 @@ export async function syncFromSupabase() {
       state.checks = mergedChecks;
       state.sleep = { entries: mergedSleepEntries };
       state.light = { entries: mergedLightEntries };
-      state.mind = { sessions: mergedMindSessions };
+      state.mind = { sessions: mergedMindSessions, arrivals: mergedMindArrivals };
       state.body = { arrivals: mergedBodyArrivals };
       state.water = { holdings: mergedWaterHoldings };
       if (!state.startDate) state.startDate = todayStr;

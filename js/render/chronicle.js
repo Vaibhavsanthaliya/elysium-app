@@ -1,6 +1,10 @@
 import { state, todayStr, saveState } from '../state.js';
 import { formatTime12, getPeriodKey } from '../utils.js';
-import { getChronicleNote, upsertChronicleNote } from '../domains/chronicle.js';
+import {
+  getChronicleNote,
+  getResurfacedChronicleNote,
+  upsertChronicleNote,
+} from '../domains/chronicle.js';
 import { getSleepNoteEntries } from '../domains/sleep.js';
 import { getMindReflectionEntries } from '../domains/mind.js';
 import { CHRONICLE_PROMPTS } from '../constants.js';
@@ -274,9 +278,30 @@ function renderWell() {
   return candidate.source === 'chronicle' ? candidate.dateStr : null;
 }
 
-function renderDrift(el, excludeDateStr) {
+function renderResurfaced() {
+  const cardEl = document.getElementById('chronicle-resurfaced');
+  const whenEl = document.getElementById('chronicle-resurfaced-when');
+  const bodyEl = document.getElementById('chronicle-resurfaced-body');
+  if (!cardEl) return null;
+
+  const candidate = getResurfacedChronicleNote();
+  if (!candidate) {
+    cardEl.hidden = true;
+    if (whenEl) whenEl.textContent = '';
+    if (bodyEl) bodyEl.textContent = '';
+    return null;
+  }
+
+  if (whenEl) whenEl.textContent = candidate.label;
+  if (bodyEl) bodyEl.textContent = candidate.excerpt;
+  cardEl.hidden = false;
+  return candidate.dateStr;
+}
+
+function renderDrift(el, excludeDateStrs = []) {
   const riverHd = document.getElementById('chronicle-river-hd');
-  const entries = getPastEntries().filter(([d]) => d !== excludeDateStr);
+  const excluded = new Set(excludeDateStrs.filter(Boolean));
+  const entries = getPastEntries().filter(([d]) => !excluded.has(d));
 
   if (entries.length === 0) {
     if (riverHd) riverHd.hidden = true;
@@ -387,8 +412,9 @@ export function renderChronicle() {
     }
   }
 
+  const resurfacedDateStr = renderResurfaced();
   const wellDateStr = renderWell();
-  if (driftEl) renderDrift(driftEl, wellDateStr);
+  if (driftEl) renderDrift(driftEl, [resurfacedDateStr, wellDateStr]);
   renderPromptCard();
   renderContinuityFragment();
 }

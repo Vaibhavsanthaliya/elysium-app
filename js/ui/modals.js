@@ -3,24 +3,18 @@
 // consume the imports inside function bodies, never at module evaluation time.
 // Future EA: resolve via event delegation in main.js.
 import { TASK_INFO } from '../constants.js';
-import { daysBetween, uid, ymd } from '../utils.js';
+import { uid, ymd } from '../utils.js';
 import { state, saveState, todayStr } from '../state.js';
 import {
+  getSleepClosureInvitations,
   getSleepEntry,
-  getSleepRitual,
   isClosedForToday,
   reopenSleepClosure,
   saveSleepClosure,
 } from '../domains/sleep.js';
-import {
-  beginMindSession,
-  endMindSession,
-  getMindRitual,
-  getMostRecentReflectionSession,
-  getTodaySession,
-} from '../domains/mind.js';
-import { arriveBody, getBodyArrivals, getBodyRitual } from '../domains/body.js';
-import { getWaterHoldings, holdWater, getWaterRitual } from '../domains/water.js';
+import { arriveMind, saveMindReflection, getMindReflectionEntries } from '../domains/mind.js';
+import { arriveBody, getBodyArrivalCount, getBodyArrivals, getBodyRitual, getBodySomaticInvitations } from '../domains/body.js';
+import { getWaterHoldCount, getWaterHoldings, holdWater, getWaterRitual, getWaterContactInvitation } from '../domains/water.js';
 import { showToast } from './toast.js';
 import { renderTemple, applyTempleTrace } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
@@ -51,12 +45,7 @@ export function registerConfirmModal() {
 let editContext = null;
 let _bodyArrivedThisSession = false;
 let _waterHeldThisSession = false;
-const MIND_MIN_HELD_MS = 60000;
-let mindSelectedDuration = 25;
-let mindActiveSessionId = null;
-let mindHolding = false;
-let mindHoldStartedAtMs = 0;
-let mindHoldTimer = null;
+let _mindArrivedThisSession = false;
 
 export function openTaskInfoModal(taskId) {
   const info = TASK_INFO[taskId];
@@ -77,6 +66,28 @@ export function closeTaskInfoModal() {
 // with addEventListener wiring in main.js (future EA).
 window.closeTaskInfoModal = closeTaskInfoModal;
 
+function renderSleepInvitations() {
+  const invitationsEl = document.getElementById('sleep-invitations');
+  if (!invitationsEl) return;
+
+  invitationsEl.replaceChildren();
+  getSleepClosureInvitations().forEach((invitation, idx) => {
+    const row = document.createElement('div');
+    row.className = 'sleep-invitation';
+
+    const index = document.createElement('span');
+    index.className = 'sleep-invitation-index';
+    index.textContent = String(idx + 1).padStart(2, '0');
+
+    const text = document.createElement('span');
+    text.className = 'sleep-invitation-text';
+    text.textContent = invitation;
+
+    row.append(index, text);
+    invitationsEl.appendChild(row);
+  });
+}
+
 export function openSleepModal() {
   const modal = document.getElementById('sleep-modal');
   const stateA = document.getElementById('sleep-state-a');
@@ -89,16 +100,10 @@ export function openSleepModal() {
   } else {
     stateA.hidden = false;
     stateB.hidden = true;
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
     const eyebrow = document.getElementById('sleep-eyebrow');
-    if (eyebrow) eyebrow.textContent = `HYPNOS · ${hh}:${mm}`;
-    const noteEl = document.getElementById('sleep-note');
-    if (noteEl) noteEl.value = '';
+    if (eyebrow) eyebrow.textContent = 'HYPNOS / CLOSURE';
 
-    const ritualEl = document.getElementById('sleep-ritual');
-    if (ritualEl) ritualEl.textContent = getSleepRitual();
+    renderSleepInvitations();
 
     const recentEl = document.getElementById('sleep-recent');
     if (recentEl) {
@@ -127,8 +132,7 @@ export function closeSleepModal() {
 }
 
 export function saveSleepModal() {
-  const noteText = document.getElementById('sleep-note')?.value?.trim() || '';
-  if (!saveSleepClosure(todayStr, noteText)) {
+  if (!saveSleepClosure(todayStr, '')) {
     showToast('Could not save');
     return;
   }
@@ -151,42 +155,47 @@ export function reopenSleepModal() {
   return true;
 }
 
-function clearMindHoldTimer() {
-  if (!mindHoldTimer) return;
-  clearInterval(mindHoldTimer);
-  mindHoldTimer = null;
+function mindThreadDateLabel(dateStr) {
+  const now = new Date();
+  const todayYmd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  if (dateStr === todayYmd) return 'Today';
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const diff = Math.round((now - new Date(y, m - 1, d)) / 86400000);
+  if (diff === 1) return 'Yesterday';
+  if (diff === 2) return 'Two days ago';
+  if (diff === 3) return 'Three days ago';
+  if (diff <= 6) return 'Earlier this week';
+  if (diff <= 13) return 'Last week';
+  return 'Some time ago';
 }
 
-function getMindHoldElapsedMs() {
-  if (!mindHoldStartedAtMs) return 0;
-  return Math.max(0, Date.now() - mindHoldStartedAtMs);
-}
-
-function updateMindHoldUi() {
-  const elapsedMs = getMindHoldElapsedMs();
-  const endBtn = document.getElementById('mind-end');
-  const fillEl = document.getElementById('mind-held-fill');
-  const durationMs = Math.max(1, mindSelectedDuration * 60000);
-  const progress = Math.min(1, elapsedMs / durationMs);
-
-  if (fillEl) fillEl.style.setProperty('--mind-held-progress', String(progress));
-  if (endBtn) endBtn.hidden = elapsedMs < MIND_MIN_HELD_MS;
-}
-
-function renderMindRecentReflection() {
-  const el = document.getElementById('mind-recent-reflection');
+function renderMindThreads() {
+  const el = document.getElementById('mind-threads');
   if (!el) return;
+  const entries = getMindReflectionEntries()
+    .sort((a, b) => (b.dateStr > a.dateStr ? 1 : -1))
+    .slice(0, 3);
+  el.replaceChildren();
+  if (!entries.length) { el.hidden = true; return; }
 
-  const recent = getMostRecentReflectionSession();
-  if (!recent) {
-    el.hidden = true;
-    el.textContent = '';
-    return;
-  }
+  const label = document.createElement('div');
+  label.className = 'mind-threads-label';
+  label.textContent = 'Threads kept nearby';
+  el.appendChild(label);
 
-  const dayDelta = daysBetween(recent.date, todayStr);
-  const label = dayDelta === 1 ? 'Yesterday' : 'Last held';
-  el.textContent = `${label}: "${recent.reflection.trim()}"`;
+  entries.forEach(entry => {
+    const thread = document.createElement('div');
+    thread.className = 'mind-thread';
+    const meta = document.createElement('div');
+    meta.className = 'mind-thread-meta';
+    meta.textContent = mindThreadDateLabel(entry.dateStr);
+    const body = document.createElement('div');
+    body.className = 'mind-thread-body';
+    body.textContent = entry.body;
+    thread.append(meta, body);
+    el.appendChild(thread);
+  });
+
   el.hidden = false;
 }
 
@@ -196,108 +205,93 @@ function showMindState(stateName) {
   document.getElementById('mind-state-c').hidden = stateName !== 'c';
 }
 
-function setMindDuration(durationMinutes) {
-  mindSelectedDuration = Number(durationMinutes) || 25;
-  document.querySelectorAll('#mind-modal .mind-dur').forEach(btn => {
-    btn.classList.toggle('active', Number(btn.dataset.min) === mindSelectedDuration);
-  });
-}
+function resetMindRitualFields() {
+  const oneThingEl = document.getElementById('mind-one-thing');
+  const heldThreadEl = document.getElementById('mind-held-thread');
+  const reflectionEl = document.getElementById('mind-reflection');
 
-function startMindHold(session) {
-  mindActiveSessionId = session.id;
-  mindHolding = true;
-  setMindDuration(session.durationMinutes);
-  const startMs = Date.parse(session.startedAt || '');
-  mindHoldStartedAtMs = Number.isFinite(startMs) ? startMs : Date.now();
-  showMindState('b');
-  updateMindHoldUi();
-  clearMindHoldTimer();
-  mindHoldTimer = setInterval(updateMindHoldUi, 1000);
+  if (oneThingEl) oneThingEl.value = '';
+  if (heldThreadEl) {
+    heldThreadEl.textContent = '';
+    heldThreadEl.hidden = true;
+  }
+  if (reflectionEl) reflectionEl.value = '';
 }
 
 function openMindModal() {
-  clearMindHoldTimer();
-  mindActiveSessionId = null;
-  mindHolding = false;
-  mindHoldStartedAtMs = 0;
-  setMindDuration(25);
-  renderMindRecentReflection();
-
-  const ritualEl = document.getElementById('mind-ritual');
-  if (ritualEl) ritualEl.textContent = getMindRitual();
-
-  const reflEl = document.getElementById('mind-reflection');
-  if (reflEl) reflEl.value = '';
-
-  const activeSession = getTodaySession();
-  if (activeSession && !activeSession.completed) {
-    startMindHold(activeSession);
-  } else {
-    showMindState('a');
-  }
-
+  _mindArrivedThisSession = false;
+  resetMindRitualFields();
+  renderMindThreads();
+  showMindState('a');
   document.getElementById('mind-modal').hidden = false;
+  setTimeout(() => document.getElementById('mind-one-thing')?.focus(), 180);
 }
 
 function closeMindModal() {
-  if (mindHolding) return;
-  clearMindHoldTimer();
   document.getElementById('mind-modal').hidden = true;
-  mindActiveSessionId = null;
-  mindHoldStartedAtMs = 0;
-}
-
-export function openMindModalIfActive() {
-  const activeSession = getTodaySession();
-  if (activeSession && !activeSession.completed) {
-    openMindModal();
+  resetMindRitualFields();
+  if (_mindArrivedThisSession) {
+    _mindArrivedThisSession = false;
+    applyTempleTrace('mind');
   }
 }
+
+export function openMindModalIfActive() {}
 
 export function registerMindModal() {
   document.getElementById('temple-goto-mind')?.addEventListener('click', openMindModal);
   document.getElementById('mind-modal-backdrop')?.addEventListener('click', closeMindModal);
 
-  document.querySelectorAll('#mind-modal .mind-dur').forEach(btn => {
-    btn.addEventListener('click', () => setMindDuration(btn.dataset.min));
-  });
-
   document.getElementById('mind-begin')?.addEventListener('click', () => {
-    const session = beginMindSession(mindSelectedDuration);
-    startMindHold(session);
-    saveState();
-  });
-
-  document.getElementById('mind-end')?.addEventListener('click', () => {
-    if (!mindHolding || getMindHoldElapsedMs() < MIND_MIN_HELD_MS) {
-      updateMindHoldUi();
-      return;
-    }
-
-    mindHolding = false;
-    clearMindHoldTimer();
-    if (mindActiveSessionId) {
-      endMindSession(mindActiveSessionId, '');
+    if (arriveMind(todayStr)) {
+      _mindArrivedThisSession = true;
       saveState();
       renderTemple();
     }
+
+    const thread = document.getElementById('mind-one-thing')?.value?.trim() || '';
+    const heldThreadEl = document.getElementById('mind-held-thread');
+    if (heldThreadEl) {
+      heldThreadEl.textContent = thread;
+      heldThreadEl.hidden = !thread;
+    }
+    showMindState('b');
+    setTimeout(() => document.getElementById('mind-end')?.focus(), 180);
+  });
+
+  document.getElementById('mind-end')?.addEventListener('click', () => {
     showMindState('c');
     setTimeout(() => document.getElementById('mind-reflection')?.focus(), 200);
   });
 
   document.getElementById('mind-complete')?.addEventListener('click', () => {
-    const reflection = document.getElementById('mind-reflection')?.value?.trim() || '';
-    if (mindActiveSessionId) {
-      endMindSession(mindActiveSessionId, reflection);
+    const body = document.getElementById('mind-reflection')?.value || '';
+    if (saveMindReflection(todayStr, body)) {
+      saveState();
+      renderTemple();
     }
-    saveState();
-    renderTemple();
-    applyTempleTrace('mind');
-    document.getElementById('mind-modal').hidden = true;
-    mindActiveSessionId = null;
-    mindHolding = false;
-    mindHoldStartedAtMs = 0;
-    clearMindHoldTimer();
+    closeMindModal();
+  });
+}
+
+function renderBodySomaticInvitations() {
+  const listEl = document.getElementById('body-somatic-list');
+  if (!listEl) return;
+  listEl.replaceChildren();
+  getBodySomaticInvitations().forEach((invitation, idx) => {
+    const item = document.createElement('div');
+    item.className = 'body-somatic-item';
+
+    const index = document.createElement('span');
+    index.className = 'body-somatic-index';
+    index.textContent = String(idx + 1).padStart(2, '0');
+
+    const text = document.createElement('span');
+    text.className = 'body-somatic-text';
+    text.textContent = invitation;
+
+    item.append(index, text);
+    listEl.appendChild(item);
   });
 }
 
@@ -325,9 +319,19 @@ function renderBodyHorizonMarks() {
   getBodyArrivals(todayStr).forEach(arrival => appendMark(arrival, false));
 }
 
+function renderBodyRhythmStatus() {
+  const rhythmEl = document.getElementById('body-rhythm');
+  if (!rhythmEl) return;
+  const count = getBodyArrivalCount(todayStr);
+  rhythmEl.textContent = count > 1 ? `Returned ×${count} today` : '';
+  rhythmEl.hidden = count <= 1;
+}
+
 export function openBodyModal() {
   _bodyArrivedThisSession = false;
+  renderBodySomaticInvitations();
   renderBodyHorizonMarks();
+  renderBodyRhythmStatus();
   const btn = document.getElementById('body-arrive-btn');
   if (btn) { btn.textContent = 'Returned'; btn.classList.remove('is-still'); }
   const ritualEl = document.getElementById('body-ritual');
@@ -352,6 +356,7 @@ export function registerBodyModal() {
     saveState();
     renderTemple();
     renderBodyHorizonMarks();
+    renderBodyRhythmStatus();
     const btn = document.getElementById('body-arrive-btn');
     if (btn) btn.classList.add('is-still');
     setTimeout(() => {
@@ -385,11 +390,22 @@ function renderWaterSurfaceMarks() {
   getWaterHoldings(todayStr).forEach(entry => appendMark(entry, false));
 }
 
+function renderWaterRhythmStatus() {
+  const rhythmEl = document.getElementById('water-rhythm');
+  if (!rhythmEl) return;
+  const count = getWaterHoldCount(todayStr);
+  rhythmEl.textContent = count > 1 ? `Held ×${count} today` : '';
+  rhythmEl.hidden = count <= 1;
+}
+
 export function openWaterModal() {
   _waterHeldThisSession = false;
   renderWaterSurfaceMarks();
+  renderWaterRhythmStatus();
   const btn = document.getElementById('water-hold-btn');
   if (btn) { btn.textContent = 'Held'; btn.classList.remove('is-still'); }
+  const invitationEl = document.getElementById('water-invitation');
+  if (invitationEl) invitationEl.textContent = getWaterContactInvitation();
   const ritualEl = document.getElementById('water-ritual');
   if (ritualEl) ritualEl.textContent = getWaterRitual();
   document.getElementById('water-modal').hidden = false;
@@ -411,6 +427,7 @@ export function registerWaterModal() {
     _waterHeldThisSession = true;
     renderTemple();
     renderWaterSurfaceMarks();
+    renderWaterRhythmStatus();
     const btn = document.getElementById('water-hold-btn');
     if (btn) btn.classList.add('is-still');
     setTimeout(() => {
