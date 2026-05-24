@@ -15,6 +15,7 @@ import {
 import {
   beginMindSession,
   endMindSession,
+  getMindRitual,
   getMostRecentReflectionSession,
   getTodaySession,
 } from '../domains/mind.js';
@@ -221,6 +222,9 @@ function openMindModal() {
   mindHoldStartedAtMs = 0;
   setMindDuration(25);
   renderMindRecentReflection();
+
+  const ritualEl = document.getElementById('mind-ritual');
+  if (ritualEl) ritualEl.textContent = getMindRitual();
 
   const reflEl = document.getElementById('mind-reflection');
   if (reflEl) reflEl.value = '';

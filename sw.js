@@ -1,7 +1,7 @@
 /* Elysium — Service Worker
    Cache shell for offline + standalone install */
 
-const CACHE_NAME = 'elysium-v34';
+const CACHE_NAME = 'elysium-v37';
 const ASSETS = [
   './',
   './index.html',
@@ -18,6 +18,7 @@ const ASSETS = [
   './css/temple.css',
   './main.js',
   './manifest.json',
+  './favicon.svg',
   './icon-192.png',
   './icon-512.png',
   './icon-maskable.png',

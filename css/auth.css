@@ -378,6 +378,37 @@
   }
 }
 
+/* ── Meridian reveal · auth screen entrance ──────────────────────────────── */
+/* Ring traces → gnomon rises → pip blooms. Sub-second, once per auth visit.  */
+/* Reduced-motion: elements visible immediately (static, no dash tricks).     */
+@media (prefers-reduced-motion: no-preference) {
+  .auth-mark-ring {
+    stroke-dasharray: 251.33;
+    stroke-dashoffset: 251.33;
+    animation: meridian-ring 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+  .auth-mark-gnomon {
+    stroke-dasharray: 81.6;
+    stroke-dashoffset: 81.6;
+    animation: meridian-gnomon 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) 0.30s forwards;
+  }
+  .auth-mark-pip {
+    opacity: 0;
+    transform-origin: 48px 8px;
+    animation: meridian-pip 0.25s ease 0.55s forwards;
+  }
+  @keyframes meridian-ring {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes meridian-gnomon {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes meridian-pip {
+    from { opacity: 0; transform: scale(0); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+}
+
 /* ── EA-26: Auth keyboard flash — dvh → svh ──────────────────────────────── */
 /* 100dvh shrinks when the iOS keyboard opens, causing .auth-shell to
    reflow and the layout to jump. 100svh is the small/static viewport

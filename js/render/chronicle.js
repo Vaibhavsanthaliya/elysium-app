@@ -3,6 +3,7 @@ import { formatTime12, getPeriodKey } from '../utils.js';
 import { getChronicleNote, upsertChronicleNote } from '../domains/chronicle.js';
 import { getSleepNoteEntries } from '../domains/sleep.js';
 import { getMindReflectionEntries } from '../domains/mind.js';
+import { CHRONICLE_PROMPTS } from '../constants.js';
 
 const CHRONICLE_AUTOSAVE_DELAY = 800;
 const DRIFT_MAX = 12;
@@ -299,6 +300,69 @@ function renderDrift(el, excludeDateStr) {
   el.innerHTML = html;
 }
 
+function getChroniclePromptEyebrow() {
+  const map = {
+    'night': 'TONIGHT', 'first-light': 'THIS MORNING',
+    'morning': 'THIS MORNING', 'midday': 'TODAY',
+    'afternoon': 'THIS AFTERNOON', 'golden-hour': 'THIS EVENING',
+    'dusk': 'TONIGHT',
+  };
+  return map[getPeriodKey()] ?? 'TONIGHT';
+}
+
+function getChroniclePrompt() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((now - startOfYear) / 86400000);
+  return CHRONICLE_PROMPTS[dayOfYear % CHRONICLE_PROMPTS.length];
+}
+
+function renderPromptCard() {
+  const eyebrowEl = document.getElementById('chronicle-prompt-eyebrow');
+  const textEl = document.getElementById('chronicle-prompt-text');
+  if (eyebrowEl) eyebrowEl.textContent = getChroniclePromptEyebrow();
+  if (textEl) textEl.textContent = getChroniclePrompt();
+}
+
+function renderContinuityFragment() {
+  const el = document.getElementById('chronicle-continuity');
+  if (!el) return;
+  const notes = state.chronicle?.notes || {};
+  const todayNote = notes[todayStr];
+
+  if (todayNote && typeof todayNote.body === 'string' && todayNote.body.trim()) {
+    el.hidden = true;
+    return;
+  }
+
+  const hasAnyNote = Object.values(notes).some(
+    n => n && typeof n.body === 'string' && n.body.trim()
+  );
+  if (!hasAnyNote && state.startDate === todayStr) {
+    el.textContent = 'This is where it begins.';
+    el.hidden = false;
+    return;
+  }
+
+  const yesterdayNote = notes[ymdOffset(todayStr, -1)];
+  if (yesterdayNote && typeof yesterdayNote.body === 'string' && yesterdayNote.body.trim()) {
+    el.textContent = 'The night before is still here.';
+    el.hidden = false;
+    return;
+  }
+
+  const past = Object.keys(notes)
+    .filter(d => d < todayStr && notes[d]?.body?.trim())
+    .sort((a, b) => b.localeCompare(a));
+  if (past.length > 0 && daysApart(todayStr, past[0]) >= 7) {
+    el.textContent = 'The chronicle receives what comes.';
+    el.hidden = false;
+    return;
+  }
+
+  el.hidden = true;
+}
+
 export function renderChronicle() {
   const note = getChronicleNote(todayStr);
   const textarea = document.getElementById('chronicle-textarea');
@@ -325,6 +389,8 @@ export function renderChronicle() {
 
   const wellDateStr = renderWell();
   if (driftEl) renderDrift(driftEl, wellDateStr);
+  renderPromptCard();
+  renderContinuityFragment();
 }
 
 export function saveChronicleNote(fromBlur = false) {

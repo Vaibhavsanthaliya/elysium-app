@@ -11,6 +11,7 @@
   <meta name="apple-mobile-web-app-title" content="Elysium" />
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="icon" type="image/png" href="icon-192.png" />
   <title>Elysium</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,8 +35,8 @@
     <div class="boot-mark" aria-hidden="true">
       <svg viewBox="0 0 96 96" width="36" height="36" fill="none" stroke-linecap="round">
         <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="1.6" />
-        <line x1="6.8" y1="32.56" x2="89.2" y2="32.56" stroke="currentColor" stroke-width="1.6" />
-        <circle cx="48" cy="32.56" r="2.1" fill="currentColor" stroke="none" />
+        <line x1="48" y1="7.2" x2="48" y2="88.8" stroke="currentColor" stroke-width="1.6" />
+        <circle cx="48" cy="8" r="2.1" fill="currentColor" stroke="none" />
       </svg>
     </div>
     <p class="boot-wordmark">Elys<span class="ital">ium</span></p>
@@ -49,9 +50,9 @@
       <header class="auth-identity">
         <div class="auth-medallion" aria-hidden="true">
           <svg class="auth-mark" viewBox="0 0 96 96" width="44" height="44" fill="none" stroke-linecap="round">
-            <circle cx="48" cy="48" r="40" stroke="currentColor" stroke-width="1.6" />
-            <line x1="6.8" y1="32.56" x2="89.2" y2="32.56" stroke="currentColor" stroke-width="1.6" />
-            <circle cx="48" cy="32.56" r="2.1" fill="currentColor" stroke="none" />
+            <circle class="auth-mark-ring" cx="48" cy="48" r="40" stroke="currentColor" stroke-width="1.6" />
+            <line class="auth-mark-gnomon" x1="48" y1="7.2" x2="48" y2="88.8" stroke="currentColor" stroke-width="1.6" />
+            <circle class="auth-mark-pip" cx="48" cy="8" r="2.1" fill="currentColor" stroke="none" />
           </svg>
         </div>
         <p class="auth-eyebrow">Obsidian Temple</p>
@@ -456,11 +457,17 @@
 
         <!-- Today: writing surface (secondary motion) -->
         <div class="chronicle-today">
+          <div class="chronicle-prompt" id="chronicle-prompt">
+            <div class="chronicle-prompt-eyebrow" id="chronicle-prompt-eyebrow">TONIGHT</div>
+            <div class="chronicle-prompt-text" id="chronicle-prompt-text"></div>
+          </div>
+
           <div class="chronicle-card">
             <textarea class="chronicle-textarea" id="chronicle-textarea" rows="2" placeholder="A line, if one came."></textarea>
           </div>
 
           <p class="chronicle-status" id="chronicle-status" hidden></p>
+          <p class="chronicle-continuity" id="chronicle-continuity" hidden></p>
         </div>
 
         <div class="footer-spacer"></div>
@@ -771,6 +778,7 @@
         <div class="mind-eyebrow">ATHENA</div>
         <h3 class="mind-title">Hold one <em>thing</em></h3>
         <p class="mind-sub">One held block. Nothing tracked.</p>
+        <p class="mind-ritual" id="mind-ritual"></p>
         <div class="mind-dur-row">
           <button class="mind-dur active" data-min="25">25</button>
           <button class="mind-dur" data-min="40">40</button>

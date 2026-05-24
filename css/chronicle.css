@@ -251,3 +251,63 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+/* ── EA-125: Reflective prompt card ─────────────────────────────────────── */
+.chronicle-prompt {
+  margin-bottom: 14px;
+  padding: 13px 16px 14px;
+  border: 1px dashed rgba(160, 122, 74, 0.32);
+  border-radius: 12px;
+  background: rgba(160, 122, 74, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  .chronicle-prompt {
+    border-color: rgba(201, 165, 107, 0.24);
+    background: rgba(201, 165, 107, 0.04);
+  }
+}
+
+.chronicle-prompt-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  font-weight: 400;
+  margin-bottom: 7px;
+  opacity: 0.78;
+}
+
+.chronicle-prompt-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--oracle-text);
+  opacity: 0.82;
+}
+
+/* ── EA-125: Continuity fragment ─────────────────────────────────────────── */
+.chronicle-continuity {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  color: var(--muted-text);
+  opacity: 0.62;
+  margin: 8px 2px 0;
+}
+
+.chronicle-continuity[hidden] {
+  display: none;
+}
+
+/* ── EA-125: Typography refinements ─────────────────────────────────────── */
+.chronicle-textarea {
+  line-height: 1.65;
+}
+
+.chronicle-textarea::placeholder {
+  opacity: 0.5;
+}

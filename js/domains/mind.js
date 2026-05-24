@@ -1,5 +1,6 @@
 import { state, todayStr } from '../state.js';
 import { uid, isYmd, getPeriodKey } from '../utils.js';
+import { MIND_RITUALS } from '../constants.js';
 
 function ensureMindState() {
   if (!state.mind || typeof state.mind !== 'object' || Array.isArray(state.mind)) {
@@ -85,6 +86,17 @@ export function getMindReflectionEntries() {
     period,
     cycleDay,
   }));
+}
+
+function getDayOfYear(date) {
+  const start = new Date(date.getFullYear(), 0, 0);
+  return Math.floor((date - start) / 86400000);
+}
+
+export function getMindRitual() {
+  const now = new Date();
+  const idx = (now.getHours() + getDayOfYear(now) * 24) % MIND_RITUALS.length;
+  return MIND_RITUALS[idx];
 }
 
 export function beginMindSession(durationMinutes) {
