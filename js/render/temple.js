@@ -357,13 +357,13 @@ export function renderTemple() {
   const sleepStateEl = document.getElementById('temple-sleep-state');
   if (sleepStateEl) {
     const todaySleep = getSleepEntry(todayStr);
-    sleepStateEl.textContent = todaySleep ? 'Closed' : '—';
+    sleepStateEl.textContent = todaySleep ? 'Closed' : 'Unclosed';
   }
 
   const mindStateEl = document.getElementById('temple-mind-state');
   if (mindStateEl) {
     const recent = getMostRecentSession();
-    mindStateEl.textContent = recent ? 'Held' : 'Unheld';
+    mindStateEl.textContent = recent ? 'Held' : 'Quiet';
   }
 
   const mindLineEl = document.getElementById('temple-mind-line');
@@ -380,7 +380,7 @@ export function renderTemple() {
 
   const bodyStateEl = document.getElementById('temple-body-state');
   if (bodyStateEl) {
-    bodyStateEl.textContent = hasArrivedToday() ? 'Stood' : '—';
+    bodyStateEl.textContent = hasArrivedToday() ? 'Stood' : 'Unreturned';
   }
 
   const waterStateEl = document.getElementById('temple-water-state');

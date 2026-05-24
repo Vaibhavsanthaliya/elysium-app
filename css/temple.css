@@ -173,15 +173,6 @@
   line-height: 1.2;
 }
 
-#pane-temple .domain-meta {
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted-text);
-}
-
 /* ─── Domain card list ───────────────────────────────────────────────────── */
 #pane-temple .temple-domain-list {
   display: flex;
@@ -462,14 +453,6 @@
   padding-bottom: calc(var(--safe-bottom) + 4px);
 }
 
-/* ── EA-38: Dormant domain framing ─────────────────────────────────────── */
-#pane-temple .temple-dormant-head {
-  margin: 8px 2px 4px;
-  padding-top: 12px;
-  border-top: 1px solid var(--separator-warm);
-}
-
-
 /* ── EA-84: Temple daily opening line ───────────────────────────────────── */
 #pane-temple .temple-greeting {
   margin-bottom: var(--space-md);
@@ -558,13 +541,17 @@
 
 /* ── EA-109: Body domain modal — Atlas's Standing ────────────────────────── */
 #body-modal .body-modal-sheet {
-  background-image: radial-gradient(ellipse at 50% 120%, rgba(160, 122, 74, 0.10), transparent 60%);
   background-color: var(--bg-grouped);
+  background-image:
+    radial-gradient(ellipse at 50% 112%, rgba(104, 78, 50, 0.16), transparent 62%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 42%);
 }
 
 @media (prefers-color-scheme: dark) {
   #body-modal .body-modal-sheet {
-    background-image: radial-gradient(ellipse at 50% 120%, rgba(201, 165, 107, 0.08), transparent 60%);
+    background-image:
+      radial-gradient(ellipse at 50% 112%, rgba(201, 165, 107, 0.11), transparent 62%),
+      linear-gradient(180deg, rgba(236, 230, 217, 0.035), transparent 42%);
   }
 }
 
@@ -573,14 +560,16 @@
   font-size: 9.5px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+  text-align: center;
   color: var(--bronze);
-  margin: 20px 20px 4px;
+  margin: 22px 20px 4px;
 }
 
 #body-modal .body-title {
   font-family: var(--font-sans);
   font-size: 22px;
   font-weight: 400;
+  text-align: center;
   margin: 0 20px 6px;
   color: var(--oracle-text);
 }
@@ -593,41 +582,78 @@
 #body-modal .body-sub {
   font-family: var(--font-sans);
   font-size: 13px;
+  text-align: center;
   color: var(--muted-text);
   margin: 0 20px 24px;
 }
 
 #body-modal .body-horizon-wrap {
   position: relative;
-  height: 16px;
+  height: 112px;
   margin: 0 20px 28px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(104, 78, 50, 0.14), transparent 70%),
+    linear-gradient(180deg, transparent 0%, rgba(104, 78, 50, 0.06) 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  #body-modal .body-horizon-wrap {
+    background:
+      radial-gradient(ellipse at 50% 100%, rgba(201, 165, 107, 0.11), transparent 70%),
+      linear-gradient(180deg, transparent 0%, rgba(201, 165, 107, 0.045) 100%);
+  }
+}
+
+#body-modal .body-horizon-wrap::before {
+  content: "";
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  top: 58%;
+  bottom: 12%;
+  z-index: 0;
+  background: linear-gradient(180deg, rgba(160, 122, 74, 0.08), transparent);
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%);
 }
 
 #body-modal .body-horizon {
   position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
+  top: 58%;
+  left: 8%;
+  right: 8%;
   height: 1px;
-  background: var(--separator-strong);
+  z-index: 1;
+  background: linear-gradient(90deg, transparent, var(--separator-strong), transparent);
   transform: translateY(-50%);
 }
 
 #body-modal .body-marks {
   position: absolute;
   inset: 0;
+  z-index: 2;
 }
 
 #body-modal .body-arrival-mark {
   position: absolute;
-  top: 50%;
+  top: 58%;
   width: 4px;
   height: 4px;
   background: var(--bronze);
   opacity: 0.60;
-  border-radius: 1px;
+  border-radius: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  z-index: 2;
+}
+
+#body-modal .body-arrival-mark.is-linger {
+  width: 3px;
+  height: 3px;
+  opacity: 0.16;
+  z-index: 1;
 }
 
 #body-modal .btn-primary {

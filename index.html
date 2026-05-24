@@ -169,7 +169,6 @@
         <div class="temple-domains">
           <div class="temple-domain-head">
             <span class="temple-domain-label">The other paths</span>
-            <span class="domain-meta">06 DOMAINS</span>
           </div>
           <div class="temple-domain-list">
 
@@ -210,7 +209,7 @@
                 <span class="temple-domain-sub">witness</span>
                 <span class="temple-domain-archetype">Apollo</span>
               </span>
-              <span class="temple-domain-state" id="temple-light-state">—</span>
+              <span class="temple-domain-state" id="temple-light-state">Unseen</span>
             </button>
 
             <!-- Sleep — real bedtime state -->
@@ -225,7 +224,7 @@
                 <span class="temple-domain-sub">close</span>
                 <span class="temple-domain-archetype">Hypnos</span>
               </span>
-              <span class="temple-domain-state" id="temple-sleep-state">Quiet</span>
+              <span class="temple-domain-state" id="temple-sleep-state">Unclosed</span>
             </button>
 
             <!-- Mind — active -->
@@ -242,11 +241,8 @@
                 <span class="temple-domain-archetype">Athena</span>
                 <span class="temple-mind-line" id="temple-mind-line" hidden></span>
               </span>
-              <span class="temple-domain-state" id="temple-mind-state">—</span>
+              <span class="temple-domain-state" id="temple-mind-state">Quiet</span>
             </button>
-
-            <!-- Dormant domain separator -->
-            <div class="temple-dormant-head" aria-hidden="true"></div>
 
             <!-- Body -->
             <button class="temple-domain-card" id="temple-goto-body">
@@ -261,7 +257,7 @@
                 <span class="temple-domain-sub">arrive</span>
                 <span class="temple-domain-archetype">Atlas</span>
               </span>
-              <span class="temple-domain-state" id="temple-body-state">—</span>
+              <span class="temple-domain-state" id="temple-body-state">Unreturned</span>
             </button>
 
             <!-- Water -->
@@ -329,10 +325,6 @@
         <div class="care-cycle-strip">
           <div class="care-cycle-head">Cycle of three nights</div>
           <div class="care-cycle-three" id="care-cycle-strip"></div>
-          <div class="care-rhythm">
-            <div class="care-rhythm-bars" id="care-rhythm-bars"></div>
-            <div class="care-rhythm-l">3-night rhythm</div>
-          </div>
         </div>
 
         <!-- Night section -->

@@ -190,26 +190,4 @@ export function renderTodayCycle() {
       `<div class="care-cycle-sm">${label}</div>` +
       `</div>`;
   }).join('');
-  renderCareRhythm(cycleDay);
-}
-
-function renderCareRhythm(cycleDay) {
-  const barsEl = document.getElementById('care-rhythm-bars');
-  if (!barsEl) return;
-  barsEl.innerHTML = '';
-  // 21 bars: positions 0–13 = past turns, 14 = tonight, 15–20 = upcoming turns.
-  // Cycle type derived from state.cycleDay only — no loggedDays, no checks.
-  for (let i = 0; i < 21; i++) {
-    const offset = i - 14;
-    const pos = ((cycleDay + offset) % 3 + 3) % 3;
-    const isRest = pos === 2;
-    const isPast = offset < 0;
-    const isNow = offset === 0;
-    const bar = document.createElement('div');
-    bar.className = 'care-bar' +
-      (isRest ? ' rest' : ' on') +
-      (isPast ? ' past' : '') +
-      (isNow ? ' now' : '');
-    barsEl.appendChild(bar);
-  }
 }

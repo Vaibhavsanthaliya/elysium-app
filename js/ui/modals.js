@@ -297,16 +297,24 @@ function renderBodyHorizonMarks() {
   const marksEl = document.getElementById('body-marks');
   if (!marksEl) return;
   marksEl.querySelectorAll('.body-arrival-mark').forEach(el => el.remove());
-  const arrivals = getBodyArrivals(todayStr);
-  for (const a of arrivals) {
-    const [wh, wm] = a.at.split(':').map(Number);
-    if (!Number.isFinite(wh) || !Number.isFinite(wm)) continue;
+
+  const yd = new Date();
+  yd.setDate(yd.getDate() - 1);
+  const yesterdayStr = ymd(yd);
+
+  const appendMark = (arrival, linger = false) => {
+    if (!arrival || typeof arrival.at !== 'string') return;
+    const [wh, wm] = arrival.at.split(':').map(Number);
+    if (!Number.isFinite(wh) || !Number.isFinite(wm)) return;
     const pct = ((wh * 60 + wm) / 1440 * 100).toFixed(1);
     const mark = document.createElement('div');
-    mark.className = 'body-arrival-mark';
+    mark.className = linger ? 'body-arrival-mark is-linger' : 'body-arrival-mark';
     mark.style.left = `${pct}%`;
     marksEl.appendChild(mark);
-  }
+  };
+
+  getBodyArrivals(yesterdayStr).forEach(arrival => appendMark(arrival, true));
+  getBodyArrivals(todayStr).forEach(arrival => appendMark(arrival, false));
 }
 
 export function openBodyModal() {
