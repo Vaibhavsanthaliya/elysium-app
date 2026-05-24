@@ -1,6 +1,6 @@
 # Elysium — Full EA Ticket Log
 
-Full implementation notes for every completed ticket. Summary table lives in `CLAUDE.md` section 8.
+Full implementation notes for every completed ticket. `CLAUDE.md` section 8 shows a summary of recent tickets only (EA-95+); the complete history is here.
 
 ---
 
