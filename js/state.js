@@ -238,8 +238,8 @@ export function migrateState(s) {
     const clean = arr
       .filter(e => {
         if (!e || typeof e !== 'object' || Array.isArray(e)) return false;
-        const keys = Object.keys(e);
-        if (keys.length !== 1 || keys[0] !== 'at') return false;
+        if (Object.keys(e).some(k => k !== 'at' && k !== 'period')) return false;
+        if (e.period !== undefined && (typeof e.period !== 'string' || !_VALID_PERIODS.has(e.period))) return false;
         if (!isValidReminderTime(e.at)) return false;
         if (seen.has(e.at)) return false;
         seen.add(e.at);

@@ -670,17 +670,6 @@
   padding-bottom: calc(var(--safe-bottom) + 4px);
 }
 
-#body-modal .body-rhythm {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--muted-text);
-  opacity: 0.62;
-  margin: -10px 20px 18px;
-}
-
 /* ── EA-130: Body somatic invitations ──────────────────────────────────────── */
 #body-modal .body-somatic-list {
   display: flex;
@@ -829,17 +818,6 @@
   line-height: 1.55;
   color: var(--muted-text);
   margin: 0 20px 20px;
-}
-
-#water-modal .water-rhythm {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--muted-text);
-  opacity: 0.62;
-  margin: -4px 20px 18px;
 }
 
 #water-modal .btn-primary {

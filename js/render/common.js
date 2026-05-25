@@ -1,4 +1,4 @@
-import { CYCLE_NAMES } from '../constants.js';
+import { CYCLE_NAMES, CARE_PROTOCOL_NOTES } from '../constants.js';
 import { state, today } from '../state.js';
 import { getLastChronicleNoteForCycleDay } from '../domains/chronicle.js';
 import { getMorningTasks, getNightTasks, getTodayChecks } from '../domains/care.js';
@@ -177,6 +177,8 @@ export function renderTodayCycle() {
   renderMorningProtocolControl();
   renderNightProtocolControl(turnState);
   renderCareTurnMemory(cycleDay);
+  const noteEl = document.getElementById('care-protocol-note');
+  if (noteEl) noteEl.textContent = CARE_PROTOCOL_NOTES[cycleDay] || '';
   const strip = document.getElementById('care-cycle-strip');
   if (!strip) return;
   strip.innerHTML = CYCLE_NAMES.map((name, i) => {

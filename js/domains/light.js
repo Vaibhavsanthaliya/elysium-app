@@ -1,4 +1,5 @@
 import { state } from '../state.js';
+import { getDayOfYear } from '../utils.js';
 import { LIGHT_OPENING_INVITATIONS } from '../constants.js';
 
 const LIGHT_PERIOD_LABELS = [
@@ -26,9 +27,7 @@ export function getLastWitness(dateStr) {
 
 export function getLightOpeningInvitation() {
   const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 0);
-  const dayOfYear = Math.floor((now - start) / 86400000);
-  return LIGHT_OPENING_INVITATIONS[dayOfYear % LIGHT_OPENING_INVITATIONS.length];
+  return LIGHT_OPENING_INVITATIONS[getDayOfYear(now) % LIGHT_OPENING_INVITATIONS.length];
 }
 
 export function witnessLight(dateStr) {

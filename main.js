@@ -33,7 +33,6 @@ import {
   saveSleepModal,
   registerMindModal,
   registerConfirmModal,
-  openMindModalIfActive,
   openBodyModal,
   registerBodyModal,
   openWaterModal,
@@ -362,7 +361,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Mind domain modal ---
   registerMindModal();
   registerConfirmModal();
-  openMindModalIfActive();
 
   // --- Body domain modal ---
   registerBodyModal();

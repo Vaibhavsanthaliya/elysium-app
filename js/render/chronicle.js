@@ -1,5 +1,5 @@
 import { state, todayStr, saveState } from '../state.js';
-import { formatTime12, getPeriodKey } from '../utils.js';
+import { formatTime12, getPeriodKey, ymd } from '../utils.js';
 import {
   getChronicleNote,
   getResurfacedChronicleNote,
@@ -56,7 +56,7 @@ function ymdOffset(baseStr, dayOffset) {
   const [y, m, d] = baseStr.split('-').map(Number);
   const dt = new Date(y, m - 1, d);
   dt.setDate(dt.getDate() + dayOffset);
-  return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+  return ymd(dt);
 }
 
 function daysApart(laterStr, earlierStr) {
@@ -174,7 +174,7 @@ function getWellEntry() {
 
   const t = new Date();
   const anchor = new Date(t.getFullYear() - 1, t.getMonth(), t.getDate());
-  const anchorStr = `${anchor.getFullYear()}-${String(anchor.getMonth() + 1).padStart(2, '0')}-${String(anchor.getDate()).padStart(2, '0')}`;
+  const anchorStr = ymd(anchor);
 
   const exact = notes[anchorStr];
   if (isLivingNote(exact) && anchorStr !== todayStr) {
@@ -336,10 +336,17 @@ function getChroniclePromptEyebrow() {
 }
 
 function getChroniclePrompt() {
+  const periodKey = getPeriodKey();
+  const poolKey =
+    (periodKey === 'first-light' || periodKey === 'morning') ? 'morning' :
+    (periodKey === 'midday' || periodKey === 'afternoon') ? 'midday' :
+    (periodKey === 'golden-hour' || periodKey === 'dusk') ? 'evening' :
+    periodKey === 'night' ? 'night' : 'fallback';
+  const pool = CHRONICLE_PROMPTS[poolKey] ?? CHRONICLE_PROMPTS.fallback;
   const now = new Date();
   const startOfYear = new Date(now.getFullYear(), 0, 0);
   const dayOfYear = Math.floor((now - startOfYear) / 86400000);
-  return CHRONICLE_PROMPTS[dayOfYear % CHRONICLE_PROMPTS.length];
+  return pool[dayOfYear % pool.length];
 }
 
 function renderPromptCard() {

@@ -46,6 +46,11 @@ export function formatTime12(t24) {
   return `${h12}:${String(m).padStart(2, '0')} ${period}`;
 }
 
+export function getDayOfYear(date) {
+  const start = new Date(date.getFullYear(), 0, 0);
+  return Math.floor((date - start) / 86400000);
+}
+
 export function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, c => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',

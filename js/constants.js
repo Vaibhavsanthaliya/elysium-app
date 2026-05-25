@@ -154,6 +154,12 @@ export const TASK_INFO = {
   },
 };
 
+export const CARE_PROTOCOL_NOTES = {
+  0: 'Niacinamide controls oil and fades marks. Pea-sized, pressed in. Moisturize after.',
+  1: 'Salicylic acid exfoliates inside pores. T-zone or affected areas only — not all over. Skip if skin feels dry or irritated.',
+  2: 'Rest night — no active. Skin recovers from the week\'s treatment. A little more moisturizer is fine.',
+};
+
 export const PHOTO_DB_NAME = 'skin-photos-v1';
 export const PHOTO_STORE   = 'photos';
 
@@ -265,33 +271,52 @@ export const LIGHT_OPENING_INVITATIONS = [
   'Notice what arrived before you did.',
 ];
 
-export const CHRONICLE_PROMPTS = [
-  'What today asked of you.',
-  'What remained unresolved.',
-  'Where your attention stayed.',
-  'What softened today.',
-  'What the day left behind.',
-  'What you kept returning to.',
-  'What you noticed without meaning to.',
-  'What the morning held.',
-  'Where you spent the most of yourself.',
-  'What arrived that you did not expect.',
-  'What the quiet said.',
-  'What felt unfinished.',
-  'What you set down today.',
-  'What was harder than it needed to be.',
-  'What you carried the whole day.',
-  'What passed without being named.',
-  'Where you found yourself at the end of it.',
-  'What returned to you more than once.',
-  'What you almost said.',
-  'What the body knew before the mind did.',
-  'What you did not have words for earlier.',
-  'What the afternoon felt like.',
-  'What held your weight today.',
-  'What stayed with you from last night.',
-  'What felt true by the end of the day.',
-  'What remained after everything else.',
-  'What needed no explanation.',
-  'What the silence held.',
-];
+export const CHRONICLE_PROMPTS = {
+  morning: [
+    'What arrived with you this morning.',
+    'What the morning held before it was named.',
+    'What stayed with you from last night.',
+    'What the day is asking, quietly.',
+    'Where attention wants to settle first.',
+    'What you are carrying into the day.',
+    'What the body knew before the day began.',
+  ],
+  midday: [
+    'What the day has been holding.',
+    'Where attention has scattered.',
+    'What you kept returning to.',
+    'What needs to be set down before continuing.',
+    'What the middle of the day carried.',
+    'Where the weight settled.',
+    'What arrived that you did not expect.',
+  ],
+  evening: [
+    'What remained after the noise.',
+    'What softened as evening arrived.',
+    'What the day left behind.',
+    'What felt unfinished.',
+    'Where you found yourself at the end of it.',
+    'What you did not have words for earlier.',
+    'What held your weight today.',
+    'What felt true by the end of the day.',
+  ],
+  night: [
+    'What can be left here tonight.',
+    'What does not need to follow you into sleep.',
+    'What is still asking to be witnessed.',
+    'What remained unresolved.',
+    'What you set down today.',
+    'What passed without being named.',
+    'What the silence held.',
+    'What remained after everything else.',
+  ],
+  fallback: [
+    'What today asked of you.',
+    'What you noticed without meaning to.',
+    'What needed no explanation.',
+    'What the quiet said.',
+    'Where your attention stayed.',
+    'What was harder than it needed to be.',
+    'What you carried without knowing it.',
+  ],
+};

@@ -202,6 +202,48 @@ What follows is binding.
 19.5 — A new domain may not introduce a new top-level continuity surface (history, archive, log). It must thread its continuity through the existing primitives: Temple greeting, Temple trace, Chronicle Well rotation, and its own domain-specific atmospheric organ.
 19.6 — A new domain that cannot meet these constraints is not ready to be built — even if the product feels incomplete without it.
 
+### §19A · The Care Practical Exception
+
+19A.1 — Care is Elysium's practical anchor. It predates the app and defines the app's reason for existing. Unlike the atmospheric ritual domains, Care involves active skincare ingredients — niacinamide, salicylic acid — governed by a 3-day ingredient protocol. That protocol has practical continuity requirements that atmospheric design alone cannot satisfy. The cycle position depends on whether last night's care was kept; the user deserves to know this.
+
+19A.2 — The Care Practical Exception permits, **only for Care**, limited practical completion history that would otherwise be forbidden under §9.6 and §20.3. Specifically allowed for Care:
+- (a) Daily kept/not-kept status for skincare nights, stored in `loggedDays`
+- (b) Per-day partial completion state derived from `state.checks`
+- (c) A calendar view of Care history — showing kept, partial, and quiet nights
+- (d) Constellation lines connecting adjacent kept nights — aesthetic geometry, no labels, no density scores
+- (e) The 3-day cycle position display: current cycle day, tonight's protocol label ("Night I · Niacinamide", "Night II · Salicylic", "Rest night"), and the cycle memory that derives it
+- (f) A per-day record surface showing: date, cycle protocol for that night, and an optional chronicle excerpt — read-only, non-browsable, reached by tapping a calendar cell
+- (g) A "correct record" facility allowing a user to retroactively mark or clear a night as kept — because the app cannot observe real-world behavior, and cycle accuracy serves a practical skincare purpose
+- (h) A passive milestone stage label ("foundation", "acne control", "marks and texture", "maintenance") — a qualitative life-stage phrase derived from days elapsed, not a score, not a percentage, not a daily-changing indicator
+
+19A.3 — The rationale for each permitted element: the calendar and `loggedDays` history exist so users can verify cycle position and identify gaps before applying active ingredients — this is practical safety, not behavioral analytics. The "correct record" facility preserves cycle accuracy when the app missed a real-world action. The constellation lines are aesthetic; they carry no information content beyond the presence of nearby kept nights. The stage label is qualitative and tracks months-long life stages, not daily performance.
+
+19A.4 — **The following remain forbidden, even for Care:**
+- Streak counts, streak labels, or streak-emphasizing copy of any kind
+- Percentages, ratios, or adherence scores ("4 of 7 nights", "80% kept")
+- Cumulative day counts displayed to the user ("142 days logged")
+- Weekly or monthly summaries or recaps
+- Comparative phrasing ("more nights than last week", "your best run")
+- Pattern observations about Care behavior ("you tend to skip Sundays")
+- Achievement badges, milestone celebrations, or positive-reinforcement copy beyond the passive stage label
+- Any expansion of the Care completion grid to include non-Care data
+
+19A.5 — **This exception does not extend to any other domain.** The following are explicitly excluded from Care Practical Exception coverage:
+- **Water** — holdings tracked internally for boolean presence only; no calendar, no completion grid, no held-count display
+- **Body** — arrivals tracked internally for boolean presence only; no calendar, no completion grid, no arrival-count display
+- **Mind** — arrivals and reflections tracked for atmospheric continuity; no session analytics, no calendar, no reflection-frequency display
+- **Sleep** — closures tracked for morning reciprocity and Well resurfacing; no calendar, no closure-rate display, no consistency analytics
+- **Light** — witnesses tracked per-day for horizon marks; no calendar, no witness grid, no frequency display
+- **Chronicle** — notes stored indefinitely; no writing-frequency calendar, no days-written grid, no word counts
+- **Temple** — atmosphere and domain state labels only; no aggregate status grid, no cross-domain completion dashboard
+- **Day Thread** — qualitative presence traces only; no completion list, no ritual grid
+- **Closing Summary** — qualitative open-items list only; no completion rates, no performance framing
+- **Recent Presence Atmosphere** — gradient lift and daily-line variants only; no week-view calendar, no presence grid
+
+19A.6 — This exception is narrow by doctrine. Future proposals that appeal to §19A to authorize new Care tracking surfaces bear the burden of proof: they must demonstrate a skincare-specific practical need that cannot be met without a completion history surface. Habit formation, engagement, or retention goals are not sufficient justification. When in doubt, the exception does not extend.
+
+19A.7 — If the Progress/Stars calendar ever begins surfacing non-Care data — Water presence, Body arrivals, Mind sessions, Sleep closures, Light witnesses — the exception has been violated regardless of how the feature is framed. The calendar grid and `loggedDays` mechanism are Care-only infrastructure.
+
 ---
 
 ## Article V — Prohibitions

@@ -1,12 +1,12 @@
 import { state, todayStr } from '../state.js';
-import { dayNumber, isYmd } from '../utils.js';
+import { dayNumber, isYmd, ymd, getDayOfYear } from '../utils.js';
 import { CYCLE_NAMES } from '../constants.js';
 import { getTodayChecks, getNightTasks, getMorningTasks } from '../domains/care.js';
 import { getLastWitness } from '../domains/light.js';
 import { getSleepEntry } from '../domains/sleep.js';
 import { getMostRecentSession, getMostRecentReflectionSession, hasMindArrival } from '../domains/mind.js';
-import { hasArrivedToday, getBodyArrivalCount } from '../domains/body.js';
-import { hasHeldToday, getWaterHoldCount } from '../domains/water.js';
+import { hasArrivedToday } from '../domains/body.js';
+import { hasHeldToday } from '../domains/water.js';
 
 // Time-of-day period buckets — used to set data-period on #pane-temple for ambient CSS shift.
 const TEMPLE_PERIOD_BUCKETS = [
@@ -37,6 +37,17 @@ const TEMPLE_WARMTH_MAX_ALPHA_LIFT = 0.0240;
 const TEMPLE_WARMTH_FLOOR_BASE = 0.012;
 const TEMPLE_WARMTH_FLOOR_SCALE = 80;
 const TEMPLE_WARMTH_FLOOR_CAP = 0.10;
+
+// ── EA-142: Recent presence atmosphere ───────────────────────────────────────
+const TEMPLE_RECENT_BOOST_MAX = 0.0100;
+const TEMPLE_RECENT_PRESENCE_THRESHOLD = 3;
+
+const RECENT_PRESENCE_LINES = [
+  'The room has been kept.',
+  'Something has remained.',
+  'The room has not gone cold.',
+  'Traces remain.',
+];
 
 // ── EA-90: Transient domain trace ────────────────────────────────────────────
 let _pendingTrace = null;
@@ -216,6 +227,13 @@ function collectTemplePresenceDays(todayDayNum) {
   return Array.from(days).sort((a, b) => a - b);
 }
 
+function countRecentPresenceDays() {
+  const todayDayNum = dayNumber(todayStr);
+  if (todayDayNum === null) return 0;
+  const presenceDays = collectTemplePresenceDays(todayDayNum);
+  return presenceDays.filter(d => d > todayDayNum - 7 && d < todayDayNum).length;
+}
+
 function softenTempleWarmth(value, floor, absentDays) {
   if (absentDays <= 0 || value <= floor) return value;
   return floor + (value - floor) * Math.pow(TEMPLE_WARMTH_DAILY_DECAY, absentDays);
@@ -253,13 +271,14 @@ function formatTempleAlpha(value) {
 function getTempleGradientAlpha(periodKey) {
   const baseAlpha = TEMPLE_PERIOD_ALPHA[periodKey] ?? 0.10;
   const lift = deriveTempleWarmthCoefficient() * TEMPLE_WARMTH_MAX_ALPHA_LIFT;
-  return baseAlpha + lift;
+  const recentLift = (countRecentPresenceDays() / 7) * TEMPLE_RECENT_BOOST_MAX;
+  return baseAlpha + lift + recentLift;
 }
 
 function ymdFromOffset(daysBack) {
   const d = new Date();
   d.setDate(d.getDate() - daysBack);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  return ymd(d);
 }
 
 function hasSignalOn(dateStr) {
@@ -379,6 +398,11 @@ function getDailyLine(periodKey) {
 
   if (getLastWitness(todayStr)) return 'Light was seen.';
 
+  if (countRecentPresenceDays() >= TEMPLE_RECENT_PRESENCE_THRESHOLD) {
+    const now = new Date();
+    return RECENT_PRESENCE_LINES[getDayOfYear(now) % RECENT_PRESENCE_LINES.length];
+  }
+
   if (isQuietStretch() && hasAnyHistory()) return 'The room has waited.';
 
   return TEMPLE_PERIOD_ORIENTATION[periodKey] ?? '';
@@ -395,15 +419,13 @@ function deriveTodayTraces() {
     traces.push('Morning care kept.');
   }
 
-  const waterCount = getWaterHoldCount();
-  if (waterCount === 1)      traces.push('Water held.');
-  else if (waterCount === 2) traces.push('Water held twice.');
-  else if (waterCount >= 3)  traces.push('Water held three times.');
+  if (hasHeldToday()) {
+    traces.push('Water was held.');
+  }
 
-  const bodyCount = getBodyArrivalCount();
-  if (bodyCount === 1)      traces.push('Body returned.');
-  else if (bodyCount === 2) traces.push('Body returned twice.');
-  else if (bodyCount >= 3)  traces.push('Body returned three times.');
+  if (hasArrivedToday()) {
+    traces.push('Body returned.');
+  }
 
   const hasMind = hasMindArrival(todayStr) || getMostRecentSession()?.date === todayStr;
   if (hasMind) {

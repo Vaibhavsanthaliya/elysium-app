@@ -1,5 +1,5 @@
 import { state, todayStr } from '../state.js';
-import { isValidReminderTime, isYmd, getPeriodKey } from '../utils.js';
+import { isValidReminderTime, isYmd, getPeriodKey, getDayOfYear } from '../utils.js';
 import { SLEEP_CLOSURE_INVITATIONS } from '../constants.js';
 
 function ensureSleepState() {
@@ -39,11 +39,6 @@ export function getSleepNoteEntries() {
     out.push({ dateStr, body, period: entry.period });
   }
   return out;
-}
-
-function getDayOfYear(date) {
-  const start = new Date(date.getFullYear(), 0, 0);
-  return Math.floor((date - start) / 86400000);
 }
 
 export function getSleepClosureInvitations(date = new Date()) {

@@ -13,8 +13,8 @@ import {
   saveSleepClosure,
 } from '../domains/sleep.js';
 import { arriveMind, saveMindReflection, getMindReflectionEntries } from '../domains/mind.js';
-import { arriveBody, getBodyArrivalCount, getBodyArrivals, getBodyRitual, getBodySomaticInvitations } from '../domains/body.js';
-import { getWaterHoldCount, getWaterHoldings, holdWater, getWaterRitual, getWaterContactInvitation } from '../domains/water.js';
+import { arriveBody, getBodyArrivals, getBodyRitual, getBodySomaticInvitations } from '../domains/body.js';
+import { getWaterHoldings, holdWater, getWaterRitual, getWaterContactInvitation } from '../domains/water.js';
 import { showToast } from './toast.js';
 import { renderTemple, applyTempleTrace } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
@@ -109,7 +109,7 @@ export function openSleepModal() {
     if (recentEl) {
       const yd = new Date();
       yd.setDate(yd.getDate() - 1);
-      const yesterdayStr = `${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, '0')}-${String(yd.getDate()).padStart(2, '0')}`;
+      const yesterdayStr = ymd(yd);
       const yesterdayEntry = getSleepEntry(yesterdayStr);
       const yesterdayNote = yesterdayEntry && typeof yesterdayEntry.note === 'string' ? yesterdayEntry.note.trim() : '';
       if (yesterdayNote) {
@@ -157,8 +157,7 @@ export function reopenSleepModal() {
 
 function mindThreadDateLabel(dateStr) {
   const now = new Date();
-  const todayYmd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-  if (dateStr === todayYmd) return 'Today';
+  if (dateStr === todayStr) return 'Today';
   const [y, m, d] = dateStr.split('-').map(Number);
   const diff = Math.round((now - new Date(y, m - 1, d)) / 86400000);
   if (diff === 1) return 'Yesterday';
@@ -235,8 +234,6 @@ function closeMindModal() {
     applyTempleTrace('mind');
   }
 }
-
-export function openMindModalIfActive() {}
 
 export function registerMindModal() {
   document.getElementById('temple-goto-mind')?.addEventListener('click', openMindModal);
@@ -319,19 +316,10 @@ function renderBodyHorizonMarks() {
   getBodyArrivals(todayStr).forEach(arrival => appendMark(arrival, false));
 }
 
-function renderBodyRhythmStatus() {
-  const rhythmEl = document.getElementById('body-rhythm');
-  if (!rhythmEl) return;
-  const count = getBodyArrivalCount(todayStr);
-  rhythmEl.textContent = count > 1 ? `Returned ×${count} today` : '';
-  rhythmEl.hidden = count <= 1;
-}
-
 export function openBodyModal() {
   _bodyArrivedThisSession = false;
   renderBodySomaticInvitations();
   renderBodyHorizonMarks();
-  renderBodyRhythmStatus();
   const btn = document.getElementById('body-arrive-btn');
   if (btn) { btn.textContent = 'Returned'; btn.classList.remove('is-still'); }
   const ritualEl = document.getElementById('body-ritual');
@@ -356,7 +344,6 @@ export function registerBodyModal() {
     saveState();
     renderTemple();
     renderBodyHorizonMarks();
-    renderBodyRhythmStatus();
     const btn = document.getElementById('body-arrive-btn');
     if (btn) btn.classList.add('is-still');
     setTimeout(() => {
@@ -390,18 +377,9 @@ function renderWaterSurfaceMarks() {
   getWaterHoldings(todayStr).forEach(entry => appendMark(entry, false));
 }
 
-function renderWaterRhythmStatus() {
-  const rhythmEl = document.getElementById('water-rhythm');
-  if (!rhythmEl) return;
-  const count = getWaterHoldCount(todayStr);
-  rhythmEl.textContent = count > 1 ? `Held ×${count} today` : '';
-  rhythmEl.hidden = count <= 1;
-}
-
 export function openWaterModal() {
   _waterHeldThisSession = false;
   renderWaterSurfaceMarks();
-  renderWaterRhythmStatus();
   const btn = document.getElementById('water-hold-btn');
   if (btn) { btn.textContent = 'Held'; btn.classList.remove('is-still'); }
   const invitationEl = document.getElementById('water-invitation');
@@ -427,7 +405,6 @@ export function registerWaterModal() {
     _waterHeldThisSession = true;
     renderTemple();
     renderWaterSurfaceMarks();
-    renderWaterRhythmStatus();
     const btn = document.getElementById('water-hold-btn');
     if (btn) btn.classList.add('is-still');
     setTimeout(() => {
