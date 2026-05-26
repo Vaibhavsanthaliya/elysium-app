@@ -242,6 +242,16 @@ export const WATER_RITUALS = [
   'Before continuing — notice what is still. The room does not hurry.',
 ];
 
+export const WATER_RESET_STEPS = [
+  ['Hold the water before drinking.', 'Notice its temperature against your hand.', 'Drink without hurrying.'],
+  ['Feel the weight of what you are holding.', 'Let your eyes go soft.', 'Return to the room. Then drink.'],
+  ['Hold the vessel for one breath.', 'Notice how dry or wet your lips feel.', 'Take one slower drink.'],
+  ['Feel the cold or warmth against your hand.', 'Notice something still in the room.', 'Drink, then stay where you are for a moment.'],
+  ['Put both hands around the vessel.', 'Let your shoulders drop.', 'Drink slowly. The rest can wait.'],
+  ['Notice where the cup has been sitting.', 'Hold it. Feel the temperature.', 'Drink one sip at a time.'],
+  ['Pick it up before drinking.', 'Notice the room around you.', 'Take one slow breath. Then drink.'],
+];
+
 export const SLEEP_CLOSURE_INVITATIONS = [
   'Set down one unfinished thing.',
   'Let the room become quieter.',

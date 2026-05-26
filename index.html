@@ -184,7 +184,7 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Chronicle</span>
-                <span class="temple-domain-sub">remember</span>
+                <span class="temple-domain-sub">write what remains</span>
                 <span class="temple-domain-archetype">Mnemosyne</span>
               </span>
               <span class="temple-domain-state" id="temple-chronicle-state">Quiet</span>
@@ -207,7 +207,7 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Light</span>
-                <span class="temple-domain-sub">open</span>
+                <span class="temple-domain-sub">name the morning</span>
                 <span class="temple-domain-archetype">Apollo</span>
               </span>
               <span class="temple-domain-state" id="temple-light-state">Open</span>
@@ -222,7 +222,7 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Sleep</span>
-                <span class="temple-domain-sub">close</span>
+                <span class="temple-domain-sub">park what remains</span>
                 <span class="temple-domain-archetype">Hypnos</span>
               </span>
               <span class="temple-domain-state" id="temple-sleep-state">Open</span>
@@ -238,7 +238,7 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Mind</span>
-                <span class="temple-domain-sub">gather</span>
+                <span class="temple-domain-sub">hold one thread</span>
                 <span class="temple-domain-archetype">Athena</span>
                 <span class="temple-mind-line" id="temple-mind-line" hidden></span>
               </span>
@@ -271,7 +271,7 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Water</span>
-                <span class="temple-domain-sub">notice</span>
+                <span class="temple-domain-sub">hold · breathe · continue</span>
                 <span class="temple-domain-archetype">Hydros</span>
               </span>
               <span class="temple-domain-state" id="temple-water-state">Unstirred</span>
@@ -733,6 +733,7 @@
         <p class="sleep-sub">Nothing has to be solved before the room goes quiet.</p>
         <div class="sleep-invitations" id="sleep-invitations"></div>
         <p class="sleep-recent" id="sleep-recent" hidden></p>
+        <textarea class="sleep-parking" id="sleep-parking" rows="2" placeholder="What can wait until morning."></textarea>
         <div class="sleep-handoff">WHAT REMAINS CAN WAIT</div>
         <button class="btn-primary" id="sleep-save">Let the day end</button>
       </div>
@@ -777,6 +778,12 @@
       <div class="modal-handle"></div>
       <div class="light-modal-eyebrow">LIGHT / OPENING</div>
       <p class="light-invitation" id="light-invitation"></p>
+      <div class="light-tone-chooser" id="light-tone-chooser">
+        <button class="light-tone-btn" data-tone="Soft">Soft</button>
+        <button class="light-tone-btn" data-tone="Clear">Clear</button>
+        <button class="light-tone-btn" data-tone="Steady">Steady</button>
+        <button class="light-tone-btn" data-tone="Guarded">Guarded</button>
+      </div>
       <div class="light-horizon-wrap">
         <div class="light-threshold-line"></div>
         <div class="light-marks" id="light-marks"></div>
@@ -835,14 +842,14 @@
       <div class="modal-handle"></div>
       <div class="body-eyebrow">ATLAS</div>
       <h3 class="body-title"><em>Standing</em></h3>
-      <p class="body-sub">The fact of being here.</p>
-      <div class="body-somatic-list" id="body-somatic-list"></div>
+      <p class="body-step-text" id="body-step-text"></p>
       <p class="body-ritual" id="body-ritual"></p>
       <div class="body-horizon-wrap">
         <div class="body-horizon"></div>
         <div class="body-marks" id="body-marks"></div>
       </div>
-      <button class="btn-primary" id="body-arrive-btn">Returned</button>
+      <button class="btn-primary" id="body-step-continue">Continue</button>
+      <button class="btn-primary" id="body-arrive-btn" hidden>Returned</button>
       <button class="btn-text" id="body-modal-close">Close</button>
     </div>
   </div>
@@ -854,13 +861,14 @@
       <div class="modal-handle"></div>
       <div class="water-eyebrow">HYDROS</div>
       <h3 class="water-title"><em>Held.</em></h3>
-      <p class="water-invitation" id="water-invitation"></p>
+      <p class="water-step-text" id="water-step-text"></p>
       <div class="water-surface-wrap">
         <div class="water-surface-line"></div>
         <div class="water-marks" id="water-marks"></div>
       </div>
       <p class="water-ritual" id="water-ritual"></p>
-      <button class="btn-primary" id="water-hold-btn">Held</button>
+      <button class="btn-primary" id="water-step-continue">Continue</button>
+      <button class="btn-primary" id="water-hold-btn" hidden>Held</button>
       <button class="btn-text" id="water-modal-close">Close</button>
     </div>
   </div>

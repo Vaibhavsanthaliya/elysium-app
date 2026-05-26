@@ -490,6 +490,30 @@ select.field-input {
   opacity: 0.82;
 }
 
+/* ── EA-152: Sleep parking note ──────────────────────────────────────────── */
+#sleep-modal .sleep-parking {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--oracle-text);
+  resize: none;
+  min-height: 42px;
+  box-shadow: none;
+  outline: none;
+}
+
+#sleep-modal .sleep-parking::placeholder {
+  color: var(--muted-text);
+  opacity: 0.45;
+}
+
 /* ── EA-60/65: Mind domain modal ─────────────────────────────────────────── */
 #mind-modal .mind-modal-sheet {
   overflow-y: auto;
@@ -651,6 +675,13 @@ select.field-input {
   cursor: pointer;
   opacity: 0.75;
   min-height: 44px;
+  transition: opacity 0.8s ease;
+}
+
+#mind-modal .mind-end-btn.is-waiting {
+  opacity: 0;
+  pointer-events: none;
+  cursor: default;
 }
 
 /* State C — reflection */

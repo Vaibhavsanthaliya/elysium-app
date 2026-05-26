@@ -440,6 +440,35 @@
   padding-bottom: calc(var(--safe-bottom) + 4px);
 }
 
+/* ── EA-156: Light morning tone chooser ─────────────────────────────────── */
+#light-modal .light-tone-chooser {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 0 20px 24px;
+}
+
+#light-modal .light-tone-btn {
+  flex: 1;
+  padding: 9px 4px;
+  background: transparent;
+  border: 1px solid rgba(201, 165, 107, 0.20);
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--oracle-text);
+  opacity: 0.65;
+  cursor: pointer;
+  transition: opacity 0.15s, border-color 0.15s, background-color 0.15s;
+}
+
+#light-modal .light-tone-btn.is-selected {
+  border-color: rgba(201, 165, 107, 0.55);
+  background-color: rgba(201, 165, 107, 0.07);
+  opacity: 0.90;
+}
+
 /* ── EA-84: Temple daily opening line ───────────────────────────────────── */
 #pane-temple .temple-greeting {
   margin-bottom: var(--space-md);
@@ -566,12 +595,16 @@
   font-style: italic;
 }
 
-#body-modal .body-sub {
-  font-family: var(--font-sans);
-  font-size: 13px;
+#body-modal .body-step-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.55;
   text-align: center;
-  color: var(--muted-text);
-  margin: 0 20px 12px;
+  color: var(--oracle-text);
+  opacity: 0.88;
+  margin: 0 24px 28px;
+  min-height: 54px;
 }
 
 #body-modal .body-ritual {
@@ -670,41 +703,6 @@
   padding-bottom: calc(var(--safe-bottom) + 4px);
 }
 
-/* ── EA-130: Body somatic invitations ──────────────────────────────────────── */
-#body-modal .body-somatic-list {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--separator-warm);
-  margin: 0 0 18px;
-}
-
-#body-modal .body-somatic-item {
-  display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 10px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--separator-warm);
-}
-
-#body-modal .body-somatic-item:last-child {
-  border-bottom: 0;
-}
-
-#body-modal .body-somatic-index {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  color: var(--bronze);
-  opacity: 0.72;
-  padding-top: 3px;
-}
-
-#body-modal .body-somatic-text {
-  font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.4;
-  color: var(--oracle-text);
-}
 
 /* ── EA-110: Water domain modal — Hydros's Holding ───────────────────────── */
 #water-modal .water-modal-sheet {
@@ -746,15 +744,16 @@
   font-style: italic;
 }
 
-#water-modal .water-invitation {
+#water-modal .water-step-text {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.55;
   text-align: center;
   color: var(--oracle-text);
-  opacity: 0.80;
+  opacity: 0.88;
   margin: 0 24px 28px;
+  min-height: 54px;
 }
 
 #water-modal .water-surface-wrap {

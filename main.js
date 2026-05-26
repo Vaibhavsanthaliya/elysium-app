@@ -326,9 +326,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let _lightWitnessedThisSession = false;
+  let _selectedLightTone = null;
+
+  const LIGHT_TONE_CONFIRMATIONS = {
+    Soft: 'A soft morning.',
+    Clear: 'A clear morning.',
+    Steady: 'A steady morning.',
+    Guarded: 'A guarded morning.',
+  };
 
   function openLightModal() {
     _lightWitnessedThisSession = false;
+    _selectedLightTone = null;
+    document.querySelectorAll('#light-tone-chooser .light-tone-btn').forEach(b => b.classList.remove('is-selected'));
     renderLightModal();
     document.getElementById('light-modal').hidden = false;
   }
@@ -344,12 +354,33 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('temple-goto-light').addEventListener('click', openLightModal);
   document.getElementById('light-modal-backdrop').addEventListener('click', closeLightModal);
   document.getElementById('light-modal-close').addEventListener('click', closeLightModal);
+
+  document.getElementById('light-tone-chooser')?.addEventListener('click', e => {
+    const btn = e.target.closest('.light-tone-btn');
+    if (!btn) return;
+    const tone = btn.dataset.tone;
+    if (_selectedLightTone === tone) {
+      _selectedLightTone = null;
+      btn.classList.remove('is-selected');
+    } else {
+      _selectedLightTone = tone;
+      document.querySelectorAll('#light-tone-chooser .light-tone-btn').forEach(b => b.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+    }
+  });
+
   document.getElementById('light-witness-btn').addEventListener('click', () => {
     witnessLight(todayStr);
     _lightWitnessedThisSession = true;
     saveState();
     renderTemple();
     renderLightModal();
+    const invEl = document.getElementById('light-invitation');
+    if (invEl) {
+      invEl.textContent = _selectedLightTone
+        ? (LIGHT_TONE_CONFIRMATIONS[_selectedLightTone] || invEl.textContent)
+        : 'The threshold is crossed.';
+    }
     const btn = document.getElementById('light-witness-btn');
     if (btn) btn.classList.add('is-still');
     setTimeout(() => {
