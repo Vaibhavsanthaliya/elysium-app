@@ -344,7 +344,7 @@ const RHYTHM_CARD_IDS = {
   chronicle: 'temple-goto-chronicle',
 };
 
-function getMorningCareState() {
+export function getMorningCareState() {
   const tasks = getMorningTasks();
   const checks = getTodayChecks();
   const done = tasks.filter(t => checks[t.id]).length;
@@ -608,6 +608,21 @@ export function renderTemple() {
   for (const [domain, cardId] of Object.entries(RHYTHM_CARD_IDS)) {
     const card = document.getElementById(cardId);
     if (card) card.dataset.rhythm = rhythmMap[domain] ?? 'later';
+  }
+
+  const morningFlowBtn = document.getElementById('temple-morning-flow');
+  if (morningFlowBtn) {
+    morningFlowBtn.hidden = (period.key !== 'first-light' && period.key !== 'morning');
+  }
+
+  const workFlowBtn = document.getElementById('temple-work-flow');
+  if (workFlowBtn) {
+    workFlowBtn.hidden = (period.key !== 'midday' && period.key !== 'afternoon');
+  }
+
+  const nightFlowBtn = document.getElementById('temple-night-flow');
+  if (nightFlowBtn) {
+    nightFlowBtn.hidden = (period.key !== 'dusk' && period.key !== 'night');
   }
 
   renderDayThread();

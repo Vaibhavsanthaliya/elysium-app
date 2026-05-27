@@ -39,6 +39,7 @@ import {
   registerWaterModal,
 } from './js/ui/modals.js';
 import { showToast } from './js/ui/toast.js';
+import { openMorningFlow, registerMorningFlow, openNightFlow, registerNightFlow, openWorkFlow, registerWorkFlow } from './js/ui/flow.js';
 import { addWeeklyPhoto, hasPhotoThisWeek } from './js/services/photos.js';
 import { scheduleReminders, clearScheduledReminders, toggleNotifications } from './js/services/notifications.js';
 
@@ -400,6 +401,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Water domain modal ---
   registerWaterModal();
   document.getElementById('temple-goto-water')?.addEventListener('click', openWaterModal);
+
+  // --- Morning Flow ---
+  registerMorningFlow();
+  document.getElementById('temple-morning-flow')?.addEventListener('click', openMorningFlow);
+
+  // --- Work Flow ---
+  registerWorkFlow();
+  document.getElementById('temple-work-flow')?.addEventListener('click', openWorkFlow);
+
+  // --- Night Flow ---
+  registerNightFlow();
+  document.getElementById('temple-night-flow')?.addEventListener('click', openNightFlow);
 
   // Schedule reminders if already enabled
   if (state.reminders.enabled && 'Notification' in window && Notification.permission === 'granted') {

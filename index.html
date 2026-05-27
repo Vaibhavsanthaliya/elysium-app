@@ -166,6 +166,24 @@
           </span>
         </button>
 
+        <!-- Morning Flow CTA — first-light/morning only; JS shows/hides -->
+        <button class="temple-morning-flow" id="temple-morning-flow" hidden>
+          <span class="temple-morning-flow-eyebrow">MORNING</span>
+          <span class="temple-morning-flow-label">Open the morning</span>
+        </button>
+
+        <!-- Work Flow CTA — midday/afternoon only; JS shows/hides -->
+        <button class="temple-work-flow" id="temple-work-flow" hidden>
+          <span class="temple-work-flow-eyebrow">MIDDAY</span>
+          <span class="temple-work-flow-label">Return to focus</span>
+        </button>
+
+        <!-- Night Flow CTA — dusk/night only; JS shows/hides -->
+        <button class="temple-night-flow" id="temple-night-flow" hidden>
+          <span class="temple-night-flow-eyebrow">NIGHT</span>
+          <span class="temple-night-flow-label">Close the day</span>
+        </button>
+
         <!-- Ritual domain cards -->
         <div class="temple-domains">
           <div class="temple-domain-head">
@@ -671,6 +689,128 @@
         <span>Settings</span>
       </button>
     </nav>
+  </div>
+
+  <!-- Morning Flow modal — three-step morning arc: Light → Care → Chronicle -->
+  <div class="modal" id="flow-modal" hidden>
+    <div class="modal-backdrop" id="flow-modal-backdrop"></div>
+    <div class="modal-sheet flow-modal-sheet">
+      <div class="modal-handle"></div>
+
+      <!-- Step 1: Light -->
+      <div id="flow-step-light">
+        <div class="flow-eyebrow">MORNING FLOW</div>
+        <p class="flow-step-label">Light</p>
+        <p class="flow-invitation" id="flow-light-invitation"></p>
+        <div class="flow-tone-chooser" id="flow-tone-chooser">
+          <button class="flow-tone-btn" data-tone="Soft">Soft</button>
+          <button class="flow-tone-btn" data-tone="Clear">Clear</button>
+          <button class="flow-tone-btn" data-tone="Steady">Steady</button>
+          <button class="flow-tone-btn" data-tone="Guarded">Guarded</button>
+        </div>
+        <button class="btn-primary" id="flow-light-enter">Entered</button>
+        <button class="btn-text" id="flow-light-skip">Skip</button>
+      </div>
+
+      <!-- Step 2: Morning Care -->
+      <div id="flow-step-care" hidden>
+        <div class="flow-eyebrow">MORNING FLOW</div>
+        <p class="flow-step-label">Care</p>
+        <p class="flow-care-status" id="flow-care-status"></p>
+        <button class="btn-primary" id="flow-care-open">Open the day</button>
+        <button class="btn-text" id="flow-care-skip">Skip</button>
+      </div>
+
+      <!-- Step 3: Chronicle seed -->
+      <div id="flow-step-chronicle" hidden>
+        <div class="flow-eyebrow">MORNING FLOW</div>
+        <p class="flow-step-label">Chronicle</p>
+        <textarea class="flow-chronicle-field" id="flow-chronicle-field" rows="2" placeholder="One line before the day begins."></textarea>
+        <button class="btn-primary" id="flow-chronicle-save">Save</button>
+        <button class="btn-text" id="flow-chronicle-skip">Skip</button>
+      </div>
+
+      <!-- Completion -->
+      <div id="flow-step-complete" hidden>
+        <div class="flow-eyebrow">MORNING FLOW</div>
+        <p class="flow-complete-line">The morning is open.</p>
+        <button class="btn-text" id="flow-close">Return</button>
+      </div>
+
+      <!-- Night Flow: Step 1 — Night Care -->
+      <div id="flow-step-night-care" hidden>
+        <div class="flow-eyebrow">NIGHT FLOW</div>
+        <p class="flow-step-label" id="flow-night-care-label">Care</p>
+        <p class="flow-care-status" id="flow-night-care-protocol"></p>
+        <p class="flow-night-care-note" id="flow-night-care-note"></p>
+        <button class="btn-primary" id="flow-night-care-keep">Keep tonight</button>
+        <button class="btn-text" id="flow-night-care-skip">Skip</button>
+      </div>
+
+      <!-- Night Flow: Step 2 — Chronicle reflection -->
+      <div id="flow-step-night-chronicle" hidden>
+        <div class="flow-eyebrow">NIGHT FLOW</div>
+        <p class="flow-step-label">Chronicle</p>
+        <textarea class="flow-chronicle-field" id="flow-night-chronicle-field" rows="3" placeholder="What the day left behind."></textarea>
+        <button class="btn-primary" id="flow-night-chronicle-save">Save</button>
+        <button class="btn-text" id="flow-night-chronicle-skip">Skip</button>
+      </div>
+
+      <!-- Night Flow: Step 3 — Sleep parking / closure -->
+      <div id="flow-step-night-sleep" hidden>
+        <div class="flow-eyebrow">NIGHT FLOW</div>
+        <p class="flow-step-label">Sleep</p>
+        <p class="flow-invitation" id="flow-night-sleep-invitation"></p>
+        <textarea class="flow-chronicle-field" id="flow-night-sleep-parking" rows="2" placeholder="What can wait until morning."></textarea>
+        <button class="btn-primary" id="flow-night-sleep-close">Let the day end</button>
+        <button class="btn-text" id="flow-night-sleep-skip">Skip</button>
+      </div>
+
+      <!-- Night Flow: Completion -->
+      <div id="flow-step-night-complete" hidden>
+        <div class="flow-eyebrow">NIGHT FLOW</div>
+        <p class="flow-complete-line">The day has closed.</p>
+        <button class="btn-text" id="flow-night-close">Return</button>
+      </div>
+
+      <!-- Work Flow: Step 1 — Mind / Focus Thread -->
+      <div id="flow-step-work-mind" hidden>
+        <div class="flow-eyebrow">WORK FLOW</div>
+        <p class="flow-step-label">Mind</p>
+        <p class="flow-invitation">Name the thread you are returning to.</p>
+        <input type="text" class="flow-chronicle-field" id="flow-work-thread" placeholder="One thread." />
+        <button class="btn-primary" id="flow-work-mind-hold">Hold this thread</button>
+        <button class="btn-text" id="flow-work-mind-skip">Skip</button>
+      </div>
+
+      <!-- Work Flow: Step 2 — Body / Desk Reset -->
+      <div id="flow-step-work-body" hidden>
+        <div class="flow-eyebrow">WORK FLOW</div>
+        <p class="flow-step-label">Body</p>
+        <p class="flow-invitation" id="flow-work-body-step"></p>
+        <button class="btn-primary" id="flow-work-body-continue">Continue</button>
+        <button class="btn-primary" id="flow-work-body-arrive" hidden>Returned</button>
+        <button class="btn-text" id="flow-work-body-skip">Skip</button>
+      </div>
+
+      <!-- Work Flow: Step 3 — Water / Reset Pause -->
+      <div id="flow-step-work-water" hidden>
+        <div class="flow-eyebrow">WORK FLOW</div>
+        <p class="flow-step-label">Water</p>
+        <p class="flow-invitation" id="flow-work-water-step"></p>
+        <button class="btn-primary" id="flow-work-water-continue">Continue</button>
+        <button class="btn-primary" id="flow-work-water-hold" hidden>Held</button>
+        <button class="btn-text" id="flow-work-water-skip">Skip</button>
+      </div>
+
+      <!-- Work Flow: Completion -->
+      <div id="flow-step-work-complete" hidden>
+        <div class="flow-eyebrow">WORK FLOW</div>
+        <p class="flow-complete-line">The thread is ready.</p>
+        <button class="btn-text" id="flow-work-close">Return</button>
+      </div>
+
+    </div>
   </div>
 
   <!-- Edit task modal -->

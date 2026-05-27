@@ -909,3 +909,306 @@
 @media (prefers-color-scheme: dark) {
   #pane-temple .temple-domain-card[data-rhythm="now"] { border-color: rgba(201, 165, 107, 0.30); }
 }
+
+/* ── EA-161: Morning Flow — Temple CTA ───────────────────────────────────── */
+#pane-temple .temple-morning-flow {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  background: rgba(160, 122, 74, 0.03);
+  border: 1px dashed rgba(160, 122, 74, 0.28);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+#pane-temple .temple-morning-flow:active {
+  background: rgba(160, 122, 74, 0.07);
+  border-color: rgba(160, 122, 74, 0.50);
+}
+
+#pane-temple .temple-morning-flow-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  opacity: 0.70;
+}
+
+#pane-temple .temple-morning-flow-label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--oracle-text);
+  opacity: 0.80;
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-temple .temple-morning-flow {
+    background: rgba(201, 165, 107, 0.03);
+    border-color: rgba(201, 165, 107, 0.22);
+  }
+  #pane-temple .temple-morning-flow:active {
+    background: rgba(201, 165, 107, 0.06);
+    border-color: rgba(201, 165, 107, 0.40);
+  }
+}
+
+/* ── EA-162: Night Flow CTA ──────────────────────────────────────────────── */
+#pane-temple .temple-night-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  background: rgba(160, 122, 74, 0.03);
+  border: 1px dashed rgba(160, 122, 74, 0.28);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+#pane-temple .temple-night-flow:active {
+  background: rgba(160, 122, 74, 0.07);
+  border-color: rgba(160, 122, 74, 0.50);
+}
+
+#pane-temple .temple-night-flow-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  opacity: 0.70;
+}
+
+#pane-temple .temple-night-flow-label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--oracle-text);
+  opacity: 0.80;
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-temple .temple-night-flow {
+    background: rgba(201, 165, 107, 0.03);
+    border-color: rgba(201, 165, 107, 0.22);
+  }
+  #pane-temple .temple-night-flow:active {
+    background: rgba(201, 165, 107, 0.06);
+    border-color: rgba(201, 165, 107, 0.40);
+  }
+}
+
+/* ── EA-163: Work Flow CTA ───────────────────────────────────────────────── */
+#pane-temple .temple-work-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 14px 20px;
+  background: transparent;
+  border: 1px solid rgba(160, 122, 74, 0.18);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+#pane-temple .temple-work-flow:active {
+  background: rgba(160, 122, 74, 0.07);
+  border-color: rgba(160, 122, 74, 0.50);
+}
+
+#pane-temple .temple-work-flow-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  opacity: 0.70;
+}
+
+#pane-temple .temple-work-flow-label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--oracle-text);
+  opacity: 0.80;
+}
+
+@media (prefers-color-scheme: dark) {
+  #pane-temple .temple-work-flow {
+    background: rgba(201, 165, 107, 0.03);
+    border-color: rgba(201, 165, 107, 0.22);
+  }
+  #pane-temple .temple-work-flow:active {
+    background: rgba(201, 165, 107, 0.06);
+    border-color: rgba(201, 165, 107, 0.40);
+  }
+}
+
+/* Night Flow care note — quieter than the protocol label */
+#flow-modal .flow-night-care-note {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.50;
+  text-align: center;
+  color: var(--oracle-text);
+  opacity: 0.55;
+  margin: 0 24px 20px;
+}
+
+/* ── EA-161: Morning Flow modal ──────────────────────────────────────────── */
+#flow-modal .flow-modal-sheet {
+  background-color: var(--bg-grouped);
+  background-image: radial-gradient(ellipse at 50% 0%, rgba(201, 165, 107, 0.08), transparent 65%);
+}
+
+@media (prefers-color-scheme: dark) {
+  #flow-modal .flow-modal-sheet {
+    background-image: radial-gradient(ellipse at 50% 0%, rgba(201, 165, 107, 0.07), transparent 65%);
+  }
+}
+
+#flow-modal .flow-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--bronze);
+  margin: 22px 20px 6px;
+}
+
+#flow-modal .flow-step-label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 22px;
+  font-weight: 400;
+  text-align: center;
+  color: var(--oracle-text);
+  margin: 0 20px 18px;
+}
+
+#flow-modal .flow-invitation,
+#flow-modal .flow-care-status {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: var(--oracle-text);
+  opacity: 0.80;
+  margin: 0 24px 24px;
+}
+
+#flow-modal .flow-tone-chooser {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 0 20px 24px;
+}
+
+#flow-modal .flow-tone-btn {
+  flex: 1;
+  padding: 9px 4px;
+  background: transparent;
+  border: 1px solid rgba(201, 165, 107, 0.20);
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--oracle-text);
+  opacity: 0.65;
+  cursor: pointer;
+  transition: opacity 0.15s, border-color 0.15s, background-color 0.15s;
+}
+
+#flow-modal .flow-tone-btn.is-selected {
+  border-color: rgba(201, 165, 107, 0.55);
+  background-color: rgba(201, 165, 107, 0.07);
+  opacity: 0.90;
+}
+
+#flow-modal .flow-chronicle-field {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 0 20px 16px;
+  background: var(--bg-elevated, var(--bg));
+  border: 1px solid rgba(201, 165, 107, 0.20);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--oracle-text);
+  line-height: 1.55;
+  resize: none;
+  outline: none;
+  transition: border-color 180ms ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#flow-modal .flow-chronicle-field:focus {
+  border-color: rgba(201, 165, 107, 0.45);
+}
+
+#flow-modal .flow-chronicle-field::placeholder {
+  color: var(--oracle-text);
+  opacity: 0.38;
+}
+
+#flow-modal .flow-complete-line {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--oracle-text);
+  opacity: 0.85;
+  margin: 32px 24px 28px;
+}
+
+#flow-modal .btn-primary {
+  margin: 0 20px 14px;
+  width: calc(100% - 40px);
+}
+
+#flow-modal .btn-primary.is-still {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+#flow-modal .btn-text {
+  width: calc(100% - 40px);
+  margin: 0 20px;
+  display: block;
+  text-align: center;
+  padding-bottom: calc(var(--safe-bottom) + 4px);
+}

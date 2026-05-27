@@ -1,7 +1,7 @@
 /* Elysium — Service Worker
    Cache shell for offline + standalone install */
 
-const CACHE_NAME = 'elysium-v63';
+const CACHE_NAME = 'elysium-v67';
 const ASSETS = [
   './',
   './index.html',
@@ -44,6 +44,7 @@ const ASSETS = [
   './js/render/settings.js',
   './js/ui/tabs.js',
   './js/ui/modals.js',
+  './js/ui/flow.js',
   './js/ui/toast.js',
 ];
 
