@@ -249,6 +249,33 @@ export function migrateState(s) {
     if (clean.length) s.water.holdings[date] = clean;
     else delete s.water.holdings[date];
   }
+
+  s.today = s.today && typeof s.today === 'object' && !Array.isArray(s.today) ? s.today : {};
+  s.today.date = isYmd(s.today.date) ? s.today.date : null;
+  s.today.intentions = Array.isArray(s.today.intentions) ? s.today.intentions : [];
+  s.today.intentions = s.today.intentions
+    .filter(i => i && typeof i === 'object' &&
+      typeof i.id === 'string' && i.id &&
+      typeof i.text === 'string' && i.text.trim() &&
+      typeof i.kept === 'boolean'
+    )
+    .map(i => ({
+      id: i.id,
+      text: i.text.trim().slice(0, 120),
+      kept: i.kept,
+      addedAt: typeof i.addedAt === 'string' ? i.addedAt : new Date().toISOString(),
+      ...(isYmd(i.carriedFrom) ? { carriedFrom: i.carriedFrom } : {}),
+    }))
+    .slice(0, 3);
+  s.today.carryover = Array.isArray(s.today.carryover) ? s.today.carryover : [];
+  s.today.carryover = s.today.carryover
+    .filter(i => i && typeof i === 'object' &&
+      typeof i.id === 'string' && i.id &&
+      typeof i.text === 'string' && i.text.trim()
+    )
+    .map(i => ({ id: uid(), text: i.text.trim().slice(0, 120) }));
+  s.today.carryoverDate = isYmd(s.today.carryoverDate) ? s.today.carryoverDate : null;
+
   return s;
 }
 

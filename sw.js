@@ -1,7 +1,7 @@
 /* Elysium — Service Worker
    Cache shell for offline + standalone install */
 
-const CACHE_NAME = 'elysium-v67';
+const CACHE_NAME = 'elysium-v72';
 const ASSETS = [
   './',
   './index.html',
@@ -38,8 +38,11 @@ const ASSETS = [
   './js/render/common.js',
   './js/render/temple.js',
   './js/render/today.js',
+  './js/render/today-plan.js',
+  './js/domains/today-plan.js',
   './js/render/cycle.js',
   './js/render/chronicle.js',
+  './js/render/chronicle-archive.js',
   './js/render/progress.js',
   './js/render/settings.js',
   './js/ui/tabs.js',

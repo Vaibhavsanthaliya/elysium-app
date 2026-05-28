@@ -8,6 +8,11 @@ import {
 import { getSleepNoteEntries } from '../domains/sleep.js';
 import { getMindReflectionEntries } from '../domains/mind.js';
 import { CHRONICLE_PROMPTS } from '../constants.js';
+import {
+  getChronicleMode,
+  renderArchiveListIfActive,
+  initChronicleArchiveEvents,
+} from './chronicle-archive.js';
 
 const CHRONICLE_AUTOSAVE_DELAY = 800;
 const DRIFT_MAX = 12;
@@ -396,6 +401,13 @@ function renderContinuityFragment() {
 }
 
 export function renderChronicle() {
+  initChronicleArchiveEvents();
+
+  if (getChronicleMode() === 'read') {
+    renderArchiveListIfActive();
+    return;
+  }
+
   const note = getChronicleNote(todayStr);
   const textarea = document.getElementById('chronicle-textarea');
   const status = document.getElementById('chronicle-status');

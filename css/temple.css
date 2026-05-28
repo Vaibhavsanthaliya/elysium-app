@@ -910,6 +910,12 @@
   #pane-temple .temple-domain-card[data-rhythm="now"] { border-color: rgba(201, 165, 107, 0.30); }
 }
 
+/* ── EA-164A: Flow CTA hidden-attribute guard ────────────────────────────── */
+/* display:flex on these buttons overrides UA [hidden]{display:none} — mirror modal.css pattern */
+#pane-temple .temple-morning-flow[hidden],
+#pane-temple .temple-work-flow[hidden],
+#pane-temple .temple-night-flow[hidden] { display: none; }
+
 /* ── EA-161: Morning Flow — Temple CTA ───────────────────────────────────── */
 #pane-temple .temple-morning-flow {
   width: 100%;

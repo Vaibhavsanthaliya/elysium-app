@@ -107,6 +107,21 @@ function renderMorningChronicleStep() {
   field.value = existing ? existing.body : '';
 }
 
+function saveFlowChronicleField(fieldId) {
+  const field = document.getElementById(fieldId);
+  const body = field ? field.value.trim() : '';
+  if (!body) return false;
+
+  const existing = getChronicleNote(todayStr);
+  if (typeof existing?.body === 'string' && existing.body.trim() === body) {
+    return false;
+  }
+
+  upsertChronicleNote(todayStr, body);
+  saveState();
+  return true;
+}
+
 export function openMorningFlow() {
   beginFlowSession();
   _lightEnteredThisFlow = false;
@@ -240,12 +255,7 @@ export function registerMorningFlow() {
   });
 
   document.getElementById('flow-chronicle-save')?.addEventListener('click', () => {
-    const field = document.getElementById('flow-chronicle-field');
-    const body = field ? field.value.trim() : '';
-    if (body) {
-      upsertChronicleNote(todayStr, body);
-      saveState();
-    }
+    saveFlowChronicleField('flow-chronicle-field');
     showStep('complete');
   });
 
@@ -269,12 +279,7 @@ export function registerNightFlow() {
   });
 
   document.getElementById('flow-night-chronicle-save')?.addEventListener('click', () => {
-    const field = document.getElementById('flow-night-chronicle-field');
-    const body = field ? field.value.trim() : '';
-    if (body) {
-      upsertChronicleNote(todayStr, body);
-      saveState();
-    }
+    saveFlowChronicleField('flow-night-chronicle-field');
     renderNightSleepStep();
     showStep('night-sleep');
   });

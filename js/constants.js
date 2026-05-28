@@ -64,6 +64,12 @@ export const DEFAULT_DATA = {
   water: {
     holdings: {},
   },
+  today: {
+    date: null,
+    intentions: [],
+    carryover: [],
+    carryoverDate: null,
+  },
 };
 
 export const CYCLE_NAMES = ['Niacinamide', 'Salicylic', 'Rest night'];

@@ -1,5 +1,6 @@
 import { renderTemple } from '../render/temple.js';
 import { renderAllLists } from '../render/today.js';
+import { renderTodayPlan } from '../render/today-plan.js';
 import { renderCycleList, cancelCycleArm } from '../render/cycle.js';
 import { renderChronicle } from '../render/chronicle.js';
 import { renderProgress, renderWeeklyPhotos } from '../render/progress.js';
@@ -14,6 +15,7 @@ export function registerClosedDayHandler(fn) {
 }
 
 function runRenderFor(name) {
+  if (name === 'today') renderTodayPlan();
   if (name === 'temple') renderTemple();
   if (name === 'chronicle') renderChronicle();
   if (name === 'progress') { renderProgress(); renderWeeklyPhotos(); }

@@ -137,8 +137,48 @@
     </header>
 
     <main class="main">
+      <!-- TODAY PLAN TAB -->
+      <section class="tab-pane active" id="pane-today">
+
+        <div class="today-plan-header">
+          <p class="today-plan-date" id="today-plan-date"></p>
+        </div>
+
+        <!-- TODAY: Intentions block -->
+        <div class="today-plan-block">
+          <div class="today-plan-block-eyebrow">TODAY</div>
+          <div id="today-plan-intentions"></div>
+          <div id="today-plan-add-wrap">
+            <button class="today-plan-add-btn" id="today-plan-add-btn">Add intention</button>
+          </div>
+          <div id="today-plan-add-form" hidden>
+            <input type="text" class="today-plan-input" id="today-plan-input" placeholder="One thing." maxlength="120" autocomplete="off" />
+            <div class="today-plan-input-actions">
+              <button class="today-plan-input-confirm" id="today-plan-input-confirm">Add</button>
+              <button class="today-plan-input-cancel" id="today-plan-input-cancel">Cancel</button>
+            </div>
+          </div>
+          <p class="today-plan-limit" id="today-plan-limit" hidden>Three is enough for today.</p>
+        </div>
+
+        <!-- FROM YESTERDAY: Carryover (JS shows/hides) -->
+        <div class="today-plan-carryover" id="today-plan-carryover" hidden>
+          <div class="today-plan-block-eyebrow">FROM YESTERDAY</div>
+          <div id="today-plan-carryover-list"></div>
+        </div>
+
+        <!-- OPEN: Practical open items from existing domains -->
+        <div class="today-plan-block today-plan-open-block">
+          <div class="today-plan-block-eyebrow">OPEN</div>
+          <div id="today-plan-open-list"></div>
+        </div>
+
+        <p class="today-plan-footer">What remains can be kept or left.</p>
+        <div class="footer-spacer"></div>
+      </section>
+
       <!-- TEMPLE TAB -->
-      <section class="tab-pane active" id="pane-temple">
+      <section class="tab-pane" id="pane-temple">
         <div class="temple-greeting" hidden>
           <p class="temple-greeting-line" id="temple-daily-line"></p>
         </div>
@@ -320,8 +360,8 @@
         <div class="footer-spacer"></div>
       </section>
 
-      <!-- TODAY TAB -->
-      <section class="tab-pane" id="pane-today">
+      <!-- CARE TAB -->
+      <section class="tab-pane" id="pane-care">
 
         <!-- Care heading -->
         <div class="care-heading">
@@ -469,45 +509,68 @@
           <h1 class="chronicle-title">The <span class="ital">chronicle</span></h1>
         </div>
 
-        <!-- Resurfaced: one small prior Chronicle fragment (JS shows/hides) -->
-        <div class="chronicle-resurfaced" id="chronicle-resurfaced" hidden>
-          <div class="chronicle-resurfaced-meta">
-            <span class="chronicle-resurfaced-kicker">Resurfaced</span>
-            <span class="chronicle-resurfaced-when" id="chronicle-resurfaced-when">From before</span>
-          </div>
-          <p class="chronicle-resurfaced-body" id="chronicle-resurfaced-body"></p>
+        <!-- Mode toggle: Write / Read -->
+        <div class="chronicle-mode-toggle" id="chronicle-mode-toggle">
+          <button class="chronicle-mode-btn is-active" id="chronicle-mode-write" type="button">Write</button>
+          <button class="chronicle-mode-btn" id="chronicle-mode-read" type="button">Read</button>
         </div>
 
-        <!-- From the well: a single resurfaced memory (JS shows/hides) -->
-        <div class="chronicle-well" id="chronicle-well" hidden>
-          <div class="chronicle-well-divider"><span>From the well</span></div>
-          <div class="chronicle-well-entry">
-            <div class="chronicle-well-eyebrow" id="chronicle-well-eyebrow"></div>
-            <div class="chronicle-well-body" id="chronicle-well-body"></div>
+        <!-- Write surface (default mode) -->
+        <div id="chronicle-write-surface">
+
+          <!-- Resurfaced: one small prior Chronicle fragment (JS shows/hides) -->
+          <div class="chronicle-resurfaced" id="chronicle-resurfaced" hidden>
+            <div class="chronicle-resurfaced-meta">
+              <span class="chronicle-resurfaced-kicker">Resurfaced</span>
+              <span class="chronicle-resurfaced-when" id="chronicle-resurfaced-when">From before</span>
+            </div>
+            <p class="chronicle-resurfaced-body" id="chronicle-resurfaced-body"></p>
           </div>
+
+          <!-- From the well: a single resurfaced memory (JS shows/hides) -->
+          <div class="chronicle-well" id="chronicle-well" hidden>
+            <div class="chronicle-well-divider"><span>From the well</span></div>
+            <div class="chronicle-well-entry">
+              <div class="chronicle-well-eyebrow" id="chronicle-well-eyebrow"></div>
+              <div class="chronicle-well-body" id="chronicle-well-body"></div>
+            </div>
+          </div>
+
+          <!-- River: section header for past entries (JS shows/hides) -->
+          <div class="chronicle-river-hd" id="chronicle-river-hd" hidden>
+            <em class="chronicle-river-lbl">The river</em>
+          </div>
+
+          <!-- Drift: past entries, reading-first (rendered by JS) -->
+          <div class="chronicle-drift" id="chronicle-drift"></div>
+
+          <!-- Today: writing surface (secondary motion) -->
+          <div class="chronicle-today">
+            <div class="chronicle-prompt" id="chronicle-prompt">
+              <div class="chronicle-prompt-eyebrow" id="chronicle-prompt-eyebrow">TONIGHT</div>
+              <div class="chronicle-prompt-text" id="chronicle-prompt-text"></div>
+            </div>
+
+            <div class="chronicle-card">
+              <textarea class="chronicle-textarea" id="chronicle-textarea" rows="2" placeholder="A line, if one came."></textarea>
+            </div>
+
+            <p class="chronicle-status" id="chronicle-status" hidden></p>
+            <p class="chronicle-continuity" id="chronicle-continuity" hidden></p>
+          </div>
+
+        </div><!-- /chronicle-write-surface -->
+
+        <!-- Archive reading surface (read mode) -->
+        <div id="chronicle-archive" hidden>
+          <div class="chronicle-archive-list" id="chronicle-archive-list"></div>
         </div>
 
-        <!-- River: section header for past entries (JS shows/hides) -->
-        <div class="chronicle-river-hd" id="chronicle-river-hd" hidden>
-          <em class="chronicle-river-lbl">The river</em>
-        </div>
-
-        <!-- Drift: past entries, reading-first (rendered by JS) -->
-        <div class="chronicle-drift" id="chronicle-drift"></div>
-
-        <!-- Today: writing surface (secondary motion) -->
-        <div class="chronicle-today">
-          <div class="chronicle-prompt" id="chronicle-prompt">
-            <div class="chronicle-prompt-eyebrow" id="chronicle-prompt-eyebrow">TONIGHT</div>
-            <div class="chronicle-prompt-text" id="chronicle-prompt-text"></div>
-          </div>
-
-          <div class="chronicle-card">
-            <textarea class="chronicle-textarea" id="chronicle-textarea" rows="2" placeholder="A line, if one came."></textarea>
-          </div>
-
-          <p class="chronicle-status" id="chronicle-status" hidden></p>
-          <p class="chronicle-continuity" id="chronicle-continuity" hidden></p>
+        <!-- Archive entry detail (read mode, entry open) -->
+        <div class="chronicle-archive-detail" id="chronicle-archive-detail" hidden>
+          <button class="chronicle-detail-back" id="chronicle-detail-back" type="button">Back</button>
+          <div class="chronicle-detail-meta" id="chronicle-detail-meta"></div>
+          <div class="chronicle-detail-body" id="chronicle-detail-body"></div>
         </div>
 
         <div class="footer-spacer"></div>
@@ -676,13 +739,17 @@
 
     <!-- Bottom tab navigation -->
     <nav class="tabs">
-      <button class="tab active" data-tab="temple" aria-label="Temple">
+      <button class="tab active" data-tab="today" aria-label="Today">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>
+        <span>Today</span>
+      </button>
+      <button class="tab" data-tab="care" aria-label="Care">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Care</span>
+      </button>
+      <button class="tab" data-tab="temple" aria-label="Temple">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span>Temple</span>
-      </button>
-      <button class="tab" data-tab="today" aria-label="Today">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        <span>Today</span>
       </button>
       <button class="tab" data-tab="settings" aria-label="Settings">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>

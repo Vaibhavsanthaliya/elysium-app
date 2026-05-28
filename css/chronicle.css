@@ -373,3 +373,128 @@
 .chronicle-textarea::placeholder {
   opacity: 0.5;
 }
+
+/* ── EA-167: Chronicle mode toggle ─────────────────────────────────────────── */
+.chronicle-mode-toggle {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.chronicle-mode-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  opacity: 0.5;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.chronicle-mode-btn.is-active {
+  color: var(--bronze);
+  opacity: 1;
+}
+
+/* ── EA-167: Archive list ───────────────────────────────────────────────────── */
+#chronicle-archive[hidden] {
+  display: none;
+}
+
+.chronicle-archive-list {
+  margin-bottom: 24px;
+}
+
+.chronicle-archive-empty {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  color: var(--muted-text);
+  opacity: 0.6;
+  margin: 28px 2px;
+}
+
+.chronicle-archive-row {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--separator-warm);
+  padding: 14px 2px;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.chronicle-archive-row:first-child {
+  border-top: 1px solid var(--separator-warm);
+}
+
+.chronicle-archive-row-date {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-bottom: 6px;
+}
+
+.chronicle-archive-row-excerpt {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--oracle-text);
+  opacity: 0.82;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* ── EA-167: Archive entry detail ───────────────────────────────────────────── */
+.chronicle-archive-detail[hidden] {
+  display: none;
+}
+
+.chronicle-detail-back {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  opacity: 0.65;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 22px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  display: block;
+}
+
+.chronicle-detail-meta {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-bottom: 18px;
+}
+
+.chronicle-detail-body {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--oracle-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 32px;
+}

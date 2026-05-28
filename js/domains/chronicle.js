@@ -106,3 +106,14 @@ export function upsertChronicleNote(dateStr, body) {
     delete state.chronicle.notes[dateStr];
   }
 }
+
+export function getChronicleEntries() {
+  const notes = state.chronicle?.notes || {};
+  return Object.entries(notes)
+    .filter(([dateStr, note]) =>
+      isYmd(dateStr) &&
+      typeof note?.body === 'string' &&
+      note.body.trim()
+    )
+    .sort((a, b) => b[0].localeCompare(a[0]));
+}

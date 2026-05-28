@@ -40,6 +40,8 @@ import {
 } from './js/ui/modals.js';
 import { showToast } from './js/ui/toast.js';
 import { openMorningFlow, registerMorningFlow, openNightFlow, registerNightFlow, openWorkFlow, registerWorkFlow } from './js/ui/flow.js';
+import { renderTodayPlan } from './js/render/today-plan.js';
+import { addTodayIntention, toggleTodayIntention, deleteIntention, bringForwardIntention, letIntentionPass, getTodayPlan } from './js/domains/today-plan.js';
 import { addWeeklyPhoto, hasPhotoThisWeek } from './js/services/photos.js';
 import { scheduleReminders, clearScheduledReminders, toggleNotifications } from './js/services/notifications.js';
 
@@ -54,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTodayCycle();
     renderAllLists();
     renderCycleList();
+    if (document.getElementById('pane-today')?.classList.contains('active')) renderTodayPlan();
     if (document.getElementById('pane-temple').classList.contains('active')) renderTemple();
     if (document.getElementById('pane-chronicle').classList.contains('active')) renderChronicle();
     if (document.getElementById('pane-progress').classList.contains('active')) renderProgress();
@@ -76,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAllLists();
   renderCycleList();
   renderTemple();
+  renderTodayPlan();
   registerClosedDayHandler(openSleepModal);
 
   // --- Tab clicks ---
@@ -285,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Global nav shortcuts
-  document.getElementById('temple-goto-today').addEventListener('click', () => switchTab('today'));
+  document.getElementById('temple-goto-today').addEventListener('click', () => switchTab('care'));
   document.getElementById('temple-goto-chronicle').addEventListener('click', () => switchTab('chronicle'));
   document.getElementById('temple-goto-cycle').addEventListener('click', () => switchTab('cycle'));
   document.getElementById('temple-goto-progress').addEventListener('click', () => switchTab('progress'));
@@ -401,6 +405,78 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Water domain modal ---
   registerWaterModal();
   document.getElementById('temple-goto-water')?.addEventListener('click', openWaterModal);
+
+  // --- Today Plan ---
+  document.getElementById('today-plan-intentions')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const { action, id } = btn.dataset;
+    if (action === 'toggle') { toggleTodayIntention(id); renderTodayPlan(); }
+    else if (action === 'delete') { deleteIntention(id); renderTodayPlan(); }
+  });
+
+  document.getElementById('today-plan-carryover-list')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const { action, id } = btn.dataset;
+    if (action === 'bring-forward') {
+      if (getTodayPlan().intentions.length >= 3) return;
+      bringForwardIntention(id);
+      renderTodayPlan();
+    } else if (action === 'let-pass') {
+      letIntentionPass(id);
+      renderTodayPlan();
+    }
+  });
+
+  document.getElementById('today-plan-add-btn')?.addEventListener('click', () => {
+    if (getTodayPlan().intentions.length >= 3) {
+      const limitEl = document.getElementById('today-plan-limit');
+      if (limitEl) limitEl.hidden = false;
+      return;
+    }
+    document.getElementById('today-plan-add-wrap').hidden = true;
+    document.getElementById('today-plan-add-form').hidden = false;
+    document.getElementById('today-plan-input')?.focus();
+  });
+
+  function _confirmAddIntention() {
+    const input = document.getElementById('today-plan-input');
+    const text = input ? input.value : '';
+    if (text.trim()) {
+      const result = addTodayIntention(text);
+      if (result.ok) {
+        if (input) input.value = '';
+        document.getElementById('today-plan-add-form').hidden = true;
+        renderTodayPlan();
+        return;
+      }
+    }
+    document.getElementById('today-plan-add-form').hidden = true;
+    document.getElementById('today-plan-add-wrap').hidden = false;
+  }
+
+  document.getElementById('today-plan-input-confirm')?.addEventListener('click', _confirmAddIntention);
+  document.getElementById('today-plan-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); _confirmAddIntention(); }
+    if (e.key === 'Escape') {
+      document.getElementById('today-plan-add-form').hidden = true;
+      document.getElementById('today-plan-add-wrap').hidden = false;
+    }
+  });
+  document.getElementById('today-plan-input-cancel')?.addEventListener('click', () => {
+    document.getElementById('today-plan-add-form').hidden = true;
+    renderTodayPlan();
+  });
+
+  document.getElementById('today-plan-open-list')?.addEventListener('click', e => {
+    const item = e.target.closest('[data-open-action]');
+    if (!item) return;
+    const action = item.dataset.openAction;
+    if (action === 'care') switchTab('care');
+    else if (action === 'chronicle') switchTab('chronicle');
+    else if (action === 'sleep') openSleepModal();
+  });
 
   // --- Morning Flow ---
   registerMorningFlow();

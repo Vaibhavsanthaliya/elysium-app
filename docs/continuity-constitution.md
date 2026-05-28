@@ -157,8 +157,17 @@ What follows is binding.
 15.1 — Chronicle is the **deep well**. It is the most data-rich surface in the app and the surface most at risk of becoming a database. It must remain a writing place that occasionally speaks back.
 15.2 — Drift remains **finite, recent, fading by time** (not by index position). The current 12-entry cap is a default ceiling; the cap may shrink for very old data but may not grow.
 15.3 — The Well surfaces **one** entry by deterministic rules (anniversary first, anniversary-window second, deep-time threshold third). A second well, when introduced, must be rare, single, and visually subordinate.
-15.4 — Chronicle may **never** gain a search field, a filter, a tag system, a category system, a folder system, or a date-picker. The chronicle is unindexed by design.
-15.5 — Chronicle may **never** gain a "browse all entries" view. Drift, the Well, and the writing surface are the only chronicle UIs that exist.
+15.4 — Chronicle may gain a **plain substring search** and a **chronological reading view** of the user's own entries, subject to §15.4A below. All other indexing — tag systems, category systems, folder systems, filter-by-date-picker, algorithmically ranked results — remains forbidden. The chronicle is substantively unindexed; search and reading serve the user's own recall, not a database metaphor.
+
+15.4A — If a Chronicle archive or search surface is implemented, it must observe the following:
+- (a) Search results display: date + short entry excerpt only. No word counts, no entry count totals, no relevance scores.
+- (b) Result order: reverse chronological only. No ranking by relevance, frequency, or any derived score.
+- (c) Entry opening: the user may open an individual entry to read it in full. Read-only. No annotations, no tags, no "related entries."
+- (d) Search is literal: substring match only. No semantic search, no AI-assisted matching, no inferred synonyms or themes.
+- (e) No observation derived from search results: no "you have N entries about X," no inferred topics, no sentiment display, no writing-frequency heatmap.
+- (f) The archive/search surface may not expose entry count, word count, or any aggregate quantification of the user's writing practice.
+
+15.5 — Chronicle may gain a chronological archive view, subject to §15.4A. Drift, the Well, the writing surface, and the archive/search surface are the permitted Chronicle UIs. No additional Chronicle screens beyond these four may be introduced.
 15.6 — Resurfacing labels in the Well must age qualitatively: "A year ago today" → "From an earlier season" → "From the beginning." Finite vocabulary, no numbers.
 15.7 — Chronicle may **never** display word counts, entry counts, writing-day counts, or any quantification of the user's writing practice.
 15.8 — Resurfacing must respect the user's right to write into silence. Many entries will never resurface. This is not a flaw; it is the well's discretion.
@@ -244,6 +253,38 @@ What follows is binding.
 
 19A.7 — If the Progress/Stars calendar ever begins surfacing non-Care data — Water presence, Body arrivals, Mind sessions, Sleep closures, Light witnesses — the exception has been violated regardless of how the feature is framed. The calendar grid and `loggedDays` mechanism are Care-only infrastructure.
 
+### §19B · The Today Practical Exception
+
+19B.1 — The app may host a small user-authored Today surface. The purpose of this surface is practical: the user needs a reason to open the app each day, and Elysium's domain rituals alone are not sufficient as a daily anchor for all users. A Today surface allows the user to name what they intend to do, in their own words, and to mark it as done. No trajectory is created; no score is derived.
+
+19B.2 — The Today Practical Exception permits, **only for a dedicated Today surface**, the following elements that would otherwise be restricted:
+- (a) 1–3 user-entered intentions for the current day, authored entirely in the user's own text
+- (b) Same-day kept/unkept state for each intention — a simple tap-to-keep; no history retained beyond the current day
+- (c) Optional quiet carryover of yesterday's unkept intentions — shown once on next open, dismissed permanently by tap; no carryover count displayed
+- (d) Dismiss / let-it-pass behavior: the user may release an intention without marking it kept, with no consequence or comment from the app
+- (e) Inline open items derived from existing Care / Chronicle / Sleep state — surfacing what is already naturally present, not app-generated suggestions
+- (f) No historical performance view: the Today surface shows today (and one quiet echo of yesterday if applicable); it has no history tab, no archive, no backward browse
+
+19B.3 — The rationale: a Today surface that holds only the user's own words, cleared at day-end or on next open, is structurally different from a tracker. It is closer to a physical index card the user writes fresh each morning than to a task management system.
+
+19B.4 — **The following are forbidden even under this exception:**
+- Streak counts, "days completed," or any quantity derived from historical Today state
+- Percentages, completion ratios, or adherence summaries
+- "You completed X of Y" phrasing of any kind
+- Weekly or monthly intention recaps
+- Productivity-framed language: "task," "goal," "target," "productivity," "optimize"
+- Recurring tasks or scheduled intentions — Today intentions are always authored fresh
+- Calendars, timelines, or any historical grid of intention completion
+- Priority scoring, urgency tagging, or ranking of user-entered intentions
+- Automated suggestions, AI-generated plans, or app-derived intentions of any kind
+- Displaying how many times an intention was carried over
+- Comparing today's completion with any other day
+- Extending this exception to Water / Body / Mind / Light / Sleep tracking grids
+
+19B.5 — **The Today surface applies the same ritual principles as Care.** Intentions may be *kept* or *not kept* — they cannot be *failed*. The app marks neither the user's discipline nor their shortfall. An unmet intention that passes quietly is correct behavior, not a gap to report.
+
+19B.6 — This exception is scoped to a single Today surface. It does not authorize intention tracking, carryover analysis, or habit-formation features anywhere else in the app. Future proposals that appeal to §19B bear the full burden of proof: they must demonstrate a genuine daily-use need that cannot be met without departing from atmospheric-only design. When in doubt, the exception does not extend.
+
 ---
 
 ## Article V — Prohibitions
@@ -297,6 +338,16 @@ These are the deepest commitments. Crossing them is not a course-correction — 
 22.3 — Elysium does not **perform** on the user's behalf. There is no synthesis, no recap, no auto-generated summary, no AI voice that is not the user's.
 22.4 — Elysium does not **reward**. There is no celebration of milestones, no positive reinforcement, no congratulation. The room neither praises nor blames.
 22.5 — Elysium does not **suggest**. There is no recommendation, no nudge, no "you might like." The user leads; the room follows.
+
+22.5A — **Distinguishing user-authored resurfacing from app nudges.** §22.5 forbids app-generated suggestions and nudges. It does not forbid the app from displaying what the user explicitly placed inside it. Specifically permitted:
+- Showing a user-entered Today intention from today (or a quiet once-only carryover from yesterday) — this is holding, not nudging
+- Displaying inline open items derived from Care/Chronicle/Sleep state that the user created
+- Existing quiet Care morning/night cues already present in the product
+
+The governing principle: *The room may hold what the user placed inside it. The room may not decide what the user should do.*
+
+App-generated suggestions, algorithmic recommendations, inferred nudges, and engagement pulls remain categorically forbidden under §20.8 and §22.5.
+
 22.6 — Elysium does not **pursue the user**. Notifications are cues for *present* moments (morning cue, night cue), never re-engagement pulls.
 22.7 — Elysium does not **monetize attention**. There is no engagement metric to optimize, no DAU/WAU framing internally, no growth lever to pull. If a design decision is made to "increase usage," it is the wrong decision.
 22.8 — Elysium does not **scale by becoming louder**. It scales by becoming deeper.
@@ -374,7 +425,9 @@ Test: if the effect can be reduced to a number without losing its meaning, it is
 3. **Reversibility test.** Does the gesture soften or fade during absence at a human timescale? *If no — reject.*
 4. **Silence test.** Does the gesture handle the absence of data by becoming quiet, rather than by filling space with placeholder copy or empty states? *If no — reject.*
 5. **Non-actionable test.** Is the gesture offered rather than opened? Does it resist becoming a tappable entry point into a "view all" surface? *If no — reject.*
-6. **Productivity-app test.** Would a productivity-app or wellness-app user find this feature directly satisfying as a measure of their performance? *If yes — reject.*
+6. **Productivity-app test.** Would a productivity-app or wellness-app user find this feature directly satisfying as a **measure of their performance, output, optimization, or self-improvement trajectory**? *If yes — reject.*
+
+   *Clarification: a small user-authored Today surface (§19B), plain Chronicle archive search (§15.4A), and practical navigation do not fail this test. A productivity-app user wants dashboards, scores, and analytics — not a space that holds their own words back to them in the same order they wrote them.*
 
 27.3 — When in doubt about whether a gesture is continuity or tracking, **the conservative answer is: do not build it**. Elysium can survive an under-built continuity surface. It cannot survive a tracker tucked inside its temple.
 
@@ -385,6 +438,21 @@ Test: if the effect can be reduced to a number without losing its meaning, it is
 27.6 — There is no graceful path back from violating these principles. A tracker bolted onto Elysium does not become acceptable through good design. It becomes a tracker inside what was once Elysium.
 
 27.7 — **Hold the line.**
+
+### §27.8 · The Practical Usefulness Phase
+
+27.8.1 — Elysium is entering a **practical usefulness phase**. This is not an abandonment of the constitutional principles above; it is a recognition that atmosphere alone cannot sustain daily use for all users. The constitution remains binding in full. The amendments in §19B, §15.4A, and §22.5A define the exact bounds of this phase.
+
+27.8.2 — The product priority order for this phase:
+1. **Care** — the practical skincare anchor; foundation of the app
+2. **Today Plan** — the new daily-use surface (§19B); a reason to open the app each day
+3. **Chronicle** — personal writing and archive anchor (§15.4A); the deep well
+4. **Sleep** — parking and closure; the daily endpoint
+5. **Temple / domain atmosphere** — the language surrounding the above; not the whole product
+
+27.8.3 — Atmosphere is the *language* surrounding practical daily use. Temple, the domain rituals, the flows, and all continuity effects remain valuable and must not be removed. But they are now the ambient setting, not the primary surface.
+
+27.8.4 — The constitution holds. New practical features must operate within it — not by abandoning it, but by working within the exceptions it explicitly provides. Features that pass the Six Tests (§27.2) and fall within §19A, §19B, or §15.4A are constitutional. Features that do not are still rejected.
 
 ---
 

@@ -47,7 +47,7 @@
   --marble: #ffffff;                        /* pure white; card and sheet surfaces */
   --ivory: #f5f5f0;                         /* warm off-white; subtle fill, input backgrounds */
   --bronze: #a0722a;                        /* warm metallic accent; icons, highlights */
-  --ember: #ff9500;                         /* flame/streak colour — matches --orange */
+  --ember: #ff9500;                         /* warm flame colour — matches --orange */
   --temple-surface: var(--bg);              /* page-level background */
   --ritual-surface: var(--bg-elevated);     /* card / module surface */
   --oracle-text: var(--label);              /* primary body text */

@@ -5,7 +5,7 @@
 /* ── EA-16: Today/Care — Obsidian Temple polish ──────────────────────────── */
 
 /* Task list cards — refined radius and deeper shadow */
-#pane-today .task-list {
+#pane-care .task-list {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
 }
@@ -16,7 +16,7 @@
    ──────────────────────────────────────────────────────────────────────────── */
 
 /* Strip card wrapper — tasks sit on the page floor */
-#pane-today .task-list {
+#pane-care .task-list {
   background: transparent;
   border-radius: 0;
   overflow: visible;
@@ -24,34 +24,34 @@
 }
 
 /* Separator-led rows — warm hairlines top and bottom */
-#pane-today .task-item {
+#pane-care .task-item {
   padding: 14px 4px;
   border-bottom: 1px solid var(--separator-warm);
 }
 
-#pane-today .task-item:first-child {
+#pane-care .task-item:first-child {
   border-top: 1px solid var(--separator-warm);
 }
 
-#pane-today .task-item:last-child {
+#pane-care .task-item:last-child {
   border-bottom: 1px solid var(--separator-warm);
 }
 
 /* Task text — 15px, tighter tracking */
-#pane-today .task-text {
+#pane-care .task-text {
   font-size: 15px;
   letter-spacing: -0.005em;
 }
 
 /* Task check — 20px (prototype size) */
-#pane-today .task-check {
+#pane-care .task-check {
   width: 20px;
   height: 20px;
 }
 
 /* Cycle and comfort tags — mono bronze meta label, no pill */
-#pane-today .cycle-tag,
-#pane-today .comfort-tag {
+#pane-care .cycle-tag,
+#pane-care .comfort-tag {
   background: transparent;
   color: var(--bronze);
   font-family: var(--font-mono);
@@ -66,11 +66,11 @@
 /* ── EA-47: Care ritual detail transformation ─────────────────────────────── */
 
 /* Page heading */
-#pane-today .care-heading {
+#pane-care .care-heading {
   padding: 4px 0 12px;
 }
 
-#pane-today .care-eyebrow {
+#pane-care .care-eyebrow {
   font-family: var(--font-mono);
   font-size: 9.5px;
   letter-spacing: 0.22em;
@@ -79,7 +79,7 @@
   margin-bottom: 5px;
 }
 
-#pane-today .care-title {
+#pane-care .care-title {
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: 28px;
@@ -88,13 +88,13 @@
   margin: 0 0 6px;
 }
 
-#pane-today .care-title .ital {
+#pane-care .care-title .ital {
   font-family: var(--font-display);
   font-style: italic;
   color: var(--bronze);
 }
 
-#pane-today .care-blurb {
+#pane-care .care-blurb {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 14px;
@@ -104,7 +104,7 @@
 }
 
 /* Compact cycle state + meta row */
-#pane-today .care-meta-row {
+#pane-care .care-meta-row {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -114,7 +114,7 @@
   margin-bottom: 28px;
 }
 
-#pane-today .care-state-wrap {
+#pane-care .care-state-wrap {
   width: 78px;
   min-height: 72px;
   flex-shrink: 0;
@@ -125,7 +125,7 @@
   gap: 8px;
 }
 
-#pane-today .care-state-marks {
+#pane-care .care-state-marks {
   display: grid;
   grid-template-columns: repeat(3, 22px);
   gap: 4px;
@@ -133,7 +133,7 @@
   justify-content: center;
 }
 
-#pane-today .care-state-mark {
+#pane-care .care-state-mark {
   width: 22px;
   height: 30px;
   display: inline-flex;
@@ -150,30 +150,30 @@
   transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
 }
 
-#pane-today .care-state-mark.is-current {
+#pane-care .care-state-mark.is-current {
   border-color: rgba(160, 122, 74, 0.42);
   background: rgba(160, 122, 74, 0.10);
   color: var(--bronze);
 }
 
 @media (prefers-color-scheme: dark) {
-  #pane-today .care-state-mark.is-current {
+  #pane-care .care-state-mark.is-current {
     border-color: rgba(201, 165, 107, 0.44);
     background: rgba(201, 165, 107, 0.10);
   }
 }
 
-#pane-today .care-state-wrap[data-care-state="kept"] .care-state-mark.is-current {
+#pane-care .care-state-wrap[data-care-state="kept"] .care-state-mark.is-current {
   background: var(--bronze);
   border-color: var(--bronze);
   color: var(--bg);
 }
 
-#pane-today .care-state-wrap[data-care-state="motion"] .care-state-mark.is-current {
+#pane-care .care-state-wrap[data-care-state="motion"] .care-state-mark.is-current {
   box-shadow: var(--shadow-bronze);
 }
 
-#pane-today .care-state-label {
+#pane-care .care-state-label {
   width: 100%;
   min-height: 10px;
   display: block;
@@ -186,26 +186,26 @@
   color: var(--muted-text);
 }
 
-#pane-today .care-state-wrap[data-care-state="kept"] .care-state-label,
-#pane-today .care-state-wrap[data-care-state="motion"] .care-state-label,
-#pane-today .care-state-wrap[data-care-state="resting"] .care-state-label {
+#pane-care .care-state-wrap[data-care-state="kept"] .care-state-label,
+#pane-care .care-state-wrap[data-care-state="motion"] .care-state-label,
+#pane-care .care-state-wrap[data-care-state="resting"] .care-state-label {
   color: var(--bronze);
 }
 
-#pane-today .care-meta-side {
+#pane-care .care-meta-side {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-#pane-today .care-kv {
+#pane-care .care-kv {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-#pane-today .care-k {
+#pane-care .care-k {
   font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.22em;
@@ -213,7 +213,7 @@
   color: var(--muted-text);
 }
 
-#pane-today .care-v {
+#pane-care .care-v {
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 500;
@@ -222,7 +222,7 @@
 }
 
 /* Section headers — Spectral italic label / quiet add */
-#pane-today .care-section-hd {
+#pane-care .care-section-hd {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -230,7 +230,7 @@
   padding: 0 4px 2px;
 }
 
-#pane-today .care-section-label {
+#pane-care .care-section-label {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 17px;
@@ -238,13 +238,13 @@
   color: var(--oracle-text);
 }
 
-#pane-today .care-section-right {
+#pane-care .care-section-right {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-#pane-today .care-section-hd .add-btn {
+#pane-care .care-section-hd .add-btn {
   font-size: 16px;
   color: var(--muted-text);
   background: transparent;
@@ -255,24 +255,24 @@
   transition: color 150ms ease;
 }
 
-#pane-today .care-section-hd .add-btn:hover {
+#pane-care .care-section-hd .add-btn:hover {
   color: var(--bronze);
 }
 
 /* Cycle strip */
-#pane-today .care-cycle-strip {
+#pane-care .care-cycle-strip {
   margin-top: 32px;
   padding-bottom: 8px;
 }
 
 
-#pane-today .care-cycle-three {
+#pane-care .care-cycle-three {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
 }
 
-#pane-today .care-cycle-card {
+#pane-care .care-cycle-card {
   border: 1px solid var(--separator-warm);
   border-radius: var(--radius-md);
   padding: 12px 10px;
@@ -281,23 +281,23 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  #pane-today .care-cycle-card {
+  #pane-care .care-cycle-card {
     background: transparent;
   }
 }
 
-#pane-today .care-cycle-card.active {
+#pane-care .care-cycle-card.active {
   background: linear-gradient(180deg, rgba(201,165,107,0.12), rgba(201,165,107,0.03));
   border-color: rgba(201,165,107,0.35);
 }
 
 @media (prefers-color-scheme: dark) {
-  #pane-today .care-cycle-card.active {
+  #pane-care .care-cycle-card.active {
     background: linear-gradient(180deg, rgba(201,165,107,0.10), rgba(201,165,107,0.02));
   }
 }
 
-#pane-today .care-cycle-ix {
+#pane-care .care-cycle-ix {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 18px;
@@ -306,7 +306,7 @@
   margin-bottom: 5px;
 }
 
-#pane-today .care-cycle-nm {
+#pane-care .care-cycle-nm {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
@@ -315,7 +315,7 @@
   margin-bottom: 4px;
 }
 
-#pane-today .care-cycle-sm {
+#pane-care .care-cycle-sm {
   font-family: var(--font-mono);
   font-size: 8px;
   letter-spacing: 0.14em;
@@ -323,22 +323,22 @@
   color: var(--muted-text);
 }
 
-#pane-today .care-cycle-card.active .care-cycle-sm {
+#pane-care .care-cycle-card.active .care-cycle-sm {
   color: var(--bronze);
 }
 
 /* ── EA-57: Care de-checklist — foreground the night protocol ───────────── */
 
-#pane-today .care-meta-row {
+#pane-care .care-meta-row {
   margin-bottom: 18px;
 }
 
-#pane-today .care-cycle-strip {
+#pane-care .care-cycle-strip {
   margin: 0 0 26px;
   padding-bottom: 0;
 }
 
-#pane-today .care-night-section {
+#pane-care .care-night-section {
   padding: 16px 14px 6px;
   border: 1px solid rgba(160, 114, 42, 0.24);
   border-radius: var(--radius-lg);
@@ -347,17 +347,17 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  #pane-today .care-night-section {
+  #pane-care .care-night-section {
     border-color: rgba(201, 165, 107, 0.28);
     background: linear-gradient(180deg, rgba(201, 165, 107, 0.10), rgba(201, 165, 107, 0.025));
   }
 }
 
-#pane-today .care-night-section .care-section-hd {
+#pane-care .care-night-section .care-section-hd {
   padding: 0 0 8px;
 }
 
-#pane-today .care-night-section .care-section-label {
+#pane-care .care-night-section .care-section-label {
   font-family: var(--font-sans);
   font-style: normal;
   font-size: 18px;
@@ -365,30 +365,30 @@
   letter-spacing: -0.015em;
 }
 
-#pane-today .care-night-section .task-item {
+#pane-care .care-night-section .task-item {
   padding: 15px 0;
   gap: 14px;
 }
 
-#pane-today .care-night-section .task-text {
+#pane-care .care-night-section .task-text {
   font-size: 15.5px;
 }
 
-#pane-today .care-night-section.has-care-memory .task-item:last-child {
+#pane-care .care-night-section.has-care-memory .task-item:last-child {
   border-bottom: none;
 }
 
-#pane-today .care-turn-memory {
+#pane-care .care-turn-memory {
   margin: 2px 0 0;
   padding: 13px 0 2px;
   border-top: 1px solid var(--separator-warm);
 }
 
-#pane-today .care-turn-memory[hidden] {
+#pane-care .care-turn-memory[hidden] {
   display: none;
 }
 
-#pane-today .care-turn-memory-label {
+#pane-care .care-turn-memory-label {
   font-family: var(--font-mono);
   font-size: 8.5px;
   letter-spacing: 0.12em;
@@ -396,7 +396,7 @@
   margin: 0 0 6px;
 }
 
-#pane-today .care-turn-memory-body {
+#pane-care .care-turn-memory-body {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 14px;
@@ -407,40 +407,40 @@
   word-break: break-word;
 }
 
-#pane-today .care-morning-section {
+#pane-care .care-morning-section {
   margin-bottom: 18px;
   padding: 0 4px;
 }
 
-#pane-today .care-morning-section .care-section-hd {
+#pane-care .care-morning-section .care-section-hd {
   padding: 0 0 2px;
 }
 
-#pane-today .care-morning-section .care-section-label {
+#pane-care .care-morning-section .care-section-label {
   font-size: 14px;
   color: var(--muted-text);
 }
 
-#pane-today .care-morning-section .task-item {
+#pane-care .care-morning-section .task-item {
   padding: 11px 0;
 }
 
-#pane-today .care-morning-section .task-text {
+#pane-care .care-morning-section .task-text {
   font-size: 14px;
   color: var(--muted-text);
 }
 
-#pane-today .care-morning-section .task-item.done .task-text {
+#pane-care .care-morning-section .task-item.done .task-text {
   color: var(--label-tertiary);
 }
 
 /* ── EA-91: Morning de-checklist — one quiet opening action ─────────────── */
 
-#pane-today .care-morning-keeper {
+#pane-care .care-morning-keeper {
   padding: 8px 0 10px;
 }
 
-#pane-today .care-morning-action {
+#pane-care .care-morning-action {
   width: 100%;
   min-height: 42px;
   border: 1px solid var(--separator-warm);
@@ -455,28 +455,28 @@
   transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 150ms ease;
 }
 
-#pane-today .care-morning-action:active:not(:disabled) {
+#pane-care .care-morning-action:active:not(:disabled) {
   transform: scale(0.99);
 }
 
-#pane-today .care-morning-action:disabled {
+#pane-care .care-morning-action:disabled {
   cursor: default;
 }
 
-#pane-today .care-morning-keeper[data-morning-state="kept"] .care-morning-action {
+#pane-care .care-morning-keeper[data-morning-state="kept"] .care-morning-action {
   border-color: rgba(160, 114, 42, 0.22);
   background: rgba(160, 114, 42, 0.04);
   color: var(--bronze);
 }
 
 @media (prefers-color-scheme: dark) {
-  #pane-today .care-morning-keeper[data-morning-state="kept"] .care-morning-action {
+  #pane-care .care-morning-keeper[data-morning-state="kept"] .care-morning-action {
     border-color: rgba(201, 165, 107, 0.24);
     background: rgba(201, 165, 107, 0.045);
   }
 }
 
-#pane-today .care-morning-state {
+#pane-care .care-morning-state {
   margin: 8px 0 0;
   color: var(--muted-text);
   font-family: var(--font-display);
@@ -486,16 +486,16 @@
   text-align: center;
 }
 
-#pane-today .care-morning-keeper[data-morning-state="kept"] .care-morning-state {
+#pane-care .care-morning-keeper[data-morning-state="kept"] .care-morning-state {
   color: var(--bronze);
 }
 
-#pane-today .care-morning-steps {
+#pane-care .care-morning-steps {
   border-top: 1px solid var(--separator-warm);
   margin-top: 2px;
 }
 
-#pane-today .care-morning-steps-summary {
+#pane-care .care-morning-steps-summary {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -504,11 +504,11 @@
   list-style: none;
 }
 
-#pane-today .care-morning-steps-summary::-webkit-details-marker {
+#pane-care .care-morning-steps-summary::-webkit-details-marker {
   display: none;
 }
 
-#pane-today .care-morning-steps-summary::after {
+#pane-care .care-morning-steps-summary::after {
   content: "+";
   color: var(--bronze);
   font-family: var(--font-mono);
@@ -516,18 +516,18 @@
   margin-left: 2px;
 }
 
-#pane-today .care-morning-steps[open] .care-morning-steps-summary::after {
+#pane-care .care-morning-steps[open] .care-morning-steps-summary::after {
   content: "-";
 }
 
-#pane-today .care-morning-steps-label {
+#pane-care .care-morning-steps-label {
   color: var(--muted-text);
   font-family: var(--font-display);
   font-size: 14px;
   font-style: italic;
 }
 
-#pane-today .care-morning-steps-meta {
+#pane-care .care-morning-steps-meta {
   color: var(--muted-text);
   font-family: var(--font-mono);
   font-size: 8.5px;
@@ -536,25 +536,25 @@
   text-transform: uppercase;
 }
 
-#pane-today .care-morning-steps[data-morning-state="kept"] .care-morning-steps-meta,
-#pane-today .care-morning-steps[data-morning-state="motion"] .care-morning-steps-meta {
+#pane-care .care-morning-steps[data-morning-state="kept"] .care-morning-steps-meta,
+#pane-care .care-morning-steps[data-morning-state="motion"] .care-morning-steps-meta {
   color: var(--bronze);
 }
 
-#pane-today .care-morning-steps-body {
+#pane-care .care-morning-steps-body {
   padding: 0 0 2px;
 }
 
-#pane-today .care-morning-section .care-morning-steps-hd {
+#pane-care .care-morning-section .care-morning-steps-hd {
   padding: 0 0 2px;
 }
 
-#pane-today .care-support-section {
+#pane-care .care-support-section {
   margin: 2px 0 22px;
   border-top: 1px solid var(--separator);
 }
 
-#pane-today .care-support-summary {
+#pane-care .care-support-summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -564,11 +564,11 @@
   list-style: none;
 }
 
-#pane-today .care-support-summary::-webkit-details-marker {
+#pane-care .care-support-summary::-webkit-details-marker {
   display: none;
 }
 
-#pane-today .care-support-summary::after {
+#pane-care .care-support-summary::after {
   content: "+";
   font-family: var(--font-mono);
   font-size: 12px;
@@ -576,17 +576,17 @@
   opacity: 0.72;
 }
 
-#pane-today .care-support-section[open] .care-support-summary::after {
+#pane-care .care-support-section[open] .care-support-summary::after {
   content: "-";
 }
 
-#pane-today .care-support-summary .care-section-label {
+#pane-care .care-support-summary .care-section-label {
   font-size: 13px;
   color: var(--muted-text);
 }
 
-#pane-today .care-support-meta,
-#pane-today .care-support-note {
+#pane-care .care-support-meta,
+#pane-care .care-support-note {
   font-family: var(--font-mono);
   font-size: 8.5px;
   letter-spacing: 0.18em;
@@ -595,30 +595,30 @@
   opacity: 0.72;
 }
 
-#pane-today .care-support-body {
+#pane-care .care-support-body {
   padding: 0 2px 4px;
 }
 
-#pane-today .care-support-hd {
+#pane-care .care-support-hd {
   padding: 0 0 2px;
 }
 
-#pane-today .care-support-section .task-item {
+#pane-care .care-support-section .task-item {
   padding: 9px 0;
 }
 
-#pane-today .care-support-section .task-text {
+#pane-care .care-support-section .task-text {
   font-size: 13.5px;
   color: var(--muted-text);
 }
 
 /* ── EA-76: Care de-checklist II — one kept Night protocol ──────────────── */
 
-#pane-today .care-night-keeper {
+#pane-care .care-night-keeper {
   padding: 8px 0 12px;
 }
 
-#pane-today .care-night-action {
+#pane-care .care-night-action {
   width: 100%;
   min-height: 46px;
   border: 1px solid rgba(160, 114, 42, 0.34);
@@ -633,33 +633,33 @@
   transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 150ms ease;
 }
 
-#pane-today .care-night-action:active:not(:disabled) {
+#pane-care .care-night-action:active:not(:disabled) {
   transform: scale(0.99);
 }
 
-#pane-today .care-night-action:disabled {
+#pane-care .care-night-action:disabled {
   cursor: default;
 }
 
-#pane-today .care-night-keeper[data-night-state="kept"] .care-night-action {
+#pane-care .care-night-keeper[data-night-state="kept"] .care-night-action {
   border-color: rgba(160, 114, 42, 0.22);
   background: rgba(160, 114, 42, 0.06);
   color: var(--bronze);
 }
 
 @media (prefers-color-scheme: dark) {
-  #pane-today .care-night-action {
+  #pane-care .care-night-action {
     border-color: rgba(201, 165, 107, 0.36);
     background: linear-gradient(180deg, rgba(201, 165, 107, 0.13), rgba(201, 165, 107, 0.035));
   }
 
-  #pane-today .care-night-keeper[data-night-state="kept"] .care-night-action {
+  #pane-care .care-night-keeper[data-night-state="kept"] .care-night-action {
     border-color: rgba(201, 165, 107, 0.24);
     background: rgba(201, 165, 107, 0.055);
   }
 }
 
-#pane-today .care-night-state {
+#pane-care .care-night-state {
   margin: 9px 0 0;
   color: var(--muted-text);
   font-family: var(--font-display);
@@ -669,16 +669,16 @@
   text-align: center;
 }
 
-#pane-today .care-night-keeper[data-night-state="kept"] .care-night-state {
+#pane-care .care-night-keeper[data-night-state="kept"] .care-night-state {
   color: var(--bronze);
 }
 
-#pane-today .care-night-steps {
+#pane-care .care-night-steps {
   border-top: 1px solid var(--separator-warm);
   margin-top: 2px;
 }
 
-#pane-today .care-night-steps-summary {
+#pane-care .care-night-steps-summary {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -687,11 +687,11 @@
   list-style: none;
 }
 
-#pane-today .care-night-steps-summary::-webkit-details-marker {
+#pane-care .care-night-steps-summary::-webkit-details-marker {
   display: none;
 }
 
-#pane-today .care-night-steps-summary::after {
+#pane-care .care-night-steps-summary::after {
   content: "+";
   color: var(--bronze);
   font-family: var(--font-mono);
@@ -699,18 +699,18 @@
   margin-left: 2px;
 }
 
-#pane-today .care-night-steps[open] .care-night-steps-summary::after {
+#pane-care .care-night-steps[open] .care-night-steps-summary::after {
   content: "-";
 }
 
-#pane-today .care-night-steps-label {
+#pane-care .care-night-steps-label {
   color: var(--muted-text);
   font-family: var(--font-display);
   font-size: 14px;
   font-style: italic;
 }
 
-#pane-today .care-night-steps-meta {
+#pane-care .care-night-steps-meta {
   color: var(--muted-text);
   font-family: var(--font-mono);
   font-size: 8.5px;
@@ -719,22 +719,22 @@
   text-transform: uppercase;
 }
 
-#pane-today .care-night-steps[data-night-state="kept"] .care-night-steps-meta,
-#pane-today .care-night-steps[data-night-state="motion"] .care-night-steps-meta {
+#pane-care .care-night-steps[data-night-state="kept"] .care-night-steps-meta,
+#pane-care .care-night-steps[data-night-state="motion"] .care-night-steps-meta {
   color: var(--bronze);
 }
 
-#pane-today .care-night-steps-body {
+#pane-care .care-night-steps-body {
   padding: 0 0 4px;
 }
 
-#pane-today .care-night-section .care-night-steps-hd {
+#pane-care .care-night-section .care-night-steps-hd {
   padding: 0 0 2px;
 }
 
 /* ── EA-144: Care protocol note ─────────────────────────────────────────────── */
 
-#pane-today .care-protocol-note {
+#pane-care .care-protocol-note {
   margin: 0 0 14px;
   font-family: var(--font-display);
   font-style: italic;
@@ -742,4 +742,278 @@
   line-height: 1.55;
   color: var(--muted-text);
   opacity: 0.82;
+}
+
+/* ── EA-166: Today Plan ──────────────────────────────────────────────────────── */
+
+#pane-today .today-plan-header {
+  padding: 8px 0 20px;
+}
+
+#pane-today .today-plan-date {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin: 0;
+}
+
+#pane-today .today-plan-block {
+  margin-bottom: 28px;
+}
+
+#pane-today .today-plan-block-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  margin-bottom: 10px;
+}
+
+/* Intention rows */
+#pane-today .today-plan-intention {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+#pane-today .today-plan-intention:first-child {
+  border-top: 1px solid var(--separator-warm);
+}
+
+#pane-today .today-plan-mark {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--bronze);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 150ms ease;
+}
+
+#pane-today .today-plan-text {
+  flex: 1;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--oracle-text);
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  transition: color 180ms ease, opacity 180ms ease;
+}
+
+#pane-today .today-plan-intention.is-kept .today-plan-text {
+  color: var(--muted-text);
+  opacity: 0.60;
+}
+
+#pane-today .today-plan-release {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--label-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 150ms ease;
+}
+
+#pane-today .today-plan-release:hover {
+  color: var(--muted-text);
+}
+
+/* Empty state */
+#pane-today .today-plan-empty {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--muted-text);
+  padding: 15px 0;
+  border-top: 1px solid var(--separator-warm);
+  border-bottom: 1px solid var(--separator-warm);
+  margin: 0;
+}
+
+/* Add button */
+#pane-today .today-plan-add-btn {
+  display: inline-block;
+  margin-top: 14px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--bronze);
+  cursor: pointer;
+  letter-spacing: -0.005em;
+}
+
+/* Add form — shown inline below the list */
+#pane-today .today-plan-add-form {
+  margin-top: 12px;
+  padding: 10px 0 4px;
+  border-top: 1px solid var(--separator-warm);
+}
+
+#pane-today .today-plan-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--separator-warm);
+  padding: 6px 2px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--oracle-text);
+  outline: none;
+  caret-color: var(--bronze);
+}
+
+#pane-today .today-plan-input::placeholder {
+  color: var(--label-tertiary);
+}
+
+#pane-today .today-plan-input-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+#pane-today .today-plan-input-confirm,
+#pane-today .today-plan-input-cancel {
+  background: transparent;
+  border: none;
+  padding: 4px 0;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+  letter-spacing: 0;
+}
+
+#pane-today .today-plan-input-confirm {
+  color: var(--bronze);
+  font-weight: 500;
+}
+
+#pane-today .today-plan-input-cancel {
+  color: var(--muted-text);
+}
+
+/* Limit message */
+#pane-today .today-plan-limit {
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--muted-text);
+  opacity: 0.80;
+}
+
+/* Carryover section */
+#pane-today .today-plan-carryover {
+  margin-bottom: 28px;
+}
+
+#pane-today .today-plan-carryover-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+#pane-today .today-plan-carryover-item:first-child {
+  border-top: 1px solid var(--separator-warm);
+}
+
+#pane-today .today-plan-carryover-text {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--muted-text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+#pane-today .today-plan-carryover-actions {
+  display: flex;
+  gap: 14px;
+}
+
+#pane-today .today-plan-forward-btn,
+#pane-today .today-plan-pass-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  cursor: pointer;
+  letter-spacing: 0;
+}
+
+#pane-today .today-plan-forward-btn {
+  color: var(--bronze);
+}
+
+#pane-today .today-plan-pass-btn {
+  color: var(--muted-text);
+}
+
+/* Open items section */
+#pane-today .today-plan-open-block {
+  margin-bottom: 20px;
+}
+
+#pane-today .today-plan-open-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--separator-warm);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#pane-today .today-plan-open-item:first-child {
+  border-top: 1px solid var(--separator-warm);
+}
+
+#pane-today .today-plan-open-item.is-kept .today-plan-open-text {
+  color: var(--muted-text);
+  opacity: 0.60;
+}
+
+#pane-today .today-plan-open-text {
+  flex: 1;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--oracle-text);
+  letter-spacing: -0.005em;
+}
+
+#pane-today .today-plan-open-chevron {
+  flex-shrink: 0;
+  color: var(--label-tertiary);
+  opacity: 0.70;
+}
+
+/* Footer */
+#pane-today .today-plan-footer {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--muted-text);
+  opacity: 0.65;
+  padding: 8px 0 16px;
+  margin: 0;
 }
