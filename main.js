@@ -5,6 +5,7 @@ import { isValidReminderTime, formatTime12, ymd } from './js/utils.js';
 import {
   initSupabase, scheduleSaveToSupabase, flushToSupabase,
   hideBootShell, showAuthView, sb, registerPostSyncCallback,
+  registerBootRevealLayoutCallback,
 } from './js/sync.js';
 import { renderHeader, renderTodayCycle } from './js/render/common.js';
 import { renderTemple, applyTempleTrace } from './js/render/temple.js';
@@ -21,7 +22,7 @@ import { witnessLight, getLightOpeningInvitation } from './js/domains/light.js';
 import { renderProgress, renderWeeklyPhotos, closePastDayModal } from './js/render/progress.js';
 import { updateSettingsView, exportData, importData, resetAll, resetStartDate } from './js/render/settings.js';
 import { isClosedForToday } from './js/domains/sleep.js';
-import { registerClosedDayHandler, switchTab } from './js/ui/tabs.js';
+import { registerClosedDayHandler, refreshActivePaneLayout, switchTab } from './js/ui/tabs.js';
 import {
   openAddModal,
   closeModal,
@@ -77,17 +78,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo(0, 0);
   });
 
-  initSupabase();
-
-  // Safety net: auto-clear boot shell if normal paths fail (fires only on exception)
-  setTimeout(hideBootShell, 4000);
-
   renderHeader();
   renderTodayCycle();
   renderAllLists();
   renderCycleList();
   renderTemple();
   registerClosedDayHandler(openSleepModal);
+  registerBootRevealLayoutCallback(refreshActivePaneLayout);
+  switchTab('today', { skipClosedDayCheck: true });
+
+  initSupabase();
+
+  // Safety net: auto-clear boot shell if normal paths fail (fires only on exception)
+  setTimeout(hideBootShell, 4000);
 
   // --- Tab clicks ---
   document.querySelectorAll('.tab').forEach(btn => {
@@ -526,16 +529,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (isClosedForToday()) openSleepModal();
-
-  // Activate the initial Today tab through the same code path as tab switching.
-  // Pane starts without 'active' in HTML so this add triggers the same display:none→block
-  // transition, layout reflow, and paneEnter animation that switchTab uses, fixing the
-  // iOS PWA position:fixed blank-space bug on first launch.
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('.tab[data-tab="today"]')?.classList.add('active');
-  window.scrollTo(0, 0);
-  document.getElementById('pane-today')?.classList.add('active');
-  renderTodayPlan();
 
   // Reload when calendar day rolls over (app left open overnight)
   setInterval(() => {

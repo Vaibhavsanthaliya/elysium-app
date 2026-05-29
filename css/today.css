@@ -821,7 +821,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 13px 0;
+  padding: 11px 0;
   border-bottom: 1px solid var(--separator-warm);
 }
 
@@ -883,14 +883,14 @@
   font-style: italic;
   font-size: 15px;
   color: var(--muted-text);
-  padding: 8px 0;
+  padding: 6px 0;
   margin: 0;
 }
 
 /* Add button */
 #pane-today .today-plan-add-btn {
   display: inline-block;
-  margin-top: 14px;
+  margin-top: 10px;
   background: transparent;
   border: none;
   padding: 0;
@@ -968,7 +968,7 @@
 }
 
 #pane-today .today-plan-carryover-item {
-  padding: 12px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--separator-warm);
 }
 
@@ -1018,7 +1018,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--separator-warm);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -1134,7 +1134,7 @@
   font-size: 13px;
   color: var(--muted-text);
   opacity: 0.65;
-  padding: 8px 0 16px;
+  padding: 7px 0 10px;
   margin: 0;
 }
 
@@ -1151,7 +1151,7 @@
 
 /* Masthead */
 #pane-today .today-plan-masthead {
-  padding: 4px 0 26px;
+  padding: 2px 0 18px;
 }
 
 #pane-today .today-plan-eyebrow {
@@ -1193,7 +1193,7 @@
   align-items: baseline;
   justify-content: space-between;
   border-top: 1px solid var(--separator-warm);
-  padding-top: 16px;
+  padding-top: 13px;
   margin-bottom: 0;
 }
 
@@ -1215,7 +1215,7 @@
 
 /* Open section — extra breathing room before the separator */
 #pane-today .today-plan-open-hd {
-  margin-top: 28px;
+  margin-top: 20px;
 }
 
 /* Intention rows — restore top separator on first-child */
@@ -1239,7 +1239,11 @@
   letter-spacing: 0.20em;
   text-transform: uppercase;
   color: var(--muted-text);
-  margin: 20px 0 6px;
+  margin: 16px 0 6px;
+}
+
+#pane-today .footer-spacer {
+  height: 28px;
 }
 
 #pane-today .today-plan-carryover-text {

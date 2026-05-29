@@ -1,7 +1,7 @@
 /* Elysium — Service Worker
    Cache shell for offline + standalone install */
 
-const CACHE_NAME = 'elysium-v84';
+const CACHE_NAME = 'elysium-v85';
 const ASSETS = [
   './',
   './index.html',

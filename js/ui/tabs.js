@@ -23,8 +23,42 @@ function runRenderFor(name) {
   if (name === 'settings') updateSettingsView();
 }
 
-export function switchTab(name) {
-  if (isClosedForToday()) {
+function clearLeavingPane() {
+  if (leavingTimer) {
+    clearTimeout(leavingTimer);
+    leavingTimer = null;
+  }
+
+  document.querySelectorAll('.tab-pane.is-leaving').forEach(p => {
+    p.classList.remove('is-leaving', 'active');
+  });
+}
+
+export function refreshActivePaneLayout() {
+  clearLeavingPane();
+
+  const activePane = document.querySelector('.tab-pane.active:not(.is-leaving)');
+  if (!activePane?.id?.startsWith('pane-')) return false;
+
+  const name = activePane.id.slice(5);
+  runRenderFor(name);
+  window.scrollTo(0, 0);
+
+  activePane.style.display = 'none';
+  void activePane.offsetHeight;
+  activePane.style.display = 'block';
+  void activePane.offsetHeight;
+  activePane.style.display = '';
+
+  activePane.getAnimations?.().forEach(animation => {
+    try { animation.finish(); } catch {}
+  });
+
+  return true;
+}
+
+export function switchTab(name, options = {}) {
+  if (!options.skipClosedDayCheck && isClosedForToday()) {
     closedDayHandler?.();
     return false;
   }
@@ -44,13 +78,7 @@ export function switchTab(name) {
     return true;
   }
 
-  if (leavingTimer) {
-    clearTimeout(leavingTimer);
-    leavingTimer = null;
-    document.querySelectorAll('.tab-pane.is-leaving').forEach(p => {
-      p.classList.remove('is-leaving', 'active');
-    });
-  }
+  clearLeavingPane();
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

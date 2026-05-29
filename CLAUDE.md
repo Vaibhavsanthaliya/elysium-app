@@ -176,6 +176,7 @@ Recent tickets (EA-1 through EA-94 archived in ticket-log.md):
 
 | Ticket | Summary |
 |---|---|
+| EA-178 | Today/Sleep Bug Fix Batch — first-launch Today reveal now refreshes the active pane layout on boot reveal instead of nudging app height; Today vertical rhythm tightened; Sleep shutdown separators simplified. SW → `elysium-v85`. |
 | EA-95 | Sleep First-Light Reciprocity — `getDailyLine()` gains first-light branch: yesterday closed + today open + before 11am → `”The night has passed.”` |
 | EA-96 | Identity Surface Reset — manifest, README, SW comment/cache, package lock name describe Elysium as quiet ritual OS. |
 | EA-97 | Dead Code / Architecture Cleanup — unused JS exports/imports/constants and orphaned CSS rollback selectors removed. |

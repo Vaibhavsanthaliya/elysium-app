@@ -10,37 +10,29 @@ export let sb = null;
 export let sbUserId = null;
 let sbSaveTimer = null;
 let syncInProgress = false;
+let bootShellRevealed = false;
 
 // Registered by main.js: called after a successful cloud sync so render modules
 // can refresh without sync.js importing any render/ui modules (import direction).
 let _postSyncCallback = null;
 export function registerPostSyncCallback(fn) { _postSyncCallback = fn; }
 
+// Registered by main.js. Runs once on the reveal frame so tab-pane layout can
+// settle after the boot overlay is removed, without sync.js importing UI modules.
+let _bootRevealLayoutCallback = null;
+export function registerBootRevealLayoutCallback(fn) {
+  _bootRevealLayoutCallback = typeof fn === 'function' ? fn : null;
+}
+
 export function hideBootShell() {
   const el = document.getElementById('boot-shell');
+  if (bootShellRevealed || el?.hidden) return;
+
+  bootShellRevealed = true;
   if (el) el.hidden = true;
-  // iOS standalone first-launch blank-space fix (EA-167D).
-  //
-  // The Today pane and the position:fixed tab bar are first laid out *behind* the
-  // boot shell, while the standalone viewport metrics (dvh height, safe-area-inset
-  // and the fixed-element containing block) are still provisional. Those metrics
-  // settle when the app is revealed, but the geometry is never recomputed — so the
-  // .app (min-height:100dvh) and the .tabs (bottom:0) keep stale dimensions, leaving
-  // blank space below the nav. A tab switch corrects it only because switchTab's
-  // pane swap forces a reflow against the settled viewport.
-  //
-  // Earlier scroll-based attempts failed because scrollTop is already 0 — the layout
-  // geometry is wrong, not the scroll offset. The reliable fix is to replay that same
-  // reflow once, on the frame the app first becomes visible: nudge the dvh container
-  // and read layout synchronously so iOS re-resolves dvh, safe-area and fixed-bar
-  // position. No scroll, no animation replay, no timeout.
+
   requestAnimationFrame(() => {
-    const app = document.querySelector('.app');
-    if (!app) return;
-    app.style.minHeight = '99.9dvh';
-    void app.offsetHeight;   // force synchronous layout against the settled viewport
-    app.style.minHeight = ''; // restore CSS-driven min-height:100dvh
-    void app.offsetHeight;
+    _bootRevealLayoutCallback?.();
   });
 }
 
