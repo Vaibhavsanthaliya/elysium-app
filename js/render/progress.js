@@ -2,7 +2,7 @@ import { CYCLE_NAMES } from '../constants.js';
 import { ymd, escapeHtml } from '../utils.js';
 import { state, todayStr, today, saveState } from '../state.js';
 import { getMilestoneStage } from '../state.js';
-import { getDaysSinceStart, getCycleDayForDate } from '../domains/care.js';
+import { getDaysSinceStart, getCycleDayForDate, getCareRecord } from '../domains/care.js';
 import { getChronicleNote } from '../domains/chronicle.js';
 import { renderWeeklyPhotos } from '../services/photos.js';
 
@@ -161,8 +161,16 @@ export function renderPastDayBody(dateStr, cycleDay, providedDate) {
   const status = getRecordStatus(dateStr, date);
   const protocol = getProtocolLabels(cycleDay);
   const chronicleExcerpt = getChronicleExcerpt(dateStr);
+  const careRec = getCareRecord(dateStr);
   const isPast = dateStr !== todayStr && date <= today;
   const isKept = status.key === 'kept';
+  const careNotesHtml = (careRec.condition || careRec.morningNote || careRec.reactionNote)
+    ? `<div class="past-day-care-notes">
+        ${careRec.condition ? `<p class="past-day-care-note"><span class="past-day-care-note-label">Skin this morning</span>${escapeHtml(careRec.condition)}</p>` : ''}
+        ${careRec.morningNote ? `<p class="past-day-care-note"><span class="past-day-care-note-label">Morning note</span>${escapeHtml(careRec.morningNote)}</p>` : ''}
+        ${careRec.reactionNote ? `<p class="past-day-care-note"><span class="past-day-care-note-label">Reaction note</span>${escapeHtml(careRec.reactionNote)}</p>` : ''}
+      </div>`
+    : '';
   const body = document.getElementById('past-day-body');
   body.innerHTML = `
     <div class="past-day-record state-${status.key}">
@@ -170,6 +178,7 @@ export function renderPastDayBody(dateStr, cycleDay, providedDate) {
       <div class="past-day-memory-card">
         <p class="past-day-protocol">${escapeHtml(protocol.context)}</p>
       </div>
+      ${careNotesHtml}
       ${chronicleExcerpt ? `<div class="past-day-chronicle">
         <p class="past-day-chronicle-body">${escapeHtml(chronicleExcerpt)}</p>
       </div>` : ''}

@@ -117,3 +117,11 @@ export function getChronicleEntries() {
     )
     .sort((a, b) => b[0].localeCompare(a[0]));
 }
+
+export function searchChronicleEntries(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return getChronicleEntries();
+  return getChronicleEntries().filter(([, note]) =>
+    note.body.toLowerCase().includes(q)
+  );
+}

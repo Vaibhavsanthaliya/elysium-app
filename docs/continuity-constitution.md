@@ -285,6 +285,55 @@ What follows is binding.
 
 19B.6 — This exception is scoped to a single Today surface. It does not authorize intention tracking, carryover analysis, or habit-formation features anywhere else in the app. Future proposals that appeal to §19B bear the full burden of proof: they must demonstrate a genuine daily-use need that cannot be met without departing from atmospheric-only design. When in doubt, the exception does not extend.
 
+### §19C · The Sleep Shutdown Exception
+
+19C.1 — Sleep is the day's endpoint. The closure ritual benefits from awareness of what the user placed in Today but did not complete. Allowing Sleep to hold this context and feed it back to the next morning's Today creates a genuine night-to-morning loop without adding tracking, scoring, or history. This exception permits the minimal cross-domain interaction necessary for that loop.
+
+19C.2 — The Sleep Shutdown Exception permits, specifically:
+- (a) The Sleep modal may read and display today's unkept Today intentions during the closure ritual, as user-authored text only. No counts, no completion framing, no scoring.
+- (b) The Sleep modal may present two options per intention: carry tomorrow, or let pass. These choices are session-local until Sleep is saved; they are not stored incrementally, logged, or summarized.
+- (c) Upon Sleep closure, carry/pass decisions are written to Today state, directing which unkept intentions appear as carryover the following morning. Intentions not explicitly marked pass are carried by default. If no decisions are made at all, behavior falls back to the default automatic carryover (§19B.2(c)).
+- (d) The morning Today surface may display last night's sleep parking note as a quiet one-time handoff — user-authored text only. The user may dismiss it permanently with a single tap. Once dismissed, it does not reappear.
+- (e) If no parking note was saved, or if today's handoff was already dismissed, no handoff appears. Silence is the correct default.
+
+19C.3 — The following are explicitly forbidden under this exception:
+- A count of how many intentions were carried or let pass
+- Any history of carry/pass decisions across multiple nights
+- "You carried X of Y" phrasing in any form
+- Weekly or monthly carry summaries
+- Pattern observations derived from carry/pass behavior
+- Sleep quality, duration, or bedtime data of any kind
+- Recurrence tracking or reminder generation from unmet intentions
+- AI-generated suggestions about which intentions to carry
+- Displaying how many times the same intention has been carried
+
+19C.4 — The morning handoff is governed by §22.5A: the room holds what the user placed inside it. The parking note surfaces once, silently. It does not recur, does not compound, does not accumulate.
+
+19C.5 — This exception does not expand Sleep's scope. Sleep remains a ritual endpoint. The carry/pass decision is a single nocturnal gesture, not a recurring productivity workflow.
+
+19C.6 — This exception does not extend to any other domain. Carryover analysis, shutdown summaries, and intention recurrence tracking remain forbidden everywhere, including in a more elaborate future Sleep surface.
+
+### §19D · The Body Relief Exception
+
+19D.1 — Body may offer practical desk-relief content in response to a user-selected area of present tension. This is permitted because the user is asking for immediate, general physical relief, not recording a symptom history.
+
+19D.2 — The Body Relief Exception permits:
+- (a) A same-session area choice such as neck, shoulders, back, wrists, or eyes
+- (b) One fixed, curated reset instruction for the selected area
+- (c) Existing Body arrival presence after the user completes the reset
+
+19D.3 — The following remain forbidden:
+- Pain scales or severity ratings
+- Symptom history across days
+- Body maps over time
+- Frequency counts by area
+- Medical or diagnostic language
+- HealthKit or passive sensing
+- Recommendations based on past Body usage
+- Any claim that the app knows what is wrong with the user's body
+
+19D.4 — The selected area is not a profile, pattern, or diagnosis. It is a same-session request for a general reset. If the user closes the modal before returning, nothing is saved.
+
 ---
 
 ## Article V — Prohibitions

@@ -1,0 +1,461 @@
+/* Elysium — Logo Exploration extra chrome
+ * Adds layouts specific to the broader logo exploration:
+ *   - mark grid (the 9-up showcase)
+ *   - shortlist card (mark + name + symbolism)
+ *   - mono / bronze / on-marble swatch rows
+ *   - size ladder
+ *   - motion grid
+ *   - brand-adjacency board
+ * All built on tokens.css variables; nothing new.
+ */
+
+/* ─────────────────────────────────────────────────────────────
+   The 9-up mark grid (all candidates side-by-side)
+   ───────────────────────────────────────────────────────────── */
+.mark-grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--separator);
+  padding: 0;
+}
+.mark-cell {
+  position: relative;
+  background: #0E0E12;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px;
+  padding: 22px;
+}
+.mark-cell .mark-name {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin-top: 4px;
+}
+.mark-cell .mark-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.mark-cell .mark-index {
+  position: absolute;
+  top: 10px; left: 14px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--bronze);
+  opacity: 0.6;
+}
+.mark-cell.is-prior::after {
+  content: 'PRIOR';
+  position: absolute;
+  top: 10px; right: 14px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+  background: rgba(236,230,217,0.04);
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Shortlist mark — single mark with name, subtitle, symbolism
+   ───────────────────────────────────────────────────────────── */
+.shortlist-card {
+  height: 100%;
+  display: flex; flex-direction: column;
+}
+.shortlist-stage {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at 50% 30%, rgba(201,165,107,0.10), transparent 65%);
+  position: relative;
+  padding: 24px;
+}
+.shortlist-rank {
+  position: absolute;
+  top: 18px; left: 22px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 28px;
+  color: var(--bronze);
+  line-height: 1;
+}
+.shortlist-pip {
+  position: absolute;
+  top: 16px; right: 16px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  background: rgba(201,165,107,0.10);
+  border: 1px solid rgba(201,165,107,0.30);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.shortlist-meta {
+  padding: 22px 28px 28px;
+  border-top: 1px solid var(--separator);
+}
+.shortlist-meta .eyebrow { margin-bottom: 8px; }
+.shortlist-name {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.015em;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.shortlist-name em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--bronze);
+}
+.shortlist-symbolism {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.5;
+  margin: 0 0 12px;
+  border-left: 1px solid var(--separator-strong);
+  padding-left: 12px;
+}
+.shortlist-body {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Size ladder — same mark at 6 sizes, descending
+   ───────────────────────────────────────────────────────────── */
+.size-ladder {
+  height: 100%;
+  display: flex; flex-direction: column;
+  padding: 24px 24px 16px;
+}
+.size-ladder-stage {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  gap: 36px;
+  padding: 16px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(201,165,107,0.06), transparent 70%);
+}
+.size-ladder-pair {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.size-ladder-pair .size-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.size-ladder-note {
+  text-align: center;
+  padding-top: 18px;
+  border-top: 1px solid var(--separator);
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Mono / bronze swatch row — same mark in five colorways
+   ───────────────────────────────────────────────────────────── */
+.mono-strip {
+  height: 100%;
+  display: flex; flex-direction: column;
+}
+.mono-row {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--separator);
+}
+.mono-cell {
+  position: relative;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px;
+  padding: 22px 8px;
+}
+.mono-cell .mono-tag {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.3;
+}
+.mono-strip-foot {
+  padding: 16px 22px 18px;
+  border-top: 1px solid var(--separator);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-muted);
+  background: #15151b;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   App icon panorama — 3 sizes, both themes, side by side
+   ───────────────────────────────────────────────────────────── */
+.icon-pano {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 1px;
+  background: var(--separator);
+}
+.icon-pano-band {
+  display: flex; align-items: center; justify-content: center;
+  gap: 32px;
+  padding: 24px;
+}
+.icon-pano-band.is-obs { background: #0E0E12; }
+.icon-pano-band.is-marble { background: #EBE4D6; }
+.icon-pano-pair {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.icon-pano-pair .icon-pano-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.icon-pano-band.is-obs .icon-pano-tag { color: rgba(236,230,217,0.40); }
+.icon-pano-band.is-marble .icon-pano-tag { color: rgba(26,24,22,0.45); }
+.icon-pano-band-label {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.icon-pano-band.is-obs .icon-pano-band-label {
+  top: 12px; left: 16px; color: rgba(236,230,217,0.45);
+}
+.icon-pano-band.is-marble .icon-pano-band-label {
+  top: 12px; left: 16px; color: rgba(26,24,22,0.5);
+}
+.icon-pano-band { position: relative; }
+
+/* ─────────────────────────────────────────────────────────────
+   Home screen plate — fake iOS home screen with the icon dropped in
+   ───────────────────────────────────────────────────────────── */
+.homescreen {
+  width: 100%; height: 100%;
+  background: linear-gradient(180deg, #1d2230 0%, #0c0e15 60%, #050608 100%);
+  display: flex; flex-direction: column;
+  padding: 36px 28px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.homescreen::before {
+  content: '';
+  position: absolute; inset: -40px -40px 40% -40px;
+  background: radial-gradient(ellipse at 30% 0%, rgba(255,210,160,0.20), transparent 60%);
+  pointer-events: none;
+}
+.hs-clock {
+  font-family: var(--font-sans);
+  font-weight: 200;
+  font-size: 72px;
+  color: rgba(255,255,255,0.96);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-align: center;
+  margin: 20px 0 4px;
+  position: relative;
+}
+.hs-date {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  margin-bottom: 36px;
+  position: relative;
+}
+.hs-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px 14px;
+  position: relative;
+}
+.hs-app {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.hs-app-tile {
+  width: 60px; height: 60px;
+  border-radius: 13px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.hs-app-tile.is-cal { background: linear-gradient(160deg, #fff 0%, #f1f1f1 100%); position: relative; }
+.hs-app-tile.is-cal::after {
+  content: '24';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-sans);
+  font-weight: 200;
+  font-size: 32px;
+  color: #111;
+  line-height: 1;
+}
+.hs-app-tile.is-cal::before {
+  content: 'MON';
+  position: absolute; top: 4px; left: 0; right: 0;
+  font-family: var(--font-sans); font-weight: 600;
+  font-size: 8px; color: #e74c3c;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+.hs-app-tile.is-music { background: linear-gradient(160deg, #ff3b30, #c9214a); }
+.hs-app-tile.is-mail { background: linear-gradient(160deg, #5ca8ff, #1c6ee0); }
+.hs-app-tile.is-camera { background: linear-gradient(160deg, #4a4a52, #2a2a32); }
+.hs-app-tile.is-photos { background: linear-gradient(160deg, #fff 0%, #f0f0f0 100%); }
+.hs-app-tile.is-maps { background: linear-gradient(160deg, #cfe5b9, #88b76d); }
+.hs-app-tile.is-notes { background: linear-gradient(160deg, #fff, #f1ce6a); }
+.hs-app-tile.is-safari { background: radial-gradient(circle at 50% 50%, #fff 0%, #cfe6ff 50%, #1976d2 100%); }
+.hs-app-tile.is-elysium {
+  background: radial-gradient(ellipse at 50% 18%, #1f1b16 0%, #0E0E12 55%, #08080b 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(201,165,107,0.18),
+    inset 0 -6px 18px rgba(0,0,0,0.35);
+  display: flex; align-items: center; justify-content: center;
+  border: 0;
+}
+.hs-name {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: rgba(255,255,255,0.92);
+  text-align: center;
+}
+.hs-dock {
+  margin-top: auto;
+  background: rgba(255,255,255,0.10);
+  border-radius: 28px;
+  padding: 12px;
+  display: flex; justify-content: space-around;
+  backdrop-filter: blur(20px);
+}
+.hs-dock .hs-app-tile { width: 54px; height: 54px; }
+
+/* ─────────────────────────────────────────────────────────────
+   Motion notes
+   ───────────────────────────────────────────────────────────── */
+.motion-card {
+  height: 100%;
+  display: flex; flex-direction: column;
+  padding: 28px;
+  gap: 16px;
+}
+.motion-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.motion-frame {
+  aspect-ratio: 1;
+  background: #15151b;
+  border: 1px solid var(--separator);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.motion-frame .mf-tag {
+  position: absolute; bottom: -22px; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.motion-foot { margin-top: 24px; }
+
+/* ─────────────────────────────────────────────────────────────
+   Brand-adjacency board
+   ───────────────────────────────────────────────────────────── */
+.adjacency-card {
+  height: 100%;
+  display: flex; flex-direction: column;
+  padding: 28px;
+  gap: 20px;
+}
+.adj-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--separator);
+}
+.adj-row:last-child { border-bottom: 0; }
+.adj-brand {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--bronze);
+  letter-spacing: -0.01em;
+}
+.adj-note {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+.adj-note b { color: var(--ink); font-weight: 500; }
+
+/* ─────────────────────────────────────────────────────────────
+   Wordmark + mark final lockup card
+   ───────────────────────────────────────────────────────────── */
+.lockup-pano {
+  height: 100%;
+  display: flex; flex-direction: column;
+}
+.lockup-band {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  gap: 24px;
+  padding: 24px;
+  position: relative;
+}
+.lockup-band.is-obs { background: #0E0E12; }
+.lockup-band.is-marble { background: #F4EFE6; }
+.lockup-band-label {
+  position: absolute;
+  top: 14px; left: 18px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.lockup-band.is-obs .lockup-band-label { color: rgba(236,230,217,0.45); }
+.lockup-band.is-marble .lockup-band-label { color: rgba(26,24,22,0.5); }
+
+/* shared eyebrow */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}

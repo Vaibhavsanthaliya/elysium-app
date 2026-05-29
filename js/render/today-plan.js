@@ -1,15 +1,32 @@
-import { state, todayStr } from '../state.js';
+import { state, today, todayStr } from '../state.js';
 import { escapeHtml } from '../utils.js';
 import {
   normalizeTodayPlanIfNeeded,
   getTodayPlan,
   getCarryoverCandidates,
+  getMorningSleepHandoff,
+  dismissSleepHandoff,
 } from '../domains/today-plan.js';
 import { getCareTurnState, getCareCycleLabel, getMorningCareState, getPeriodKey } from './temple.js';
 import { getSleepEntry } from '../domains/sleep.js';
 import { hasMindArrival } from '../domains/mind.js';
 import { hasArrivedToday } from '../domains/body.js';
 import { hasHeldToday } from '../domains/water.js';
+
+const _MASTHEAD_DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const _MASTHEAD_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const _PERIOD_WORDS = {
+  'first-light': 'Morning', 'morning': 'Morning',
+  'midday': 'Midday', 'afternoon': 'Midday',
+  'golden-hour': 'Evening', 'dusk': 'Evening',
+  'night': 'Night',
+};
+
+function renderMasthead() {
+  const el = document.getElementById('today-plan-date');
+  if (!el) return;
+  el.textContent = `${_MASTHEAD_DAYS[today.getDay()]} · ${today.getDate()} ${_MASTHEAD_MONTHS[today.getMonth()]}`;
+}
 
 function renderIntentions() {
   const list = document.getElementById('today-plan-intentions');
@@ -146,6 +163,9 @@ function renderOpenItems() {
     ];
   }
 
+  const periodEl = document.getElementById('today-plan-open-period');
+  if (periodEl) periodEl.textContent = _PERIOD_WORDS[periodKey] || '';
+
   list.innerHTML = items.map(item => `
     <div class="today-plan-open-item${item.kept ? ' is-kept' : ''}" data-open-action="${item.action}">
       <span class="today-plan-open-text">${escapeHtml(item.text)}</span>
@@ -156,8 +176,33 @@ function renderOpenItems() {
   `).join('');
 }
 
+function renderSleepHandoff() {
+  const section = document.getElementById('today-sleep-handoff');
+  const textEl = document.getElementById('today-sleep-handoff-text');
+  const dismissBtn = document.getElementById('today-sleep-handoff-dismiss');
+  if (!section || !textEl) return;
+
+  const note = getMorningSleepHandoff();
+  if (!note) {
+    section.hidden = true;
+    return;
+  }
+
+  textEl.textContent = note;
+  section.hidden = false;
+
+  if (dismissBtn) {
+    dismissBtn.onclick = () => {
+      dismissSleepHandoff();
+      section.hidden = true;
+    };
+  }
+}
+
 export function renderTodayPlan() {
   normalizeTodayPlanIfNeeded();
+  renderMasthead();
+  renderSleepHandoff();
   renderIntentions();
   renderCarryover();
   renderOpenItems();

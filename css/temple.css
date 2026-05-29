@@ -595,7 +595,40 @@
   font-style: italic;
 }
 
-#body-modal .body-step-text {
+#body-modal .body-sub {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  text-align: center;
+  color: var(--muted-text);
+  margin: 0 20px 20px;
+}
+
+#body-modal .body-area-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 0 20px 24px;
+}
+
+#body-modal .body-area-chip {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--oracle-text);
+  background: none;
+  border: 1px solid var(--separator-strong);
+  border-radius: 20px;
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+#body-modal .body-area-chip.is-selected {
+  border-color: var(--bronze);
+  color: var(--bronze);
+}
+
+#body-modal .body-relief-text {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 17px;
@@ -605,15 +638,6 @@
   opacity: 0.88;
   margin: 0 24px 28px;
   min-height: 54px;
-}
-
-#body-modal .body-ritual {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--muted-text);
-  margin: 0 20px 20px;
 }
 
 #body-modal .body-horizon-wrap {
@@ -688,11 +712,6 @@
 #body-modal .btn-primary {
   margin: 0 20px 14px;
   width: calc(100% - 40px);
-}
-
-#body-modal .btn-primary.is-still {
-  opacity: 0.4;
-  pointer-events: none;
 }
 
 #body-modal .btn-text {

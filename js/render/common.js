@@ -1,7 +1,7 @@
 import { CYCLE_NAMES, CARE_PROTOCOL_NOTES } from '../constants.js';
-import { state, today } from '../state.js';
+import { state, today, todayStr } from '../state.js';
 import { getLastChronicleNoteForCycleDay } from '../domains/chronicle.js';
-import { getMorningTasks, getNightTasks, getTodayChecks } from '../domains/care.js';
+import { getMorningTasks, getNightTasks, getTodayChecks, getCareRecord, getPreviousCareRecordForCycle } from '../domains/care.js';
 import { getCareTurnState } from './temple.js';
 
 const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
@@ -52,6 +52,52 @@ function renderCareTurnMemory(cycleDay) {
   if (label) label.textContent = CARE_MEMORY_LABELS[cycleDay] || CARE_MEMORY_LABELS[0];
   if (body) body.textContent = excerpt;
   section?.classList.add('has-care-memory');
+  wrap.hidden = false;
+}
+
+const CARE_CONDITION_LABELS = { calmer: 'calmer', same: 'same', irritated: 'irritated' };
+
+function formatCareMemoryDate(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+// EA-174 — surfaces one prior same-protocol Care record (user-authored only).
+function renderCareProtocolMemory(cycleDay) {
+  const wrap = document.getElementById('care-protocol-memory');
+  if (!wrap) return;
+
+  const body = document.getElementById('care-protocol-memory-body');
+  const dateEl = document.getElementById('care-protocol-memory-date');
+  if (body) body.textContent = '';
+
+  const result = getPreviousCareRecordForCycle(todayStr, cycleDay);
+  const rec = result?.record;
+  if (!result || !rec || (!rec.condition && !rec.morningNote && !rec.reactionNote)) {
+    wrap.hidden = true;
+    if (dateEl) dateEl.textContent = '';
+    return;
+  }
+
+  const lines = [];
+  if (rec.condition) lines.push(['Skin this morning', CARE_CONDITION_LABELS[rec.condition] || rec.condition]);
+  if (rec.morningNote) lines.push(['Morning note', rec.morningNote]);
+  if (rec.reactionNote) lines.push(['Reaction note', rec.reactionNote]);
+
+  if (body) {
+    lines.forEach(([label, value]) => {
+      const p = document.createElement('p');
+      p.className = 'care-protocol-memory-line';
+      const lab = document.createElement('span');
+      lab.className = 'care-protocol-memory-line-label';
+      lab.textContent = `${label}: `;
+      p.appendChild(lab);
+      p.appendChild(document.createTextNode(value));
+      body.appendChild(p);
+    });
+  }
+
+  if (dateEl) dateEl.textContent = `From ${formatCareMemoryDate(result.dateStr)}`;
   wrap.hidden = false;
 }
 
@@ -176,6 +222,7 @@ export function renderTodayCycle() {
   renderTodayCycleIndicator(cycleDay, turnState);
   renderMorningProtocolControl();
   renderNightProtocolControl(turnState);
+  renderCareProtocolMemory(cycleDay);
   renderCareTurnMemory(cycleDay);
   const noteEl = document.getElementById('care-protocol-note');
   if (noteEl) noteEl.textContent = CARE_PROTOCOL_NOTES[cycleDay] || '';
@@ -190,4 +237,21 @@ export function renderTodayCycle() {
       `<div class="care-cycle-sm">${label}</div>` +
       `</div>`;
   }).join('');
+  renderCareCheckIn();
+  renderCareReactionNote();
+}
+
+export function renderCareCheckIn() {
+  const rec = getCareRecord(todayStr);
+  document.querySelectorAll('#care-condition-chips .care-checkin-chip').forEach(chip => {
+    chip.classList.toggle('is-selected', chip.dataset.condition === rec.condition);
+  });
+  const noteEl = document.getElementById('care-morning-note');
+  if (noteEl && document.activeElement !== noteEl) noteEl.value = rec.morningNote || '';
+}
+
+export function renderCareReactionNote() {
+  const rec = getCareRecord(todayStr);
+  const noteEl = document.getElementById('care-reaction-note');
+  if (noteEl && document.activeElement !== noteEl) noteEl.value = rec.reactionNote || '';
 }

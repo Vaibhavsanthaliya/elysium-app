@@ -824,6 +824,33 @@ select.field-input {
   opacity: 0.72;
 }
 
+/* ── EA-169: Care notes in past-day record ───────────────────────────────────── */
+.past-day-care-notes {
+  margin: 10px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--separator-warm);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.past-day-care-note {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: var(--oracle-text);
+  line-height: 1.4;
+}
+
+.past-day-care-note-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  margin-right: 6px;
+}
+
 /* ── EA-67: Confirm modal body ───────────────────────────────────────────── */
 .confirm-modal-body {
   font-family: var(--font-display);
@@ -832,4 +859,81 @@ select.field-input {
   color: var(--muted-text);
   line-height: 1.45;
   margin: 0 0 20px;
+}
+
+/* ── EA-176: Sleep Shutdown — unfinished intentions ─────────────────────── */
+
+#sleep-modal .sleep-shutdown[hidden] { display: none; }
+
+#sleep-modal .sleep-shutdown {
+  margin: 0 0 18px;
+  border-top: 1px solid var(--separator-warm);
+  border-bottom: 1px solid var(--separator-warm);
+}
+
+#sleep-modal .sleep-shutdown-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  opacity: 0.70;
+  padding: 12px 0 0;
+}
+
+#sleep-modal .sleep-shutdown-item {
+  padding: 11px 0;
+  border-top: 1px solid var(--separator-warm);
+}
+
+#sleep-modal .sleep-shutdown-text {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--oracle-text);
+  opacity: 0.86;
+  margin-bottom: 8px;
+}
+
+#sleep-modal .sleep-shutdown-actions {
+  display: flex;
+  gap: 20px;
+}
+
+#sleep-modal .sleep-shutdown-carry,
+#sleep-modal .sleep-shutdown-pass {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: opacity 150ms ease, color 150ms ease;
+}
+
+#sleep-modal .sleep-shutdown-carry {
+  color: var(--bronze);
+}
+
+#sleep-modal .sleep-shutdown-pass {
+  color: var(--muted-text);
+}
+
+#sleep-modal .sleep-shutdown-item.is-carry .sleep-shutdown-carry {
+  font-weight: 500;
+}
+
+#sleep-modal .sleep-shutdown-item.is-carry .sleep-shutdown-pass {
+  opacity: 0.40;
+}
+
+#sleep-modal .sleep-shutdown-item.is-pass .sleep-shutdown-pass {
+  font-weight: 500;
+  color: var(--oracle-text);
+}
+
+#sleep-modal .sleep-shutdown-item.is-pass .sleep-shutdown-carry {
+  opacity: 0.40;
 }

@@ -498,3 +498,37 @@
   word-break: break-word;
   margin-bottom: 32px;
 }
+
+/* ── EA-168: Chronicle search ────────────────────────────────────────────── */
+.chronicle-search {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--separator-warm);
+  padding: 10px 2px 12px;
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--oracle-text);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.chronicle-search::placeholder {
+  color: var(--muted-text);
+  opacity: 0.42;
+  font-style: italic;
+}
+
+.chronicle-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.chronicle-search-match {
+  background: none;
+  color: var(--bronze);
+}

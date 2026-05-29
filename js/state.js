@@ -275,6 +275,36 @@ export function migrateState(s) {
     )
     .map(i => ({ id: uid(), text: i.text.trim().slice(0, 120) }));
   s.today.carryoverDate = isYmd(s.today.carryoverDate) ? s.today.carryoverDate : null;
+  s.today.sleepDecisions = Array.isArray(s.today.sleepDecisions)
+    ? s.today.sleepDecisions.filter(d =>
+        d && typeof d === 'object' &&
+        typeof d.id === 'string' && d.id &&
+        typeof d.carry === 'boolean'
+      )
+    : [];
+  s.today.sleepHandoffDismissedFor = isYmd(s.today.sleepHandoffDismissedFor)
+    ? s.today.sleepHandoffDismissedFor
+    : null;
+
+  s.care = s.care && typeof s.care === 'object' && !Array.isArray(s.care) ? s.care : {};
+  s.care.records = s.care.records && typeof s.care.records === 'object' && !Array.isArray(s.care.records)
+    ? s.care.records : {};
+  const _VALID_CONDITIONS = new Set(['calmer', 'same', 'irritated']);
+  for (const [date, rec] of Object.entries(s.care.records)) {
+    if (!isYmd(date)) { delete s.care.records[date]; continue; }
+    if (!rec || typeof rec !== 'object' || Array.isArray(rec)) { delete s.care.records[date]; continue; }
+    if (rec.condition !== undefined && !_VALID_CONDITIONS.has(rec.condition)) delete rec.condition;
+    if (rec.morningNote !== undefined) {
+      if (typeof rec.morningNote !== 'string') delete rec.morningNote;
+      else { rec.morningNote = rec.morningNote.trim().slice(0, 300); if (!rec.morningNote) delete rec.morningNote; }
+    }
+    if (rec.reactionNote !== undefined) {
+      if (typeof rec.reactionNote !== 'string') delete rec.reactionNote;
+      else { rec.reactionNote = rec.reactionNote.trim().slice(0, 300); if (!rec.reactionNote) delete rec.reactionNote; }
+    }
+    if (rec.updatedAt !== undefined && typeof rec.updatedAt !== 'string') delete rec.updatedAt;
+    if (!rec.condition && !rec.morningNote && !rec.reactionNote) delete s.care.records[date];
+  }
 
   return s;
 }

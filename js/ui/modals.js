@@ -2,7 +2,7 @@
 // (render/today.js imports openEditModal/openTaskInfoModal from here). Both sides only
 // consume the imports inside function bodies, never at module evaluation time.
 // Future EA: resolve via event delegation in main.js.
-import { TASK_INFO } from '../constants.js';
+import { TASK_INFO, BODY_RELIEF_AREAS } from '../constants.js';
 import { uid, ymd } from '../utils.js';
 import { state, saveState, todayStr } from '../state.js';
 import {
@@ -12,8 +12,9 @@ import {
   reopenSleepClosure,
   saveSleepClosure,
 } from '../domains/sleep.js';
+import { saveSleepShutdownDecisions } from '../domains/today-plan.js';
 import { arriveMind, saveMindReflection, getMindReflectionEntries } from '../domains/mind.js';
-import { arriveBody, getBodyArrivals, getBodyRitual, getBodySomaticInvitations } from '../domains/body.js';
+import { arriveBody, getBodyArrivals } from '../domains/body.js';
 import { getWaterHoldings, holdWater, getWaterRitual, getWaterResetSteps } from '../domains/water.js';
 import { showToast } from './toast.js';
 import { renderTemple, applyTempleTrace } from '../render/temple.js';
@@ -43,9 +44,9 @@ export function registerConfirmModal() {
 }
 
 let editContext = null;
+let _sleepShutdownDecisions = new Map(); // id → 'carry' | 'pass'
 let _bodyArrivedThisSession = false;
-let _bodyResetStep = 0;
-let _bodyResetInvitations = [];
+let _bodySelectedArea = null;
 let _waterHeldThisSession = false;
 let _waterResetStep = 0;
 let _waterResetSteps = [];
@@ -93,6 +94,75 @@ function renderSleepInvitations() {
   });
 }
 
+function renderSleepShutdown() {
+  const section = document.getElementById('sleep-shutdown');
+  const list = document.getElementById('sleep-shutdown-list');
+  if (!section || !list) return;
+
+  const intentions = Array.isArray(state.today?.intentions) ? state.today.intentions : [];
+  const unkept = intentions.filter(i => !i.kept);
+
+  if (!unkept.length) {
+    section.hidden = true;
+    return;
+  }
+
+  list.replaceChildren();
+
+  unkept.forEach(intention => {
+    const item = document.createElement('div');
+    item.className = 'sleep-shutdown-item';
+    item.dataset.id = intention.id;
+
+    const text = document.createElement('span');
+    text.className = 'sleep-shutdown-text';
+    text.textContent = intention.text;
+
+    const actions = document.createElement('div');
+    actions.className = 'sleep-shutdown-actions';
+
+    const carryBtn = document.createElement('button');
+    carryBtn.type = 'button';
+    carryBtn.className = 'sleep-shutdown-carry';
+    carryBtn.textContent = 'Carry tomorrow';
+
+    const passBtn = document.createElement('button');
+    passBtn.type = 'button';
+    passBtn.className = 'sleep-shutdown-pass';
+    passBtn.textContent = 'Let pass';
+
+    carryBtn.addEventListener('click', () => {
+      const current = _sleepShutdownDecisions.get(intention.id);
+      if (current === 'carry') {
+        _sleepShutdownDecisions.delete(intention.id);
+        item.classList.remove('is-carry');
+      } else {
+        _sleepShutdownDecisions.set(intention.id, 'carry');
+        item.classList.add('is-carry');
+        item.classList.remove('is-pass');
+      }
+    });
+
+    passBtn.addEventListener('click', () => {
+      const current = _sleepShutdownDecisions.get(intention.id);
+      if (current === 'pass') {
+        _sleepShutdownDecisions.delete(intention.id);
+        item.classList.remove('is-pass');
+      } else {
+        _sleepShutdownDecisions.set(intention.id, 'pass');
+        item.classList.add('is-pass');
+        item.classList.remove('is-carry');
+      }
+    });
+
+    actions.append(carryBtn, passBtn);
+    item.append(text, actions);
+    list.appendChild(item);
+  });
+
+  section.hidden = false;
+}
+
 export function openSleepModal() {
   const modal = document.getElementById('sleep-modal');
   const stateA = document.getElementById('sleep-state-a');
@@ -105,10 +175,12 @@ export function openSleepModal() {
   } else {
     stateA.hidden = false;
     stateB.hidden = true;
+    _sleepShutdownDecisions = new Map();
     const eyebrow = document.getElementById('sleep-eyebrow');
     if (eyebrow) eyebrow.textContent = 'HYPNOS / CLOSURE';
 
     renderSleepInvitations();
+    renderSleepShutdown();
 
     const parkingEl = document.getElementById('sleep-parking');
     if (parkingEl) parkingEl.value = '';
@@ -135,11 +207,14 @@ export function openSleepModal() {
 
 export function closeSleepModal() {
   if (isClosedForToday()) return false;
+  _sleepShutdownDecisions = new Map();
   document.getElementById('sleep-modal').hidden = true;
   return true;
 }
 
 export function saveSleepModal() {
+  saveSleepShutdownDecisions(_sleepShutdownDecisions);
+  _sleepShutdownDecisions = new Map();
   const parkingEl = document.getElementById('sleep-parking');
   const noteText = parkingEl ? parkingEl.value : '';
   if (!saveSleepClosure(todayStr, noteText)) {
@@ -329,23 +404,14 @@ function renderBodyHorizonMarks() {
 
 export function openBodyModal() {
   _bodyArrivedThisSession = false;
-  _bodyResetInvitations = getBodySomaticInvitations();
-  _bodyResetStep = 0;
-
-  const stepEl = document.getElementById('body-step-text');
-  const continueBtn = document.getElementById('body-step-continue');
+  _bodySelectedArea = null;
+  document.querySelectorAll('#body-area-chips .body-area-chip')
+    .forEach(c => c.classList.remove('is-selected'));
+  const reliefEl = document.getElementById('body-relief-text');
+  if (reliefEl) reliefEl.textContent = '';
   const arriveBtn = document.getElementById('body-arrive-btn');
-
-  if (stepEl) stepEl.textContent = _bodyResetInvitations[0] || '';
-  if (continueBtn) continueBtn.hidden = _bodyResetInvitations.length <= 1;
-  if (arriveBtn) {
-    arriveBtn.classList.remove('is-still');
-    arriveBtn.hidden = _bodyResetInvitations.length > 1;
-  }
-
+  if (arriveBtn) arriveBtn.hidden = true;
   renderBodyHorizonMarks();
-  const ritualEl = document.getElementById('body-ritual');
-  if (ritualEl) ritualEl.textContent = getBodyRitual();
   document.getElementById('body-modal').hidden = false;
 }
 
@@ -360,17 +426,17 @@ export function closeBodyModal() {
 export function registerBodyModal() {
   document.getElementById('body-modal-backdrop')?.addEventListener('click', closeBodyModal);
   document.getElementById('body-modal-close')?.addEventListener('click', closeBodyModal);
-  document.getElementById('body-step-continue')?.addEventListener('click', () => {
-    _bodyResetStep++;
-    const stepEl = document.getElementById('body-step-text');
-    const continueBtn = document.getElementById('body-step-continue');
+  document.getElementById('body-area-chips')?.addEventListener('click', e => {
+    const chip = e.target.closest('.body-area-chip');
+    if (!chip) return;
+    const area = chip.dataset.area;
+    document.querySelectorAll('.body-area-chip').forEach(c => c.classList.remove('is-selected'));
+    chip.classList.add('is-selected');
+    _bodySelectedArea = area;
+    const reliefEl = document.getElementById('body-relief-text');
+    if (reliefEl) reliefEl.textContent = BODY_RELIEF_AREAS[area] || '';
     const arriveBtn = document.getElementById('body-arrive-btn');
-    if (_bodyResetStep >= _bodyResetInvitations.length) {
-      if (continueBtn) continueBtn.hidden = true;
-      if (arriveBtn) arriveBtn.hidden = false;
-    } else {
-      if (stepEl) stepEl.textContent = _bodyResetInvitations[_bodyResetStep];
-    }
+    if (arriveBtn) arriveBtn.hidden = false;
   });
   document.getElementById('body-arrive-btn')?.addEventListener('click', () => {
     arriveBody(todayStr);
@@ -378,8 +444,8 @@ export function registerBodyModal() {
     saveState();
     renderTemple();
     renderBodyHorizonMarks();
-    const stepEl = document.getElementById('body-step-text');
-    if (stepEl) stepEl.textContent = 'The body has returned.';
+    const reliefEl = document.getElementById('body-relief-text');
+    if (reliefEl) reliefEl.textContent = 'The body has returned.';
     const btn = document.getElementById('body-arrive-btn');
     if (btn) btn.hidden = true;
   });

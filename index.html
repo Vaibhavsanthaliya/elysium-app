@@ -138,36 +138,51 @@
 
     <main class="main">
       <!-- TODAY PLAN TAB -->
-      <section class="tab-pane active" id="pane-today">
+      <section class="tab-pane" id="pane-today">
 
-        <!-- Intentions block -->
-        <div class="today-plan-block">
-          <div class="today-plan-block-eyebrow">INTENTIONS</div>
-          <div id="today-plan-intentions"></div>
-          <div id="today-plan-add-wrap">
-            <button class="today-plan-add-btn" id="today-plan-add-btn">Add intention</button>
-          </div>
-          <div id="today-plan-add-form" hidden>
-            <input type="text" class="today-plan-input" id="today-plan-input" placeholder="One thing." maxlength="120" autocomplete="off" />
-            <div class="today-plan-input-actions">
-              <button class="today-plan-input-confirm" id="today-plan-input-confirm">Add</button>
-              <button class="today-plan-input-cancel" id="today-plan-input-cancel">Cancel</button>
-            </div>
-          </div>
-          <p class="today-plan-limit" id="today-plan-limit" hidden>Three is enough for today.</p>
+        <!-- Masthead -->
+        <div class="today-plan-masthead">
+          <div class="today-plan-eyebrow" id="today-plan-date"></div>
+          <h1 class="today-plan-title">Today's <span class="ital">intentions</span></h1>
+          <p class="today-plan-sub">The day has room for what you place here.</p>
         </div>
 
-        <!-- FROM YESTERDAY: Carryover (JS shows/hides) -->
+        <!-- EA-176: Morning sleep handoff — JS shows/hides -->
+        <div class="today-sleep-handoff" id="today-sleep-handoff" hidden>
+          <div class="today-sleep-handoff-eyebrow">LAST NIGHT LEFT</div>
+          <p class="today-sleep-handoff-text" id="today-sleep-handoff-text"></p>
+          <button type="button" class="today-sleep-handoff-dismiss" id="today-sleep-handoff-dismiss">Let it rest</button>
+        </div>
+
+        <!-- Intentions -->
+        <div class="today-plan-section-hd">
+          <span class="today-plan-section-label">Placed</span>
+        </div>
+        <div id="today-plan-intentions"></div>
+        <div id="today-plan-add-wrap">
+          <button class="today-plan-add-btn" id="today-plan-add-btn">Place another</button>
+        </div>
+        <div id="today-plan-add-form" hidden>
+          <input type="text" class="today-plan-input" id="today-plan-input" placeholder="One thing." maxlength="120" autocomplete="off" />
+          <div class="today-plan-input-actions">
+            <button class="today-plan-input-confirm" id="today-plan-input-confirm">Add</button>
+            <button class="today-plan-input-cancel" id="today-plan-input-cancel">Cancel</button>
+          </div>
+        </div>
+        <p class="today-plan-limit" id="today-plan-limit" hidden>Three is enough for today.</p>
+
+        <!-- Yesterday's echo (JS shows/hides) -->
         <div class="today-plan-carryover" id="today-plan-carryover" hidden>
-          <div class="today-plan-block-eyebrow">FROM YESTERDAY</div>
+          <div class="today-plan-carryover-echo-label">Yesterday left</div>
           <div id="today-plan-carryover-list"></div>
         </div>
 
-        <!-- OPEN: Practical open items from existing domains -->
-        <div class="today-plan-block today-plan-open-block">
-          <div class="today-plan-block-eyebrow">OPEN</div>
-          <div id="today-plan-open-list"></div>
+        <!-- Open -->
+        <div class="today-plan-section-hd today-plan-open-hd">
+          <span class="today-plan-section-label">Open</span>
+          <span class="today-plan-section-meta" id="today-plan-open-period"></span>
         </div>
+        <div id="today-plan-open-list"></div>
 
         <p class="today-plan-footer">What remains can be kept or left.</p>
         <div class="footer-spacer"></div>
@@ -417,6 +432,17 @@
               <ul class="task-list" id="list-night"></ul>
             </div>
           </details>
+          <div class="care-reaction" id="care-night-reaction">
+            <p class="care-checkin-eyebrow">REACTION NOTE</p>
+            <textarea class="care-checkin-note" id="care-reaction-note" placeholder="Dryness, redness, burning, or anything to remember." rows="2" autocorrect="off" autocapitalize="sentences" spellcheck="false"></textarea>
+          </div>
+          <div class="care-protocol-memory" id="care-protocol-memory" hidden>
+            <div class="care-protocol-memory-hd">
+              <p class="care-protocol-memory-eyebrow">LAST TIME ON THIS NIGHT</p>
+              <span class="care-protocol-memory-date" id="care-protocol-memory-date"></span>
+            </div>
+            <div class="care-protocol-memory-body" id="care-protocol-memory-body"></div>
+          </div>
           <div class="care-turn-memory" id="care-turn-memory" hidden>
             <p class="care-turn-memory-label" id="care-turn-memory-label"></p>
             <p class="care-turn-memory-body" id="care-turn-memory-body"></p>
@@ -450,6 +476,15 @@
               <ul class="task-list" id="list-morning"></ul>
             </div>
           </details>
+          <div class="care-checkin" id="care-morning-checkin">
+            <p class="care-checkin-eyebrow">SKIN THIS MORNING</p>
+            <div class="care-checkin-chips" id="care-condition-chips">
+              <button class="care-checkin-chip" data-condition="calmer" type="button">calmer</button>
+              <button class="care-checkin-chip" data-condition="same" type="button">same</button>
+              <button class="care-checkin-chip" data-condition="irritated" type="button">irritated</button>
+            </div>
+            <textarea class="care-checkin-note" id="care-morning-note" placeholder="Anything to remember." rows="2" autocorrect="off" autocapitalize="sentences" spellcheck="false"></textarea>
+          </div>
         </div>
 
         <!-- Supporting rituals section -->
@@ -559,6 +594,9 @@
 
         <!-- Archive reading surface (read mode) -->
         <div id="chronicle-archive" hidden>
+          <input type="search" class="chronicle-search" id="chronicle-search"
+                 placeholder="Search the archive" autocomplete="off"
+                 autocorrect="off" autocapitalize="off" spellcheck="false" />
           <div class="chronicle-archive-list" id="chronicle-archive-list"></div>
         </div>
 
@@ -735,7 +773,7 @@
 
     <!-- Bottom tab navigation -->
     <nav class="tabs">
-      <button class="tab active" data-tab="today" aria-label="Today">
+      <button class="tab" data-tab="today" aria-label="Today">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>
         <span>Today</span>
       </button>
@@ -935,6 +973,11 @@
         <h3 class="sleep-title">Let the day <em>end</em></h3>
         <p class="sleep-sub">Nothing has to be solved before the room goes quiet.</p>
         <div class="sleep-invitations" id="sleep-invitations"></div>
+        <!-- EA-176: Unfinished intentions shutdown — JS shows/hides -->
+        <div class="sleep-shutdown" id="sleep-shutdown" hidden>
+          <div class="sleep-shutdown-eyebrow">UNFINISHED FROM TODAY</div>
+          <div id="sleep-shutdown-list"></div>
+        </div>
         <p class="sleep-recent" id="sleep-recent" hidden></p>
         <textarea class="sleep-parking" id="sleep-parking" rows="2" placeholder="What can wait until morning."></textarea>
         <div class="sleep-handoff">WHAT REMAINS CAN WAIT</div>
@@ -1044,14 +1087,20 @@
     <div class="modal-sheet body-modal-sheet">
       <div class="modal-handle"></div>
       <div class="body-eyebrow">ATLAS</div>
-      <h3 class="body-title"><em>Standing</em></h3>
-      <p class="body-step-text" id="body-step-text"></p>
-      <p class="body-ritual" id="body-ritual"></p>
+      <h3 class="body-title"><em>Relief</em></h3>
+      <p class="body-sub">Choose an area.</p>
+      <div class="body-area-chips" id="body-area-chips">
+        <button class="body-area-chip" data-area="neck">Neck</button>
+        <button class="body-area-chip" data-area="shoulders">Shoulders</button>
+        <button class="body-area-chip" data-area="back">Back</button>
+        <button class="body-area-chip" data-area="wrists">Wrists</button>
+        <button class="body-area-chip" data-area="eyes">Eyes</button>
+      </div>
+      <p class="body-relief-text" id="body-relief-text"></p>
       <div class="body-horizon-wrap">
         <div class="body-horizon"></div>
         <div class="body-marks" id="body-marks"></div>
       </div>
-      <button class="btn-primary" id="body-step-continue">Continue</button>
       <button class="btn-primary" id="body-arrive-btn" hidden>Returned</button>
       <button class="btn-text" id="body-modal-close">Close</button>
     </div>

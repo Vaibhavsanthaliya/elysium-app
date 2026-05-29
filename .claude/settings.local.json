@@ -54,7 +54,9 @@
       "Bash(sed -n '685,710p' /Volumes/external/Projects/elysium-app/css/temple.css)",
       "Bash(sed -n '820,840p' /Volumes/external/Projects/elysium-app/css/temple.css)",
       "Bash(vercel integration *)",
-      "Bash(vercel *)"
+      "Bash(vercel *)",
+      "Bash(awk 'END{print NR}' docs/ticket-log.md)",
+      "Bash(sed -n '$p' docs/ticket-log.md)"
     ]
   }
 }

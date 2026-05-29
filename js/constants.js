@@ -69,6 +69,11 @@ export const DEFAULT_DATA = {
     intentions: [],
     carryover: [],
     carryoverDate: null,
+    sleepDecisions: [],
+    sleepHandoffDismissedFor: null,
+  },
+  care: {
+    records: {},
   },
 };
 
@@ -209,6 +214,14 @@ export const BODY_SOMATIC_INVITATIONS = [
   ['Let the shoulders drop.', 'Feel the weight of the arms.', 'Notice if you have been holding breath.', 'Stand for one quiet breath.', 'Soften the chest.'],
   ['Press both feet into the floor.', 'Unclench the jaw.', 'Let the back soften.', 'Notice one part that is not tense.'],
 ];
+
+export const BODY_RELIEF_AREAS = {
+  neck:      'Lengthen the back of the neck. Turn slowly to one side, then the other. Stop before strain.',
+  shoulders: 'Lift the shoulders once, then let them fall. Roll them back slowly. Let the chest stay unforced.',
+  back:      'Sit tall, place both feet down, and gently rotate through the ribs. Keep the movement small.',
+  wrists:    'Open both hands. Turn the palms up, then down. Let the fingers spread without force.',
+  eyes:      'Look away from the screen. Find the farthest still point in the room. Let the eyes soften there.',
+};
 
 export const WATER_CONTACT_INVITATIONS = [
   'Notice the temperature before drinking.',

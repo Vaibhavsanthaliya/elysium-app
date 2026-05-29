@@ -9,6 +9,7 @@ import {
 import { renderHeader, renderTodayCycle } from './js/render/common.js';
 import { renderTemple, applyTempleTrace } from './js/render/temple.js';
 import { keepMorningProtocol, keepNightProtocol, renderAllLists } from './js/render/today.js';
+import { getCareRecord, saveCareCheckIn, saveCareReactionNote } from './js/domains/care.js';
 import { renderCycleList } from './js/render/cycle.js';
 import {
   renderChronicle,
@@ -70,6 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       clearScheduledReminders();
     }
+    // Reset scroll after all post-sync DOM mutations, immediately before hideBootShell()
+    // reveals the app. Without this, iOS scroll anchoring can leave scroll at >0 when
+    // the boot shell hides, making the page appear to have extra blank space below the nav.
+    window.scrollTo(0, 0);
   });
 
   initSupabase();
@@ -82,8 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAllLists();
   renderCycleList();
   renderTemple();
-  renderTodayPlan();
-  window.scrollTo(0, 0);
   registerClosedDayHandler(openSleepModal);
 
   // --- Tab clicks ---
@@ -100,6 +103,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('care-morning-action')?.addEventListener('click', keepMorningProtocol);
   document.getElementById('care-night-action')?.addEventListener('click', keepNightProtocol);
+
+  // --- Care check-in ---
+  document.getElementById('care-condition-chips')?.addEventListener('click', e => {
+    const chip = e.target.closest('.care-checkin-chip');
+    if (!chip) return;
+    const condition = chip.dataset.condition;
+    const newCondition = getCareRecord(todayStr).condition === condition ? '' : condition;
+    saveCareCheckIn(todayStr, { condition: newCondition });
+    document.querySelectorAll('#care-condition-chips .care-checkin-chip').forEach(c => {
+      c.classList.toggle('is-selected', c.dataset.condition === newCondition);
+    });
+  });
+  document.getElementById('care-morning-note')?.addEventListener('blur', e => {
+    saveCareCheckIn(todayStr, { morningNote: e.target.value });
+  });
+  document.getElementById('care-reaction-note')?.addEventListener('blur', e => {
+    saveCareReactionNote(todayStr, e.target.value);
+  });
 
   // --- Edit modal ---
   document.querySelectorAll('[data-close]').forEach(el => {
@@ -505,6 +526,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (isClosedForToday()) openSleepModal();
+
+  // Activate the initial Today tab through the same code path as tab switching.
+  // Pane starts without 'active' in HTML so this add triggers the same display:none→block
+  // transition, layout reflow, and paneEnter animation that switchTab uses, fixing the
+  // iOS PWA position:fixed blank-space bug on first launch.
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.tab[data-tab="today"]')?.classList.add('active');
+  window.scrollTo(0, 0);
+  document.getElementById('pane-today')?.classList.add('active');
+  renderTodayPlan();
 
   // Reload when calendar day rolls over (app left open overnight)
   setInterval(() => {

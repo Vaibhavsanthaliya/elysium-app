@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Elysium — Today Home Screen Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="today-concept.css" />
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ COVER ============ -->
+  <header class="cover" data-screen-label="Cover">
+    <div class="eyebrow">Design concept · Today home screen · No code</div>
+    <h1>The front door of <span class="ital">Elysium</span></h1>
+    <p class="lede">Today is now the first thing the app shows. It works — but it still reads as a restrained list. This is a concept for making it feel like a threshold: useful, quiet, and unmistakably Obsidian Temple.</p>
+    <dl class="cover-meta">
+      <div><dt>Scope</dt><dd>Visual &amp; structural only. No new functionality.</dd></div>
+      <div><dt>Governs</dt><dd>§19B Today Practical Exception · Six Tests</dd></div>
+      <div><dt>Deliverable</dt><dd>3 directions · 1 recommendation · implementation brief</dd></div>
+      <div><dt>Status after</dt><dd>EA-166 · EA-167A · EA-169 · EA-170A</dd></div>
+    </dl>
+  </header>
+
+  <!-- ============ 1 · DIAGNOSIS ============ -->
+  <section class="block" id="diagnosis" data-screen-label="Diagnosis">
+    <div class="rule"><span class="idx">I</span><span class="lbl">Diagnosis · where Today stands today</span></div>
+    <div class="dir" style="margin-top:48px;">
+      <div class="dir-mock">
+        <div class="phone">
+          <div class="scr">
+            <div class="statusbar"><span>9:41</span><span class="dots">•••</span></div>
+            <div class="scr-body">
+              <!-- current: three bordered blocks, no masthead -->
+              <div style="border:1px solid var(--separator-strong);border-radius:var(--r-lg);padding:14px 16px;background:var(--bg-soft);margin-top:14px;">
+                <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--bronze);margin-bottom:12px;">Intentions</div>
+                <div class="irow" style="border-top:0;padding-left:0;padding-right:0;">
+                  <span class="check"><svg viewBox="0 0 12 12" width="12" height="12" fill="none"></svg></span>
+                  <span class="itext">Call the pharmacy</span>
+                </div>
+                <div class="irow" style="padding-left:0;padding-right:0;border-bottom:0;">
+                  <span class="check done"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="2.5 6.5 5 9 9.5 3.5"/></svg></span>
+                  <span class="itext" style="text-decoration:line-through;text-decoration-color:rgba(201,165,107,0.3);color:var(--ink-faint);">Walk before noon</span>
+                </div>
+                <div class="add-line" style="opacity:0.9;">Add intention</div>
+              </div>
+
+              <div style="border:1px solid var(--separator-strong);border-radius:var(--r-lg);padding:14px 16px;background:var(--bg-soft);margin-top:16px;">
+                <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--bronze);margin-bottom:12px;">Open</div>
+                <div class="orow" style="border-top:0;padding-left:0;padding-right:0;"><span class="otext">Care · morning open</span><svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg></div>
+                <div class="orow" style="padding-left:0;padding-right:0;border-bottom:0;"><span class="otext">Chronicle · still open</span><svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg></div>
+              </div>
+              <p class="foot-line">What remains can be kept or left.</p>
+            </div>
+            <nav class="tabbar">
+              <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Today</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><path d="M8 12a4 4 0 0 1 8 0"/></svg><span>Care</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 20h16"/></svg><span>Temple</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span>Settings</span></div>
+            </nav>
+          </div>
+        </div>
+        <p class="phone-cap">Current · as shipped in EA-167A</p>
+      </div>
+
+      <div>
+        <div class="dir-name"><h3>What's actually wrong</h3></div>
+        <p class="dir-tagline">Nothing is broken. It just doesn't announce itself as the room you walked into.</p>
+        <dl class="spec">
+          <div><dt>No threshold</dt><dd>EA-167A removed the date header to kill redundancy — correct — but it took the <strong>front-door identity with it</strong>. Temple opens with an eyebrow, a DM Sans heading, a Spectral italic accent noun, and a state line. Today opens with a bordered box labelled <code style="font-family:var(--font-mono);font-size:12px;color:var(--ink)">INTENTIONS</code>. One feels like arrival; the other feels like a settings group.</dd></div>
+          <div><dt>Boxes, not rhythm</dt><dd>Three identical <strong>bordered card-blocks</strong> stacked on the floor. The design system explicitly flags the card wrapper as a divergence — the prototype wants <strong>naked separator-led rows</strong>. The boxes are what make it read as a utility page.</dd></div>
+          <div><dt>Mono labels carry the hierarchy</dt><dd>Section identity lives in tiny uppercase mono eyebrows (<code style="font-family:var(--font-mono);font-size:12px;color:var(--ink)">INTENTIONS / OPEN</code>). That's the language of metadata, not of a primary surface. The Spectral italic voice — the one that makes Elysium feel composed — is absent.</dd></div>
+          <div><dt>Flat light</dt><dd>The ambient temple gradient and the warm-hairline restraint that give every other screen depth aren't doing any work here. It's evenly grey.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2 · DIRECTION A ============ -->
+  <section class="block" id="dir-a" data-screen-label="Direction A">
+    <div class="rule"><span class="idx">II</span><span class="lbl">Direction A · recommended</span></div>
+    <div class="dir" style="margin-top:48px;">
+      <div class="dir-mock">
+        <div class="phone">
+          <div class="scr">
+            <div class="statusbar"><span>9:41</span><span class="dots">•••</span></div>
+            <div class="scr-body">
+              <div class="m-head">
+                <div class="m-eyebrow">Thursday · 29 May</div>
+                <div class="m-title">Today's <span class="ital">intentions</span></div>
+                <div class="m-sub">Two placed. Morning care is still open.</div>
+              </div>
+
+              <div class="s-hd"><span class="lab">Placed</span><span class="meta">02 / 03</span></div>
+              <div class="irow">
+                <span class="check"><svg viewBox="0 0 12 12" width="12" height="12" fill="none"></svg></span>
+                <span class="itext">Call the pharmacy</span>
+                <span class="rel"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></span>
+              </div>
+              <div class="irow kept">
+                <span class="check done"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="2.5 6.5 5 9 9.5 3.5"/></svg></span>
+                <span class="itext">Walk before noon</span>
+                <span class="rel"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></span>
+              </div>
+              <div class="add-line">Place another</div>
+
+              <div class="echo">
+                <div class="echo-lab">Yesterday left</div>
+                <div class="echo-text">"Email the studio"</div>
+                <div class="echo-acts"><span class="fwd">Bring forward</span><span class="pass">Let it pass</span></div>
+              </div>
+
+              <div class="s-hd"><span class="lab">Open</span><span class="meta">Morning</span></div>
+              <div class="orow">
+                <span class="otext">Care · morning</span><span class="ostate">Open</span>
+                <svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg>
+              </div>
+              <div class="orow kept">
+                <span class="otext">Chronicle</span><span class="ostate">Held</span>
+                <svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg>
+              </div>
+              <p class="foot-line">What remains can be kept or left.</p>
+            </div>
+            <nav class="tabbar">
+              <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Today</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><path d="M8 12a4 4 0 0 1 8 0"/></svg><span>Care</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 20h16"/></svg><span>Temple</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span>Settings</span></div>
+            </nav>
+          </div>
+        </div>
+        <p class="phone-cap">Direction A · The Threshold</p>
+      </div>
+
+      <div>
+        <div class="dir-name"><span class="tag">A</span><h3>The Threshold</h3></div>
+        <p class="dir-tagline">Give Today the front door it lost. Then get out of the way.</p>
+        <dl class="spec">
+          <div><dt>Hierarchy</dt><dd><strong>Masthead → intentions (hero) → yesterday's echo → open (quiet) → footer.</strong> The page reads top-down like every other Elysium screen, with intentions as the clear centre of gravity.</dd></div>
+          <div><dt>Layout</dt><dd>No containers. Content sits directly on the obsidian floor, separated only by warm 8%-hairlines. Generous vertical rhythm does the structuring that boxes used to.</dd></div>
+          <div><dt>Treatment</dt><dd>Restores the canonical masthead: mono date eyebrow, DM Sans 30px heading, <strong>Spectral italic accent on "intentions"</strong> — exactly parallel to "Today's <span class="ital">temple</span>". Ambient temple light at the crown.</dd></div>
+          <div><dt>Intentions</dt><dd>Naked separator-led rows — the prototype's intended task pattern. 20px bronze check (kept = filled bronze, never green), 15px DM Sans, quiet release ✕. Section label is Spectral italic <strong>"Placed"</strong>, with a bare <code style="font-family:var(--font-mono);font-size:12px;color:var(--ink)">02 / 03</code> count as soft meta — a capacity hint, not a score.</dd></div>
+          <div><dt>Open rows</dt><dd>Demoted to a quiet lower zone under a Spectral italic <strong>"Open"</strong> label with the period word as right-meta ("Morning"). Mono state word per row (Open / Held), no chevron emphasis. Reads as orientation, not a checklist.</dd></div>
+          <div><dt>Carryover</dt><dd>A single gentle <strong>echo</strong> between intentions and open: a mono "Yesterday left" label, the phrase in Spectral italic, and two plain text actions. Inline, never a box, never guilt.</dd></div>
+        </dl>
+        <div class="judgement keep">
+          <div><h4>What stays</h4><ul><li>All EA-166 behaviour: add, keep, release, carryover, time-aware open rows</li><li>Bronze check, line-through kept state</li><li>Footer line, empty-state voice</li></ul></div>
+          <div class="remove"><h4>What's removed</h4><ul><li>The three bordered <code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">.today-plan-block</code> card surfaces</li><li>Mono <code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">INTENTIONS / OPEN</code> block eyebrows</li><li>The flat, container-led grey</li></ul></div>
+        </div>
+        <div class="risk"><h4>Risk</h4><p>Without containers, discipline carries everything. If the rhythm or hairline weights drift, it can feel under-structured rather than quiet. Mitigated by the masthead anchoring the top and the Spectral labels giving each zone a clear voice.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3 · DIRECTION B ============ -->
+  <section class="block" id="dir-b" data-screen-label="Direction B">
+    <div class="rule"><span class="idx">III</span><span class="lbl">Direction B · alternative</span></div>
+    <div class="dir" style="margin-top:48px;">
+      <div class="dir-mock">
+        <div class="phone">
+          <div class="scr">
+            <div class="statusbar"><span>9:41</span><span class="dots">•••</span></div>
+            <div class="scr-body">
+              <div class="m-head" style="padding-bottom:0;">
+                <div class="m-eyebrow">Thursday · 29 May</div>
+                <div class="m-title" style="font-size:27px;">A quiet day. <span class="ital">Begin.</span></div>
+              </div>
+
+              <div class="bench">
+                <div class="bench-eyebrow">On the bench</div>
+                <div class="irow">
+                  <span class="check"><svg viewBox="0 0 12 12" width="12" height="12" fill="none"></svg></span>
+                  <span class="itext">Call the pharmacy</span>
+                  <span class="rel"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></span>
+                </div>
+                <div class="irow kept">
+                  <span class="check done"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="2.5 6.5 5 9 9.5 3.5"/></svg></span>
+                  <span class="itext">Walk before noon</span>
+                  <span class="rel"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></span>
+                </div>
+                <div class="add-line">Place another</div>
+                <div class="bench-inset">
+                  <div class="echo-lab">Yesterday left</div>
+                  <div class="echo-text" style="margin-bottom:8px;">"Email the studio"</div>
+                  <div class="echo-acts"><span class="fwd">Bring forward</span><span class="pass">Let it pass</span></div>
+                </div>
+              </div>
+
+              <div class="s-hd"><span class="lab">What's open</span><span class="meta">Morning</span></div>
+              <div class="tool">
+                <span class="med"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"><circle cx="16" cy="16" r="10"/><path d="M10 16 A6 6 0 0 1 22 16"/></svg></span>
+                <span class="tool-body"><span class="tool-name">Care</span><span class="tool-state">Morning · open</span></span>
+                <svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg>
+              </div>
+              <div class="tool kept">
+                <span class="med"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="5.5"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg></span>
+                <span class="tool-body"><span class="tool-name">Chronicle</span><span class="tool-state">Held today</span></span>
+                <svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg>
+              </div>
+            </div>
+            <nav class="tabbar">
+              <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Today</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><path d="M8 12a4 4 0 0 1 8 0"/></svg><span>Care</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 20h16"/></svg><span>Temple</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span>Settings</span></div>
+            </nav>
+          </div>
+        </div>
+        <p class="phone-cap">Direction B · The Workbench</p>
+      </div>
+
+      <div>
+        <div class="dir-name"><span class="tag">B</span><h3>The Workbench</h3></div>
+        <p class="dir-tagline">Make Today a physical surface — the bench where the day's work is laid out.</p>
+        <dl class="spec">
+          <div><dt>Hierarchy</dt><dd><strong>Short orientation → intentions on the bench → open tools below.</strong> The bench is the object; everything else is the room around it.</dd></div>
+          <div><dt>Layout</dt><dd>One warm <code style="font-family:var(--font-mono);font-size:12px;color:var(--ink)">--bg-soft</code> surface holds the intentions — a single quiet "bench" that floats on the floor with the page as its margin. Open items sit <strong>outside</strong> the bench, on the floor, as the tools you reach for.</dd></div>
+          <div><dt>Treatment</dt><dd>Lighter masthead — a single Spectral-accented line ("A quiet day. <span class="ital">Begin.</span>") instead of a full heading stack. The bench gives the page one calm centre of mass.</dd></div>
+          <div><dt>Intentions</dt><dd>Separator rows inside the bench. Same bronze check and release as A — the warmth of the bench surface is the only added structure.</dd></div>
+          <div><dt>Open rows</dt><dd>Become <strong>tools</strong>: each gets a 34px medallion drawn from the existing glyph library (Care's bowl, Chronicle's rings, Sleep's crescent). Two-line cell — name + mono state. Reads as "the instruments for this hour".</dd></div>
+          <div><dt>Carryover</dt><dd>A soft dashed inset <em>within</em> the bench — yesterday's words tucked into the corner of the surface, not a separate event.</dd></div>
+        </dl>
+        <div class="judgement keep">
+          <div><h4>What stays</h4><ul><li>All EA-166 behaviour and states</li><li>Time-aware open set (Care / Chronicle / Sleep / Focus)</li><li>Glyph library reused verbatim — no new icons</li></ul></div>
+          <div class="remove"><h4>What's removed</h4><ul><li>The OPEN bordered block (becomes the tools strip)</li><li>Duplicate mono block eyebrows</li><li>Plain stacked-box monotony</li></ul></div>
+        </div>
+        <div class="risk"><h4>Risk</h4><p>Two real hazards. (1) Medallions on open rows borrow Temple's exact card vocabulary — risks the two home surfaces <strong>looking like duplicates</strong>. (2) One large warm surface can tip toward "dashboard panel" if it grows. Best if the bench stays small and the medallions read as restrained, not decorative.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4 · DIRECTION C ============ -->
+  <section class="block" id="dir-c" data-screen-label="Direction C">
+    <div class="rule"><span class="idx">IV</span><span class="lbl">Direction C · optional / most atmospheric</span></div>
+    <div class="dir" style="margin-top:48px;">
+      <div class="dir-mock">
+        <div class="phone">
+          <div class="scr dawn">
+            <div class="statusbar"><span>9:41</span><span class="dots">•••</span></div>
+            <div class="scr-body">
+              <div class="c-orient">
+                <div class="c-period"><span>Morning</span><span class="dotrow"><span class="d on"></span><span class="d"></span><span class="d"></span></span></div>
+                <div class="c-line">Two intentions placed. <span class="dim">The morning is still yours.</span></div>
+              </div>
+
+              <div class="s-hd"><span class="lab">Placed</span><span class="meta">02 / 03</span></div>
+              <div class="irow">
+                <span class="check"><svg viewBox="0 0 12 12" width="12" height="12" fill="none"></svg></span>
+                <span class="itext">Call the pharmacy</span>
+                <span class="rel"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></span>
+              </div>
+              <div class="irow kept">
+                <span class="check done"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="2.5 6.5 5 9 9.5 3.5"/></svg></span>
+                <span class="itext">Walk before noon</span>
+                <span class="rel"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></span>
+              </div>
+              <div class="add-line">Place another</div>
+
+              <div class="s-hd"><span class="lab">The hour holds</span><span class="meta">Morning</span></div>
+              <div class="orow">
+                <span class="otext">Care · morning</span><span class="ostate">Open</span>
+                <svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg>
+              </div>
+              <div class="orow kept">
+                <span class="otext">Chronicle</span><span class="ostate">Held</span>
+                <svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg>
+              </div>
+              <p class="foot-line">What remains can be kept or left.</p>
+            </div>
+            <nav class="tabbar">
+              <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Today</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><path d="M8 12a4 4 0 0 1 8 0"/></svg><span>Care</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 20h16"/></svg><span>Temple</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span>Settings</span></div>
+            </nav>
+          </div>
+        </div>
+        <p class="phone-cap">Direction C · First Light</p>
+      </div>
+
+      <div>
+        <div class="dir-name"><span class="tag">C</span><h3>First Light</h3></div>
+        <p class="dir-tagline">Let the screen quietly know what hour it is — without ever measuring it.</p>
+        <dl class="spec">
+          <div><dt>Hierarchy</dt><dd><strong>Time-of-day orientation → intentions → "the hour holds" → footer.</strong> Same bones as A, but the top is a felt atmosphere rather than a titled masthead.</dd></div>
+          <div><dt>Layout</dt><dd>Naked rows like A. The difference is purely at the crown: the ambient temple light and the orientation line shift with the existing period buckets (first-light / morning / midday / evening / night) already computed in code.</dd></div>
+          <div><dt>Treatment</dt><dd>The orientation is a large Spectral italic <strong>state sentence</strong> — "Two intentions placed. <span style="font-family:var(--font-display);font-style:italic;color:var(--ink-muted)">The morning is still yours.</span>" A row of three small bronze dots marks the arc of the day. <strong>Not a progress device</strong> — it never fills, never scores, never compares.</dd></div>
+          <div><dt>Intentions</dt><dd>Identical to A — naked rows, bronze check, Spectral "Placed" label.</dd></div>
+          <div><dt>Open rows</dt><dd>Labelled <strong>"The hour holds"</strong> — the open set framed as what this part of the day naturally contains, with the period word as meta.</dd></div>
+          <div><dt>Carryover</dt><dd>Same gentle echo as A, shown only on the first open after a one-day gap.</dd></div>
+        </dl>
+        <div class="judgement keep">
+          <div><h4>What stays</h4><ul><li>All EA-166 behaviour and states</li><li>Existing period-bucket logic (no new state)</li><li>The naked-row system from Direction A</li></ul></div>
+          <div class="remove"><h4>What's removed</h4><ul><li>Bordered blocks and mono block eyebrows</li><li>Static, time-blind framing</li></ul></div>
+        </div>
+        <div class="risk"><h4>Risk</h4><p>This is the line the brief draws in red. "The morning is still yours" and a day-arc of dots flirt with <strong>over-poetic</strong> and could be misread as a progress indicator — both explicitly unwanted. Defensible only if the copy stays plain and the dots are unmistakably ambient. Higher craft cost, narrower margin for error.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5 · RECOMMENDATION ============ -->
+  <section class="block" id="reco" data-screen-label="Recommendation">
+    <div class="rule"><span class="idx">V</span><span class="lbl">Recommendation</span></div>
+    <div class="reco">
+      <span class="eyebrow">Build Direction A</span>
+      <h3>The <span class="ital">Threshold</span></h3>
+      <p>It resolves the single biggest reason Today doesn't feel like the front door — <strong>the missing masthead</strong> — by restoring the exact identity pattern every other screen already uses. The user instantly recognises where they are.</p>
+      <p>It also settles a debt the design system itself flags: tasks were always meant to be <strong>naked separator-led rows</strong>, not card-wrapped. Direction A makes Today the screen that finally honours that, which pulls the rest of the app toward the prototype rather than away from it.</p>
+      <p>And it is the <strong>lowest-risk to ship</strong>: mostly CSS, a small markup reshuffle, and a few lines of render copy. No new state, no new functionality, no constitutional grey area. Direction B's bench is the strong second — its "workbench" framing can be borrowed as A's orientation wording — but its medallions risk mirroring Temple. Direction C is worth keeping as a future atmosphere layer, not the first move.</p>
+    </div>
+  </section>
+
+  <!-- ============ 6 · IMPLEMENTATION BRIEF ============ -->
+  <section class="block" id="brief" data-screen-label="Implementation brief">
+    <div class="rule"><span class="idx">VI</span><span class="lbl">Implementation brief · for Claude / Codex</span></div>
+    <div class="sec-head" style="margin-top:44px;">
+      <h2>Direction A — exact change map</h2>
+      <p>Visual and structural only. Every EA-166 interaction, ID, and state shape is preserved. This is a CSS-and-markup ticket with three small render copy lines.</p>
+    </div>
+
+    <div class="brief">
+      <div class="file-row">
+        <div class="fname">css/today.css<span class="badge">primary · ~most work</span></div>
+        <div class="fdesc">Restyle the <code>#pane-today</code> block. <strong>Strip the card surfaces:</strong> remove <code>background</code>, <code>border</code>, <code>border-radius</code>, and <code>padding</code> from <code>.today-plan-block</code> — content goes onto the floor. Add a <code>.today-plan-masthead</code> rule set (mono eyebrow, DM Sans 30px title, <code>.ital</code> Spectral accent, italic sub) mirroring <code>#pane-care .care-heading</code>. Add Spectral-italic section labels (<code>.today-plan-section-hd</code>) for "Placed" and "Open" with mono right-meta. Convert intention rows to naked separator rows (top + bottom 8% warm hairline, no wrapper). Restyle carryover as the inline <code>.echo</code> (no border). Keep all existing class names that JS targets.</div>
+      </div>
+      <div class="file-row">
+        <div class="fname">index.html<span class="badge">markup reshuffle</span></div>
+        <div class="fdesc">Inside <code>&lt;section id="pane-today"&gt;</code>: add the masthead block above intentions (eyebrow <code>#today-plan-date</code> restored as the date line only — <em>not</em> a second "Today"; heading + sub are static markup). Unwrap the three <code>.today-plan-block</code> divs so their children sit directly in the pane. Add Spectral section-label headers before the intentions list and before <code>#today-plan-open-list</code>. <strong>Keep every existing id</strong>: <code>#today-plan-intentions</code>, <code>#today-plan-add-wrap</code>, <code>#today-plan-add-form</code>, <code>#today-plan-carryover</code>, <code>#today-plan-open-list</code>, <code>#today-plan-limit</code>.</div>
+      </div>
+      <div class="file-row">
+        <div class="fname">js/render/today-plan.js<span class="badge">light · copy + class</span></div>
+        <div class="fdesc">Add a small <code>renderMasthead()</code> that writes the date eyebrow and a <strong>qualitative</strong> sub-line (e.g. "Two placed. Morning care is still open.") assembled from the data already read in <code>renderOpenItems()</code> — <strong>never a percentage</strong> (§19B.4). The "02 / 03" meta is a plain capacity readout of <code>intentions.length</code> vs max 3, rendered as mono right-meta, no "of"/"completed" language. Open-row markup gains a mono state word; carryover markup becomes the echo structure. Re-uses <code>getPeriodKey()</code> for the "Open" right-meta period word.</div>
+      </div>
+      <div class="file-row">
+        <div class="fname">sw.js<span class="badge">housekeeping</span></div>
+        <div class="fdesc">Bump <code>CACHE_NAME</code> one version (the established per-ticket pattern). No <code>ASSETS</code> additions — no new files.</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:54px;font-size:21px;">CSS / component strategy</h3>
+    <div class="guard" style="margin-top:22px;">
+      <div>
+        <h3 style="font-size:15px;font-family:var(--font-mono);letter-spacing:0.16em;text-transform:uppercase;color:var(--bronze);font-weight:400;">Reuse, don't invent</h3>
+        <ul>
+          <li>Masthead = copy of the proven <code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">.care-eyebrow / .care-title / .care-blurb</code> spec — same sizes, same <code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">.ital</code> accent.</li>
+          <li>Section labels = the existing <code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">.care-section-label</code> Spectral-italic 17px pattern.</li>
+          <li>Naked rows already exist for <code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">#pane-care .task-item</code> (EA-33) — mirror those separator rules exactly.</li>
+          <li>Only one new token need: none. All values exist (<code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">--separator-warm</code>, <code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">--bronze</code>, radii).</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:15px;font-family:var(--font-mono);letter-spacing:0.16em;text-transform:uppercase;color:#c98a6b;font-weight:400;">Do not touch</h3>
+        <ul class="nono">
+          <li><code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">js/domains/today-plan.js</code> — rollover, carryover, intention CRUD logic</li>
+          <li><code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">state.today</code> shape, migration, or <code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">STORAGE_KEY</code></li>
+          <li>Any element id bound in <code style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">main.js</code> delegation</li>
+          <li>Care cycle logic, Chronicle, Sleep, Temple, all modals</li>
+          <li>The 4-tab nav order (Today · Care · Temple · Settings)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="constitution-note">
+      <span class="eyebrow">§19B compliance — how A stays inside the line</span>
+      <p>Every change is presentation. Intentions remain 1–3 user-authored, kept/not-kept, releasable. Carryover is the same one-day quiet echo. The "02 / 03" is a capacity hint, not a completion ratio — no "X of Y done", no percentage, no streak. The sub-line is qualitative state assembled from today only. No history, no trajectory, no app-generated suggestion. Passes the Six Tests as cleanly as the current screen does — it simply says it in Elysium's own voice.</p>
+    </div>
+  </section>
+
+  <!-- ============ 7 · RISKS ============ -->
+  <section class="block" id="risks" data-screen-label="Risks">
+    <div class="rule"><span class="idx">VII</span><span class="lbl">Risks · what to avoid in the build</span></div>
+    <div class="guard" style="margin-top:40px;border-top:0;">
+      <div style="padding-left:0;">
+        <h3>Craft hazards</h3>
+        <ul>
+          <li><strong>Under-structuring.</strong> Without boxes, the masthead and Spectral labels must carry the hierarchy. If hairline weights or vertical rhythm slip, it reads as unfinished, not quiet. Hold the 8% separator and generous spacing.</li>
+          <li><strong>Heading redundancy.</strong> The eyebrow shows the <em>date</em>; the heading must not also say "Today". Keep "Today's <span class="ital">intentions</span>" as the only instance.</li>
+          <li><strong>Sub-line creep.</strong> The qualitative state line must never quantify. "Two placed. Morning care is still open." — yes. "67% kept" — never.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Constitutional traps</h3>
+        <ul class="nono">
+          <li>Don't let "02 / 03" acquire "of" / "completed" / a progress bar — it must stay a bare capacity glyph.</li>
+          <li>No medallion progress arcs on Today (those live on Temple) — avoids both duplication and a score reading.</li>
+          <li>No carryover counts, no "carried 3×", no day-to-day comparison.</li>
+          <li>Resist adding Focus/Sleep affordances beyond the existing time-aware open set — scope is visual only.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="closing">
+      <p>Today should feel like crossing a threshold into a quiet, well-kept room — the same room every time, that holds only what you placed in it.</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

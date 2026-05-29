@@ -1,5 +1,5 @@
 import { state, saveState, todayStr } from '../state.js';
-import { uid, isYmd, daysBetween } from '../utils.js';
+import { uid, isYmd, daysBetween, ymd } from '../utils.js';
 
 const MAX_INTENTIONS = 3;
 const MAX_TEXT = 120;
@@ -12,11 +12,21 @@ export function normalizeTodayPlanIfNeeded() {
     const gap = daysBetween(plan.date, todayStr);
     if (gap === 1) {
       const unkept = plan.intentions.filter(i => !i.kept);
-      plan.carryover = unkept.map(i => ({ id: uid(), text: i.text }));
+      const decisions = Array.isArray(plan.sleepDecisions) ? plan.sleepDecisions : [];
+      if (decisions.length) {
+        const passIds = new Set(decisions.filter(d => !d.carry).map(d => d.id));
+        plan.carryover = unkept
+          .filter(i => !passIds.has(i.id))
+          .map(i => ({ id: uid(), text: i.text }));
+      } else {
+        plan.carryover = unkept.map(i => ({ id: uid(), text: i.text }));
+      }
+      plan.sleepDecisions = [];
       plan.carryoverDate = plan.date;
     } else {
       plan.carryover = [];
       plan.carryoverDate = null;
+      plan.sleepDecisions = [];
     }
   } else {
     plan.carryover = [];
@@ -83,5 +93,34 @@ export function letIntentionPass(id) {
   const plan = state.today;
   plan.carryover = plan.carryover.filter(i => i.id !== id);
   if (!plan.carryover.length) plan.carryoverDate = null;
+  saveState();
+}
+
+// decisionsMap: Map<id, 'carry'|'pass'>
+// Always writes — even if empty, clears any stale decisions from a previous session.
+export function saveSleepShutdownDecisions(decisionsMap) {
+  const decisions = [];
+  if (decisionsMap && decisionsMap.size) {
+    for (const [id, action] of decisionsMap) {
+      decisions.push({ id, carry: action === 'carry' });
+    }
+  }
+  state.today.sleepDecisions = decisions;
+  saveState();
+}
+
+export function getMorningSleepHandoff() {
+  const yd = new Date();
+  yd.setDate(yd.getDate() - 1);
+  const yesterdayStr = ymd(yd);
+  if (state.today.sleepHandoffDismissedFor === yesterdayStr) return null;
+  const note = state.sleep?.entries?.[yesterdayStr]?.note?.trim();
+  return note || null;
+}
+
+export function dismissSleepHandoff() {
+  const yd = new Date();
+  yd.setDate(yd.getDate() - 1);
+  state.today.sleepHandoffDismissedFor = ymd(yd);
   saveState();
 }

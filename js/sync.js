@@ -19,6 +19,29 @@ export function registerPostSyncCallback(fn) { _postSyncCallback = fn; }
 export function hideBootShell() {
   const el = document.getElementById('boot-shell');
   if (el) el.hidden = true;
+  // iOS standalone first-launch blank-space fix (EA-167D).
+  //
+  // The Today pane and the position:fixed tab bar are first laid out *behind* the
+  // boot shell, while the standalone viewport metrics (dvh height, safe-area-inset
+  // and the fixed-element containing block) are still provisional. Those metrics
+  // settle when the app is revealed, but the geometry is never recomputed — so the
+  // .app (min-height:100dvh) and the .tabs (bottom:0) keep stale dimensions, leaving
+  // blank space below the nav. A tab switch corrects it only because switchTab's
+  // pane swap forces a reflow against the settled viewport.
+  //
+  // Earlier scroll-based attempts failed because scrollTop is already 0 — the layout
+  // geometry is wrong, not the scroll offset. The reliable fix is to replay that same
+  // reflow once, on the frame the app first becomes visible: nudge the dvh container
+  // and read layout synchronously so iOS re-resolves dvh, safe-area and fixed-bar
+  // position. No scroll, no animation replay, no timeout.
+  requestAnimationFrame(() => {
+    const app = document.querySelector('.app');
+    if (!app) return;
+    app.style.minHeight = '99.9dvh';
+    void app.offsetHeight;   // force synchronous layout against the settled viewport
+    app.style.minHeight = ''; // restore CSS-driven min-height:100dvh
+    void app.offsetHeight;
+  });
 }
 
 export function showAuthView(view) {
