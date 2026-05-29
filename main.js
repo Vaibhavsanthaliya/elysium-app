@@ -46,6 +46,9 @@ import { addWeeklyPhoto, hasPhotoThisWeek } from './js/services/photos.js';
 import { scheduleReminders, clearScheduledReminders, toggleNotifications } from './js/services/notifications.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Prevent browser scroll restoration so first-load matches tab-switch behavior
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
   // Core init — must run before any render calls
   initState();
   registerSyncCallback(scheduleSaveToSupabase);
@@ -80,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCycleList();
   renderTemple();
   renderTodayPlan();
+  window.scrollTo(0, 0);
   registerClosedDayHandler(openSleepModal);
 
   // --- Tab clicks ---
@@ -171,7 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Auth helpers ---
   function showAuthError(msg) {
     const el = document.getElementById('auth-error');
-    el.textContent = msg;
+    let display = msg;
+    if (/invalid login credentials/i.test(msg) || /invalid credentials/i.test(msg)) {
+      display = 'Email or password did not match.';
+    }
+    el.textContent = display;
     el.hidden = false;
   }
 
@@ -476,6 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (action === 'care') switchTab('care');
     else if (action === 'chronicle') switchTab('chronicle');
     else if (action === 'sleep') openSleepModal();
+    else if (action === 'work') openWorkFlow();
   });
 
   // --- Morning Flow ---

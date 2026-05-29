@@ -57,10 +57,12 @@
 .auth-view[hidden] { display: none; }
 
 .auth-error {
-  font-size: 14px;
-  color: var(--red);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: -0.003em;
+  color: var(--ember);
   text-align: center;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .auth-error[hidden] { display: none; }
@@ -321,8 +323,8 @@
 .auth-error {
   font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 500;
-  color: var(--red);
+  letter-spacing: -0.003em;
+  color: var(--ember);
   text-align: center;
   margin: 18px auto 0;
   max-width: 30ch;

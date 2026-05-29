@@ -5,17 +5,11 @@ import {
   getTodayPlan,
   getCarryoverCandidates,
 } from '../domains/today-plan.js';
-import { getCareTurnState, getCareCycleLabel } from './temple.js';
+import { getCareTurnState, getCareCycleLabel, getMorningCareState, getPeriodKey } from './temple.js';
 import { getSleepEntry } from '../domains/sleep.js';
-
-const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-function renderDateLabel() {
-  const el = document.getElementById('today-plan-date');
-  if (!el) return;
-  const d = new Date();
-  el.textContent = `Today · ${d.getDate()} ${MONTHS[d.getMonth()]}`;
-}
+import { hasMindArrival } from '../domains/mind.js';
+import { hasArrivedToday } from '../domains/body.js';
+import { hasHeldToday } from '../domains/water.js';
 
 function renderIntentions() {
   const list = document.getElementById('today-plan-intentions');
@@ -84,31 +78,73 @@ function renderOpenItems() {
   const list = document.getElementById('today-plan-open-list');
   if (!list) return;
 
-  const careState = getCareTurnState();
-  const careKept = careState.key === 'kept';
-  const careMotion = careState.key === 'motion';
-  const careLabel = getCareCycleLabel();
+  const periodKey = getPeriodKey();
+  const isMorning = periodKey === 'first-light' || periodKey === 'morning';
+  const isMidday  = periodKey === 'midday' || periodKey === 'afternoon';
 
   const hasChronicle = !!(state.chronicle?.notes?.[todayStr]?.body);
   const hasSleep = !!getSleepEntry(todayStr);
 
-  const items = [
-    {
-      action: 'care',
-      kept: careKept,
-      text: careKept ? 'Care · kept tonight' : (careMotion ? `Care · ${careLabel} in motion` : `Care · ${careLabel}`),
-    },
-    {
-      action: 'chronicle',
-      kept: hasChronicle,
-      text: hasChronicle ? 'Chronicle · held today' : 'Chronicle · still open',
-    },
-    {
-      action: 'sleep',
-      kept: hasSleep,
-      text: hasSleep ? 'Sleep · closed' : 'Sleep · not closed',
-    },
-  ];
+  let items;
+
+  if (isMorning) {
+    const morningState = getMorningCareState();
+    const morningKept   = morningState === 'kept';
+    const morningMotion = morningState === 'motion';
+    items = [
+      {
+        action: 'care',
+        kept: morningKept,
+        text: morningKept   ? 'Care · morning kept'
+            : morningMotion ? 'Care · morning in motion'
+                            : 'Care · morning open',
+      },
+      {
+        action: 'chronicle',
+        kept: hasChronicle,
+        text: hasChronicle ? 'Chronicle · held today' : 'Chronicle · still open',
+      },
+    ];
+  } else if (isMidday) {
+    const workKept = hasMindArrival(todayStr) && hasArrivedToday() && hasHeldToday();
+    items = [
+      {
+        action: 'work',
+        kept: workKept,
+        text: workKept ? 'Focus · held' : 'Focus · return to focus',
+      },
+      {
+        action: 'chronicle',
+        kept: hasChronicle,
+        text: hasChronicle ? 'Chronicle · held today' : 'Chronicle · still open',
+      },
+    ];
+  } else {
+    // evening / night / golden-hour — closing items
+    const careState = getCareTurnState();
+    const careKept   = careState.key === 'kept';
+    const careMotion = careState.key === 'motion';
+    const careLabel  = getCareCycleLabel();
+    items = [
+      {
+        action: 'care',
+        kept: careKept,
+        text: careKept   ? `Care · ${careLabel} kept`
+            : careMotion ? `Care · ${careLabel} in motion`
+                         : `Care · ${careLabel}`,
+      },
+      {
+        action: 'chronicle',
+        kept: hasChronicle,
+        text: hasChronicle ? 'Chronicle · held today' : 'Chronicle · still open',
+      },
+      {
+        action: 'sleep',
+        kept: hasSleep,
+        text: hasSleep ? 'Sleep · closed' : 'Sleep · not closed',
+      },
+    ];
+  }
 
   list.innerHTML = items.map(item => `
     <div class="today-plan-open-item${item.kept ? ' is-kept' : ''}" data-open-action="${item.action}">
@@ -122,7 +158,6 @@ function renderOpenItems() {
 
 export function renderTodayPlan() {
   normalizeTodayPlanIfNeeded();
-  renderDateLabel();
   renderIntentions();
   renderCarryover();
   renderOpenItems();

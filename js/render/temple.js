@@ -20,6 +20,12 @@ const TEMPLE_PERIOD_BUCKETS = [
   { start: 22, end: 24, key: 'night' },
 ];
 
+export function getPeriodKey() {
+  const h = new Date().getHours();
+  const period = TEMPLE_PERIOD_BUCKETS.find(p => h >= p.start && h < p.end) ?? TEMPLE_PERIOD_BUCKETS[0];
+  return period.key;
+}
+
 // Must mirror the EA-85 period baselines in css/temple.css.
 const TEMPLE_PERIOD_ALPHA = {
   night: 0.06,

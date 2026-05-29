@@ -744,23 +744,14 @@
   opacity: 0.82;
 }
 
-/* ── EA-166: Today Plan ──────────────────────────────────────────────────────── */
-
-#pane-today .today-plan-header {
-  padding: 8px 0 20px;
-}
-
-#pane-today .today-plan-date {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: var(--muted-text);
-  margin: 0;
-}
+/* ── EA-166: Today Plan / EA-167A: Design stabilization ─────────────────────── */
 
 #pane-today .today-plan-block {
-  margin-bottom: 28px;
+  border: 1px solid var(--separator-warm);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  background: var(--bg-elevated);
+  margin-bottom: 16px;
 }
 
 #pane-today .today-plan-block-eyebrow {
@@ -769,7 +760,7 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--bronze);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 /* Intention rows */
@@ -782,7 +773,7 @@
 }
 
 #pane-today .today-plan-intention:first-child {
-  border-top: 1px solid var(--separator-warm);
+  border-top: none;
 }
 
 #pane-today .today-plan-mark {
@@ -833,15 +824,13 @@
   color: var(--muted-text);
 }
 
-/* Empty state */
+/* Empty state — no border needed inside card */
 #pane-today .today-plan-empty {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 15px;
   color: var(--muted-text);
-  padding: 15px 0;
-  border-top: 1px solid var(--separator-warm);
-  border-bottom: 1px solid var(--separator-warm);
+  padding: 8px 0;
   margin: 0;
 }
 
@@ -985,7 +974,7 @@
 }
 
 #pane-today .today-plan-open-item:first-child {
-  border-top: 1px solid var(--separator-warm);
+  border-top: none;
 }
 
 #pane-today .today-plan-open-item.is-kept .today-plan-open-text {
