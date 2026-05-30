@@ -65,6 +65,16 @@ export function deleteIntention(id) {
   saveState();
 }
 
+export function updateIntention(id, text) {
+  const plan = getTodayPlan();
+  const intention = plan.intentions.find(i => i.id === id);
+  const nextText = String(text || '').trim().slice(0, MAX_TEXT);
+  if (!intention || !nextText) return false;
+  intention.text = nextText;
+  saveState();
+  return true;
+}
+
 export function getCarryoverCandidates() {
   const plan = state.today;
   if (!plan.carryover.length || !plan.carryoverDate) return [];

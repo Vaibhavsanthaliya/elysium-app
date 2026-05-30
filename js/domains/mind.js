@@ -1,4 +1,4 @@
-import { state, todayStr } from '../state.js';
+import { state, saveState, todayStr } from '../state.js';
 import { isYmd, isValidReminderTime, getPeriodKey, uid } from '../utils.js';
 
 function ensureMindState() {
@@ -103,5 +103,60 @@ export function arriveMind(dateStr = todayStr) {
     state.mind.arrivals[dateStr] = { at, period: getPeriodKey(now.getHours()) };
   }
   return true;
+}
+
+export function getMindThread(dateStr = todayStr) {
+  ensureMindState();
+  const t = state.mind.thread;
+  if (!t || typeof t !== 'object' || t.date !== dateStr) return null;
+  return t;
+}
+
+export function saveMindThread(dateStr = todayStr, text = '') {
+  ensureMindState();
+  if (!isYmd(dateStr)) return false;
+  const trimmed = typeof text === 'string' ? text.trim().slice(0, 500) : '';
+  if (!trimmed) return false;
+  state.mind.thread = {
+    date: dateStr,
+    text: trimmed,
+    keptNearby: true,
+    updatedAt: new Date().toISOString(),
+  };
+  return true;
+}
+
+export function clearMindThread() {
+  ensureMindState();
+  state.mind.thread = null;
+}
+
+export function getMindOffload(dateStr = todayStr) {
+  ensureMindState();
+  const t = state.mind.thread;
+  if (!t || typeof t !== 'object' || t.date !== dateStr) return null;
+  const text = typeof t.text === 'string' ? t.text.trim() : '';
+  return text ? { text, updatedAt: t.updatedAt || null } : null;
+}
+
+export function saveMindOffload(text = '') {
+  ensureMindState();
+  const trimmed = typeof text === 'string' ? text.trim().slice(0, 300) : '';
+  if (!trimmed) return false;
+  state.mind.thread = {
+    date: todayStr,
+    text: trimmed,
+    keptNearby: true,
+    updatedAt: new Date().toISOString(),
+  };
+  arriveMind(todayStr);
+  saveState();
+  return true;
+}
+
+export function clearMindOffload() {
+  ensureMindState();
+  state.mind.thread = null;
+  saveState();
 }
 

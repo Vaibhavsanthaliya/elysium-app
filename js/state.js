@@ -212,6 +212,19 @@ export function migrateState(s) {
     if (clean.length) s.mind.arrivals[date] = clean[0];
     else delete s.mind.arrivals[date];
   }
+  {
+    const t = s.mind.thread;
+    if (t && typeof t === 'object' && !Array.isArray(t) && isYmd(t.date) && t.date === _todayStr && typeof t.text === 'string' && t.text.trim()) {
+      s.mind.thread = {
+        date: t.date,
+        text: t.text.trim().slice(0, 500),
+        keptNearby: t.keptNearby === true,
+        updatedAt: typeof t.updatedAt === 'string' ? t.updatedAt : new Date().toISOString(),
+      };
+    } else {
+      s.mind.thread = null;
+    }
+  }
   s.body = s.body && typeof s.body === 'object' && !Array.isArray(s.body)
     ? s.body : {};
   s.body.arrivals = s.body.arrivals && typeof s.body.arrivals === 'object' && !Array.isArray(s.body.arrivals)

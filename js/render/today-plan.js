@@ -9,7 +9,7 @@ import {
 } from '../domains/today-plan.js';
 import { getCareTurnState, getCareCycleLabel, getMorningCareState, getPeriodKey } from './temple.js';
 import { getSleepEntry } from '../domains/sleep.js';
-import { hasMindArrival } from '../domains/mind.js';
+import { hasMindArrival, getMindOffload, clearMindOffload } from '../domains/mind.js';
 import { hasArrivedToday } from '../domains/body.js';
 import { hasHeldToday } from '../domains/water.js';
 
@@ -42,7 +42,7 @@ function renderIntentions() {
     list.innerHTML = '<p class="today-plan-empty">Place one thing here.</p>';
   } else {
     list.innerHTML = intentions.map(i => `
-      <div class="today-plan-intention${i.kept ? ' is-kept' : ''}">
+      <div class="today-plan-intention${i.kept ? ' is-kept' : ''}" data-id="${escapeHtml(i.id)}">
         <button class="today-plan-mark" data-action="toggle" data-id="${escapeHtml(i.id)}" aria-label="${i.kept ? 'Unmark' : 'Mark kept'}">
           <svg viewBox="0 0 16 16" width="16" height="16" fill="none">
             ${i.kept
@@ -167,13 +167,36 @@ function renderOpenItems() {
   if (periodEl) periodEl.textContent = _PERIOD_WORDS[periodKey] || '';
 
   list.innerHTML = items.map(item => `
-    <div class="today-plan-open-item${item.kept ? ' is-kept' : ''}" data-open-action="${item.action}">
+    <div class="today-plan-open-item${item.kept ? ' is-kept' : ''}" data-open-action="${item.action}" title="${escapeHtml(item.text)}" aria-label="${escapeHtml(item.text)}">
       <span class="today-plan-open-text">${escapeHtml(item.text)}</span>
       <svg class="today-plan-open-chevron" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="5 3 11 8 5 13"/>
       </svg>
     </div>
   `).join('');
+}
+
+function renderMindThread() {
+  const section = document.getElementById('today-mind-thread');
+  const textEl = document.getElementById('today-mind-thread-text');
+  if (!section || !textEl) return;
+
+  const offload = getMindOffload(todayStr);
+  if (!offload) {
+    section.hidden = true;
+    return;
+  }
+
+  textEl.textContent = offload.text;
+  section.hidden = false;
+
+  const releaseBtn = document.getElementById('today-mind-thread-release');
+  if (releaseBtn) {
+    releaseBtn.onclick = () => {
+      clearMindOffload();
+      section.hidden = true;
+    };
+  }
 }
 
 function renderSleepHandoff() {
@@ -202,6 +225,7 @@ function renderSleepHandoff() {
 export function renderTodayPlan() {
   normalizeTodayPlanIfNeeded();
   renderMasthead();
+  renderMindThread();
   renderSleepHandoff();
   renderIntentions();
   renderCarryover();

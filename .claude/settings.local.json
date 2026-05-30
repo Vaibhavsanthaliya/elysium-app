@@ -56,7 +56,10 @@
       "Bash(vercel integration *)",
       "Bash(vercel *)",
       "Bash(awk 'END{print NR}' docs/ticket-log.md)",
-      "Bash(sed -n '$p' docs/ticket-log.md)"
+      "Bash(sed -n '$p' docs/ticket-log.md)",
+      "PowerShell(node --check \"D:\\\\Projects\\\\elysium-app\\\\js\\\\constants.js\"; node --check \"D:\\\\Projects\\\\elysium-app\\\\js\\\\domains\\\\water.js\"; node --check \"D:\\\\Projects\\\\elysium-app\\\\js\\\\ui\\\\modals.js\"; node --check \"D:\\\\Projects\\\\elysium-app\\\\js\\\\ui\\\\flow.js\")",
+      "Bash(python3 *)",
+      "Bash(xargs wc -l)"
     ]
   }
 }

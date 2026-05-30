@@ -509,7 +509,7 @@ select.field-input {
   opacity: 0.45;
 }
 
-/* ── EA-60/65: Mind domain modal ─────────────────────────────────────────── */
+/* ── EA-178: Mind domain modal ────────────────────────────────────────────── */
 #mind-modal .mind-modal-sheet {
   overflow-y: auto;
 }
@@ -538,177 +538,60 @@ select.field-input {
   color: var(--bronze);
 }
 
-#mind-modal .mind-sub {
+#mind-modal .mind-offload-sub {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 14px;
   color: var(--muted-text);
-  margin: 0 0 20px;
+  line-height: 1.5;
+  margin: 0 0 18px;
 }
 
-#mind-modal .mind-stage {
-  border-top: 1px solid var(--separator-warm);
-  padding: 16px 0;
-}
-
-#mind-modal .mind-stage:last-of-type {
-  border-bottom: 1px solid var(--separator-warm);
-  margin-bottom: 22px;
-}
-
-#mind-modal .mind-stage-label {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: var(--bronze);
-  margin-bottom: 8px;
-}
-
-#mind-modal .mind-stage-invitation {
-  display: block;
-  margin: 0;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--oracle-text);
-}
-
-#mind-modal .mind-ephemeral-field {
+#mind-modal .mind-offload-input {
   width: 100%;
   box-sizing: border-box;
   background: transparent;
   border: none;
   border-bottom: 1px solid var(--separator-warm);
   padding: 10px 0 11px;
-  margin-top: 8px;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--oracle-text);
-  resize: none;
-  outline: none;
-}
-
-#mind-modal .mind-ephemeral-field::placeholder {
-  color: var(--muted-text);
-  opacity: 0.58;
-}
-
-#mind-modal .mind-ephemeral-field:focus {
-  border-bottom-color: rgba(201, 165, 107, 0.48);
-}
-
-/* State B — holding */
-#mind-modal #mind-state-b {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 0 8px;
-  text-align: center;
-}
-
-#mind-modal #mind-state-b[hidden] {
-  display: none;
-}
-
-#mind-modal #mind-state-b .mind-eyebrow {
-  margin-bottom: 28px;
-}
-
-#mind-modal .mind-holding {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 44px;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  color: var(--oracle-text);
-  margin: 0 0 16px;
-  line-height: 1;
-}
-
-#mind-modal .mind-held-thread {
-  max-width: 260px;
-  margin: 0 0 14px;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--oracle-text);
-  opacity: 0.82;
-}
-
-#mind-modal .mind-held-thread[hidden] {
-  display: none;
-}
-
-#mind-modal .mind-holding-invitation {
-  max-width: 280px;
-  margin: 0 0 18px;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--muted-text);
-  opacity: 0.76;
-}
-
-/* Inscribing action — quiet text action, not a primary CTA */
-#mind-modal .mind-end-btn {
-  background: transparent;
-  border: none;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--muted-text);
-  padding: 12px;
-  cursor: pointer;
-  opacity: 0.75;
-  min-height: 44px;
-  transition: opacity 0.8s ease;
-}
-
-#mind-modal .mind-end-btn.is-waiting {
-  opacity: 0;
-  pointer-events: none;
-  cursor: default;
-}
-
-/* State C — reflection */
-#mind-modal #mind-state-c[hidden] {
-  display: none;
-}
-
-#mind-modal .mind-reflection {
-  width: 100%;
-  box-sizing: border-box;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--separator-warm);
-  padding: 8px 0 12px;
   font-family: var(--font-display);
   font-style: italic;
   font-size: 16px;
+  line-height: 1.55;
   color: var(--oracle-text);
   resize: none;
   outline: none;
-  line-height: 1.5;
-  margin-bottom: 24px;
+  caret-color: var(--bronze);
 }
 
-#mind-modal .mind-reflection::placeholder {
+#mind-modal .mind-offload-input::placeholder {
   color: var(--muted-text);
-  opacity: 0.65;
+  opacity: 0.52;
 }
 
-/* ── EA-139: Mind recent threads surface ────────────────────────────────── */
+#mind-modal .mind-offload-input:focus {
+  border-bottom-color: rgba(201, 165, 107, 0.48);
+}
+
+#mind-modal .mind-offload-message {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--muted-text);
+  opacity: 0.80;
+  margin: 12px 0 0;
+}
+
+#mind-modal .mind-offload-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* Past reflections surface */
 #mind-modal .mind-threads {
-  margin-top: 24px;
+  margin-top: 28px;
   border-top: 1px solid var(--separator-warm);
   padding-top: 16px;
   padding-bottom: 4px;

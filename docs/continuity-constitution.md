@@ -202,6 +202,8 @@ What follows is binding.
 18.6 — The Hold's breath animation may, at extreme thresholds and with rigorous capping, adopt a slightly personalized rhythm — but this is considered borderline behavioral derivation and should be approached with extreme caution. **Default position: do not build.**
 18.7 — Sessions never compete with each other. No "longest hold." No "deepest session." Each hold is its own complete thing.
 
+18.8 — Mind may hold one user-authored thread for the current day. The held thread is a momentary offload — text placed in the room to relieve mental occupation. It is not a task, not a goal, not a performance target. It expires at end-of-day automatically (cleared in `migrateState` when date rolls over). The user saves it ("Set it down"), may send it to Today as an intention ("Send to Today"), or may remove it ("Clear"). It surfaces quietly in Today as "held nearby" with a one-tap release. No history of held threads is retained across days. No outcome state (completed, blocked, failed) is attached. The thread does not feed counts, streaks, or analytics of any kind.
+
 ### §19 · Rules for future domains
 
 19.1 — Body and Water are dormant by design. They may be activated only when their absence becomes a genuine ache in the product, never as the next available feature box to tick.

@@ -61,16 +61,16 @@ let _pendingTraceAt = 0;
 const TRACE_TTL_MS = 90000;
 
 const TRACE_CARD_IDS = {
-  light: 'temple-goto-light',
   sleep: 'temple-goto-sleep',
   mind:  'temple-goto-mind',
   care:  'temple-goto-today',
   body:  'temple-goto-body',
-  water: 'temple-goto-water',
 };
 
 export function applyTempleTrace(domain) {
-  const card = document.getElementById(TRACE_CARD_IDS[domain]);
+  const cardId = TRACE_CARD_IDS[domain];
+  if (!cardId) return;
+  const card = document.getElementById(cardId);
   if (!card) return;
   card.classList.remove('just-touched');
   void card.offsetWidth;
@@ -342,11 +342,9 @@ const TEMPLE_RHYTHM_HEADINGS = {
 };
 
 const RHYTHM_CARD_IDS = {
-  light:     'temple-goto-light',
   sleep:     'temple-goto-sleep',
   mind:      'temple-goto-mind',
   body:      'temple-goto-body',
-  water:     'temple-goto-water',
   chronicle: 'temple-goto-chronicle',
 };
 
@@ -360,11 +358,9 @@ export function getMorningCareState() {
 }
 
 function getRhythmMap(periodKey) {
-  const lightDone     = !!getLastWitness(todayStr);
   const sleepDone     = !!getSleepEntry(todayStr);
   const mindDone      = hasMindArrival(todayStr) || getMostRecentSession()?.date === todayStr;
   const bodyDone      = hasArrivedToday();
-  const waterDone     = hasHeldToday();
   const chronicleDone = !!(state.chronicle?.notes?.[todayStr]?.body);
 
   const now   = done => done ? 'kept' : 'now';
@@ -372,18 +368,18 @@ function getRhythmMap(periodKey) {
 
   switch (periodKey) {
     case 'first-light':
-      return { light: now(lightDone), mind: later(mindDone), body: later(bodyDone), water: later(waterDone), chronicle: later(chronicleDone), sleep: later(sleepDone) };
+      return { mind: later(mindDone), body: later(bodyDone), chronicle: later(chronicleDone), sleep: later(sleepDone) };
     case 'morning':
-      return { light: now(lightDone), mind: now(mindDone), body: later(bodyDone), water: later(waterDone), chronicle: later(chronicleDone), sleep: later(sleepDone) };
+      return { mind: now(mindDone), body: later(bodyDone), chronicle: later(chronicleDone), sleep: later(sleepDone) };
     case 'midday':
     case 'afternoon':
-      return { water: now(waterDone), body: now(bodyDone), mind: now(mindDone), light: later(lightDone), chronicle: later(chronicleDone), sleep: later(sleepDone) };
+      return { body: now(bodyDone), mind: now(mindDone), chronicle: later(chronicleDone), sleep: later(sleepDone) };
     case 'golden-hour':
-      return { chronicle: now(chronicleDone), water: now(waterDone), body: now(bodyDone), light: later(lightDone), mind: later(mindDone), sleep: later(sleepDone) };
+      return { chronicle: now(chronicleDone), body: now(bodyDone), mind: later(mindDone), sleep: later(sleepDone) };
     case 'dusk':
-      return { chronicle: now(chronicleDone), sleep: now(sleepDone), water: later(waterDone), body: later(bodyDone), light: later(lightDone), mind: later(mindDone) };
+      return { chronicle: now(chronicleDone), sleep: now(sleepDone), body: later(bodyDone), mind: later(mindDone) };
     default:
-      return { sleep: now(sleepDone), chronicle: now(chronicleDone), water: later(waterDone), body: later(bodyDone), light: later(lightDone), mind: later(mindDone) };
+      return { sleep: now(sleepDone), chronicle: now(chronicleDone), body: later(bodyDone), mind: later(mindDone) };
   }
 }
 
@@ -565,12 +561,6 @@ export function renderTemple() {
   const hasNote = !!(state.chronicle?.notes?.[todayStr]?.body);
   document.getElementById('temple-chronicle-state').textContent = hasNote ? 'A line' : 'Quiet';
 
-  const lastWitness = getLastWitness(todayStr);
-  const lightStateEl = document.getElementById('temple-light-state');
-  if (lightStateEl) {
-    lightStateEl.textContent = lastWitness ? 'Entered' : 'Open';
-  }
-
   const sleepStateEl = document.getElementById('temple-sleep-state');
   if (sleepStateEl) {
     const todaySleep = getSleepEntry(todayStr);
@@ -598,11 +588,6 @@ export function renderTemple() {
   const bodyStateEl = document.getElementById('temple-body-state');
   if (bodyStateEl) {
     bodyStateEl.textContent = hasArrivedToday() ? 'Returned' : 'Return';
-  }
-
-  const waterStateEl = document.getElementById('temple-water-state');
-  if (waterStateEl) {
-    waterStateEl.textContent = hasHeldToday() ? 'Held' : 'Unstirred';
   }
 
   const domainLabelEl = document.getElementById('temple-domain-label');

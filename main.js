@@ -18,7 +18,7 @@ import {
   scheduleChronicleAutosave,
   flushPendingChronicleSave,
 } from './js/render/chronicle.js';
-import { witnessLight, getLightOpeningInvitation } from './js/domains/light.js';
+
 import { renderProgress, renderWeeklyPhotos, closePastDayModal } from './js/render/progress.js';
 import { updateSettingsView, exportData, importData, resetAll, resetStartDate } from './js/render/settings.js';
 import { isClosedForToday } from './js/domains/sleep.js';
@@ -37,13 +37,11 @@ import {
   registerConfirmModal,
   openBodyModal,
   registerBodyModal,
-  openWaterModal,
-  registerWaterModal,
 } from './js/ui/modals.js';
 import { showToast } from './js/ui/toast.js';
 import { openMorningFlow, registerMorningFlow, openNightFlow, registerNightFlow, openWorkFlow, registerWorkFlow } from './js/ui/flow.js';
 import { renderTodayPlan } from './js/render/today-plan.js';
-import { addTodayIntention, toggleTodayIntention, deleteIntention, bringForwardIntention, letIntentionPass, getTodayPlan } from './js/domains/today-plan.js';
+import { addTodayIntention, toggleTodayIntention, deleteIntention, updateIntention, bringForwardIntention, letIntentionPass, getTodayPlan } from './js/domains/today-plan.js';
 import { addWeeklyPhoto, hasPhotoThisWeek } from './js/services/photos.js';
 import { scheduleReminders, clearScheduledReminders, toggleNotifications } from './js/services/notifications.js';
 
@@ -72,10 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       clearScheduledReminders();
     }
-    // Reset scroll after all post-sync DOM mutations, immediately before hideBootShell()
-    // reveals the app. Without this, iOS scroll anchoring can leave scroll at >0 when
-    // the boot shell hides, making the page appear to have extra blank space below the nav.
-    window.scrollTo(0, 0);
   });
 
   renderHeader();
@@ -84,8 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCycleList();
   renderTemple();
   registerClosedDayHandler(openSleepModal);
-  registerBootRevealLayoutCallback(refreshActivePaneLayout);
-  switchTab('today', { skipClosedDayCheck: true });
+  registerBootRevealLayoutCallback(() => {
+    const activePane = document.querySelector('.tab-pane.active:not(.is-leaving)');
+    if (activePane) {
+      refreshActivePaneLayout();
+      return;
+    }
+    switchTab('today', { skipClosedDayCheck: true, settleLayout: true });
+  });
 
   initSupabase();
 
@@ -335,97 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('sleep-save').addEventListener('click', saveSleepModal);
 
-  // --- Light domain modal ---
-  function renderLightModal() {
-    const invitationEl = document.getElementById('light-invitation');
-    if (invitationEl) invitationEl.textContent = getLightOpeningInvitation();
-
-    const marksEl = document.getElementById('light-marks');
-    if (marksEl) {
-      marksEl.querySelectorAll('.light-witness-mark').forEach(el => el.remove());
-      const yd = new Date();
-      yd.setDate(yd.getDate() - 1);
-      const yesterdayStr = `${yd.getFullYear()}-${String(yd.getMonth() + 1).padStart(2, '0')}-${String(yd.getDate()).padStart(2, '0')}`;
-      const appendMark = (timeStr, linger) => {
-        const [wh, wm] = timeStr.split(':').map(Number);
-        if (!Number.isFinite(wh) || !Number.isFinite(wm)) return;
-        const mark = document.createElement('div');
-        mark.className = linger ? 'light-witness-mark is-linger' : 'light-witness-mark';
-        mark.style.left = `${((wh * 60 + wm) / 1440 * 100).toFixed(1)}%`;
-        marksEl.appendChild(mark);
-      };
-      (state.light?.entries?.[yesterdayStr]?.witnesses || []).forEach(t => appendMark(t, true));
-      (state.light?.entries?.[todayStr]?.witnesses || []).forEach(t => appendMark(t, false));
-    }
-
-    const btn = document.getElementById('light-witness-btn');
-    if (btn) btn.classList.remove('is-still');
-  }
-
-  let _lightWitnessedThisSession = false;
-  let _selectedLightTone = null;
-
-  const LIGHT_TONE_CONFIRMATIONS = {
-    Soft: 'A soft morning.',
-    Clear: 'A clear morning.',
-    Steady: 'A steady morning.',
-    Guarded: 'A guarded morning.',
-  };
-
-  function openLightModal() {
-    _lightWitnessedThisSession = false;
-    _selectedLightTone = null;
-    document.querySelectorAll('#light-tone-chooser .light-tone-btn').forEach(b => b.classList.remove('is-selected'));
-    renderLightModal();
-    document.getElementById('light-modal').hidden = false;
-  }
-
-  function closeLightModal() {
-    document.getElementById('light-modal').hidden = true;
-    if (_lightWitnessedThisSession) {
-      _lightWitnessedThisSession = false;
-      applyTempleTrace('light');
-    }
-  }
-
-  document.getElementById('temple-goto-light').addEventListener('click', openLightModal);
-  document.getElementById('light-modal-backdrop').addEventListener('click', closeLightModal);
-  document.getElementById('light-modal-close').addEventListener('click', closeLightModal);
-
-  document.getElementById('light-tone-chooser')?.addEventListener('click', e => {
-    const btn = e.target.closest('.light-tone-btn');
-    if (!btn) return;
-    const tone = btn.dataset.tone;
-    if (_selectedLightTone === tone) {
-      _selectedLightTone = null;
-      btn.classList.remove('is-selected');
-    } else {
-      _selectedLightTone = tone;
-      document.querySelectorAll('#light-tone-chooser .light-tone-btn').forEach(b => b.classList.remove('is-selected'));
-      btn.classList.add('is-selected');
-    }
-  });
-
-  document.getElementById('light-witness-btn').addEventListener('click', () => {
-    witnessLight(todayStr);
-    _lightWitnessedThisSession = true;
-    saveState();
-    renderTemple();
-    renderLightModal();
-    const invEl = document.getElementById('light-invitation');
-    if (invEl) {
-      invEl.textContent = _selectedLightTone
-        ? (LIGHT_TONE_CONFIRMATIONS[_selectedLightTone] || invEl.textContent)
-        : 'The threshold is crossed.';
-    }
-    const btn = document.getElementById('light-witness-btn');
-    if (btn) btn.classList.add('is-still');
-    setTimeout(() => {
-      const b = document.getElementById('light-witness-btn');
-      if (b) b.classList.remove('is-still');
-    }, 3000);
-  });
-
   // --- Mind domain modal ---
   registerMindModal();
   registerConfirmModal();
@@ -434,18 +343,53 @@ document.addEventListener('DOMContentLoaded', () => {
   registerBodyModal();
   document.getElementById('temple-goto-body')?.addEventListener('click', openBodyModal);
 
-  // --- Water domain modal ---
-  registerWaterModal();
-  document.getElementById('temple-goto-water')?.addEventListener('click', openWaterModal);
-
   // --- Today Plan ---
   document.getElementById('today-plan-intentions')?.addEventListener('click', e => {
     const btn = e.target.closest('[data-action]');
-    if (!btn) return;
-    const { action, id } = btn.dataset;
-    if (action === 'toggle') { toggleTodayIntention(id); renderTodayPlan(); }
-    else if (action === 'delete') { deleteIntention(id); renderTodayPlan(); }
+    if (btn) {
+      const { action, id } = btn.dataset;
+      if (action === 'toggle') { toggleTodayIntention(id); renderTodayPlan(); }
+      else if (action === 'delete') { deleteIntention(id); renderTodayPlan(); }
+      return;
+    }
+    const textEl = e.target.closest('.today-plan-text');
+    if (textEl) {
+      const row = textEl.closest('.today-plan-intention');
+      if (row) _startInlineEdit(row);
+    }
   });
+
+  function _startInlineEdit(row) {
+    const id = row.dataset.id;
+    const textEl = row.querySelector('.today-plan-text');
+    if (!textEl || !id) return;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'today-plan-inline-input';
+    input.value = textEl.textContent;
+    input.maxLength = 120;
+    input.autocomplete = 'off';
+    textEl.replaceWith(input);
+    input.focus();
+    input.select();
+
+    let done = false;
+    function save() {
+      if (done) return; done = true;
+      if (input.value.trim()) updateIntention(id, input.value);
+      renderTodayPlan();
+    }
+    function cancel() {
+      if (done) return; done = true;
+      renderTodayPlan();
+    }
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); save(); }
+      else if (e.key === 'Escape') { e.preventDefault(); cancel(); }
+    });
+    input.addEventListener('blur', save);
+  }
 
   document.getElementById('today-plan-carryover-list')?.addEventListener('click', e => {
     const btn = e.target.closest('[data-action]');

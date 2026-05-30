@@ -34,6 +34,18 @@ function clearLeavingPane() {
   });
 }
 
+function settlePaneLayout(pane) {
+  pane.style.display = 'none';
+  void pane.offsetHeight;
+  pane.style.display = 'block';
+  void pane.offsetHeight;
+  pane.style.display = '';
+
+  pane.getAnimations?.().forEach(animation => {
+    try { animation.finish(); } catch {}
+  });
+}
+
 export function refreshActivePaneLayout() {
   clearLeavingPane();
 
@@ -44,15 +56,7 @@ export function refreshActivePaneLayout() {
   runRenderFor(name);
   window.scrollTo(0, 0);
 
-  activePane.style.display = 'none';
-  void activePane.offsetHeight;
-  activePane.style.display = 'block';
-  void activePane.offsetHeight;
-  activePane.style.display = '';
-
-  activePane.getAnimations?.().forEach(animation => {
-    try { animation.finish(); } catch {}
-  });
+  settlePaneLayout(activePane);
 
   return true;
 }
@@ -75,6 +79,7 @@ export function switchTab(name, options = {}) {
 
   if (currentPane === newPane) {
     runRenderFor(name);
+    if (options.settleLayout) settlePaneLayout(newPane);
     return true;
   }
 
@@ -88,6 +93,7 @@ export function switchTab(name, options = {}) {
     window.scrollTo(0, 0);
     newPane.classList.add('active');
     runRenderFor(name);
+    if (options.settleLayout) settlePaneLayout(newPane);
   };
 
   if (currentPane && !reduceMotion) {

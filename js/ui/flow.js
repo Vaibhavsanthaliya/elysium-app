@@ -13,7 +13,7 @@ import {
 } from '../render/temple.js';
 import { arriveMind } from '../domains/mind.js';
 import { arriveBody, getBodySomaticInvitations } from '../domains/body.js';
-import { holdWater, getWaterResetSteps } from '../domains/water.js';
+import { holdWater } from '../domains/water.js';
 
 const FLOW_TONE_CONFIRMATIONS = {
   Soft: 'A soft morning.',
@@ -32,8 +32,6 @@ let _selectedTone = null;
 let _lightEnteredThisFlow = false;
 let _workBodyStep = 0;
 let _workBodyInvitations = [];
-let _workWaterStep = 0;
-let _workWaterSteps = [];
 
 function beginFlowSession() {
   _flowActive = true;
@@ -324,18 +322,11 @@ function renderWorkBodyStep() {
 }
 
 function renderWorkWaterStep() {
-  _workWaterSteps = getWaterResetSteps();
-  _workWaterStep = 0;
   const stepEl = document.getElementById('flow-work-water-step');
-  const continueBtn = document.getElementById('flow-work-water-continue');
   const holdBtn = document.getElementById('flow-work-water-hold');
   const skipBtn = document.getElementById('flow-work-water-skip');
-  if (stepEl) stepEl.textContent = _workWaterSteps[0] || '';
-  if (continueBtn) continueBtn.hidden = _workWaterSteps.length <= 1;
-  if (holdBtn) {
-    holdBtn.hidden = _workWaterSteps.length > 1;
-    holdBtn.classList.remove('is-still');
-  }
+  if (stepEl) stepEl.textContent = 'Notice the temperature of what you are holding.';
+  if (holdBtn) { holdBtn.hidden = false; holdBtn.classList.remove('is-still'); }
   if (skipBtn) skipBtn.hidden = false;
 }
 
@@ -395,19 +386,6 @@ export function registerWorkFlow() {
   document.getElementById('flow-work-body-skip')?.addEventListener('click', () => {
     renderWorkWaterStep();
     showStep('work-water');
-  });
-
-  document.getElementById('flow-work-water-continue')?.addEventListener('click', () => {
-    _workWaterStep++;
-    const stepEl = document.getElementById('flow-work-water-step');
-    const continueBtn = document.getElementById('flow-work-water-continue');
-    const holdBtn = document.getElementById('flow-work-water-hold');
-    if (_workWaterStep >= _workWaterSteps.length) {
-      if (continueBtn) continueBtn.hidden = true;
-      if (holdBtn) holdBtn.hidden = false;
-    } else {
-      if (stepEl) stepEl.textContent = _workWaterSteps[_workWaterStep];
-    }
   });
 
   document.getElementById('flow-work-water-hold')?.addEventListener('click', () => {

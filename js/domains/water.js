@@ -1,6 +1,5 @@
 import { state, todayStr, saveState } from '../state.js';
-import { isYmd, getDayOfYear } from '../utils.js';
-import { WATER_RITUALS, WATER_CONTACT_INVITATIONS, WATER_RESET_STEPS } from '../constants.js';
+import { isYmd } from '../utils.js';
 
 export function ensureWaterState() {
   if (!state.water || typeof state.water !== 'object' || Array.isArray(state.water)) {
@@ -41,18 +40,3 @@ export function hasHeldToday(dateStr = todayStr) {
   return getWaterHoldCount(dateStr) > 0;
 }
 
-export function getWaterRitual() {
-  const now = new Date();
-  const idx = (now.getHours() + getDayOfYear(now) * 24) % WATER_RITUALS.length;
-  return WATER_RITUALS[idx];
-}
-
-export function getWaterContactInvitation() {
-  const today = new Date();
-  return WATER_CONTACT_INVITATIONS[getDayOfYear(today) % WATER_CONTACT_INVITATIONS.length];
-}
-
-export function getWaterResetSteps() {
-  const today = new Date();
-  return WATER_RESET_STEPS[getDayOfYear(today) % WATER_RESET_STEPS.length];
-}

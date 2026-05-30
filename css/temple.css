@@ -244,6 +244,15 @@
   line-height: 1.25;
 }
 
+#pane-temple .temple-domain-name,
+#pane-temple .temple-domain-sub,
+#pane-temple .temple-domain-archetype {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 #pane-temple .temple-domain-sub {
   font-family: var(--font-display);
   font-style: italic;
@@ -723,139 +732,6 @@
 }
 
 
-/* ── EA-110: Water domain modal — Hydros's Holding ───────────────────────── */
-#water-modal .water-modal-sheet {
-  background-color: var(--bg-grouped);
-  background-image:
-    radial-gradient(ellipse at 50% 32%, rgba(88, 132, 150, 0.16), transparent 58%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 44%);
-}
-
-@media (prefers-color-scheme: dark) {
-  #water-modal .water-modal-sheet {
-    background-image:
-      radial-gradient(ellipse at 50% 32%, rgba(112, 154, 174, 0.16), transparent 60%),
-      linear-gradient(180deg, rgba(236, 230, 217, 0.04), transparent 44%);
-  }
-}
-
-#water-modal .water-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--bronze);
-  margin: 22px 20px 4px;
-}
-
-#water-modal .water-title {
-  font-family: var(--font-sans);
-  font-size: 22px;
-  font-weight: 400;
-  text-align: center;
-  margin: 0 20px 6px;
-  color: var(--oracle-text);
-}
-
-#water-modal .water-title em {
-  font-family: var(--font-display);
-  font-style: italic;
-}
-
-#water-modal .water-step-text {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 17px;
-  line-height: 1.55;
-  text-align: center;
-  color: var(--oracle-text);
-  opacity: 0.88;
-  margin: 0 24px 28px;
-  min-height: 54px;
-}
-
-#water-modal .water-surface-wrap {
-  position: relative;
-  height: 92px;
-  margin: 0 20px 32px;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  background:
-    radial-gradient(ellipse at 50% 48%, rgba(88, 132, 150, 0.12), transparent 68%),
-    linear-gradient(180deg, transparent 0%, rgba(88, 132, 150, 0.06) 100%);
-}
-
-@media (prefers-color-scheme: dark) {
-  #water-modal .water-surface-wrap {
-    background:
-      radial-gradient(ellipse at 50% 48%, rgba(112, 154, 174, 0.16), transparent 68%),
-      linear-gradient(180deg, transparent 0%, rgba(112, 154, 174, 0.08) 100%);
-  }
-}
-
-#water-modal .water-surface-line {
-  position: absolute;
-  top: 46%;
-  left: 8%;
-  right: 8%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--separator-strong), transparent);
-  transform: translateY(-50%);
-}
-
-#water-modal .water-marks {
-  position: absolute;
-  inset: 0;
-}
-
-#water-modal .water-holding-mark {
-  position: absolute;
-  top: calc(46% + 14px);
-  width: 4px;
-  height: 4px;
-  background: var(--bronze);
-  opacity: 0.62;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 2;
-}
-
-#water-modal .water-holding-mark.is-linger {
-  width: 3px;
-  height: 3px;
-  opacity: 0.18;
-  z-index: 1;
-}
-
-#water-modal .water-ritual {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--muted-text);
-  margin: 0 20px 20px;
-}
-
-#water-modal .btn-primary {
-  margin: 0 20px 14px;
-  width: calc(100% - 40px);
-}
-
-#water-modal .btn-primary.is-still {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-#water-modal .btn-text {
-  width: calc(100% - 40px);
-  margin: 4px 20px 0;
-  display: block;
-  text-align: center;
-  padding-bottom: calc(var(--safe-bottom) + 4px);
-}
-
 /* ── EA-141: Day Thread — quiet trace of what the day has held ─────────── */
 #pane-temple .temple-day-thread {
   margin-bottom: 14px;
@@ -942,8 +818,8 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  padding: 16px 20px;
-  margin-bottom: 24px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
   background: rgba(160, 122, 74, 0.03);
   border: 1px dashed rgba(160, 122, 74, 0.28);
   border-radius: var(--radius-lg);
@@ -996,8 +872,8 @@
   align-items: center;
   gap: 4px;
   width: 100%;
-  padding: 16px 20px;
-  margin-bottom: 24px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
   background: rgba(160, 122, 74, 0.03);
   border: 1px dashed rgba(160, 122, 74, 0.28);
   border-radius: var(--radius-lg);
@@ -1051,7 +927,7 @@
   gap: 4px;
   width: 100%;
   padding: 14px 20px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   background: transparent;
   border: 1px solid rgba(160, 122, 74, 0.18);
   border-radius: var(--radius-xl);
@@ -1094,6 +970,20 @@
   #pane-temple .temple-work-flow:active {
     background: rgba(201, 165, 107, 0.06);
     border-color: rgba(201, 165, 107, 0.40);
+  }
+}
+
+@media (max-width: 360px) {
+  #pane-temple .temple-domain-card {
+    gap: 12px;
+    padding: 13px 14px;
+  }
+
+  #pane-temple .temple-domain-state {
+    flex-basis: 76px;
+    min-width: 76px;
+    font-size: 9px;
+    letter-spacing: 0.12em;
   }
 }
 
