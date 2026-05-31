@@ -797,6 +797,50 @@
   opacity: 0.82;
 }
 
+/* ── EA-190: Asclepius guard ─────────────────────────────────────────────────── */
+
+#pane-care .care-asclepius-guard {
+  margin: 0 0 14px;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--separator-warm);
+}
+
+#pane-care .care-asclepius-guard[hidden] {
+  display: none;
+}
+
+#pane-care .care-asclepius-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  color: var(--bronze);
+  margin: 0 0 6px;
+}
+
+#pane-care .care-asclepius-line {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted-text);
+  margin: 0;
+}
+
+/* ── EA-193: Apollo protection line ──────────────────────────────────────── */
+#pane-care .care-apollo-line {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted-text);
+  opacity: 0.82;
+}
+
+#pane-care .care-apollo-line[hidden] {
+  display: none;
+}
+
 /* ── EA-166: Today Plan / EA-167A: Design stabilization ─────────────────────── */
 
 #pane-today .today-plan-block {
@@ -1319,7 +1363,7 @@
   font-size: 9px;
   letter-spacing: 0.20em;
   text-transform: uppercase;
-  color: var(--muted-text);
+  color: var(--bronze);
   margin-bottom: 7px;
 }
 
@@ -1328,7 +1372,7 @@
   font-style: italic;
   font-size: 14.5px;
   line-height: 1.5;
-  color: var(--oracle-text);
+  color: var(--muted-text);
   margin: 0 0 10px;
 }
 

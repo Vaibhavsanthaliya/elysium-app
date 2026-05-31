@@ -1,6 +1,6 @@
 import { state, saveState, todayStr } from '../state.js';
-import { CARE_PROTOCOL_NOTES } from '../constants.js';
-import { witnessLight, getLastWitness, getLightOpeningInvitation } from '../domains/light.js';
+import { CARE_PROTOCOL_NOTES, DAYLIGHT_CONFIRMATIONS } from '../constants.js';
+import { witnessLight, getLastWitness, getLightOpeningInvitation, saveDaylight } from '../domains/light.js';
 import { getChronicleNote, upsertChronicleNote } from '../domains/chronicle.js';
 import { getSleepClosureInvitations, getSleepEntry, saveSleepClosure } from '../domains/sleep.js';
 import { keepMorningProtocol, keepNightProtocol } from '../render/today.js';
@@ -13,22 +13,15 @@ import {
 } from '../render/temple.js';
 import { arriveMind } from '../domains/mind.js';
 import { arriveBody, getBodySomaticInvitations } from '../domains/body.js';
-import { holdWater } from '../domains/water.js';
 
-const FLOW_TONE_CONFIRMATIONS = {
-  Soft: 'A soft morning.',
-  Clear: 'A clear morning.',
-  Steady: 'A steady morning.',
-  Guarded: 'A guarded morning.',
-};
 
 const MORNING_STEPS = ['light', 'care', 'chronicle', 'complete'];
 const NIGHT_STEPS   = ['night-care', 'night-chronicle', 'night-sleep', 'night-complete'];
-const WORK_STEPS    = ['work-mind', 'work-body', 'work-water', 'work-complete'];
+const WORK_STEPS    = ['work-mind', 'work-body', 'work-complete'];
 
 let _flowActive = false;
 let _flowSession = 0;
-let _selectedTone = null;
+let _selectedDaylight = null;
 let _lightEnteredThisFlow = false;
 let _workBodyStep = 0;
 let _workBodyInvitations = [];
@@ -60,24 +53,24 @@ function closeFlowModal() {
 // ── Morning Flow renderers ────────────────────────────────────────────────────
 
 function renderLightStep() {
-  _selectedTone = null;
-  document.querySelectorAll('#flow-tone-chooser .flow-tone-btn').forEach(b => b.classList.remove('is-selected'));
+  _selectedDaylight = null;
+  document.querySelectorAll('#flow-daylight-chooser .flow-daylight-btn').forEach(b => b.classList.remove('is-selected'));
 
   const alreadyEntered = !!getLastWitness(todayStr);
   const invEl = document.getElementById('flow-light-invitation');
   const enterBtn = document.getElementById('flow-light-enter');
   const skipBtn = document.getElementById('flow-light-skip');
-  const toneChooser = document.getElementById('flow-tone-chooser');
+  const daylightSection = document.getElementById('flow-daylight-section');
 
   if (alreadyEntered) {
-    if (invEl) invEl.textContent = 'The morning was already named.';
+    if (invEl) invEl.textContent = 'First light has already been named.';
     if (enterBtn) { enterBtn.hidden = true; enterBtn.classList.remove('is-still'); }
-    if (toneChooser) toneChooser.hidden = true;
+    if (daylightSection) daylightSection.hidden = true;
     if (skipBtn) { skipBtn.hidden = false; skipBtn.textContent = 'Continue'; }
   } else {
     if (invEl) invEl.textContent = getLightOpeningInvitation();
     if (enterBtn) { enterBtn.hidden = false; enterBtn.classList.remove('is-still'); }
-    if (toneChooser) toneChooser.hidden = false;
+    if (daylightSection) daylightSection.hidden = false;
     if (skipBtn) { skipBtn.hidden = false; skipBtn.textContent = 'Skip'; }
   }
 }
@@ -196,16 +189,16 @@ export function openNightFlow() {
 export function registerMorningFlow() {
   document.getElementById('flow-modal-backdrop')?.addEventListener('click', closeFlowModal);
 
-  document.getElementById('flow-tone-chooser')?.addEventListener('click', e => {
-    const btn = e.target.closest('.flow-tone-btn');
+  document.getElementById('flow-daylight-chooser')?.addEventListener('click', e => {
+    const btn = e.target.closest('.flow-daylight-btn');
     if (!btn) return;
-    const tone = btn.dataset.tone;
-    if (_selectedTone === tone) {
-      _selectedTone = null;
+    const level = btn.dataset.daylight;
+    if (_selectedDaylight === level) {
+      _selectedDaylight = null;
       btn.classList.remove('is-selected');
     } else {
-      _selectedTone = tone;
-      document.querySelectorAll('#flow-tone-chooser .flow-tone-btn').forEach(b => b.classList.remove('is-selected'));
+      _selectedDaylight = level;
+      document.querySelectorAll('#flow-daylight-chooser .flow-daylight-btn').forEach(b => b.classList.remove('is-selected'));
       btn.classList.add('is-selected');
     }
   });
@@ -213,14 +206,15 @@ export function registerMorningFlow() {
   document.getElementById('flow-light-enter')?.addEventListener('click', () => {
     witnessLight(todayStr);
     _lightEnteredThisFlow = true;
+    if (_selectedDaylight) saveDaylight(todayStr, _selectedDaylight);
     saveState();
     queueTempleTrace('light');
 
     const invEl = document.getElementById('flow-light-invitation');
     if (invEl) {
-      invEl.textContent = _selectedTone
-        ? (FLOW_TONE_CONFIRMATIONS[_selectedTone] || invEl.textContent)
-        : 'The threshold is crossed.';
+      invEl.textContent = _selectedDaylight
+        ? (DAYLIGHT_CONFIRMATIONS[_selectedDaylight] || 'What needed light has been seen.')
+        : 'What needed light has been seen.';
     }
 
     const enterBtn = document.getElementById('flow-light-enter');
@@ -321,15 +315,6 @@ function renderWorkBodyStep() {
   if (skipBtn) skipBtn.hidden = false;
 }
 
-function renderWorkWaterStep() {
-  const stepEl = document.getElementById('flow-work-water-step');
-  const holdBtn = document.getElementById('flow-work-water-hold');
-  const skipBtn = document.getElementById('flow-work-water-skip');
-  if (stepEl) stepEl.textContent = 'Notice the temperature of what you are holding.';
-  if (holdBtn) { holdBtn.hidden = false; holdBtn.classList.remove('is-still'); }
-  if (skipBtn) skipBtn.hidden = false;
-}
-
 export function openWorkFlow() {
   beginFlowSession();
   const threadEl = document.getElementById('flow-work-thread');
@@ -378,33 +363,11 @@ export function registerWorkFlow() {
     const session = _flowSession;
     setTimeout(() => {
       if (!isCurrentFlowSession(session)) return;
-      renderWorkWaterStep();
-      showStep('work-water');
-    }, 700);
-  });
-
-  document.getElementById('flow-work-body-skip')?.addEventListener('click', () => {
-    renderWorkWaterStep();
-    showStep('work-water');
-  });
-
-  document.getElementById('flow-work-water-hold')?.addEventListener('click', () => {
-    holdWater(todayStr);
-    queueTempleTrace('water');
-    const stepEl = document.getElementById('flow-work-water-step');
-    if (stepEl) stepEl.textContent = 'The pause has been held.';
-    const holdBtn = document.getElementById('flow-work-water-hold');
-    if (holdBtn) holdBtn.hidden = true;
-    const skipBtn = document.getElementById('flow-work-water-skip');
-    if (skipBtn) skipBtn.hidden = true;
-    const session = _flowSession;
-    setTimeout(() => {
-      if (!isCurrentFlowSession(session)) return;
       showStep('work-complete');
     }, 700);
   });
 
-  document.getElementById('flow-work-water-skip')?.addEventListener('click', () => {
+  document.getElementById('flow-work-body-skip')?.addEventListener('click', () => {
     showStep('work-complete');
   });
 

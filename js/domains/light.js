@@ -1,4 +1,4 @@
-import { state } from '../state.js';
+import { state, saveState } from '../state.js';
 import { getDayOfYear } from '../utils.js';
 import { LIGHT_OPENING_INVITATIONS } from '../constants.js';
 
@@ -28,6 +28,26 @@ export function getLastWitness(dateStr) {
 export function getLightOpeningInvitation() {
   const now = new Date();
   return LIGHT_OPENING_INVITATIONS[getDayOfYear(now) % LIGHT_OPENING_INVITATIONS.length];
+}
+
+const _VALID_DAYLIGHT = new Set(['inside', 'some', 'strong']);
+
+export function saveDaylight(dateStr, level) {
+  if (!state.light) state.light = { entries: {} };
+  if (!state.light.entries) state.light.entries = {};
+  if (!state.light.entries[dateStr]) state.light.entries[dateStr] = { witnesses: [] };
+  const entry = state.light.entries[dateStr];
+  if (_VALID_DAYLIGHT.has(level)) {
+    entry.daylight = level;
+  } else {
+    delete entry.daylight;
+  }
+  saveState();
+}
+
+export function getDaylight(dateStr) {
+  const d = state.light?.entries?.[dateStr]?.daylight;
+  return _VALID_DAYLIGHT.has(d) ? d : null;
 }
 
 export function witnessLight(dateStr) {

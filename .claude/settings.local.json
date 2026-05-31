@@ -59,7 +59,8 @@
       "Bash(sed -n '$p' docs/ticket-log.md)",
       "PowerShell(node --check \"D:\\\\Projects\\\\elysium-app\\\\js\\\\constants.js\"; node --check \"D:\\\\Projects\\\\elysium-app\\\\js\\\\domains\\\\water.js\"; node --check \"D:\\\\Projects\\\\elysium-app\\\\js\\\\ui\\\\modals.js\"; node --check \"D:\\\\Projects\\\\elysium-app\\\\js\\\\ui\\\\flow.js\")",
       "Bash(python3 *)",
-      "Bash(xargs wc -l)"
+      "Bash(xargs wc -l)",
+      "Bash(python -c \"import re,sys; t=open\\('Elysium - Pantheon Direction.html',encoding='utf-8',errors='ignore'\\).read\\(\\); t=re.sub\\(r'<script.*?</script>','',t,flags=re.S\\); t=re.sub\\(r'<style.*?</style>','',t,flags=re.S\\); t=re.sub\\(r'<[^>]+>',' ',t\\); t=re.sub\\(r'&[a-z]+;',' ',t\\); t=re.sub\\(r'[ \\\\t]+',' ',t\\); t=re.sub\\(r'\\\\n\\\\s*\\\\n+','\\\\n',t\\); print\\(t[:6000]\\)\")"
     ]
   }
 }

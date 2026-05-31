@@ -135,6 +135,9 @@ export function migrateState(s) {
     }
     if (!Array.isArray(entry.witnesses)) entry.witnesses = [];
     entry.witnesses = entry.witnesses.filter(t => typeof t === 'string' && /^\d{2}:\d{2}$/.test(t));
+    if (entry.daylight !== undefined && !['inside', 'some', 'strong'].includes(entry.daylight)) {
+      delete entry.daylight;
+    }
   }
   s.sleep = s.sleep && typeof s.sleep === 'object' && !Array.isArray(s.sleep)
     ? s.sleep : {};

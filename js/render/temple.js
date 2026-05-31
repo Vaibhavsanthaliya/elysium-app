@@ -6,7 +6,6 @@ import { getLastWitness } from '../domains/light.js';
 import { getSleepEntry } from '../domains/sleep.js';
 import { getMostRecentSession, getMostRecentReflectionSession, hasMindArrival } from '../domains/mind.js';
 import { hasArrivedToday } from '../domains/body.js';
-import { hasHeldToday } from '../domains/water.js';
 
 // Time-of-day period buckets — used to set data-period on #pane-temple for ambient CSS shift.
 const TEMPLE_PERIOD_BUCKETS = [
@@ -49,9 +48,9 @@ const TEMPLE_RECENT_BOOST_MAX = 0.0100;
 const TEMPLE_RECENT_PRESENCE_THRESHOLD = 3;
 
 const RECENT_PRESENCE_LINES = [
-  'The room has been kept.',
+  'The room holds its patrons.',
   'Something has remained.',
-  'The room has not gone cold.',
+  'The patrons remain nearby.',
   'Traces remain.',
 ];
 
@@ -104,8 +103,34 @@ const CARE_CYCLE_COPY = [
   },
 ];
 
+const TEMPLE_CARE_HERO_COPY = [
+  {
+    motion: 'Niacinamide is with the night.',
+    kept: 'Night I rests. Salicylic tomorrow.',
+  },
+  {
+    motion: 'Salicylic is with the night.',
+    kept: 'Night II rests. Rest tomorrow.',
+  },
+  {
+    kept: 'Night III rests. Niacinamide returns tomorrow.',
+  },
+];
+
+const TEMPLE_CARE_STATE_LABELS = {
+  kept: 'resting',
+  motion: 'present',
+  resting: 'resting',
+  untouched: 'nearby',
+};
+
 function getCareCycleCopy(cycleDay = state.cycleDay) {
   return CARE_CYCLE_COPY[cycleDay] || CARE_CYCLE_COPY[0];
+}
+
+function getTempleCareHeroCopy(turnState) {
+  const copy = TEMPLE_CARE_HERO_COPY[state.cycleDay] || TEMPLE_CARE_HERO_COPY[0];
+  return copy[turnState.key] || turnState.copy;
 }
 
 export function getCareCycleLabel(cycleDay = state.cycleDay) {
@@ -153,7 +178,7 @@ function renderTempleCycleIndicator(turnState) {
   });
 
   const label = document.getElementById('temple-cycle-state');
-  if (label) label.textContent = turnState.label;
+  if (label) label.textContent = TEMPLE_CARE_STATE_LABELS[turnState.key] || turnState.label;
 }
 
 function addPresenceDay(days, dateStr, todayDayNum) {
@@ -320,25 +345,25 @@ function isQuietStretch(lookbackDays = 7) {
 }
 
 const TEMPLE_PERIOD_ORIENTATION = {
-  'first-light': 'The day is still quiet.',
-  morning: 'The morning is open.',
-  midday: 'The day has been moving.',
-  afternoon: 'The afternoon holds what morning left.',
-  'golden-hour': 'The turning begins.',
-  dusk: 'Evening gathers.',
-  night: 'The room goes quiet.',
+  'first-light': 'The room is open.',
+  morning: 'The day has entered the room.',
+  midday: 'The patrons remain nearby.',
+  afternoon: 'The day gathers in its proper places.',
+  'golden-hour': 'The patrons are near.',
+  dusk: 'The room holds what remains.',
+  night: 'The room holds its patrons.',
 };
 
 // ── EA-137: Daily rhythm — period-keyed headings and card prioritization ────
 
 const TEMPLE_RHYTHM_HEADINGS = {
-  'first-light': 'The morning approaches',
-  morning:       'This morning',
-  midday:        'The day is moving',
-  afternoon:     'What the afternoon holds',
-  'golden-hour': 'As the day turns',
-  dusk:          'What remains tonight',
-  night:         'For the night',
+  'first-light': 'OLYMPUS',
+  morning:       'OLYMPUS',
+  midday:        'OLYMPUS',
+  afternoon:     'OLYMPUS',
+  'golden-hour': 'OLYMPUS',
+  dusk:          'OLYMPUS',
+  night:         'OLYMPUS',
 };
 
 const RHYTHM_CARD_IDS = {
@@ -384,21 +409,21 @@ function getRhythmMap(periodKey) {
 }
 
 function getDailyLine(periodKey) {
-  if (getSleepEntry(todayStr)) return 'The day has been closed.';
+  if (getSleepEntry(todayStr)) return 'The day rests in the room.';
 
   const yesterdayStr = ymdFromOffset(1);
-  if (getSleepEntry(yesterdayStr) && new Date().getHours() < 11) return 'The night has passed.';
+  if (getSleepEntry(yesterdayStr) && new Date().getHours() < 11) return 'The room is open.';
 
   const turnState = getCareTurnState();
-  if (turnState.key === 'kept') return 'The night has been kept.';
-  if (turnState.key === 'motion') return 'The night moves quietly.';
+  if (turnState.key === 'kept') return 'The protocol rests.';
+  if (turnState.key === 'motion') return 'The room keeps its quiet.';
 
-  if (state.chronicle?.notes?.[todayStr]?.body) return 'A line was left.';
+  if (state.chronicle?.notes?.[todayStr]?.body) return 'Something has been kept.';
 
   const recent = getMostRecentSession();
-  if (hasMindArrival(todayStr) || (recent && recent.date === todayStr)) return 'The thread was gathered.';
+  if (hasMindArrival(todayStr) || (recent && recent.date === todayStr)) return 'The thread has been named.';
 
-  if (getLastWitness(todayStr)) return 'Light was seen.';
+  if (getLastWitness(todayStr)) return 'First light has entered the room.';
 
   if (countRecentPresenceDays() >= TEMPLE_RECENT_PRESENCE_THRESHOLD) {
     const now = new Date();
@@ -414,15 +439,11 @@ function deriveTodayTraces() {
   const traces = [];
 
   if (getLastWitness(todayStr)) {
-    traces.push('Light entered.');
+    traces.push('First light entered.');
   }
 
   if (getMorningCareState() === 'kept') {
-    traces.push('Morning care kept.');
-  }
-
-  if (hasHeldToday()) {
-    traces.push('Water was held.');
+    traces.push('Care touched the morning.');
   }
 
   if (hasArrivedToday()) {
@@ -432,7 +453,7 @@ function deriveTodayTraces() {
   const hasMind = hasMindArrival(todayStr) || getMostRecentSession()?.date === todayStr;
   if (hasMind) {
     const reflection = getMostRecentReflectionSession();
-    traces.push(reflection?.date === todayStr ? 'A thread was left.' : 'A thread was gathered.');
+    traces.push(reflection?.date === todayStr ? 'A thread was left.' : 'A thread was named.');
   }
 
   if (state.chronicle?.notes?.[todayStr]?.body) {
@@ -440,11 +461,11 @@ function deriveTodayTraces() {
   }
 
   if (getCareTurnState().key === 'kept') {
-    traces.push('Night care kept.');
+    traces.push('Care held the night.');
   }
 
   if (getSleepEntry(todayStr)) {
-    traces.push('The day closed.');
+    traces.push('The day rests.');
   }
 
   return traces;
@@ -488,16 +509,16 @@ function renderTempleClosing(periodKey) {
 
   const turnState = getCareTurnState();
   if (turnState.key === 'untouched' || turnState.key === 'resting') {
-    lines.push({ text: 'Care still waits.', kind: 'open' });
+    lines.push({ text: 'Asclepius remains nearby.', kind: 'open' });
   } else if (turnState.key === 'motion') {
-    lines.push({ text: 'Care is in motion.', kind: 'open' });
+    lines.push({ text: 'Asclepius is present.', kind: 'open' });
   }
 
   if (!state.chronicle?.notes?.[todayStr]?.body) {
-    lines.push({ text: 'Chronicle is still open.', kind: 'open' });
+    lines.push({ text: 'Mnemosyne keeps room for what remains.', kind: 'open' });
   }
 
-  lines.push({ text: 'Sleep has not closed.', kind: 'open' });
+  lines.push({ text: 'Hypnos remains nearby.', kind: 'open' });
 
   const linesEl = document.getElementById('temple-closing-lines');
   if (!linesEl) return;
@@ -549,11 +570,11 @@ export function renderTemple() {
   let heroCycleText;
   if (period.key === 'first-light' || period.key === 'morning') {
     const morningState = getMorningCareState();
-    if (morningState === 'kept')        heroCycleText = 'Morning kept.';
-    else if (morningState === 'motion') heroCycleText = 'Morning in motion.';
-    else                                heroCycleText = 'Morning awaits.';
+    if (morningState === 'kept')        heroCycleText = 'The morning has been tended.';
+    else if (morningState === 'motion') heroCycleText = 'The morning is with Asclepius.';
+    else                                heroCycleText = 'The patrons remain nearby.';
   } else {
-    heroCycleText = turnState.copy;
+    heroCycleText = getTempleCareHeroCopy(turnState);
   }
   document.getElementById('temple-hero-cycle').textContent = heroCycleText;
   renderTempleCycleIndicator(turnState);
@@ -564,13 +585,13 @@ export function renderTemple() {
   const sleepStateEl = document.getElementById('temple-sleep-state');
   if (sleepStateEl) {
     const todaySleep = getSleepEntry(todayStr);
-    sleepStateEl.textContent = todaySleep ? 'Closed' : 'Open';
+    sleepStateEl.textContent = todaySleep ? 'Resting' : 'Nearby';
   }
 
   const mindStateEl = document.getElementById('temple-mind-state');
   if (mindStateEl) {
     const recent = getMostRecentSession();
-    mindStateEl.textContent = hasMindArrival(todayStr) || recent?.date === todayStr ? 'Gathered' : 'Quiet';
+    mindStateEl.textContent = hasMindArrival(todayStr) || recent?.date === todayStr ? 'Named' : 'Quiet';
   }
 
   const mindLineEl = document.getElementById('temple-mind-line');
@@ -587,12 +608,12 @@ export function renderTemple() {
 
   const bodyStateEl = document.getElementById('temple-body-state');
   if (bodyStateEl) {
-    bodyStateEl.textContent = hasArrivedToday() ? 'Returned' : 'Return';
+    bodyStateEl.textContent = hasArrivedToday() ? 'Returned' : 'Weight';
   }
 
   const domainLabelEl = document.getElementById('temple-domain-label');
   if (domainLabelEl) {
-    domainLabelEl.textContent = TEMPLE_RHYTHM_HEADINGS[period.key] ?? 'The other paths';
+    domainLabelEl.textContent = TEMPLE_RHYTHM_HEADINGS[period.key] ?? 'OLYMPUS';
   }
 
   const rhythmMap = getRhythmMap(period.key);

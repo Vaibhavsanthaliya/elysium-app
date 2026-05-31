@@ -392,7 +392,7 @@ function renderContinuityFragment() {
     .filter(d => d < todayStr && notes[d]?.body?.trim())
     .sort((a, b) => b.localeCompare(a));
   if (past.length > 0 && daysApart(todayStr, past[0]) >= 7) {
-    el.textContent = 'The chronicle receives what comes.';
+    el.textContent = 'What was left here remains.';
     el.hidden = false;
     return;
   }

@@ -505,6 +505,20 @@ Test: if the effect can be reduced to a number without losing its meaning, it is
 
 27.8.4 — The constitution holds. New practical features must operate within it — not by abandoning it, but by working within the exceptions it explicitly provides. Features that pass the Six Tests (§27.2) and fall within §19A, §19B, or §15.4A are constitutional. Features that do not are still rejected.
 
+### §27.9 · The Patron Test
+
+27.9.1 — The Patron Test governs whether a surface deserves to exist. The Six Tests (§27.2) govern how a surface remembers. The Patron Test comes before implementation, before naming polish, and before any Greek-language layer.
+
+27.9.2 — **Gate 1: Utility.** Would the user miss this surface if it vanished tomorrow? If the patron name is removed, is the remaining feature still useful? If no, reject or reshape the surface.
+
+27.9.3 — **Gate 2: Form.** Does the patron shape how the job is done — naming, timing, restraint, hierarchy, and rhythm? Could only this patron hold this surface? If no, reject or reshape the surface.
+
+27.9.4 — **Two-Ditch Rule:**
+- **Drift-one: decoration.** Mythology with no real job.
+- **Drift-two: generic utility.** Useful feature with Greek naming pasted on.
+
+27.9.5 — Any future ticket that creates, removes, renames, or substantially reshapes a surface must check both gates. Passing Gate 1 alone produces generic utility. Passing Gate 2 alone produces decoration. Elysium requires both.
+
 ---
 
 *End of Constitution.*

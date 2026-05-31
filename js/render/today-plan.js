@@ -11,7 +11,6 @@ import { getCareTurnState, getCareCycleLabel, getMorningCareState, getPeriodKey 
 import { getSleepEntry } from '../domains/sleep.js';
 import { hasMindArrival, getMindOffload, clearMindOffload } from '../domains/mind.js';
 import { hasArrivedToday } from '../domains/body.js';
-import { hasHeldToday } from '../domains/water.js';
 
 const _MASTHEAD_DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const _MASTHEAD_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -25,7 +24,7 @@ const _PERIOD_WORDS = {
 function renderMasthead() {
   const el = document.getElementById('today-plan-date');
   if (!el) return;
-  el.textContent = `${_MASTHEAD_DAYS[today.getDay()]} · ${today.getDate()} ${_MASTHEAD_MONTHS[today.getMonth()]}`;
+  el.textContent = `KAIROS · ${_MASTHEAD_DAYS[today.getDay()]} · ${today.getDate()} ${_MASTHEAD_MONTHS[today.getMonth()]}`;
 }
 
 function renderIntentions() {
@@ -123,7 +122,7 @@ function renderOpenItems() {
       },
     ];
   } else if (isMidday) {
-    const workKept = hasMindArrival(todayStr) && hasArrivedToday() && hasHeldToday();
+    const workKept = hasMindArrival(todayStr) && hasArrivedToday();
     items = [
       {
         action: 'work',

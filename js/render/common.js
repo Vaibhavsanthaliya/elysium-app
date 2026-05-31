@@ -1,7 +1,8 @@
-import { CYCLE_NAMES, CARE_PROTOCOL_NOTES } from '../constants.js';
+import { CYCLE_NAMES, CARE_PROTOCOL_NOTES, APOLLO_PROTECTION_LINES } from '../constants.js';
 import { state, today, todayStr } from '../state.js';
 import { getLastChronicleNoteForCycleDay } from '../domains/chronicle.js';
 import { getMorningTasks, getNightTasks, getTodayChecks, getCareRecord, getPreviousCareRecordForCycle } from '../domains/care.js';
+import { getDaylight } from '../domains/light.js';
 import { getCareTurnState } from './temple.js';
 
 const CARE_CYCLE_ROMAN = ['I', 'II', 'III'];
@@ -29,6 +30,44 @@ function getMemoryExcerpt(body) {
   const text = String(body || '').replace(/\s+/g, ' ').trim();
   if (!text) return '';
   return text.length > CARE_MEMORY_MAX ? `${text.slice(0, CARE_MEMORY_MAX - 3).trim()}...` : text;
+}
+
+const ASCLEPIUS_GUARD_LINES = {
+  0: "Skin was marked irritated this morning. Keep the layer small; stop if it stings.",
+  1: "Skin was marked irritated this morning. Use only if the skin feels calm tonight.",
+  2: "Skin was marked irritated this morning. Let the rest night stay simple.",
+};
+
+function renderCareApolloLine(cycleDay) {
+  const el = document.getElementById('care-apollo-line');
+  if (!el) return;
+  const daylight = getDaylight(todayStr);
+  if (daylight !== 'some' && daylight !== 'strong') {
+    el.hidden = true;
+    el.textContent = '';
+    return;
+  }
+  // cycleDay === 2 → tonight is Rest night → last night was Salicylic (exfoliation)
+  let line;
+  if (cycleDay === 2) {
+    line = APOLLO_PROTECTION_LINES.afterExfoliation;
+  } else if (daylight === 'strong') {
+    line = APOLLO_PROTECTION_LINES.strong;
+  } else {
+    line = APOLLO_PROTECTION_LINES.some;
+  }
+  el.textContent = line;
+  el.hidden = false;
+}
+
+function renderCareAsclepiusGuard(cycleDay) {
+  const wrap = document.getElementById('care-asclepius-guard');
+  if (!wrap) return;
+  const rec = getCareRecord(todayStr);
+  if (rec.condition !== 'irritated') { wrap.hidden = true; return; }
+  const line = document.getElementById('care-asclepius-line');
+  if (line) line.textContent = ASCLEPIUS_GUARD_LINES[cycleDay] || ASCLEPIUS_GUARD_LINES[0];
+  wrap.hidden = false;
 }
 
 function renderCareTurnMemory(cycleDay) {
@@ -222,7 +261,9 @@ export function renderTodayCycle() {
   renderTodayCycleIndicator(cycleDay, turnState);
   renderMorningProtocolControl();
   renderNightProtocolControl(turnState);
+  renderCareApolloLine(cycleDay);
   renderCareProtocolMemory(cycleDay);
+  renderCareAsclepiusGuard(cycleDay);
   renderCareTurnMemory(cycleDay);
   const noteEl = document.getElementById('care-protocol-note');
   if (noteEl) noteEl.textContent = CARE_PROTOCOL_NOTES[cycleDay] || '';

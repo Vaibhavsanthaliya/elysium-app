@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Elysium — Pantheon-Led Usefulness · Direction Correction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="pantheon.css" />
+<template id="__bundler_thumbnail" data-bg-color="#0E0E12">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0E0E12"/>
+    <circle cx="600" cy="380" r="150" fill="none" stroke="#C9A56B" stroke-width="3"/>
+    <path d="M450 380 A150 150 0 0 1 750 380" fill="none" stroke="#C9A56B" stroke-width="3"/>
+    <circle cx="600" cy="380" r="6" fill="#C9A56B"/>
+    <text x="600" y="640" fill="#ECE6D9" font-family="Georgia, serif" font-style="italic" font-size="64" text-anchor="middle">Elysium</text>
+  </svg>
+</template>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ COVER ============ -->
+  <header class="cover" data-screen-label="Cover">
+    <div class="eyebrow">Direction correction · Pantheon-led usefulness · No code</div>
+    <h1>Mythology as the<br />form of <span class="ital">utility</span></h1>
+    <p class="lede">Elysium drifted twice: first into decorative ritual, then into generic usefulness that demoted the gods. This corrects both — by making the Pantheon the structure of daily life, not a coat of paint on it.</p>
+    <div class="doctrine-stamp">
+      <span class="eyebrow">The doctrine</span>
+      <p>Mythology should be the form of genuine utility — never a substitute for it. A patron earns its place by owning a job the user would miss.</p>
+    </div>
+    <dl class="cover-meta">
+      <div><dt>Scope</dt><dd>Product direction · IA · patron system · Today + Care redesign</dd></div>
+      <div><dt>Governs</dt><dd>CLAUDE.md doctrine · Continuity Constitution · Six Tests</dd></div>
+      <div><dt>Deliverable</dt><dd>Corrected doctrine · 8 patron specs · 8-ticket roadmap</dd></div>
+      <div><dt>Status after</dt><dd>EA-183 · post Water-fold stabilization</dd></div>
+    </dl>
+  </header>
+
+  <!-- ============ I · DIAGNOSIS ============ -->
+  <section class="block" id="diagnosis" data-screen-label="Diagnosis">
+    <div class="rule"><span class="idx">I</span><span class="lbl">Diagnosis · how the product drifted</span></div>
+    <div class="sec-head">
+      <h2>Two wrong turns, in <span class="ital">sequence</span></h2>
+      <p class="lede-p">The app is not broken. It is mis-aimed. Each correction so far solved the last problem by creating the next one. The pattern, laid out plainly:</p>
+    </div>
+
+    <div class="drift">
+      <div class="drift-row">
+        <div class="stage">Origin<small>The seed</small></div>
+        <div class="desc">A vanilla-JS <strong>skincare tracker</strong>. Genuinely useful, narrow, and honest. The 3-night ingredient cycle still anchors everything — it is the one surface a user would notice missing within a day.</div>
+      </div>
+      <div class="drift-row">
+        <div class="stage">Soul added<small>Right instinct</small></div>
+        <div class="desc">Greek myth arrived as the <strong>soul</strong> of the app — Temple, ritual, patron, chronicle. This was correct. It gave a hygiene app a reason to be quiet, premium, and lived-in instead of another optimization scorecard.</div>
+      </div>
+      <div class="drift-row bad">
+        <div class="stage">Drift one<small>Decoration</small></div>
+        <div class="desc">Then came <strong>ritual surfaces that were beautiful but did nothing</strong> — tap-to-witness, tap-to-hold, tap-to-release. Lovely copy, no payoff. The myth became ornament. A god you tap and nothing changes is set dressing, not structure.</div>
+      </div>
+      <div class="drift-row bad">
+        <div class="stage">Drift two<small>Erosion</small></div>
+        <div class="desc">The fix for decoration was utility — Today intentions, Care notes, reaction memory, flows. Useful. But usefulness arrived by <strong>thinning the mythology</strong>: Water demoted, Light reduced to a tone-picker, domains becoming labels on ordinary features. The soul started leaving to make room for the tool.</div>
+      </div>
+    </div>
+
+    <div class="prose" style="margin-top:46px;">
+      <p class="big">The mistake in both turns is the same: treating mythology and utility as a trade-off — a slider where moving toward one means away from the other.</p>
+      <p>They are not opposites. The error is structural, not tonal. Decorative myth fails because it has no job. Generic utility fails because its job has no form. The correction is to make every patron <strong>own a job</strong>, and let the patron <strong>shape how that job is done</strong>. When that holds, adding utility deepens the myth instead of eroding it.</p>
+    </div>
+  </section>
+
+  <!-- ============ II · CORRECTED DOCTRINE ============ -->
+  <section class="block" id="doctrine" data-screen-label="Doctrine">
+    <div class="rule"><span class="idx">II</span><span class="lbl">Corrected doctrine · the patron test</span></div>
+    <div class="sec-head">
+      <h2>A patron is the <span class="ital">reason</span> a feature has its shape</h2>
+      <p class="lede-p">Not a theme applied afterward. Not a name on a button. A patron is the human need a surface exists to serve, and the discipline that decides how it serves it. To survive, every surface passes two gates.</p>
+    </div>
+
+    <div class="law">
+      <div class="gate">
+        <div class="gate-no">Gate one</div>
+        <h3>The Utility Gate</h3>
+        <p>Does this surface do a job the user would genuinely miss if it vanished tomorrow? Strip the Greek name entirely. Is what remains still the best tool for that job?</p>
+        <p class="fail"><b>Fails as decoration.</b> If removing the name leaves a gesture with no practical residue — a tap that records nothing the user needs, a ritual whose only output is more copy — the surface is ornament. Cut it.</p>
+      </div>
+      <div class="gate">
+        <div class="gate-no">Gate two</div>
+        <h3>The Form Gate</h3>
+        <p>Does the patron shape <em>how</em> the job is done — its hierarchy, naming, timing, restraint, the moment of the day it belongs to? Could only this patron hold this surface?</p>
+        <p class="fail"><b>Fails as generic utility.</b> If the surface would be identical in any to-do or wellness app — same layout, same voice, same logic — the myth is a sticker. Re-shape it until the patron is load-bearing.</p>
+      </div>
+      <div class="law-foot">
+        <p>Decoration passes Form but fails Utility. Generic software passes Utility but fails Form. Elysium requires both — that is the entire correction.</p>
+      </div>
+    </div>
+
+    <div class="prose" style="margin-top:46px;">
+      <p>This sits <em>above</em> the Continuity Constitution, not against it. The constitution governs what continuity may never become (a counter, a streak, a dashboard). The Patron Test governs whether a surface deserves to exist at all. A surface must pass both: the Patron Test for purpose, the Six Tests for how it remembers.</p>
+      <p>Practically, the test reorganizes the whole product around a simple claim: <strong>each patron owns one real human need and one moment of the day.</strong> The myth is not the wallpaper of the room — it is the floor plan.</p>
+    </div>
+  </section>
+
+  <!-- ============ III · REVISED IA ============ -->
+  <section class="block" id="ia" data-screen-label="Information architecture">
+    <div class="rule"><span class="idx">III</span><span class="lbl">Revised architecture · the spine &amp; the arc</span></div>
+    <div class="sec-head">
+      <h2>Four tabs. One <span class="ital">day-arc</span>. Eight patrons.</h2>
+      <p class="lede-p">Keep the four-tab spine — it is correct and shipped. Do not add patron tabs; the nav is not the Pantheon. The patrons live in <em>time</em> (the day-arc) and in <em>place</em> (Temple). The tabs answer four different questions.</p>
+    </div>
+
+    <div class="spine">
+      <div class="spine-tabs">
+        <div class="spine-tab primary">
+          <span class="pos">Tab 01 · first</span>
+          <span class="name">Today</span>
+          <span class="patron">Kairos — the present moment</span>
+          <span class="role">"What does <em>now</em> ask of me?" The front door. Stays first.</span>
+        </div>
+        <div class="spine-tab primary">
+          <span class="pos">Tab 02 · anchor</span>
+          <span class="name">Care</span>
+          <span class="patron">Hygieia — the body kept</span>
+          <span class="role">"What does my skin need tonight?" The practical anchor. Stays.</span>
+        </div>
+        <div class="spine-tab">
+          <span class="pos">Tab 03 · the room</span>
+          <span class="name">Temple</span>
+          <span class="patron">the Pantheon entire</span>
+          <span class="role">"Where do all the patrons stand today?" The whole room, arranged by the arc.</span>
+        </div>
+        <div class="spine-tab">
+          <span class="pos">Tab 04 · the house</span>
+          <span class="name">Workshop</span>
+          <span class="patron">mortal back-of-house</span>
+          <span class="role">Account, cues, data, install. Deliberately un-patroned — the one honest seam.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arc">
+      <div class="arc-title">The day-arc — patrons mapped to time</div>
+      <p class="arc-sub">This is the real structure. Today and Temple both read from it. Each patron surfaces when its hour comes, and recedes when it passes. No patron is ever "behind."</p>
+      <div class="arc-track">
+        <div class="arc-step">
+          <span class="when">First light</span>
+          <span class="dot"></span>
+          <span class="who">Apollo</span>
+          <span class="surf">Light → Care</span>
+          <span class="job">Name the day; protect it. SPF threshold before you step out.</span>
+        </div>
+        <div class="arc-step">
+          <span class="when">Morning</span>
+          <span class="dot"></span>
+          <span class="who">Kairos</span>
+          <span class="surf">Today</span>
+          <span class="job">Place 1–3 intentions. Receive what yesterday left.</span>
+        </div>
+        <div class="arc-step">
+          <span class="when">Midday</span>
+          <span class="dot"></span>
+          <span class="who">Athena</span>
+          <span class="surf">Mind</span>
+          <span class="job">Offload one thread. Turn a worry into an intention, or set it down.</span>
+        </div>
+        <div class="arc-step">
+          <span class="when">Evening</span>
+          <span class="dot"></span>
+          <span class="who">Hygieia · Asclepius</span>
+          <span class="surf">Care · Recovery</span>
+          <span class="job">Night protocol. If skin reacted, Asclepius pulls the actives back.</span>
+        </div>
+        <div class="arc-step">
+          <span class="when">Night</span>
+          <span class="dot"></span>
+          <span class="who">Mnemosyne · Hypnos</span>
+          <span class="surf">Chronicle · Sleep</span>
+          <span class="job">Write what remains. Decide what carries into tomorrow. Close the day.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose" style="margin-top:44px;">
+      <p><strong>On the four pillars question.</strong> The brief floats Care / Today / Chronicle / Sleep as the main pillars. Three of those are right; Sleep is not a pillar — it is an <em>endpoint</em>, used once a night, and does not earn a permanent tab. Chronicle (Mnemosyne) <em>is</em> precious enough to deserve prominence, but it earns it inside Temple as the night's anchor patron, not as a fourth tab that sits empty for most of the day. The spine stays: Now, Anchor, Room, House.</p>
+      <p><strong>On "should domains become patrons."</strong> Yes — every domain becomes a patron with a job, but the patron name is never the tappable label. You enter "Care," subtitled <em>Hygieia</em>; you enter "Mind," subtitled <em>Athena</em>. The god is the form and the why; the plain word is the door.</p>
+    </div>
+  </section>
+
+  <!-- ============ IV · THE PANTHEON ============ -->
+  <section class="block" id="pantheon" data-screen-label="The Pantheon">
+    <div class="rule"><span class="idx">IV</span><span class="lbl">The Pantheon · patron-by-patron design system</span></div>
+    <div class="sec-head">
+      <h2>Eight patrons, each with a <span class="ital">job</span></h2>
+      <p class="lede-p">For each: the practical job it owns, its visual role, the interactions it is allowed, what must be removed or avoided, and how it appears in the UI. Two patrons are corrections to existing domains; one is a retirement.</p>
+    </div>
+
+    <div class="pantheon">
+
+      <!-- HYGIEIA -->
+      <article class="patron">
+        <div class="patron-id">
+          <div class="medallion"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="10"/><path d="M10 16 A6 6 0 0 1 22 16"/></svg></div>
+          <span class="verdict keep">Anchor · keep</span>
+        </div>
+        <div class="patron-body">
+          <div class="pat-head"><h3>Hygieia</h3><span class="pat-domain">Care</span></div>
+          <p class="pat-tag">The practical anchor. The reason the app survives a day of disuse everywhere else.</p>
+          <dl class="pat-grid">
+            <div><dt>Practical job</dt><dd>The skincare protocol: morning/night routine, the 3-night active-ingredient cycle (niacinamide · salicylic · rest), skin check-in, reaction notes, irritation memory.</dd></div>
+            <div><dt>Visual role</dt><dd>The only <strong>featured</strong> surface — bronze-gradient hero card, the warmest material in the app. Care is allowed elevation no other patron gets, because it carries real consequence (active acids on skin).</dd></div>
+            <div><dt>Allowed</dt><dd>Step completion, cycle position display, skin condition chips, reaction note, the §19A practical calendar, "last time on this night" reaction memory.</dd></div>
+            <div><dt class="cut">Avoid</dt><dd class="cut">Streaks, adherence %, "you kept 4 of 7." Care has a practical history exception — it is <strong>not</strong> a license for scorecards.</dd></div>
+            <div><dt>Appears as</dt><dd>The Care tab hero + tonight's protocol; the day-arc evening anchor; the featured card on Temple.</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- KAIROS -->
+      <article class="patron">
+        <div class="patron-id">
+          <div class="medallion"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="10"/><path d="M16 10v6l4.5 2.6"/></svg></div>
+          <span class="verdict keep">Front door · keep</span>
+        </div>
+        <div class="patron-body">
+          <div class="pat-head"><h3>Kairos</h3><span class="pat-domain">Today</span></div>
+          <p class="pat-tag">Not chronological time — the <em>opportune</em> moment. The present, asking to be met.</p>
+          <dl class="pat-grid">
+            <div><dt>Practical job</dt><dd>What matters today: 1–3 intentions in the user's own words, yesterday's carryover, the open loops the present hour holds.</dd></div>
+            <div><dt>Visual role</dt><dd>A <strong>threshold</strong>, not a list. Masthead + naked separator rows on the obsidian floor. The front door identity: mono date, DM Sans heading, Spectral accent noun.</dd></div>
+            <div><dt>Allowed</dt><dd>Add / keep / release intention; one-day quiet carryover echo; time-aware open rows that point to the hour's patrons (§19B).</dd></div>
+            <div><dt class="cut">Avoid</dt><dd class="cut">Reading like a generic todo app. No "tasks," no priority, no due dates, no counts, no progress bar. Kairos holds the present — it does not schedule the future.</dd></div>
+            <div><dt>Appears as</dt><dd>Tab 01, first surface on open. Detailed redesign in §V.</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- MNEMOSYNE -->
+      <article class="patron">
+        <div class="patron-id">
+          <div class="medallion"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="5.5"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg></div>
+          <span class="verdict keep">Memory · keep</span>
+        </div>
+        <div class="patron-body">
+          <div class="pat-head"><h3>Mnemosyne</h3><span class="pat-domain">Chronicle</span></div>
+          <p class="pat-tag">The deep well. Memory itself — not a journal feature, the domain of remembering.</p>
+          <dl class="pat-grid">
+            <div><dt>Practical job</dt><dd>Writing, archive, plain substring search, and resurfacing — the room returning a line you forgot writing. The most precious data in the app.</dd></div>
+            <div><dt>Visual role</dt><dd>Spectral-italic writing surface; dashed bronze prompt card; faint resurfaced lines that age qualitatively. Quiet, ink-and-paper, never database chrome.</dd></div>
+            <div><dt>Allowed</dt><dd>Write; read reverse-chronologically; literal search; the Well surfaces one entry by date/cycle math (§15.4A, §11).</dd></div>
+            <div><dt class="cut">Avoid</dt><dd class="cut">Tags, folders, word counts, sentiment, "N entries about X," relevance ranking. Mnemosyne remembers — she does not <em>analyze</em>.</dd></div>
+            <div><dt>Appears as</dt><dd>Temple's night-anchor patron; reachable from Today's open rows at evening/night. The most prominent secondary patron.</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- HYPNOS -->
+      <article class="patron">
+        <div class="patron-id">
+          <div class="medallion"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M22 18.5 A8.5 8.5 0 1 1 14 7 A6.6 6.6 0 0 0 22 18.5 Z"/></svg></div>
+          <span class="verdict keep">Closure · keep</span>
+        </div>
+        <div class="patron-body">
+          <div class="pat-head"><h3>Hypnos</h3><span class="pat-domain">Sleep</span></div>
+          <p class="pat-tag">Closure. The patron who lets the app — and the day — go quiet.</p>
+          <dl class="pat-grid">
+            <div><dt>Practical job</dt><dd>Shutdown: the parking note, deciding what carries into tomorrow, the night-to-morning handoff. The one surface that ends the day.</dd></div>
+            <div><dt>Visual role</dt><dd>A darkening, narrowing ritual. Closure invitations, one optional parking line, the carry / let-pass decision on unkept intentions.</dd></div>
+            <div><dt>Allowed</dt><dd>Closure mark; parking note (persists); carry/pass routing of Today's unkept items into tomorrow's carryover (§19C).</dd></div>
+            <div><dt class="cut">Avoid</dt><dd class="cut">Becoming a sleep tracker. No bedtime stats, no duration, no consistency graph, no "you slept X." The app does not know — and must never ask.</dd></div>
+            <div><dt>Appears as</dt><dd>Day-arc endpoint (night); reachable from Today's open rows after dusk; closes into the next morning's Kairos handoff.</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- ATHENA -->
+      <article class="patron">
+        <div class="patron-id">
+          <div class="medallion"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6 26 16 16 26 6 16 Z"/><line x1="8.5" y1="16" x2="23.5" y2="16"/></svg></div>
+          <span class="verdict keep">Clarity · keep</span>
+        </div>
+        <div class="patron-body">
+          <div class="pat-head"><h3>Athena</h3><span class="pat-domain">Mind</span></div>
+          <p class="pat-tag">Clarity. Not stillness for its own sake — the work of choosing one thread.</p>
+          <dl class="pat-grid">
+            <div><dt>Practical job</dt><dd>Mental-load offload: place a worrying thread in the room to relieve occupation, then either <strong>send it to Today</strong> as an intention or set it down. Turning thought into a decision.</dd></div>
+            <div><dt>Visual role</dt><dd>A single calm offload surface — one textarea, three plain actions. Spartan, like a clear desk. Already correct as of EA-178B; protect it.</dd></div>
+            <div><dt>Allowed</dt><dd>Hold one thread for the day; "Set it down" / "Send to Today" / "Clear." Expires at day-end (§18.8).</dd></div>
+            <div><dt class="cut">Avoid</dt><dd class="cut">A productivity <strong>timer</strong>. No countdown, no session length, no "minutes held," no breath-streak. The 60s floor was structure, not a goal — do not resurrect duration UI.</dd></div>
+            <div><dt>Appears as</dt><dd>Day-arc midday; the bridge between Mind and Today — the only patron that writes directly into Kairos.</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- APOLLO -->
+      <article class="patron">
+        <div class="patron-id">
+          <div class="medallion"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25"><circle cx="16" cy="16" r="4.4"/><circle cx="16" cy="5.5" r="1.4" fill="currentColor"/><circle cx="16" cy="26.5" r="1.4" fill="currentColor"/><circle cx="5.5" cy="16" r="1.4" fill="currentColor"/><circle cx="26.5" cy="16" r="1.4" fill="currentColor"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="23.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="8.5" cy="23.5" r="1.4" fill="currentColor"/><circle cx="23.5" cy="23.5" r="1.4" fill="currentColor"/></svg></div>
+          <span class="verdict">Light · rebuild</span>
+        </div>
+        <div class="patron-body">
+          <div class="pat-head"><h3>Apollo</h3><span class="pat-domain">Light</span></div>
+          <p class="pat-tag">Daylight and the sun. The weak mapping today; the strong one tomorrow.</p>
+          <dl class="pat-grid">
+            <div><dt>Practical job</dt><dd><strong>Daytime protection.</strong> SPF awareness tied to Care's sunscreen step, sun-exposure threshold, the morning go-out moment. The patron of the sun should be about the sun on your skin — not "noticing the morning."</dd></div>
+            <div><dt>Visual role</dt><dd>An airy morning threshold that carries one practical line: is SPF on before you cross it. The tone-of-morning gesture stays, but rides <em>on top of</em> a real check.</dd></div>
+            <div><dt>Allowed</dt><dd>Morning entry; an SPF-on acknowledgment that links to Care m2; a sun-threshold cue. Witness marks persist as horizon fade (§16).</dd></div>
+            <div><dt class="cut">Avoid · today's weakness</dt><dd class="cut">Apollo is currently a <strong>tone-picker</strong> (Soft / Clear / Steady / Guarded) with no payoff — pure Drift-one decoration. It fails the Utility Gate. Rebuild it around SPF or fold it into Care's morning.</dd></div>
+            <div><dt>Appears as</dt><dd>Day-arc first-light, feeding directly into Hygieia's morning protocol.</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- ASCLEPIUS -->
+      <article class="patron">
+        <div class="patron-id">
+          <div class="medallion"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7 23 21 9 21 Z"/><line x1="7" y1="24.5" x2="25" y2="24.5"/></svg></div>
+          <span class="verdict">Body · rebuild → rename</span>
+        </div>
+        <div class="patron-body">
+          <div class="pat-head"><h3>Asclepius</h3><span class="pat-domain">Body → Recovery</span></div>
+          <p class="pat-tag">Healing. The patron you go to when the protocol hurt you.</p>
+          <dl class="pat-grid">
+            <div><dt>Practical job</dt><dd><strong>Skin recovery &amp; barrier repair.</strong> When skin reacts to actives or sun: pull treatment back, simplify, support the barrier. Care is the plan; Asclepius is what to do when the plan irritates. Tightly bound to Hygieia's reaction state.</dd></div>
+            <div><dt>Visual role</dt><dd>A calm, clinical relief surface — not a wellness stretch screen. Reads as "ease off," the medical-quiet counterpart to Care's active hero.</dd></div>
+            <div><dt>Allowed</dt><dd>Recovery guidance keyed to today's skin condition; "rest the actives" routing; a same-session grounding pause inherited from the old Body/Water reset.</dd></div>
+            <div><dt class="cut">Avoid · today's weakness</dt><dd class="cut">"Body" today is <strong>generic desk-stretch</strong> (neck / shoulders / wrists) — indistinguishable from any wellness app. It fails the Form Gate. Recovery gives it a job only Elysium's skincare core could justify.</dd></div>
+            <div><dt>Appears as</dt><dd>Surfaces in Care's night section when condition = irritated; a quiet Temple patron otherwise. Desk-relief survives as a minor affordance, not the soul.</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- LETHE / WATER -->
+      <article class="patron">
+        <div class="patron-id">
+          <div class="medallion retired"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14 q4 -4 8 0 q4 4 8 0"/><path d="M7 20 q4 -4 8 0 q4 4 8 0"/></svg></div>
+          <span class="verdict retire">Water · retire</span>
+        </div>
+        <div class="patron-body">
+          <div class="pat-head"><h3>Lethe</h3><span class="pat-domain">Water — retire as standalone</span></div>
+          <p class="pat-tag">The strongest temptation toward decoration. Resolve it by removing it.</p>
+          <dl class="pat-grid">
+            <div><dt>The problem</dt><dd>Water has no job. A <strong>hydration counter</strong> violates the constitution (counts forbidden). A <strong>Lethe "release" mechanic</strong> — tap to forget — is the purest example of the decorative ritual the brief warns against: beautiful, and entirely without payoff. Both proposed rescues fail a gate.</dd></div>
+            <div><dt>The verdict</dt><dd><strong>Retire the standalone domain.</strong> EA-179 → EA-183 already demoted and folded most of it; finish the job. Do not revive it as Lethe.</dd></div>
+            <div><dt>Fold the crumbs</dt><dd>The one useful fragment — hydration — becomes a line inside <strong>Hygieia</strong> (it already exists: habit "drink 2.5–3L"). The "notice temperature, breathe, continue" grounding pause folds into <strong>Asclepius</strong> as a recovery micro-action.</dd></div>
+            <div><dt class="cut">Avoid</dt><dd class="cut">Keeping a domain alive because it already exists. A patron with no job is the exact failure this correction is fixing.</dd></div>
+            <div><dt>Appears as</dt><dd>Nowhere, as itself. Its useful matter lives on inside Hygieia and Asclepius.</dd></div>
+          </dl>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ V · TODAY REDESIGN (KAIROS) ============ -->
+  <section class="block" id="today" data-screen-label="Today / Kairos redesign">
+    <div class="rule"><span class="idx">V</span><span class="lbl">Redesign · Today as Kairos</span></div>
+    <div class="sec-head">
+      <h2>The <span class="ital">threshold</span>, not the checklist</h2>
+      <p class="lede-p">Today is the front door. It must feel like crossing into a quiet, well-kept room — while still being the most useful surface in the app. The reframe is Kairos: the present moment, met, never a backlog to clear.</p>
+    </div>
+
+    <div class="mock-pair">
+      <div class="dir-mock">
+        <div class="phone">
+          <div class="scr">
+            <div class="statusbar"><span>9:41</span><span class="dots">•••</span></div>
+            <div class="scr-body">
+              <div class="m-head">
+                <div class="m-eyebrow">Thursday · 29 May · Morning</div>
+                <div class="m-title">What the <span class="ital">morning</span> asks</div>
+                <div class="m-sub">Two intentions placed. Light is unentered; care is still open.</div>
+              </div>
+
+              <div class="s-hd"><span class="lab">Placed</span><span class="meta">02 / 03</span></div>
+              <div class="irow">
+                <span class="check"></span>
+                <span class="itext">Call the pharmacy</span>
+                <span class="rel"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></span>
+              </div>
+              <div class="irow kept">
+                <span class="check done"><svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="2.5 6.5 5 9 9.5 3.5"/></svg></span>
+                <span class="itext">Walk before noon</span>
+                <span class="rel"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></span>
+              </div>
+              <div class="add-line">Place another</div>
+
+              <div class="echo">
+                <div class="echo-lab">Yesterday left</div>
+                <div class="echo-text">"Email the studio"</div>
+                <div class="echo-acts"><span class="fwd">Bring forward</span><span class="pass">Let it pass</span></div>
+              </div>
+
+              <div class="s-hd"><span class="lab">The hour holds</span><span class="meta">Morning</span></div>
+              <div class="orow">
+                <span class="glyph"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="16" cy="16" r="4.4"/><circle cx="16" cy="6" r="1.5" fill="currentColor"/><circle cx="16" cy="26" r="1.5" fill="currentColor"/><circle cx="6" cy="16" r="1.5" fill="currentColor"/><circle cx="26" cy="16" r="1.5" fill="currentColor"/></svg></span>
+                <span class="obody"><span class="otext">Light · protect the day</span><span class="opatron">Apollo</span></span>
+                <span class="ostate">Open</span>
+                <svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg>
+              </div>
+              <div class="orow">
+                <span class="glyph"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="16" cy="16" r="10"/><path d="M10 16 A6 6 0 0 1 22 16"/></svg></span>
+                <span class="obody"><span class="otext">Care · morning protocol</span><span class="opatron">Hygieia</span></span>
+                <span class="ostate">Open</span>
+                <svg class="chev" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 3 11 8 5 13"/></svg>
+              </div>
+              <p class="foot-line">What remains can be kept or left.</p>
+            </div>
+            <nav class="tabbar">
+              <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Today</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><path d="M8 12a4 4 0 0 1 8 0"/></svg><span>Care</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 20h16"/></svg><span>Temple</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span>Workshop</span></div>
+            </nav>
+          </div>
+        </div>
+        <p class="phone-cap">Today · Kairos · morning state</p>
+      </div>
+
+      <div class="mock-notes">
+        <div class="dir-name"><h3>What changed, and why</h3></div>
+        <p class="tagline">Builds directly on the shipped Threshold (EA-171A). The correction is the patron framing, not a teardown.</p>
+        <dl class="spec">
+          <div><dt>Heading</dt><dd>From "Today's <em>intentions</em>" to <strong>"What the <em>morning</em> asks"</strong> — the accent noun is the <em>moment</em>, not the feature. Kairos speaks of the present; the word shifts with the day-arc period (morning / afternoon / evening / night) using logic that already exists.</dd></div>
+          <div><dt>Intentions</dt><dd>Unchanged in behaviour and form. Naked separator rows, bronze check, Spectral "Placed" label, bare <code>02 / 03</code> capacity glyph. This is the useful core and it stays exactly as shipped.</dd></div>
+          <div><dt>Open rows → patrons</dt><dd>The single biggest change. "Open" becomes <strong>"The hour holds"</strong>, and each open row now carries its <strong>patron</strong>: a small glyph medallion, the plain job ("Light · protect the day"), and the italic patron name ("Apollo") beneath. The open set stops reading as leftover todos and starts reading as <em>which gods this hour belongs to</em>.</dd></div>
+          <div><dt>The arc, felt</dt><dd>The rows are ordered and populated by the day-arc: Apollo + Hygieia at morning, Athena at midday, Mnemosyne + Hypnos at night. The user never sees "the arc" named — they just find the right patrons waiting at the right hour.</dd></div>
+          <div><dt>Carryover</dt><dd>Same one-day echo. Kairos receives what yesterday left; it never accumulates a backlog.</dd></div>
+        </dl>
+        <div class="judgement keep">
+          <div><h4>What stays</h4><ul><li>Every §19B behaviour: add, keep, release, carryover</li><li>The shipped Threshold masthead + naked rows</li><li>Bronze check, footer voice, no counts</li></ul></div>
+          <div class="remove"><h4>What's corrected</h4><ul><li>Open rows gain patron identity (glyph + name)</li><li>Heading noun tracks the moment, not the feature</li><li>Today stops reading as a generic todo list</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VI · CARE REDESIGN (HYGIEIA) ============ -->
+  <section class="block" id="care" data-screen-label="Care / Hygieia redesign">
+    <div class="rule"><span class="idx">VI</span><span class="lbl">Redesign · Care as Hygieia</span></div>
+    <div class="sec-head">
+      <h2>Hygieia-led, without losing <span class="ital">clarity</span></h2>
+      <p class="lede-p">Care is the anchor — and the place to prove the doctrine. Make the patron explicit and let the other patrons interlock around the protocol, while the practical skincare clarity stays front and centre. The myth becomes the structure that holds the medicine.</p>
+    </div>
+
+    <div class="mock-pair">
+      <div class="dir-mock">
+        <div class="phone">
+          <div class="scr">
+            <div class="statusbar"><span>10:18</span><span class="dots">•••</span></div>
+            <div class="scr-body">
+              <div class="m-head">
+                <div class="m-eyebrow">Hygieia · Night II</div>
+                <div class="m-title">Tonight's <span class="ital">care</span></div>
+                <div class="m-sub">Salicylic night. A light hand — actives on the T-zone only.</div>
+              </div>
+
+              <div class="care-hero">
+                <div class="ch-eyebrow">The protocol</div>
+                <div class="ch-night"><span class="ch-rom">II</span><span class="ch-proto">Salicylic acid</span></div>
+                <div class="ch-note">Exfoliates inside pores. T-zone or affected areas only — not all over. Skip if skin feels dry.</div>
+              </div>
+
+              <div class="s-hd"><span class="lab">Tonight</span><span class="meta">03 steps</span></div>
+              <div class="crow done"><span class="check done"><svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="2.5 6.5 5 9 9.5 3.5"/></svg></span><span class="ctext">Face wash</span></div>
+              <div class="crow"><span class="check"></span><span class="ctext">Salicylic acid serum</span><span class="cinfo">pea-sized</span></div>
+              <div class="crow"><span class="check"></span><span class="ctext">Light moisturizer</span></div>
+
+              <div class="s-hd"><span class="lab">Skin tonight</span><span class="meta">Asclepius listens</span></div>
+              <div class="chip-row">
+                <span class="chip">Calmer</span><span class="chip on">Same</span><span class="chip">Irritated</span>
+              </div>
+
+              <div class="memory">
+                <div class="mlab">Last time on this night</div>
+                <div class="mfrom">From 23 May</div>
+                <div class="mline">"A little tight after. Used less next time and it settled."</div>
+              </div>
+
+              <div class="apollo-strip">
+                <span class="glyph"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="16" cy="16" r="4.4"/><circle cx="16" cy="6" r="1.5" fill="currentColor"/><circle cx="16" cy="26" r="1.5" fill="currentColor"/><circle cx="6" cy="16" r="1.5" fill="currentColor"/><circle cx="26" cy="16" r="1.5" fill="currentColor"/></svg></span>
+                <span class="as-body"><span class="as-name">SPF kept this morning <em>Apollo</em></span><span class="as-sub">Salicylic raises sun sensitivity — protect tomorrow.</span></span>
+                <span class="as-state">Done</span>
+              </div>
+            </div>
+            <nav class="tabbar">
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Today</span></div>
+              <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="M8 12a4 4 0 0 1 8 0"/></svg><span>Care</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 20h16"/></svg><span>Temple</span></div>
+              <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span>Workshop</span></div>
+            </nav>
+          </div>
+        </div>
+        <p class="phone-cap">Care · Hygieia · Night II (salicylic)</p>
+      </div>
+
+      <div class="mock-notes">
+        <div class="dir-name"><h3>What changed, and why</h3></div>
+        <p class="tagline">Hygieia named, the cycle elevated, and two patrons interlocked — with zero loss of skincare clarity.</p>
+        <dl class="spec">
+          <div><dt>Hygieia, named</dt><dd>The eyebrow becomes <strong>"Hygieia · Night II"</strong> — the patron and the cycle position in one mono line. The accent noun is "care." The god is now the frame around the protocol, not a hidden subtitle.</dd></div>
+          <div><dt>Protocol elevated</dt><dd>Tonight's active ingredient gets the <strong>featured bronze hero</strong> — roman-numeral night index, ingredient name, the practical one-line guidance from <code>CARE_PROTOCOL_NOTES</code>. The single most consequential fact (what you're putting on your skin) is the warmest thing on screen.</dd></div>
+          <div><dt>Steps, clear</dt><dd>Naked separator rows, bronze checks, mono micro-hints ("pea-sized"). Pure §19A practical clarity — unchanged in logic.</dd></div>
+          <div><dt>Asclepius interlock</dt><dd>The skin check-in (calmer / same / irritated) is now labelled <strong>"Asclepius listens"</strong>. Choosing <em>irritated</em> is what summons Recovery — the reaction state becomes the doorway to the recovery patron, binding the two domains by need, not decoration.</dd></div>
+          <div><dt>Apollo interlock</dt><dd>A quiet strip ties tonight's salicylic to <strong>tomorrow's SPF</strong> ("salicylic raises sun sensitivity"). Apollo's job (protection) is made <em>practically necessary</em> by Hygieia's job (actives). This is the doctrine working: one patron's utility creates another's.</dd></div>
+          <div><dt>Reaction memory</dt><dd>"Last time on this night" (EA-174) stays — the room returning a relevant prior note keyed by cycle, not a trend. Mnemosyne's grammar, inside Care.</dd></div>
+        </dl>
+        <div class="judgement keep">
+          <div><h4>What stays</h4><ul><li>3-night cycle logic, task IDs, §19A calendar</li><li>Skin check-in + reaction note + cycle memory</li><li>All practical skincare guidance</li></ul></div>
+          <div class="remove"><h4>What's corrected</h4><ul><li>Hygieia named in the masthead</li><li>Active ingredient gets the featured hero</li><li>Asclepius + Apollo interlock by genuine need</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VII · DOMAIN VERDICTS ============ -->
+  <section class="block" id="verdicts" data-screen-label="Domain verdicts">
+    <div class="rule"><span class="idx">VII</span><span class="lbl">Verdicts · Light · Body · Mind · Water · Sleep</span></div>
+    <div class="sec-head">
+      <h2>Rebuilt, renamed, folded, or <span class="ital">retired</span></h2>
+      <p class="lede-p">The decisions at a glance. No domain is preserved because it already exists — each had to re-earn its place against the two gates. Two pass as-is, two are rebuilt, one is retired.</p>
+    </div>
+
+    <div class="verdicts">
+      <div class="verdict-row">
+        <span class="vglyph"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="16" cy="16" r="4.4"/><circle cx="16" cy="6" r="1.5" fill="currentColor"/><circle cx="16" cy="26" r="1.5" fill="currentColor"/><circle cx="6" cy="16" r="1.5" fill="currentColor"/><circle cx="26" cy="16" r="1.5" fill="currentColor"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="23.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="8.5" cy="23.5" r="1.4" fill="currentColor"/><circle cx="23.5" cy="23.5" r="1.4" fill="currentColor"/></svg></span>
+        <div class="vname"><div class="domain">Light</div><div class="becomes">→ Apollo · daylight protection</div></div>
+        <span class="vaction rebuild">Rebuild</span>
+        <div class="vwhy">Today it is a tone-picker with no payoff — Drift-one decoration. <strong>Rebuild around SPF and sun-threshold</strong>, bound to Care's sunscreen step. The patron of the sun must be about the sun on your skin. If a full rebuild is too costly, fold it into Care's morning rather than keep the empty gesture.</div>
+      </div>
+
+      <div class="verdict-row">
+        <span class="vglyph"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7 23 21 9 21 Z"/><line x1="7" y1="24.5" x2="25" y2="24.5"/></svg></span>
+        <div class="vname"><div class="domain">Body</div><div class="becomes">→ Asclepius · recovery</div></div>
+        <span class="vaction rebuild">Rename</span>
+        <div class="vwhy">Generic desk-stretch fails the Form Gate — it could be any wellness app. <strong>Recast as skin recovery &amp; barrier repair</strong>, summoned by Care's "irritated" reaction state. This is a job only Elysium's skincare core justifies. Desk-relief survives as a minor affordance, not the identity.</div>
+      </div>
+
+      <div class="verdict-row">
+        <span class="vglyph"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6 26 16 16 26 6 16 Z"/><line x1="8.5" y1="16" x2="23.5" y2="16"/></svg></span>
+        <div class="vname"><div class="domain">Mind</div><div class="becomes">→ Athena · clarity</div></div>
+        <span class="vaction keep">Keep</span>
+        <div class="vwhy">Already corrected at EA-178B: a single offload surface that can <strong>send a thread to Today</strong>. It passes both gates — real job (mental-load relief), real form (the only patron that writes into Kairos). <strong>Protect it</strong>; do not let a duration timer creep back.</div>
+      </div>
+
+      <div class="verdict-row gone">
+        <span class="vglyph"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14 q4 -4 8 0 q4 4 8 0"/><path d="M7 20 q4 -4 8 0 q4 4 8 0"/></svg></span>
+        <div class="vname"><div class="domain">Water</div><div class="becomes gone">→ retired · folded</div></div>
+        <span class="vaction retire">Retire</span>
+        <div class="vwhy">No job survives a gate. A counter is unconstitutional; a "Lethe" release ritual is decoration. <strong>Finish the EA-179→183 fold:</strong> hydration becomes a Hygieia line, the grounding pause folds into Asclepius. Do not resurrect it as a patron. A god with no job is the failure we are correcting.</div>
+      </div>
+
+      <div class="verdict-row">
+        <span class="vglyph"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 18.5 A8.5 8.5 0 1 1 14 7 A6.6 6.6 0 0 0 22 18.5 Z"/></svg></span>
+        <div class="vname"><div class="domain">Sleep</div><div class="becomes">→ Hypnos · closure</div></div>
+        <span class="vaction keep">Keep</span>
+        <div class="vwhy">Already strong (EA-176): parking note + carry/pass decision that routes into the next morning's Kairos handoff. A genuine night-to-morning loop. Passes both gates. <strong>Keep as-is</strong>; never let it drift toward sleep-tracking.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIII · ROADMAP ============ -->
+  <section class="block" id="roadmap" data-screen-label="Roadmap">
+    <div class="rule"><span class="idx">VIII</span><span class="lbl">Implementation roadmap · recommended order</span></div>
+    <div class="sec-head">
+      <h2>Eight tickets, <span class="ital">in order</span></h2>
+      <p class="lede-p">Doctrine first, then clear the board, then bind the patrons, then re-anchor the front surfaces. Each ticket is small, reversible, and one concern — per the CLAUDE.md workflow. EA numbers continue from EA-183.</p>
+    </div>
+
+    <div class="roadmap">
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ea">EA-184</span><span class="tt">Doctrine &amp; IA reframe</span><span class="ord">01 · docs only</span></div>
+        <div class="ticket-grid">
+          <div><dt>Purpose</dt><dd>Adopt the Patron Test and the day-arc as binding doctrine before any code moves. Everything downstream cites this.</dd></div>
+          <div><dt>Files</dt><dd><code>CLAUDE.md</code> §7 tone, <code>README.md</code> product shape, a doctrine note in <code>docs/continuity-constitution.md</code>.</dd></div>
+          <div><dt>Visual</dt><dd>None. Documentation only.</dd></div>
+          <div><dt>Functional</dt><dd>None. Establishes the gates and the patron→job→hour mapping as the reference for EA-185+.</dd></div>
+          <div class="span2"><dt class="warn">Must not change</dt><dd>No app code, state, storage, schema, or SW. The constitution still supersedes; the Patron Test sits above it on purpose, not against it.</dd></div>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ea">EA-185</span><span class="tt">Complete the Water retirement</span><span class="ord">02 · cleanup</span></div>
+        <div class="ticket-grid">
+          <div><dt>Purpose</dt><dd>Clear the board. Finish folding Water so no orphaned standalone surface or constant remains.</dd></div>
+          <div><dt>Files</dt><dd><code>js/domains/water.js</code>, <code>constants.js</code>, Work-Flow water step in <code>js/ui/flow.js</code>, <code>temple.js</code> traces.</dd></div>
+          <div><dt>Visual</dt><dd>Any residual Water card/step disappears. Hydration appears as a line in Hygieia's habit list.</dd></div>
+          <div><dt>Functional</dt><dd>Grounding "notice temperature, breathe" pause re-homed into the future Asclepius reset. <code>holdWater</code> state kept for storage compatibility only.</dd></div>
+          <div class="span2"><dt class="warn">Must not change</dt><dd><code>STORAGE_KEY</code>, the <code>water.holdings</code> shape (migration compatibility), or Care. Do not delete stored data — only remove UI surfaces.</dd></div>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ea">EA-186</span><span class="tt">Body → Asclepius (Recovery)</span><span class="ord">03 · recast</span></div>
+        <div class="ticket-grid">
+          <div><dt>Purpose</dt><dd>Give Body a job only Elysium could justify: skin recovery and barrier repair, bound to Care's reaction state.</dd></div>
+          <div><dt>Files</dt><dd><code>js/domains/body.js</code> → recovery logic, <code>constants.js</code> recovery guidance, Care render in <code>common.js</code>, <code>temple.js</code> labels.</dd></div>
+          <div><dt>Visual</dt><dd>Domain reads "Recovery / Asclepius." Calm clinical relief surface; desk-relief chips demoted to a secondary affordance.</dd></div>
+          <div><dt>Functional</dt><dd>"Irritated" skin check-in surfaces recovery guidance (rest actives, simplify, support barrier). Body arrivals state preserved.</dd></div>
+          <div class="span2"><dt class="warn">Must not change</dt><dd><code>state.body.arrivals</code> shape; the §19D Body Relief exception scope; no symptom history, pain scales, or medical claims.</dd></div>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ea">EA-187</span><span class="tt">Apollo as daylight protection</span><span class="ord">04 · bind</span></div>
+        <div class="ticket-grid">
+          <div><dt>Purpose</dt><dd>Replace the empty tone-picker with a real job: SPF awareness and sun threshold, tied to Care's sunscreen step.</dd></div>
+          <div><dt>Files</dt><dd><code>js/domains/light.js</code>, <code>constants.js</code> (retire <code>LIGHT_*</code> tone copy), Care morning render, <code>flow.js</code> morning step.</dd></div>
+          <div><dt>Visual</dt><dd>Morning threshold carries one practical SPF line; the airy tone gesture rides on top of a real acknowledgment, not instead of one.</dd></div>
+          <div><dt>Functional</dt><dd>SPF-on acknowledgment links to Care <code>m2</code>; horizon witness marks (§16) preserved. No counts.</dd></div>
+          <div class="span2"><dt class="warn">Must not change</dt><dd><code>state.light.entries</code> shape; the §16 Light continuity rules (horizon fade, always-available witness, never counted).</dd></div>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ea">EA-188</span><span class="tt">Care as Hygieia — anchor &amp; interlock</span><span class="ord">05 · anchor</span></div>
+        <div class="ticket-grid">
+          <div><dt>Purpose</dt><dd>Name the patron, elevate the active ingredient to the hero, and interlock Apollo (SPF) + Asclepius (recovery) by genuine need. §VI mock.</dd></div>
+          <div><dt>Files</dt><dd><code>css/today.css</code> (Care overrides), <code>index.html</code> Care pane, <code>js/render/common.js</code>, <code>care.js</code>.</dd></div>
+          <div><dt>Visual</dt><dd>"Hygieia · Night II" eyebrow; featured bronze protocol hero with roman-numeral index; Asclepius/Apollo interlock strips.</dd></div>
+          <div><dt>Functional</dt><dd>"Irritated" → Asclepius; salicylic/retinoid nights → Apollo SPF emphasis next morning. Reaction memory unchanged.</dd></div>
+          <div class="span2"><dt class="warn">Must not change</dt><dd>3-day cycle logic, task IDs (<code>m1–m3</code>, <code>n1–n8</code>), <code>loggedDays</code>, milestone thresholds, the §19A boundaries (no streaks, %, counts).</dd></div>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ea">EA-189</span><span class="tt">Today as Kairos — front door</span><span class="ord">06 · re-anchor</span></div>
+        <div class="ticket-grid">
+          <div><dt>Purpose</dt><dd>Shift the heading noun to the moment and give open rows patron identity, so Today reads as a threshold, not a todo list. §V mock.</dd></div>
+          <div><dt>Files</dt><dd><code>css/today.css</code>, <code>index.html</code> Today pane, <code>js/render/today-plan.js</code>.</dd></div>
+          <div><dt>Visual</dt><dd>Period-keyed heading ("What the <em>morning</em> asks"); open rows gain glyph + plain job + italic patron name; "The hour holds" label.</dd></div>
+          <div><dt>Functional</dt><dd>Open set ordered by day-arc using existing <code>getPeriodKey()</code>. No new state.</dd></div>
+          <div class="span2"><dt class="warn">Must not change</dt><dd><code>state.today</code> shape, §19B behaviour (1–3 intentions, kept/not-kept, one-day carryover), the 4-tab nav order. No counts or progress.</dd></div>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ea">EA-190</span><span class="tt">Temple as the Pantheon</span><span class="ord">07 · map</span></div>
+        <div class="ticket-grid">
+          <div><dt>Purpose</dt><dd>Re-order the Temple domain list by the day-arc and give each card a one-line practical job + patron subtitle. Make Mnemosyne the prominent night anchor.</dd></div>
+          <div><dt>Files</dt><dd><code>css/temple.css</code>, <code>js/render/temple.js</code>, <code>index.html</code> Temple pane.</dd></div>
+          <div><dt>Visual</dt><dd>Domain cards read "Mind · hold one thread / <em>Athena</em>." Featured Care stays primary; cards float by current period (now / kept / later).</dd></div>
+          <div><dt>Functional</dt><dd>Period-keyed ordering (extends EA-137). Daily line + Day Thread + Closing Summary preserved.</dd></div>
+          <div class="span2"><dt class="warn">Must not change</dt><dd>Temple may not gain a history/archive sub-screen (§14.5); no aggregate status grid (§19A.5); atmosphere stays felt-not-read.</dd></div>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ea">EA-191</span><span class="tt">Mnemosyne prominence + Athena audit</span><span class="ord">08 · memory</span></div>
+        <div class="ticket-grid">
+          <div><dt>Purpose</dt><dd>Raise Chronicle's standing as the night anchor and verify the Athena→Today thread bridge survived all the above intact.</dd></div>
+          <div><dt>Files</dt><dd><code>js/render/temple.js</code>, <code>chronicle</code> render, <code>js/domains/mind.js</code> (audit only).</dd></div>
+          <div><dt>Visual</dt><dd>Chronicle surfaces as the most prominent secondary patron at evening/night in Temple and Today's "hour holds."</dd></div>
+          <div><dt>Functional</dt><dd>Confirm "Send to Today" still routes Athena threads into Kairos; Well/Drift/search untouched.</dd></div>
+          <div class="span2"><dt class="warn">Must not change</dt><dd>Chronicle's four permitted UIs only (§15.5); no tags, counts, or ranking; the Well stays one entry, deterministic, non-actionable.</dd></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ IX · FINAL WARNING ============ -->
+  <section class="block" id="warning" data-screen-label="Final warning">
+    <div class="rule"><span class="idx">IX</span><span class="lbl">Final warning · the two ways to fall back</span></div>
+    <div class="sec-head">
+      <h2>Do not slide back into <span class="ital">either ditch</span></h2>
+      <p class="lede-p">The road has a ditch on both sides. Every future ticket should be checked against both before it ships. If a surface is drifting, it is almost always drifting toward one of these.</p>
+    </div>
+
+    <div class="warning">
+      <div class="wcol">
+        <div class="wlab">Ditch one · the left</div>
+        <h3>Decorative mythology with no utility</h3>
+        <ul>
+          <li>Adding a "patron" whose only interaction is tap-to-acknowledge with no practical residue.</li>
+          <li>Writing more poetic copy to make a feature <em>feel</em> meaningful instead of giving it a job.</li>
+          <li>Reviving Water (or any retired domain) because the Pantheon "feels incomplete" without it.</li>
+          <li>Naming a god on a surface that would be identical without the name.</li>
+          <li>Building rituals that are beautiful, on-brand, and that no user would miss if deleted.</li>
+        </ul>
+      </div>
+      <div class="wcol">
+        <div class="wlab">Ditch two · the right</div>
+        <h3>Generic utility with no mythology</h3>
+        <ul>
+          <li>Adding a useful feature whose shape is borrowed from a todo or wellness app, with a Greek label pasted on.</li>
+          <li>Demoting or removing a patron to "make room" for usefulness — the Drift-two error.</li>
+          <li>Letting Kairos become a task manager, Athena a timer, or Hypnos a sleep tracker.</li>
+          <li>Introducing counts, streaks, %, or dashboards because they are "just practical" — the constitution still binds.</li>
+          <li>Treating the myth as theming applied last, rather than the floor plan decided first.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="prose" style="margin-top:46px;">
+      <p class="big">Before any new surface ships, ask the two questions in order: Would the user miss this if it vanished? — and — Could only this patron hold it? A yes to both is the only road. A no to either is a ditch.</p>
+    </div>
+
+    <div class="closing">
+      <span class="eyebrow">The correction, in one line</span>
+      <p>The myth is not the wallpaper of the room. <span class="dim">It is the floor plan.</span></p>
+      <div class="sign">Elysium · Pantheon-led usefulness · for review before EA-184</div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

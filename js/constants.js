@@ -186,11 +186,11 @@ export const BODY_SOMATIC_INVITATIONS = [
 ];
 
 export const BODY_RELIEF_AREAS = {
-  neck:      'Lengthen the back of the neck. Turn slowly to one side, then the other. Stop before strain.',
-  shoulders: 'Lift the shoulders once, then let them fall. Roll them back slowly. Let the chest stay unforced.',
-  back:      'Sit tall, place both feet down, and gently rotate through the ribs. Keep the movement small.',
-  wrists:    'Open both hands. Turn the palms up, then down. Let the fingers spread without force.',
-  eyes:      'Look away from the screen. Find the farthest still point in the room. Let the eyes soften there.',
+  neck:      'Let the chin lower slightly. Turn the head a little to one side, then the other. Do not force the range.',
+  shoulders: 'Lift both shoulders once, then let them fall. Let the collarbones widen.',
+  back:      'Sit a little taller. Let the lower back find the chair again. Breathe once into the ribs.',
+  wrists:    'Open the hands. Turn the palms up once, then down. Let the fingers soften.',
+  eyes:      'Look away from the screen. Let the eyes rest on something far, then blink slowly.',
 };
 
 export const SLEEP_CLOSURE_INVITATIONS = [
@@ -213,14 +213,26 @@ export const SLEEP_CLOSURE_INVITATIONS = [
 ];
 
 export const LIGHT_OPENING_INVITATIONS = [
-  'Let the room become visible.',
-  'Stand where the morning can reach you.',
-  'Open one window, even slightly.',
-  'Let the first light touch the day.',
-  'Name the day before entering it.',
-  'Begin without rushing.',
-  'Notice what arrived before you did.',
+  'Name what needs light before the day begins.',
+  'Let one shape come into view.',
+  'What asks for clarity first?',
+  'Stand at the threshold and name what is unclear.',
+  'Let the first light show one thing.',
+  'Begin with what can be seen.',
+  'What needs light before the day gathers?',
 ];
+
+export const DAYLIGHT_CONFIRMATIONS = {
+  inside: 'The day remains mostly inside.',
+  some: 'Some light has been named.',
+  strong: 'Strong light has been named.',
+};
+
+export const APOLLO_PROTECTION_LINES = {
+  some: 'Apollo · Let SPF stay in the morning layer.',
+  strong: 'Apollo · Protect the skin before the day grows bright.',
+  afterExfoliation: 'Apollo · After exfoliation, keep first light protected.',
+};
 
 export const CHRONICLE_PROMPTS = {
   morning: [

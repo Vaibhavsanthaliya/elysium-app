@@ -1,0 +1,213 @@
+/* Obsidian Temple — base layout, phone-stage scaling, shared chrome */
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #19181f;
+  font-family: var(--font-sans);
+  color: #ECE6D9;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+#root { width: 100%; display: flex; justify-content: center; }
+
+/* App shell — phone-stage centered on a dim ground */
+.app-shell {
+  --phone-w: 390px;
+  --phone-h: 820px;
+}
+
+.phone-stage {
+  width: var(--phone-w);
+  height: var(--phone-h);
+  background: var(--bg);
+  color: var(--ink);
+  border-radius: 44px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 0 0 12px rgba(20,18,14,0.9),
+    0 0 0 13px rgba(201,165,107,0.15),
+    0 60px 120px -30px rgba(0,0,0,0.7);
+}
+[data-theme="marble"] .phone-stage {
+  box-shadow:
+    0 0 0 12px rgba(235,225,205,0.9),
+    0 0 0 13px rgba(160,122,74,0.25),
+    0 60px 120px -30px rgba(70,55,30,0.35);
+}
+.phone-stage::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--temple-grad);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.screen { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; }
+.screen-body { flex: 1; overflow: hidden; }
+.screen-scroll {
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 22px 16px;
+  scrollbar-width: none;
+}
+.screen-scroll::-webkit-scrollbar { display: none; }
+
+/* Status bar */
+.status-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px 4px;
+  font-size: 14px; font-weight: 600;
+  color: var(--ink);
+  position: relative;
+  z-index: 2;
+}
+.status-bar .dots { display: flex; gap: 3px; }
+.status-bar .dots span { width: 4px; height: 4px; background: currentColor; border-radius: 50%; opacity: 0.65; }
+
+/* Tab bar */
+.tabbar {
+  display: flex; align-items: center; justify-content: space-around;
+  padding: 10px 14px 22px;
+  border-top: 1px solid var(--separator);
+  background: rgba(14,14,18,0.6);
+  backdrop-filter: blur(12px);
+  position: relative; z-index: 2;
+}
+[data-theme="marble"] .tabbar { background: rgba(244,239,230,0.7); }
+.tabbar .tab {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: none; border: 0; padding: 6px 10px;
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+.tabbar .tab.active { color: var(--bronze); }
+.tabbar .tab svg { width: 20px; height: 20px; }
+.tabbar .tab span { font-size: 10px; font-weight: 500; letter-spacing: 0.02em; }
+
+/* Shared typography */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+.eyebrow.center { display: block; text-align: center; }
+.ital {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--bronze);
+}
+.greeting {
+  padding: 14px 4px 18px;
+}
+.greeting h1 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 8px 0 0;
+  line-height: 1.05;
+}
+.greeting p {
+  color: var(--ink-muted);
+  font-size: 14px;
+  margin: 8px 0 0;
+  line-height: 1.4;
+  max-width: 28ch;
+}
+
+/* Section header (between blocks) */
+.section-h {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px;
+  padding: 24px 4px 12px;
+}
+.section-h > span:first-child {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.section-h .meta-r {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Medallion — used widely */
+.medallion {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--separator-strong);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bronze);
+  background: var(--bg-soft);
+  flex-shrink: 0;
+}
+.medallion.sm { width: 32px; height: 32px; }
+.medallion.lg { width: 56px; height: 56px; }
+.medallion.xl { width: 88px; height: 88px; }
+.medallion.bronzed {
+  background: linear-gradient(160deg, #2a221a, #1a1612);
+  box-shadow: var(--glow-bronze), inset 0 0 0 1px rgba(201,165,107,0.30);
+}
+[data-theme="marble"] .medallion.bronzed {
+  background: linear-gradient(160deg, #f8efde, #ebdfc4);
+  box-shadow: 0 0 18px -2px rgba(160,122,74,0.25), inset 0 0 0 1px rgba(160,122,74,0.30);
+}
+
+/* Progress ring */
+.ring-wrap {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.ring-text {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.ring-text .num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 28px;
+  color: var(--ink);
+  line-height: 1;
+}
+.ring-text .suf {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--bronze);
+  letter-spacing: 0.1em;
+  margin-left: 38px;
+  margin-top: -8px;
+}
+.ring-text .lbl {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.mini-arc { flex-shrink: 0; }
+
+/* Tweaks doesn't need styling — comes from the starter component */

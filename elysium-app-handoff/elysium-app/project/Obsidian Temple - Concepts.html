@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Obsidian Temple · Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  html, body {
+    margin: 0;
+    background: #19181f;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: #ECE6D9;
+  }
+
+  /* ===== Phone-shaped artboard contents ===== */
+  .phone-stage {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 0 1px var(--separator);
+  }
+  .phone-stage::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--temple-grad);
+    pointer-events: none;
+  }
+  .status-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    position: relative; z-index: 2;
+  }
+  .status-bar .dots { display: flex; gap: 3px; }
+  .status-bar .dots span { width: 4px; height: 4px; background: currentColor; border-radius: 50%; opacity: 0.6; }
+
+  .screen { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; }
+
+  /* Eyebrow + greeting */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--bronze);
+  }
+  .archetype {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-muted);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Common medallion */
+  .medallion {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--separator-strong);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--bronze);
+    background: var(--bg-soft);
+    flex-shrink: 0;
+  }
+  .medallion.lg { width: 56px; height: 56px; }
+  .medallion.sm { width: 32px; height: 32px; }
+  .medallion.bronzed {
+    background: linear-gradient(160deg, #2a221a, #1a1612);
+    box-shadow: var(--glow-bronze), inset 0 0 0 1px rgba(201,165,107,0.25);
+  }
+
+  /* ===== A — Stacked Medallions ===== */
+  .a-screen .greeting {
+    padding: 8px 24px 18px;
+  }
+  .a-screen .greeting h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 6px 0 0;
+  }
+  .a-screen .greeting h1 .ital {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--bronze);
+  }
+  .a-screen .greeting p {
+    color: var(--ink-muted);
+    font-size: 14px;
+    margin: 4px 0 0;
+  }
+
+  .a-card-list {
+    flex: 1;
+    overflow: hidden;
+    padding: 0 18px 18px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .a-card {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--separator);
+    border-radius: var(--r-md);
+  }
+  .a-card.featured {
+    background: linear-gradient(180deg, rgba(201,165,107,0.10), rgba(201,165,107,0.02));
+    border-color: rgba(201,165,107,0.30);
+  }
+  .a-card .meta { flex: 1; min-width: 0; }
+  .a-card .row1 {
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .a-card .label {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .a-card .arche {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+  .a-card .blurb {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+  }
+  .a-card .state {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--bronze);
+  }
+  .a-card .state.dim { color: var(--ink-faint); }
+  .a-card .right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .a-card .arc {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background:
+      conic-gradient(var(--bronze) 0 var(--p, 0deg), var(--surface-2) 0 360deg);
+    position: relative;
+  }
+  .a-card .arc::after {
+    content: ''; position: absolute; inset: 4px;
+    background: var(--surface); border-radius: 50%;
+  }
+
+  /* ===== B — Constellation Temple ===== */
+  .b-screen .const-head {
+    padding: 6px 24px 12px;
+  }
+  .b-screen .const-head h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    margin: 4px 0 0;
+  }
+  .b-screen .const-head h1 .ital {
+    font-family: var(--font-display); font-style: italic; font-weight: 400; color: var(--bronze);
+  }
+  .b-screen .const-head p { color: var(--ink-muted); font-size: 13px; margin-top: 4px; }
+
+  .b-canvas {
+    flex: 1;
+    position: relative;
+    margin: 0 14px;
+    border: 1px solid var(--separator);
+    border-radius: var(--r-lg);
+    background:
+      radial-gradient(1px 1px at 14% 22%, rgba(236,230,217,0.5), transparent 60%),
+      radial-gradient(1px 1px at 68% 12%, rgba(236,230,217,0.4), transparent 60%),
+      radial-gradient(1px 1px at 30% 65%, rgba(236,230,217,0.45), transparent 60%),
+      radial-gradient(1px 1px at 82% 50%, rgba(236,230,217,0.4), transparent 60%),
+      radial-gradient(1px 1px at 50% 80%, rgba(236,230,217,0.35), transparent 60%),
+      radial-gradient(1px 1px at 22% 90%, rgba(236,230,217,0.4), transparent 60%),
+      radial-gradient(1px 1px at 90% 88%, rgba(236,230,217,0.35), transparent 60%),
+      radial-gradient(ellipse at 50% 50%, rgba(201,165,107,0.06), transparent 70%),
+      var(--bg-soft);
+    overflow: hidden;
+  }
+  .b-canvas svg.lines {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .b-star {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .b-star .dot {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,165,107,0.35);
+    background: rgba(20,18,14,0.85);
+    color: var(--bronze);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .b-star.active .dot {
+    background: var(--bronze);
+    color: var(--bg);
+    box-shadow: 0 0 20px -2px rgba(201,165,107,0.55);
+    border-color: var(--bronze);
+  }
+  .b-star.done .dot {
+    background: rgba(201,165,107,0.18);
+  }
+  .b-star .lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .b-star.active .lbl { color: var(--bronze); }
+
+  .b-bottom {
+    padding: 12px 22px 20px;
+    border-top: 1px solid var(--separator);
+    background: rgba(20,18,14,0.4);
+    margin-top: 10px;
+  }
+  .b-bottom .lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bronze);
+  }
+  .b-bottom .nm {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 2px;
+    letter-spacing: -0.01em;
+  }
+  .b-bottom .nm .arche {
+    font-family: var(--font-display); font-style: italic; font-size: 13px;
+    color: var(--ink-faint); margin-left: 6px;
+  }
+
+  /* ===== C — Astrolabe Home ===== */
+  .c-screen .c-head {
+    padding: 8px 24px 0;
+    text-align: center;
+  }
+  .c-screen .c-head .lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bronze);
+  }
+  .c-screen .c-head h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 6px 0 0;
+  }
+  .c-screen .c-head h1 .ital {
+    font-family: var(--font-display); font-style: italic; color: var(--bronze);
+  }
+
+  .c-astrolabe {
+    flex: 1;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    padding: 6px 0;
+  }
+  .c-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--separator-strong);
+  }
+  .c-ring.outer { width: 240px; height: 240px; }
+  .c-ring.mid   { width: 180px; height: 180px; border-style: dashed; opacity: 0.7; }
+  .c-ring.inner { width: 100px; height: 100px; background: var(--bg-soft); }
+  .c-ring.glow {
+    width: 260px; height: 260px;
+    background: radial-gradient(circle at center, rgba(201,165,107,0.07), transparent 70%);
+    border: 0;
+  }
+  .c-center {
+    position: absolute;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    border: 1px solid var(--separator-strong);
+    background: var(--bg);
+  }
+  .c-center .pct {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 30px;
+    color: var(--bronze);
+    line-height: 1;
+  }
+  .c-center .lbl {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 4px;
+  }
+  .c-deity {
+    position: absolute;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--separator-strong);
+    color: var(--ink-muted);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .c-deity.done { color: var(--bronze); border-color: rgba(201,165,107,0.4); }
+  .c-deity.active {
+    background: var(--bronze);
+    color: var(--bg);
+    box-shadow: var(--glow-bronze);
+    border-color: var(--bronze);
+  }
+  .c-deity .nm {
+    position: absolute;
+    bottom: -16px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .c-deity.active .nm { color: var(--bronze); }
+  .c-deity.done .nm   { color: var(--ink-muted); }
+
+  /* Position around 240px ring (radius ~120, center origin) */
+  /* Phone is 300x620, astrolabe area roughly 300x380 starting after head */
+  .c-deity.pos-0 { top: calc(50% - 142px); left: calc(50% - 22px); }      /* 12 */
+  .c-deity.pos-1 { top: calc(50% - 80px);  left: calc(50% + 78px); }      /* ~2 */
+  .c-deity.pos-2 { top: calc(50% + 40px);  left: calc(50% + 100px); }     /* ~4 */
+  .c-deity.pos-3 { top: calc(50% + 110px); left: calc(50% - 22px); }      /* 6 */
+  .c-deity.pos-4 { top: calc(50% + 40px);  left: calc(50% - 144px); }     /* ~8 */
+  .c-deity.pos-5 { top: calc(50% - 80px);  left: calc(50% - 122px); }     /* ~10 */
+
+  .c-bottom {
+    padding: 22px 24px 18px;
+    border-top: 1px solid var(--separator);
+  }
+  .c-bottom .row { display: flex; justify-content: space-between; align-items: baseline; }
+  .c-bottom .next {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .c-bottom .name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .c-bottom .ar { color: var(--bronze); font-family: var(--font-display); font-style: italic; font-size: 13px; margin-left: 6px; }
+
+  /* ===== D — Hours of Light ===== */
+  .d-screen .d-head {
+    padding: 8px 24px 14px;
+  }
+  .d-screen .d-head .lbl {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--bronze);
+  }
+  .d-screen .d-head h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500; font-size: 24px; letter-spacing: -0.01em;
+    margin: 4px 0 0;
+  }
+  .d-screen .d-head h1 .ital { font-family: var(--font-display); font-style: italic; color: var(--bronze); }
+  .d-bands {
+    flex: 1; padding: 0 18px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .d-band {
+    flex: 1;
+    border: 1px solid var(--separator);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    background: var(--surface);
+    display: flex; align-items: center; gap: 12px;
+    position: relative;
+  }
+  .d-band.now {
+    background: linear-gradient(160deg, rgba(201,165,107,0.12), rgba(201,165,107,0.02));
+    border-color: rgba(201,165,107,0.30);
+  }
+  .d-band .time {
+    width: 52px; flex-shrink: 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--bronze);
+    line-height: 1;
+  }
+  .d-band .time .sub {
+    display: block;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .d-band .body { flex: 1; min-width: 0; }
+  .d-band .title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .d-band .desc {
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+  }
+  .d-band .ritual-chips {
+    display: flex; gap: 6px;
+    margin-top: 8px;
+  }
+  .d-band .chip {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: var(--bg-soft);
+    border: 1px solid var(--separator);
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+  }
+  .d-band .chip svg { width: 11px; height: 11px; color: var(--bronze); }
+  .d-band .chip.done { color: var(--bronze); border-color: rgba(201,165,107,0.3); }
+  .d-band .now-mark {
+    position: absolute; top: 12px; right: 14px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    color: var(--bronze);
+  }
+
+  /* ===== Bottom tab bar (same across concepts) ===== */
+  .tabbar {
+    display: flex; justify-content: space-around; align-items: center;
+    padding: 10px 16px 16px;
+    border-top: 1px solid var(--separator);
+    background: rgba(14,14,18,0.6);
+    backdrop-filter: blur(8px);
+  }
+  [data-theme="marble"] .tabbar { background: rgba(244,239,230,0.7); }
+  .tabbar .tab {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    color: var(--ink-faint);
+  }
+  .tabbar .tab.active { color: var(--bronze); }
+  .tabbar .tab svg { width: 18px; height: 18px; }
+  .tabbar .tab span { font-size: 9px; font-weight: 500; letter-spacing: 0.02em; }
+
+  /* ===== Concept caption (below artboard) ===== */
+  .caption {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+
+  /* Notes — sticky-style explanations next to the canvas */
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="glyphs.jsx"></script>
+  <script type="text/babel" src="design-canvas.jsx"></script>
+
+  <script type="text/babel">
+    // Status bar shared across concepts
+    const StatusBar = () => (
+      <div className="status-bar">
+        <span>9:41</span>
+        <div className="dots"><span></span><span></span><span></span></div>
+      </div>
+    );
+
+    const TabIcon = ({ kind }) => {
+      switch (kind) {
+        case 'temple': return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>;
+        case 'cycle':  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>;
+        case 'chronicle': return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>;
+        case 'progress': return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>;
+        case 'settings': return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>;
+      }
+    };
+    const TabBar = ({ active = 'temple' }) => (
+      <div className="tabbar">
+        {['temple','cycle','chronicle','progress','settings'].map((t) => (
+          <div key={t} className={`tab ${active === t ? 'active' : ''}`}>
+            <TabIcon kind={t} />
+            <span>{t === 'temple' ? 'Temple' : t === 'cycle' ? 'Cycle' : t === 'chronicle' ? 'Chronicle' : t === 'progress' ? 'Stars' : 'Settings'}</span>
+          </div>
+        ))}
+      </div>
+    );
+
+    // ============ Concept A — Stacked Medallions ============
+    const ConceptA = () => (
+      <div className="phone-stage" data-theme="obsidian">
+        <div className="screen a-screen">
+          <StatusBar />
+          <div className="greeting">
+            <div className="eyebrow">Thursday · 15 May</div>
+            <h1>Today's <span className="ital">temple</span></h1>
+            <p>Five rituals offered. Two attended.</p>
+          </div>
+          <div className="a-card-list">
+            <div className="a-card featured">
+              <div className="medallion bronzed lg"><Glyph name="care" size={28} /></div>
+              <div className="meta">
+                <div className="row1">
+                  <span className="label">Care</span>
+                  <span className="arche">Hygieia</span>
+                </div>
+                <div className="blurb">Salicylic night · cycle day 02</div>
+              </div>
+              <div className="right">
+                <div className="arc" style={{'--p': '216deg'}}></div>
+                <div className="state">4 / 6</div>
+              </div>
+            </div>
+
+            <div className="a-card">
+              <div className="medallion"><Glyph name="light" size={24} /></div>
+              <div className="meta">
+                <div className="row1"><span className="label">Light</span><span className="arche">Apollo</span></div>
+                <div className="blurb">First hour kept</div>
+              </div>
+              <div className="state">DONE</div>
+            </div>
+
+            <div className="a-card">
+              <div className="medallion"><Glyph name="body" size={24} /></div>
+              <div className="meta">
+                <div className="row1"><span className="label">Body</span><span className="arche">Atlas</span></div>
+                <div className="blurb">30 min walk · 20 min strength</div>
+              </div>
+              <div className="state dim">UNSET</div>
+            </div>
+
+            <div className="a-card">
+              <div className="medallion"><Glyph name="mind" size={24} /></div>
+              <div className="meta">
+                <div className="row1"><span className="label">Mind</span><span className="arche">Athena</span></div>
+                <div className="blurb">One focus block · 60 min</div>
+              </div>
+              <div className="state dim">UNSET</div>
+            </div>
+
+            <div className="a-card">
+              <div className="medallion"><Glyph name="water" size={24} /></div>
+              <div className="meta">
+                <div className="row1"><span className="label">Water</span><span className="arche">Poseidon</span></div>
+                <div className="blurb">6 of 8 glasses</div>
+              </div>
+              <div className="state">06 / 08</div>
+            </div>
+
+            <div className="a-card">
+              <div className="medallion"><Glyph name="sleep" size={24} /></div>
+              <div className="meta">
+                <div className="row1"><span className="label">Sleep</span><span className="arche">Hypnos</span></div>
+                <div className="blurb">Wind-down at 21:30</div>
+              </div>
+              <div className="state dim">22:30</div>
+            </div>
+          </div>
+          <TabBar />
+        </div>
+      </div>
+    );
+
+    // ============ Concept B — Constellation Temple ============
+    const ConceptB = () => {
+      // Position rituals as stars within the canvas; coordinates in % of canvas area
+      const stars = [
+        { id: 'light',     x: 22, y: 18, status: 'done' },
+        { id: 'care',      x: 56, y: 30, status: 'active' },
+        { id: 'water',     x: 80, y: 22, status: 'done' },
+        { id: 'mind',      x: 38, y: 52, status: 'pending' },
+        { id: 'body',      x: 70, y: 60, status: 'pending' },
+        { id: 'sleep',     x: 26, y: 78, status: 'pending' },
+        { id: 'chronicle', x: 76, y: 82, status: 'pending' },
+      ];
+      const byId = (id) => RITUALS.find(r => r.id === id);
+      // Lines connect chronological order: light → care → water → mind → body → sleep → chronicle
+      const order = ['light','care','water','mind','body','sleep','chronicle'];
+      const points = order.map(id => stars.find(s => s.id === id));
+      const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+
+      return (
+        <div className="phone-stage" data-theme="obsidian">
+          <div className="screen b-screen">
+            <StatusBar />
+            <div className="const-head">
+              <div className="eyebrow">Day XIV · Cycle II</div>
+              <h1>The <span className="ital">constellation</span></h1>
+              <p>Stars brighten as rituals are kept. Tap a star to enter.</p>
+            </div>
+            <div className="b-canvas">
+              <svg className="lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d={linePath} stroke="rgba(201,165,107,0.25)" strokeWidth="0.3" fill="none" strokeDasharray="0.6 1.0" />
+              </svg>
+              {stars.map(s => {
+                const r = byId(s.id);
+                return (
+                  <div key={s.id} className={`b-star ${s.status}`} style={{ left: `${s.x}%`, top: `${s.y}%` }}>
+                    <div className="dot"><Glyph name={r.glyph} size={16} stroke={1.4} /></div>
+                    <div className="lbl">{r.label}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="b-bottom">
+              <div className="lbl">Now tending</div>
+              <div className="nm">Care<span className="arche">Hygieia · 4 of 6</span></div>
+            </div>
+            <TabBar />
+          </div>
+        </div>
+      );
+    };
+
+    // ============ Concept C — Astrolabe Home ============
+    const ConceptC = () => {
+      const order = ['light','care','body','mind','water','sleep'];
+      const states = { light: 'done', care: 'active', body: 'done', mind: 'pending', water: 'done', sleep: 'pending' };
+      return (
+        <div className="phone-stage" data-theme="obsidian">
+          <div className="screen c-screen">
+            <StatusBar />
+            <div className="c-head">
+              <div className="lbl">Day XIV · the wheel</div>
+              <h1>Today's <span className="ital">astrolabe</span></h1>
+            </div>
+            <div className="c-astrolabe">
+              <div className="c-ring glow"></div>
+              <div className="c-ring outer"></div>
+              <div className="c-ring mid"></div>
+              {order.map((id, i) => {
+                const r = RITUALS.find(x => x.id === id);
+                return (
+                  <div key={id} className={`c-deity pos-${i} ${states[id]}`}>
+                    <Glyph name={r.glyph} size={20} stroke={1.4} />
+                    <div className="nm">{r.label}</div>
+                  </div>
+                );
+              })}
+              <div className="c-center">
+                <div className="pct">66%</div>
+                <div className="lbl">Day XIV</div>
+              </div>
+            </div>
+            <div className="c-bottom">
+              <div className="row">
+                <div>
+                  <div className="next">Tending now</div>
+                  <div className="name">Care<span className="ar">Hygieia</span></div>
+                </div>
+                <div style={{textAlign:'right'}}>
+                  <div className="next">Up next · in 2h</div>
+                  <div className="name">Body<span className="ar">Atlas</span></div>
+                </div>
+              </div>
+            </div>
+            <TabBar />
+          </div>
+        </div>
+      );
+    };
+
+    // ============ Concept D — Hours of Light ============
+    const ConceptD = () => (
+      <div className="phone-stage" data-theme="obsidian">
+        <div className="screen d-screen">
+          <StatusBar />
+          <div className="d-head">
+            <div className="lbl">Thursday · 15 May</div>
+            <h1>By the <span className="ital">hour</span></h1>
+          </div>
+          <div className="d-bands">
+            <div className="d-band">
+              <div className="time">06<span className="sub">Dawn</span></div>
+              <div className="body">
+                <div className="title">First light</div>
+                <div className="desc">Sun, water, breath — in that order</div>
+                <div className="ritual-chips">
+                  <span className="chip done"><Glyph name="light" size={11} stroke={1.4} /> Light</span>
+                  <span className="chip done"><Glyph name="water" size={11} stroke={1.4} /> Water</span>
+                </div>
+              </div>
+            </div>
+            <div className="d-band now">
+              <div className="time">11<span className="sub">Day</span></div>
+              <div className="body">
+                <div className="title">Mid-day attention</div>
+                <div className="desc">A focus block. A walk before lunch.</div>
+                <div className="ritual-chips">
+                  <span className="chip"><Glyph name="mind" size={11} stroke={1.4} /> Mind</span>
+                  <span className="chip"><Glyph name="body" size={11} stroke={1.4} /> Body</span>
+                  <span className="chip done"><Glyph name="water" size={11} stroke={1.4} /> Water</span>
+                </div>
+              </div>
+              <div className="now-mark">NOW</div>
+            </div>
+            <div className="d-band">
+              <div className="time">19<span className="sub">Dusk</span></div>
+              <div className="body">
+                <div className="title">The slow return</div>
+                <div className="desc">Care ritual · salicylic night</div>
+                <div className="ritual-chips">
+                  <span className="chip"><Glyph name="care" size={11} stroke={1.4} /> Care</span>
+                  <span className="chip"><Glyph name="chronicle" size={11} stroke={1.4} /> Chronicle</span>
+                </div>
+              </div>
+            </div>
+            <div className="d-band">
+              <div className="time">22<span className="sub">Night</span></div>
+              <div className="body">
+                <div className="title">Wind-down</div>
+                <div className="desc">Dim lights · phone elsewhere · bed by 22:30</div>
+                <div className="ritual-chips">
+                  <span className="chip"><Glyph name="sleep" size={11} stroke={1.4} /> Sleep</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <TabBar />
+        </div>
+      </div>
+    );
+
+    // ============ Canvas root ============
+    const App = () => (
+      <DesignCanvas>
+        <DCSection
+          id="overview"
+          title="Obsidian Temple — Concepts"
+          subtitle="Four ways the Temple home could surface a multi-ritual day. Same palette, type, glyph language; different organizing principle. Tap a card to expand."
+        >
+          <DCArtboard id="a" label="A · Stacked Medallions  ·  Apple-quiet, scrolls forever" width={300} height={620}>
+            <ConceptA />
+          </DCArtboard>
+          <DCArtboard id="b" label="B · Constellation  ·  Memorable, plays with progress" width={300} height={620}>
+            <ConceptB />
+          </DCArtboard>
+          <DCArtboard id="c" label="C · Astrolabe  ·  Cyclic, ceremonial" width={300} height={620}>
+            <ConceptC />
+          </DCArtboard>
+          <DCArtboard id="d" label="D · Hours of Light  ·  Time-of-day rhythm" width={300} height={620}>
+            <ConceptD />
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection
+          id="notes"
+          title="Reading"
+          subtitle="The shortlist."
+        >
+          <DCPostIt x={40} y={40} w={320} color="bronze">
+            <strong>Leading direction → A (Stacked Medallions)</strong><br/><br/>
+            Most Apple-like, the most scalable as more rituals are added, the safest path through the existing constraints. It is the only one that comfortably handles 7+ rituals without crowding.
+          </DCPostIt>
+          <DCPostIt x={400} y={40} w={320} color="paper">
+            <strong>Reuse the others as features</strong><br/><br/>
+            <em>Constellation</em> → Stars tab (replaces Progress).<br/>
+            <em>Astrolabe</em> → Cycle tab (replaces the 3-card list).<br/>
+            <em>Hours</em> → an optional &quot;by hour&quot; toggle on the Temple home.
+          </DCPostIt>
+          <DCPostIt x={760} y={40} w={320} color="bronze">
+            <strong>Naming</strong><br/><br/>
+            User-facing labels stay simple: <em>Care, Light, Body, Mind, Water, Sleep, Chronicle.</em><br/><br/>
+            Archetype names (Hygieia, Apollo, Atlas, Athena, Poseidon, Hypnos, Mnemosyne) appear only as italic Spectral subtitles — atmospheric, not literal.
+          </DCPostIt>
+        </DCSection>
+      </DesignCanvas>
+    );
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

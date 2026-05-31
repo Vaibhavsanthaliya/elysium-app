@@ -144,7 +144,7 @@
         <div class="today-plan-masthead">
           <div class="today-plan-eyebrow" id="today-plan-date"></div>
           <h1 class="today-plan-title">Today's <span class="ital">intentions</span></h1>
-          <p class="today-plan-sub">The day has room for what you place here.</p>
+          <p class="today-plan-sub">Only what belongs to this hour.</p>
         </div>
 
         <!-- EA-176: Morning sleep handoff — JS shows/hides -->
@@ -154,7 +154,7 @@
           <button type="button" class="today-mind-thread-release" id="today-mind-thread-release">Set it down</button>
         </div>
         <div class="today-sleep-handoff" id="today-sleep-handoff" hidden>
-          <div class="today-sleep-handoff-eyebrow">LAST NIGHT LEFT</div>
+          <div class="today-sleep-handoff-eyebrow">HYPNOS HELD</div>
           <p class="today-sleep-handoff-text" id="today-sleep-handoff-text"></p>
           <button type="button" class="today-sleep-handoff-dismiss" id="today-sleep-handoff-dismiss">Let it rest</button>
         </div>
@@ -189,7 +189,7 @@
         </div>
         <div id="today-plan-open-list"></div>
 
-        <p class="today-plan-footer">What remains can be kept or left.</p>
+        <p class="today-plan-footer">What does not belong can pass.</p>
         <div class="footer-spacer"></div>
       </section>
 
@@ -208,7 +208,7 @@
             </svg>
           </span>
           <span class="temple-featured-body">
-            <span class="temple-featured-eyebrow">CARE · HYGIEIA</span>
+            <span class="temple-featured-eyebrow">CARE · ASCLEPIUS</span>
             <span class="temple-featured-status" id="temple-status">Night I · Niacinamide</span>
             <span class="temple-featured-cycle" id="temple-hero-cycle">Niacinamide tonight.</span>
           </span>
@@ -218,7 +218,7 @@
               <span class="temple-cycle-mark" data-cycle-mark="1"></span>
               <span class="temple-cycle-mark" data-cycle-mark="2"></span>
             </span>
-            <span class="temple-cycle-state" id="temple-cycle-state">untouched</span>
+            <span class="temple-cycle-state" id="temple-cycle-state">nearby</span>
           </span>
         </button>
 
@@ -243,7 +243,7 @@
         <!-- Ritual domain cards -->
         <div class="temple-domains">
           <div class="temple-domain-head">
-            <span class="temple-domain-label" id="temple-domain-label">The other paths</span>
+            <span class="temple-domain-label" id="temple-domain-label">OLYMPUS</span>
           </div>
           <div class="temple-domain-list">
 
@@ -258,7 +258,7 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Chronicle</span>
-                <span class="temple-domain-sub">write what remains</span>
+                <span class="temple-domain-sub">keep what remains</span>
                 <span class="temple-domain-archetype">Mnemosyne</span>
               </span>
               <span class="temple-domain-state" id="temple-chronicle-state">Quiet</span>
@@ -273,10 +273,10 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Sleep</span>
-                <span class="temple-domain-sub">park what remains</span>
+                <span class="temple-domain-sub">let the day rest</span>
                 <span class="temple-domain-archetype">Hypnos</span>
               </span>
-              <span class="temple-domain-state" id="temple-sleep-state">Open</span>
+              <span class="temple-domain-state" id="temple-sleep-state">Nearby</span>
             </button>
 
             <!-- Mind — active -->
@@ -289,7 +289,7 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Mind</span>
-                <span class="temple-domain-sub">hold one thread</span>
+                <span class="temple-domain-sub">name the thread</span>
                 <span class="temple-domain-archetype">Athena</span>
                 <span class="temple-mind-line" id="temple-mind-line" hidden></span>
               </span>
@@ -306,10 +306,10 @@
               </span>
               <span class="temple-domain-body">
                 <span class="temple-domain-name">Body</span>
-                <span class="temple-domain-sub">jaw · shoulders · breath</span>
+                <span class="temple-domain-sub">return the weight</span>
                 <span class="temple-domain-archetype">Atlas</span>
               </span>
-              <span class="temple-domain-state" id="temple-body-state">Return</span>
+              <span class="temple-domain-state" id="temple-body-state">Weight</span>
             </button>
 
           </div>
@@ -379,6 +379,10 @@
             </div>
           </div>
           <p class="care-protocol-note" id="care-protocol-note"></p>
+          <div class="care-asclepius-guard" id="care-asclepius-guard" hidden>
+            <p class="care-asclepius-eyebrow">ASCLEPIUS</p>
+            <p class="care-asclepius-line" id="care-asclepius-line"></p>
+          </div>
           <div class="care-night-keeper" id="care-night-keeper">
             <button class="care-night-action" id="care-night-action" type="button">Keep tonight</button>
             <p class="care-night-state" id="care-night-state" aria-live="polite">Keep the protocol when the steps are done in life.</p>
@@ -423,6 +427,7 @@
               <span class="comfort-tag" id="comfort-tag" hidden>Minimal</span>
             </div>
           </div>
+          <p class="care-apollo-line" id="care-apollo-line" hidden></p>
           <div class="care-morning-keeper" id="care-morning-keeper">
             <button class="care-morning-action" id="care-morning-action" type="button">Open the day</button>
             <p class="care-morning-state" id="care-morning-state" aria-live="polite">Use after the morning has been kept.</p>
@@ -502,14 +507,14 @@
       <section class="tab-pane" id="pane-chronicle">
 
         <div class="chronicle-heading">
-          <div class="chronicle-eyebrow">CHRONICLE</div>
+          <div class="chronicle-eyebrow">MNEMOSYNE</div>
           <h1 class="chronicle-title">The <span class="ital">chronicle</span></h1>
         </div>
 
         <!-- Mode toggle: Write / Read -->
         <div class="chronicle-mode-toggle" id="chronicle-mode-toggle">
           <button class="chronicle-mode-btn is-active" id="chronicle-mode-write" type="button">Write</button>
-          <button class="chronicle-mode-btn" id="chronicle-mode-read" type="button">Read</button>
+          <button class="chronicle-mode-btn" id="chronicle-mode-read" type="button">Remember</button>
         </div>
 
         <!-- Write surface (default mode) -->
@@ -518,7 +523,7 @@
           <!-- Resurfaced: one small prior Chronicle fragment (JS shows/hides) -->
           <div class="chronicle-resurfaced" id="chronicle-resurfaced" hidden>
             <div class="chronicle-resurfaced-meta">
-              <span class="chronicle-resurfaced-kicker">Resurfaced</span>
+              <span class="chronicle-resurfaced-kicker">Remembered</span>
               <span class="chronicle-resurfaced-when" id="chronicle-resurfaced-when">From before</span>
             </div>
             <p class="chronicle-resurfaced-body" id="chronicle-resurfaced-body"></p>
@@ -561,14 +566,14 @@
         <!-- Archive reading surface (read mode) -->
         <div id="chronicle-archive" hidden>
           <input type="search" class="chronicle-search" id="chronicle-search"
-                 placeholder="Search the archive" autocomplete="off"
+                 placeholder="Search what remains" autocomplete="off"
                  autocorrect="off" autocapitalize="off" spellcheck="false" />
           <div class="chronicle-archive-list" id="chronicle-archive-list"></div>
         </div>
 
         <!-- Archive entry detail (read mode, entry open) -->
         <div class="chronicle-archive-detail" id="chronicle-archive-detail" hidden>
-          <button class="chronicle-detail-back" id="chronicle-detail-back" type="button">Back</button>
+          <button class="chronicle-detail-back" id="chronicle-detail-back" type="button">Return</button>
           <div class="chronicle-detail-meta" id="chronicle-detail-meta"></div>
           <div class="chronicle-detail-body" id="chronicle-detail-body"></div>
         </div>
@@ -766,16 +771,18 @@
 
       <!-- Step 1: Light -->
       <div id="flow-step-light">
-        <div class="flow-eyebrow">MORNING FLOW</div>
-        <p class="flow-step-label">Light</p>
+        <div class="flow-eyebrow">APOLLO</div>
+        <p class="flow-step-label">Let the day come into view.</p>
         <p class="flow-invitation" id="flow-light-invitation"></p>
-        <div class="flow-tone-chooser" id="flow-tone-chooser">
-          <button class="flow-tone-btn" data-tone="Soft">Soft</button>
-          <button class="flow-tone-btn" data-tone="Clear">Clear</button>
-          <button class="flow-tone-btn" data-tone="Steady">Steady</button>
-          <button class="flow-tone-btn" data-tone="Guarded">Guarded</button>
+        <div id="flow-daylight-section">
+          <p class="flow-daylight-question">What needs light at the threshold?</p>
+          <div class="flow-daylight-chooser" id="flow-daylight-chooser">
+            <button class="flow-daylight-btn" data-daylight="inside">Mostly inside</button>
+            <button class="flow-daylight-btn" data-daylight="some">Some sun</button>
+            <button class="flow-daylight-btn" data-daylight="strong">Strong sun</button>
+          </div>
         </div>
-        <button class="btn-primary" id="flow-light-enter">Entered</button>
+        <button class="btn-primary" id="flow-light-enter">Let it be seen</button>
         <button class="btn-text" id="flow-light-skip">Skip</button>
       </div>
 
@@ -829,7 +836,7 @@
         <p class="flow-step-label">Sleep</p>
         <p class="flow-invitation" id="flow-night-sleep-invitation"></p>
         <textarea class="flow-chronicle-field" id="flow-night-sleep-parking" rows="2" placeholder="What can wait until morning."></textarea>
-        <button class="btn-primary" id="flow-night-sleep-close">Let the day end</button>
+        <button class="btn-primary" id="flow-night-sleep-close">Let it rest</button>
         <button class="btn-text" id="flow-night-sleep-skip">Skip</button>
       </div>
 
@@ -858,15 +865,6 @@
         <button class="btn-primary" id="flow-work-body-continue">Continue</button>
         <button class="btn-primary" id="flow-work-body-arrive" hidden>Returned</button>
         <button class="btn-text" id="flow-work-body-skip">Skip</button>
-      </div>
-
-      <!-- Work Flow: Step 3 — Water / Pause -->
-      <div id="flow-step-work-water" hidden>
-        <div class="flow-eyebrow">WORK FLOW</div>
-        <p class="flow-step-label">Water</p>
-        <p class="flow-invitation" id="flow-work-water-step"></p>
-        <button class="btn-primary" id="flow-work-water-hold">Held</button>
-        <button class="btn-text" id="flow-work-water-skip">Skip</button>
       </div>
 
       <!-- Work Flow: Completion -->
@@ -934,9 +932,9 @@
       <div class="modal-handle"></div>
       <!-- State A: closure ritual -->
       <div id="sleep-state-a">
-        <div class="sleep-eyebrow" id="sleep-eyebrow">HYPNOS / CLOSURE</div>
-        <h3 class="sleep-title">Let the day <em>end</em></h3>
-        <p class="sleep-sub">Nothing has to be solved before the room goes quiet.</p>
+        <div class="sleep-eyebrow" id="sleep-eyebrow">HYPNOS</div>
+        <h3 class="sleep-title">Let the day <em>go quiet</em></h3>
+        <p class="sleep-sub">What remains does not need your hands tonight.</p>
         <div class="sleep-invitations" id="sleep-invitations"></div>
         <!-- EA-176: Unfinished intentions shutdown — JS shows/hides -->
         <div class="sleep-shutdown" id="sleep-shutdown" hidden>
@@ -944,9 +942,9 @@
           <div id="sleep-shutdown-list"></div>
         </div>
         <p class="sleep-recent" id="sleep-recent" hidden></p>
-        <textarea class="sleep-parking" id="sleep-parking" rows="2" placeholder="What can wait until morning."></textarea>
-        <div class="sleep-handoff">WHAT REMAINS CAN WAIT</div>
-        <button class="btn-primary" id="sleep-save">Let the day end</button>
+        <textarea class="sleep-parking" id="sleep-parking" rows="2" placeholder="What should not follow you into sleep."></textarea>
+        <div class="sleep-handoff">WHAT CAN WAIT MAY REST</div>
+        <button class="btn-primary" id="sleep-save">Let it rest</button>
       </div>
       <!-- State B: goodnight -->
       <div id="sleep-state-b" hidden>
@@ -987,13 +985,13 @@
     <div class="modal-backdrop" id="mind-modal-backdrop"></div>
     <div class="modal-sheet mind-modal-sheet">
       <div class="modal-handle"></div>
-      <div class="mind-eyebrow">ATHENA / THREAD</div>
-      <h3 class="mind-title">Set one thing <em>down.</em></h3>
-      <p class="mind-offload-sub">Name the thing taking space. It does not have to be solved here.</p>
-      <textarea class="mind-offload-input" id="mind-offload-input" rows="3" placeholder="What is taking space." autocorrect="off" autocapitalize="sentences" spellcheck="false"></textarea>
+      <div class="mind-eyebrow">ATHENA</div>
+      <h3 class="mind-title">Name the <em>thread.</em></h3>
+      <p class="mind-offload-sub">Not every thought deserves the same weight.</p>
+      <textarea class="mind-offload-input" id="mind-offload-input" rows="3" placeholder="What is the one thing asking for clarity?" autocorrect="off" autocapitalize="sentences" spellcheck="false"></textarea>
       <p class="mind-offload-message" id="mind-offload-message" hidden></p>
       <div class="mind-offload-actions">
-        <button class="btn-primary" id="mind-offload-save" type="button">Set it down</button>
+        <button class="btn-primary" id="mind-offload-save" type="button">Hold it clearly</button>
         <button class="btn-secondary" id="mind-offload-today" type="button">Send to Today</button>
         <button class="btn-text" id="mind-offload-clear" type="button">Clear</button>
       </div>
@@ -1008,7 +1006,7 @@
       <div class="modal-handle"></div>
       <div class="body-eyebrow">ATLAS</div>
       <h3 class="body-title"><em>Relief</em></h3>
-      <p class="body-sub">Choose what needs returning.</p>
+      <p class="body-sub">Where does the body carry its weight?</p>
       <div class="body-area-chips" id="body-area-chips">
         <button class="body-area-chip" data-area="neck">Neck</button>
         <button class="body-area-chip" data-area="shoulders">Shoulders</button>

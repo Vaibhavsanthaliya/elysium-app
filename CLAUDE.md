@@ -137,6 +137,35 @@ docs/continuity-constitution.md  — 27 articles, six binding tests, prohibited 
 
 The constitution is doctrinal, not advisory. Any continuity proposal must pass the **Six Tests** in §27.2 (felt-not-read, no-counter, reversibility, silence, non-actionable, productivity-app). Failing any one is sufficient grounds for rejection. When the constitution and a proposal disagree, the proposal is wrong. The constitution supersedes contradicting instructions in tickets and prompts unless it is itself amended.
 
+### Patron Doctrine — read before any surface or domain ticket
+
+Every domain in Elysium is a patron. A patron is not a theme applied afterward — it is the reason a surface has its shape.
+
+Every surface must pass two gates before implementation:
+
+**Gate 1 — Utility Gate:** Would the user miss this surface if it vanished tomorrow? If the patron name is removed, is the remaining feature still useful?
+
+**Gate 2 — Form Gate:** Does the patron shape how the job is done — naming, timing, restraint, hierarchy, and rhythm? Could only this patron hold this surface?
+
+Both failures are forbidden:
+- **Decoration:** mythology with no real job.
+- **Generic utility:** useful feature with Greek naming pasted on.
+
+**Patron map:**
+
+| Patron | Surface | Structural role |
+|---|---|---|
+| Kairos | Today | Present moment, intentions, and the hour's needs |
+| Hygieia | Care | Skincare protocol, cycle, and reaction memory |
+| Athena | Mind | Mental-load offload and one thread |
+| Mnemosyne | Chronicle | Writing, archive, and memory |
+| Hypnos | Sleep | Closure, parking note, and morning handoff |
+| Apollo | Light | Daylight protection and SPF awareness |
+| Asclepius | Recovery | Skin recovery and barrier repair |
+| Lethe / Water | Retired or dormant | Dormant unless a real job emerges |
+
+The tab label should remain plain and useful. The patron name belongs in the eyebrow, subtitle, or context — not as the primary navigation label.
+
 ### Visual
 
 Apple-like, calm, premium. Follow existing spacing, border-radius, and shadow conventions. System CSS variable values (both modes) are authoritative in `css/base.css`.
@@ -176,6 +205,16 @@ Recent tickets (EA-1 through EA-94 archived in ticket-log.md):
 
 | Ticket | Summary |
 |---|---|
+| EA-200 | Temple as Olympus / Pantheon Surface Calibration — copy-only Temple recalibration: section label now reads `OLYMPUS`; Care hero eyebrow on Temple reads `CARE · ASCLEPIUS`; Chronicle/Sleep/Body subtitles shifted to patron-role verbs; Temple daily line, Day Thread, closing summary, and card state copy softened away from open/pending/dashboard wording. No Temple structure, state, storage, schema, Today behavior, tab order, counters, sections, or algorithms changed. SW -> `elysium-v107`. |
+| EA-197 | Sleep as Hypnos — copy-only alignment of the Sleep closure surface: eyebrow `HYPNOS / CLOSURE` → `HYPNOS`, title `Let the day <em>end</em>` → `Let the day <em>go quiet</em>`, subline `What remains can wait until morning.` → `What remains does not need your hands tonight.`, handoff `HYPNOS WILL HOLD WHAT WAITS` → `WHAT CAN WAIT MAY REST`, closure CTA `Let the day end` → `Let it rest`; `openSleepModal()` reset copy kept in sync. No behavior, state, storage, schema, flow logic, Sleep parking-note save, Sleep handoff, Today carryover, or Chronicle Well changes. SW → `elysium-v103`. |
+| EA-196 | Chronicle as Mnemosyne — copy-only alignment of the Chronicle surface: eyebrow `CHRONICLE` → `MNEMOSYNE`, read-mode button `Read` → `Remember`, search placeholder `Search the archive` → `Search what remains`, resurfaced kicker `Resurfaced` → `Remembered`; no behavior, state, storage, search, archive/read/write, CSS, migration, Supabase, or IndexedDB changes. SW → `elysium-v102`. |
+| EA-195 | Atlas: Body Desk Relief Lookup — updated `BODY_RELIEF_AREAS` copy in `constants.js` to the ticket's curated phrasing (neck/shoulders/back/wrists/eyes); updated Body modal sub from "Choose what needs returning." → "Where does the body carry its weight?" to invoke Atlas load/carrying framing; all chip selection, Returned button gate, area reset display, arrival behavior, and no-state-stored guarantees from EA-177 remain intact. SW → `elysium-v101`. |
+| EA-194 | Hypnos: Night Closure Payoff — refined Sleep modal copy: sub → "What remains can wait until morning.", parking placeholder → "What should not follow you into sleep.", handoff line → "HYPNOS WILL HOLD WHAT WAITS"; Today morning handoff eyebrow changed "LAST NIGHT LEFT" → "HYPNOS HELD"; eyebrow CSS color changed to `var(--bronze)`, body text color changed to `var(--muted-text)`. No new state, no migration, no schema change. SW → `elysium-v100`. |
+| EA-192 | Complete Water Retirement — removed Water from Work Flow runtime (`Mind → Body → Complete`), deleted Work Flow Water markup/handlers/imports, changed Today Focus completion to Mind + Body only, and removed the Day Thread Water trace; preserved `state.water`, `water.holdings`, migration, sync merge, `DEFAULT_DATA.water`, and dormant `js/domains/water.js`. SW → `elysium-v98`. |
+| EA-193 | Apollo: Daylight Protection — replaced decorative tone chooser in Morning Flow Light step with practical daylight question ("Will the day meet your skin?") and three chips (Mostly inside / Some sun / Strong sun); stores `daylight` field in existing `state.light.entries[date]`; `saveDaylight` + `getDaylight` added to `light.js`; defensive migration validation in `state.js`; Care morning section shows quiet Apollo protection line when daylight is `some`/`strong`, with after-exfoliation variant when `cycleDay === 2`; `DAYLIGHT_CONFIRMATIONS` + `APOLLO_PROTECTION_LINES` added to `constants.js`; `renderCareApolloLine` added to `common.js`. SW → `elysium-v99`. |
+| EA-190 | Care as Asclepius: Irritation Guard — quiet guard surface in the Care night section; shown only when `state.care.records[todayStr].condition === 'irritated'`; `ASCLEPIUS_GUARD_LINES` (cycleDay-keyed) + `renderCareAsclepiusGuard(cycleDay)` added to `common.js`, called from `renderTodayCycle()`; `#care-asclepius-guard` div (eyebrow `ASCLEPIUS` + `#care-asclepius-line`) added to `index.html` between `#care-protocol-note` and `#care-night-keeper`; scoped CSS in `today.css` (mono bronze eyebrow, Spectral italic muted body, warm top border); no new state, no migration, no cycle/task/schema change. SW → `elysium-v97`. |
+| EA-189 | Today as Kairos — masthead eyebrow updated to `KAIROS · [day] · [date]` via `renderMasthead()`; subline changed to `"Only what belongs to this hour."`; footer changed to `"What does not belong can pass."`. No state/storage/schema/Care/cycle/logic changes. SW → `elysium-v96`. |
+| EA-184 | Patron Doctrine — documentation-only. Added patron-led doctrine to `CLAUDE.md`, §27.9 Patron Test to the Continuity Constitution, and a brief README product description update; defines Utility/Form gates, decoration/generic-utility failures, patron map, and the plain-navigation-label rule. No app behavior, HTML/CSS/JS, state/storage/schema, service worker, or cache version change. |
 | EA-183 | Post-Water Fold Stabilization & Surface Cleanup - audited standalone Water removal after EA-182; no runtime standalone Water card/modal IDs, handlers, imports, or CSS remained; Work Flow Water step, `holdWater()`, `hasHeldToday()`, Day Thread trace, warmth state, and storage/migration preserved; `queueTempleTrace('water')` safely no-ops without a standalone Temple card. SW -> `elysium-v94`. |
 | EA-181 | Light Role Decision — removed standalone Light Temple card and modal (Option B); Light is now accessible only via Morning Flow Step 1 (tone chooser, invitation, "Entered"); `js/domains/light.js` and `LIGHT_OPENING_INVITATIONS` kept intact; `getLastWitness` kept in `temple.js` for Day Thread and daily line; `state.light.entries` shape unchanged; no state/migration/schema changes. SW → `elysium-v92`. |
 | EA-178B | Mind Modal Rebuild — replaced 2-state thread-offload modal (Set it down / Keep nearby / State B reflection) with a single offload surface; one textarea, three actions: "Set it down" (saves offload + marks arrival), "Send to Today" (converts text to Today intention + clears offload), "Clear" (clears); `getMindOffload()`, `saveMindOffload()`, `clearMindOffload()` added to `mind.js` as wrappers over `state.mind.thread`; Today plan updated to use `getMindOffload`/`clearMindOffload` (no longer checks `keptNearby`); duplicate/full guards on "Send to Today"; `renderTodayPlan()` imported to modals.js for immediate Today refresh; §18.8 description updated to match new action names; State B (reflection + Leave) removed from modal; `#mind-threads` past-reflection surface retained for Chronicle Well; SW → `elysium-v91`. |

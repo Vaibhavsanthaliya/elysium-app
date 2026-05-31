@@ -173,7 +173,7 @@ export function openSleepModal() {
     stateB.hidden = true;
     _sleepShutdownDecisions = new Map();
     const eyebrow = document.getElementById('sleep-eyebrow');
-    if (eyebrow) eyebrow.textContent = 'HYPNOS / CLOSURE';
+    if (eyebrow) eyebrow.textContent = 'HYPNOS';
 
     renderSleepInvitations();
     renderSleepShutdown();
@@ -312,12 +312,12 @@ export function registerMindModal() {
 
   document.getElementById('mind-offload-save')?.addEventListener('click', () => {
     const text = document.getElementById('mind-offload-input')?.value?.trim() || '';
-    if (!text) { showMindMessage('Nothing to set down.'); return; }
+    if (!text) { showMindMessage('Nothing to hold.'); return; }
     if (saveMindOffload(text)) {
       _mindArrivedThisSession = true;
       renderTemple();
     }
-    showMindMessage('Set down.');
+    showMindMessage('The thread has been set down.');
   });
 
   document.getElementById('mind-offload-today')?.addEventListener('click', () => {

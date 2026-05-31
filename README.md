@@ -1,8 +1,8 @@
 # Elysium
 
-Elysium is a quiet ritual operating system: a small personal PWA for keeping daily domains without turning them into scores, dashboards, or performance theater.
+Elysium is a patron-led daily operating system: a small personal PWA anchored in skincare, Today intentions, Chronicle writing, and day closure without turning them into scores, dashboards, or performance theater.
 
-It began as a skincare tracker, but that is no longer the product identity. Care remains one domain inside the system. The wider app is organized around Temple, Care, Chronicle, Light, Sleep, Mind, Stars, and the Workshop.
+It began as a skincare tracker, and Care remains the practical skincare anchor. The wider app is organized around plain useful surfaces for Today, Care, Chronicle, Sleep, Mind, Temple context, daylight awareness, progress record, and Settings.
 
 ## What Elysium Is Not
 
@@ -14,16 +14,16 @@ It began as a skincare tracker, but that is no longer the product identity. Care
 
 ## Product Shape
 
-Elysium treats each domain as its own mode of attention:
+Elysium treats each surface as its own mode of attention:
 
-- **Temple** - the quiet entry surface and daily state.
-- **Care** - the three-night care cycle and its practical protocol.
-- **Chronicle** - a reading-first memory surface that occasionally accepts a line.
-- **Light** - a witness surface for daylight and time of day.
-- **Sleep** - a closure ritual that lets the app go quiet.
-- **Mind** - a held session, not a productivity timer.
-- **Stars** - a restrained constellation of kept days and seasons.
-- **Workshop** - account, cues, install, import/export, and reset machinery.
+- **Today** - present intentions and the hour's needs.
+- **Care** - skincare protocol, cycle, and reaction memory.
+- **Chronicle** - writing, reading, search, and memory.
+- **Sleep** - closure, parking note, and morning handoff.
+- **Mind** - mental-load offload for one thread.
+- **Temple** - atmospheric entry and domain context.
+- **Light** - daylight protection and SPF awareness context.
+- **Stars / Settings** - restrained progress record, account, cues, install, import/export, and reset machinery.
 
 Care can mention skin because skin is one domain. The repository should not describe the whole app as skincare software.
 

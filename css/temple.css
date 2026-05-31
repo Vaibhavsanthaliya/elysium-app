@@ -1043,29 +1043,39 @@
   margin: 0 24px 24px;
 }
 
-#flow-modal .flow-tone-chooser {
+#flow-modal .flow-daylight-question {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  text-align: center;
+  color: var(--oracle-text);
+  opacity: 0.60;
+  margin: 0 24px 10px;
+  letter-spacing: -0.005em;
+}
+
+#flow-modal .flow-daylight-chooser {
   display: flex;
   gap: 8px;
   justify-content: center;
   margin: 0 20px 24px;
 }
 
-#flow-modal .flow-tone-btn {
+#flow-modal .flow-daylight-btn {
   flex: 1;
   padding: 9px 4px;
   background: transparent;
   border: 1px solid rgba(201, 165, 107, 0.20);
   border-radius: 8px;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 13px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
   color: var(--oracle-text);
   opacity: 0.65;
   cursor: pointer;
   transition: opacity 0.15s, border-color 0.15s, background-color 0.15s;
+  letter-spacing: -0.01em;
 }
 
-#flow-modal .flow-tone-btn.is-selected {
+#flow-modal .flow-daylight-btn.is-selected {
   border-color: rgba(201, 165, 107, 0.55);
   background-color: rgba(201, 165, 107, 0.07);
   opacity: 0.90;
