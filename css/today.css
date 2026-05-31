@@ -1062,9 +1062,9 @@
 #pane-today .today-plan-open-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-height: 42px;
-  padding: 9px 0;
+  gap: 12px;
+  min-height: 62px;
+  padding: 10px 0;
   border-bottom: 1px solid var(--separator-warm);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -1076,18 +1076,48 @@
   border-top: none;
 }
 
-#pane-today .today-plan-open-item.is-kept .today-plan-open-text {
+#pane-today .today-plan-open-item.is-kept .today-plan-open-patron,
+#pane-today .today-plan-open-item.is-kept .today-plan-open-label,
+#pane-today .today-plan-open-item.is-kept .today-plan-open-status {
   color: var(--muted-text);
   opacity: 0.60;
 }
 
-#pane-today .today-plan-open-text {
+#pane-today .today-plan-open-body {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#pane-today .today-plan-open-patron {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  line-height: 1.25;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bronze);
+  opacity: 0.78;
+}
+
+#pane-today .today-plan-open-label {
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--oracle-text);
+  letter-spacing: -0.005em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#pane-today .today-plan-open-status {
   font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.35;
-  color: var(--oracle-text);
+  color: var(--muted-text);
   letter-spacing: -0.005em;
   overflow: hidden;
   text-overflow: ellipsis;

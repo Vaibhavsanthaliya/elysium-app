@@ -423,7 +423,7 @@ export function renderChronicle() {
       const d = new Date(note.updatedAt);
       const hh = String(d.getHours()).padStart(2, '0');
       const mm = String(d.getMinutes()).padStart(2, '0');
-      status.textContent = `Saved · ${formatTime12(`${hh}:${mm}`)}`;
+      status.textContent = `Left · ${formatTime12(`${hh}:${mm}`)}`;
       status.hidden = false;
     } else {
       status.textContent = '';
@@ -466,7 +466,7 @@ export function saveChronicleNote(fromBlur = false) {
       const d = new Date();
       const hh = String(d.getHours()).padStart(2, '0');
       const mm = String(d.getMinutes()).padStart(2, '0');
-      status.textContent = `Saved · ${formatTime12(`${hh}:${mm}`)}`;
+      status.textContent = `Left · ${formatTime12(`${hh}:${mm}`)}`;
       status.hidden = false;
     }
   }

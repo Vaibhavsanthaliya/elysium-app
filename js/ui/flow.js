@@ -22,7 +22,6 @@ const WORK_STEPS    = ['work-mind', 'work-body', 'work-complete'];
 let _flowActive = false;
 let _flowSession = 0;
 let _selectedDaylight = null;
-let _lightEnteredThisFlow = false;
 let _workBodyStep = 0;
 let _workBodyInvitations = [];
 
@@ -115,7 +114,6 @@ function saveFlowChronicleField(fieldId) {
 
 export function openMorningFlow() {
   beginFlowSession();
-  _lightEnteredThisFlow = false;
   renderLightStep();
   showStep('light');
   document.getElementById('flow-modal').hidden = false;
@@ -205,7 +203,6 @@ export function registerMorningFlow() {
 
   document.getElementById('flow-light-enter')?.addEventListener('click', () => {
     witnessLight(todayStr);
-    _lightEnteredThisFlow = true;
     if (_selectedDaylight) saveDaylight(todayStr, _selectedDaylight);
     saveState();
     queueTempleTrace('light');
@@ -213,8 +210,8 @@ export function registerMorningFlow() {
     const invEl = document.getElementById('flow-light-invitation');
     if (invEl) {
       invEl.textContent = _selectedDaylight
-        ? (DAYLIGHT_CONFIRMATIONS[_selectedDaylight] || 'What needed light has been seen.')
-        : 'What needed light has been seen.';
+        ? (DAYLIGHT_CONFIRMATIONS[_selectedDaylight] || 'The threshold has been crossed.')
+        : 'The threshold has been crossed.';
     }
 
     const enterBtn = document.getElementById('flow-light-enter');

@@ -49,7 +49,7 @@ function excerptChronicleBody(body) {
 
 function getResurfaceLabel(dateStr, note, referenceDateStr) {
   const age = daysBetween(dateStr, referenceDateStr);
-  if (age === 7) return 'Seven days ago';
+  if (age === 7) return 'A week ago';
   if (note?.period === 'night' || note?.period === 'dusk') return 'From a previous night';
 
   const [refYear, refMonth] = referenceDateStr.split('-');

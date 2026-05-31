@@ -56,7 +56,7 @@
 
 .chronicle-status {
   font-size: 13px;
-  color: var(--muted-text);
+  color: var(--bronze);
   margin: 10px 2px 18px;
 }
 
@@ -411,12 +411,14 @@
 }
 
 .chronicle-archive-empty {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.10em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: 0;
   color: var(--muted-text);
-  opacity: 0.6;
-  margin: 28px 2px;
+  opacity: 0.66;
+  margin: 30px 2px;
 }
 
 .chronicle-archive-row {

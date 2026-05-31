@@ -8,6 +8,7 @@ import {
   dismissSleepHandoff,
 } from '../domains/today-plan.js';
 import { getCareTurnState, getCareCycleLabel, getMorningCareState, getPeriodKey } from './temple.js';
+import { getCareRecord } from '../domains/care.js';
 import { getSleepEntry } from '../domains/sleep.js';
 import { hasMindArrival, getMindOffload, clearMindOffload } from '../domains/mind.js';
 import { hasArrivedToday } from '../domains/body.js';
@@ -110,15 +111,19 @@ function renderOpenItems() {
     items = [
       {
         action: 'care',
+        patron: 'HYGIEIA',
+        label: 'Care',
         kept: morningKept,
-        text: morningKept   ? 'Care · morning kept'
-            : morningMotion ? 'Care · morning in motion'
-                            : 'Care · morning open',
+        status: morningKept   ? 'morning kept'
+              : morningMotion ? 'morning in motion'
+                              : 'morning open',
       },
       {
         action: 'chronicle',
+        patron: 'MNEMOSYNE',
+        label: 'Chronicle',
         kept: hasChronicle,
-        text: hasChronicle ? 'Chronicle · held today' : 'Chronicle · still open',
+        status: hasChronicle ? 'written' : 'still open',
       },
     ];
   } else if (isMidday) {
@@ -126,13 +131,17 @@ function renderOpenItems() {
     items = [
       {
         action: 'work',
+        patron: 'ATHENA',
+        label: 'Focus',
         kept: workKept,
-        text: workKept ? 'Focus · held' : 'Focus · return to focus',
+        status: workKept ? 'held' : 'return to focus',
       },
       {
         action: 'chronicle',
+        patron: 'MNEMOSYNE',
+        label: 'Chronicle',
         kept: hasChronicle,
-        text: hasChronicle ? 'Chronicle · held today' : 'Chronicle · still open',
+        status: hasChronicle ? 'written' : 'still open',
       },
     ];
   } else {
@@ -141,23 +150,30 @@ function renderOpenItems() {
     const careKept   = careState.key === 'kept';
     const careMotion = careState.key === 'motion';
     const careLabel  = getCareCycleLabel();
+    const carePatron = getCareRecord(todayStr).condition === 'irritated' ? 'ASCLEPIUS' : 'HYGIEIA';
     items = [
       {
         action: 'care',
+        patron: carePatron,
+        label: 'Care',
         kept: careKept,
-        text: careKept   ? `Care · ${careLabel} kept`
-            : careMotion ? `Care · ${careLabel} in motion`
-                         : `Care · ${careLabel}`,
+        status: careKept   ? `${careLabel} kept`
+              : careMotion ? `${careLabel} in motion`
+                           : careLabel,
       },
       {
         action: 'chronicle',
+        patron: 'MNEMOSYNE',
+        label: 'Chronicle',
         kept: hasChronicle,
-        text: hasChronicle ? 'Chronicle · held today' : 'Chronicle · still open',
+        status: hasChronicle ? 'written' : 'still open',
       },
       {
         action: 'sleep',
+        patron: 'HYPNOS',
+        label: 'Sleep',
         kept: hasSleep,
-        text: hasSleep ? 'Sleep · closed' : 'Sleep · not closed',
+        status: hasSleep ? 'closed' : 'close the day',
       },
     ];
   }
@@ -165,14 +181,21 @@ function renderOpenItems() {
   const periodEl = document.getElementById('today-plan-open-period');
   if (periodEl) periodEl.textContent = _PERIOD_WORDS[periodKey] || '';
 
-  list.innerHTML = items.map(item => `
-    <div class="today-plan-open-item${item.kept ? ' is-kept' : ''}" data-open-action="${item.action}" title="${escapeHtml(item.text)}" aria-label="${escapeHtml(item.text)}">
-      <span class="today-plan-open-text">${escapeHtml(item.text)}</span>
+  list.innerHTML = items.map(item => {
+    const aria = `${item.patron}, ${item.label}, ${item.status}`;
+    return `
+    <div class="today-plan-open-item${item.kept ? ' is-kept' : ''}" data-open-action="${item.action}" title="${escapeHtml(aria)}" aria-label="${escapeHtml(aria)}">
+      <span class="today-plan-open-body">
+        <span class="today-plan-open-patron">${escapeHtml(item.patron)}</span>
+        <span class="today-plan-open-label">${escapeHtml(item.label)}</span>
+        <span class="today-plan-open-status">${escapeHtml(item.status)}</span>
+      </span>
       <svg class="today-plan-open-chevron" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="5 3 11 8 5 13"/>
       </svg>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function renderMindThread() {

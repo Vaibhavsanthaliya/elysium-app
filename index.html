@@ -184,7 +184,7 @@
 
         <!-- Open -->
         <div class="today-plan-section-hd today-plan-open-hd">
-          <span class="today-plan-section-label">Open</span>
+          <span class="today-plan-section-label">The hour holds</span>
           <span class="today-plan-section-meta" id="today-plan-open-period"></span>
         </div>
         <div id="today-plan-open-list"></div>
@@ -208,7 +208,7 @@
             </svg>
           </span>
           <span class="temple-featured-body">
-            <span class="temple-featured-eyebrow">CARE · ASCLEPIUS</span>
+            <span class="temple-featured-eyebrow">CARE · HYGIEIA</span>
             <span class="temple-featured-status" id="temple-status">Night I · Niacinamide</span>
             <span class="temple-featured-cycle" id="temple-hero-cycle">Niacinamide tonight.</span>
           </span>
@@ -540,7 +540,7 @@
 
           <!-- River: section header for past entries (JS shows/hides) -->
           <div class="chronicle-river-hd" id="chronicle-river-hd" hidden>
-            <em class="chronicle-river-lbl">The river</em>
+            <em class="chronicle-river-lbl">What remains</em>
           </div>
 
           <!-- Drift: past entries, reading-first (rendered by JS) -->
@@ -566,14 +566,14 @@
         <!-- Archive reading surface (read mode) -->
         <div id="chronicle-archive" hidden>
           <input type="search" class="chronicle-search" id="chronicle-search"
-                 placeholder="Search what remains" autocomplete="off"
+                 placeholder="Search what was left" autocomplete="off"
                  autocorrect="off" autocapitalize="off" spellcheck="false" />
           <div class="chronicle-archive-list" id="chronicle-archive-list"></div>
         </div>
 
         <!-- Archive entry detail (read mode, entry open) -->
         <div class="chronicle-archive-detail" id="chronicle-archive-detail" hidden>
-          <button class="chronicle-detail-back" id="chronicle-detail-back" type="button">Return</button>
+          <button class="chronicle-detail-back" id="chronicle-detail-back" type="button">Return to archive</button>
           <div class="chronicle-detail-meta" id="chronicle-detail-meta"></div>
           <div class="chronicle-detail-body" id="chronicle-detail-body"></div>
         </div>
@@ -788,7 +788,7 @@
 
       <!-- Step 2: Morning Care -->
       <div id="flow-step-care" hidden>
-        <div class="flow-eyebrow">MORNING FLOW</div>
+        <div class="flow-eyebrow">HYGIEIA</div>
         <p class="flow-step-label">Care</p>
         <p class="flow-care-status" id="flow-care-status"></p>
         <button class="btn-primary" id="flow-care-open">Open the day</button>
@@ -797,7 +797,7 @@
 
       <!-- Step 3: Chronicle seed -->
       <div id="flow-step-chronicle" hidden>
-        <div class="flow-eyebrow">MORNING FLOW</div>
+        <div class="flow-eyebrow">MNEMOSYNE</div>
         <p class="flow-step-label">Chronicle</p>
         <textarea class="flow-chronicle-field" id="flow-chronicle-field" rows="2" placeholder="One line before the day begins."></textarea>
         <button class="btn-primary" id="flow-chronicle-save">Save</button>
@@ -806,14 +806,14 @@
 
       <!-- Completion -->
       <div id="flow-step-complete" hidden>
-        <div class="flow-eyebrow">MORNING FLOW</div>
+        <div class="flow-eyebrow">KAIROS</div>
         <p class="flow-complete-line">The morning is open.</p>
         <button class="btn-text" id="flow-close">Return</button>
       </div>
 
       <!-- Night Flow: Step 1 — Night Care -->
       <div id="flow-step-night-care" hidden>
-        <div class="flow-eyebrow">NIGHT FLOW</div>
+        <div class="flow-eyebrow">HYGIEIA</div>
         <p class="flow-step-label" id="flow-night-care-label">Care</p>
         <p class="flow-care-status" id="flow-night-care-protocol"></p>
         <p class="flow-night-care-note" id="flow-night-care-note"></p>
@@ -823,7 +823,7 @@
 
       <!-- Night Flow: Step 2 — Chronicle reflection -->
       <div id="flow-step-night-chronicle" hidden>
-        <div class="flow-eyebrow">NIGHT FLOW</div>
+        <div class="flow-eyebrow">MNEMOSYNE</div>
         <p class="flow-step-label">Chronicle</p>
         <textarea class="flow-chronicle-field" id="flow-night-chronicle-field" rows="3" placeholder="What the day left behind."></textarea>
         <button class="btn-primary" id="flow-night-chronicle-save">Save</button>
@@ -832,7 +832,7 @@
 
       <!-- Night Flow: Step 3 — Sleep parking / closure -->
       <div id="flow-step-night-sleep" hidden>
-        <div class="flow-eyebrow">NIGHT FLOW</div>
+        <div class="flow-eyebrow">HYPNOS</div>
         <p class="flow-step-label">Sleep</p>
         <p class="flow-invitation" id="flow-night-sleep-invitation"></p>
         <textarea class="flow-chronicle-field" id="flow-night-sleep-parking" rows="2" placeholder="What can wait until morning."></textarea>
@@ -842,14 +842,14 @@
 
       <!-- Night Flow: Completion -->
       <div id="flow-step-night-complete" hidden>
-        <div class="flow-eyebrow">NIGHT FLOW</div>
+        <div class="flow-eyebrow">HYPNOS</div>
         <p class="flow-complete-line">The day has closed.</p>
         <button class="btn-text" id="flow-night-close">Return</button>
       </div>
 
       <!-- Work Flow: Step 1 — Mind / Focus Thread -->
       <div id="flow-step-work-mind" hidden>
-        <div class="flow-eyebrow">WORK FLOW</div>
+        <div class="flow-eyebrow">ATHENA</div>
         <p class="flow-step-label">Mind</p>
         <p class="flow-invitation">Name the thread you are returning to.</p>
         <input type="text" class="flow-chronicle-field" id="flow-work-thread" placeholder="One thread." />
@@ -859,7 +859,7 @@
 
       <!-- Work Flow: Step 2 — Body / Desk Reset -->
       <div id="flow-step-work-body" hidden>
-        <div class="flow-eyebrow">WORK FLOW</div>
+        <div class="flow-eyebrow">ATLAS</div>
         <p class="flow-step-label">Body</p>
         <p class="flow-invitation" id="flow-work-body-step"></p>
         <button class="btn-primary" id="flow-work-body-continue">Continue</button>
@@ -869,7 +869,7 @@
 
       <!-- Work Flow: Completion -->
       <div id="flow-step-work-complete" hidden>
-        <div class="flow-eyebrow">WORK FLOW</div>
+        <div class="flow-eyebrow">KAIROS</div>
         <p class="flow-complete-line">The thread is ready.</p>
         <button class="btn-text" id="flow-work-close">Return</button>
       </div>

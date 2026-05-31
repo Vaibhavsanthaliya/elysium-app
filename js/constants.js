@@ -213,25 +213,25 @@ export const SLEEP_CLOSURE_INVITATIONS = [
 ];
 
 export const LIGHT_OPENING_INVITATIONS = [
-  'Name what needs light before the day begins.',
-  'Let one shape come into view.',
-  'What asks for clarity first?',
-  'Stand at the threshold and name what is unclear.',
-  'Let the first light show one thing.',
-  'Begin with what can be seen.',
-  'What needs light before the day gathers?',
+  'Before stepping out — name the day\'s light.',
+  'How much sun does today carry?',
+  'Step toward the threshold and name its brightness.',
+  'What kind of light does the day hold?',
+  'The threshold is ahead. Name the light.',
+  'Before you cross — how bright is it today?',
+  'Name the morning\'s light before it reaches the skin.',
 ];
 
 export const DAYLIGHT_CONFIRMATIONS = {
-  inside: 'The day remains mostly inside.',
-  some: 'Some light has been named.',
-  strong: 'Strong light has been named.',
+  inside: 'The day stays inside. The layer holds.',
+  some: 'Some sun today. Let the SPF layer hold.',
+  strong: 'Strong light today. Protect before crossing.',
 };
 
 export const APOLLO_PROTECTION_LINES = {
-  some: 'Apollo · Let SPF stay in the morning layer.',
-  strong: 'Apollo · Protect the skin before the day grows bright.',
-  afterExfoliation: 'Apollo · After exfoliation, keep first light protected.',
+  some:            'Apollo · Sun is present. Keep the SPF layer.',
+  strong:          'Apollo · Strong light today. Protect before the threshold.',
+  afterExfoliation:'Apollo · Exfoliation raised sensitivity. Keep the layer on.',
 };
 
 export const CHRONICLE_PROMPTS = {

@@ -11,6 +11,7 @@ export let sbUserId = null;
 let sbSaveTimer = null;
 let syncInProgress = false;
 let bootShellRevealed = false;
+const VALID_DAYLIGHT_LEVELS = new Set(['inside', 'some', 'strong']);
 
 // Registered by main.js: called after a successful cloud sync so render modules
 // can refresh without sync.js importing any render/ui modules (import direction).
@@ -158,9 +159,18 @@ export async function syncFromSupabase() {
       ]);
       for (const date of lightDates) {
         if (!isYmd(date)) continue;
-        const cw = cloud.light?.entries?.[date]?.witnesses || [];
-        const lw = state.light?.entries?.[date]?.witnesses || [];
-        mergedLightEntries[date] = { witnesses: Array.from(new Set([...cw, ...lw])).sort() };
+        const cloudEntry = cloud.light?.entries?.[date] || {};
+        const localEntry = state.light?.entries?.[date] || {};
+        const cw = cloudEntry.witnesses || [];
+        const lw = localEntry.witnesses || [];
+        const mergedEntry = { witnesses: Array.from(new Set([...cw, ...lw])).sort() };
+        const daylight = VALID_DAYLIGHT_LEVELS.has(localEntry.daylight)
+          ? localEntry.daylight
+          : VALID_DAYLIGHT_LEVELS.has(cloudEntry.daylight)
+            ? cloudEntry.daylight
+            : null;
+        if (daylight) mergedEntry.daylight = daylight;
+        mergedLightEntries[date] = mergedEntry;
       }
 
       const mindMap = new Map();

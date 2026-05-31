@@ -1,13 +1,13 @@
 # Elysium — Master E2E Ritual Checklist
 
-This document serves as the authoritative manual E2E test suite for Elysium. It covers the entire system architecture and every philosophical layer from EA-1 through EA-110.
+This document serves as the authoritative manual E2E test suite for Elysium. It covers the current system architecture and philosophical layer.
 
 ---
 
 ## Phase I: Arrival & The Gate
 *Testing first-paint, PWA shell, and identity.*
 
-- [ ] **Offline Launch:** Disable network. The app loads successfully via Service Worker (`v24`).
+- [ ] **Offline Launch:** Disable network. The app loads successfully via the current Service Worker cache.
 - [ ] **Boot Shell:** Refresh. The Aperture mark and "Elys*ium*" wordmark appear before the app shell paints.
 - [ ] **Auth Identity:** Sign out. Verify the "OBSIDIAN TEMPLE" eyebrow and champagne-gold "Continue" button.
 - [ ] **Auth Persistence:** Sign in. App redirects to Temple tab without a full page reload.
@@ -17,10 +17,10 @@ This document serves as the authoritative manual E2E test suite for Elysium. It 
 
 - [ ] **Daily Line:** A quiet Spectral italic greeting appears above the Care card (e.g., "The night moves quietly.").
 - [ ] **Temporal Breath:** Gradient alpha on the featured card shifts subtly if the system clock is moved (Night → Morning → Dusk).
-- [ ] **Domain Cards:** 6 domain cards (Care, Chronicle, Light, Sleep, Mind, Body, Water) are present.
-- [ ] **Archetype Labels:** Mono labels like `HYPNOS`, `APOLLO`, `ATLAS`, `HYDROS` are visible and quiet.
+- [ ] **Domain Cards:** Care is featured; Chronicle, Sleep, Mind, and Body remain visible. No standalone Light or Water card appears.
+- [ ] **Archetype Labels:** Mono labels like `MNEMOSYNE`, `HYPNOS`, `ATHENA`, and `ATLAS` are visible and quiet.
 - [ ] **Warmth (Patina):** (Visual check) If the room has history, the background gradient has a sub-perceptual depth lift (+0.024 max).
-- [ ] **Dormant Check:** Water and Body are active (Stilled/Stood); no "IN STUDY" badges remain.
+- [ ] **Dormant Check:** Water is absent from visible UI and remains legacy compatibility only; Body remains active.
 
 ## Phase III: Care (Practical Ritual)
 *Testing the 3-night cycle and de-checklist protocol.*
@@ -33,23 +33,23 @@ This document serves as the authoritative manual E2E test suite for Elysium. It 
 - [ ] **Astrolabe Arming:** Tap a node on the Cycle tab. It breathes for 2.5s. Leaving the tab cancels the arm.
 - [ ] **Astrolabe Commit:** Double-tap an armed node. Cycle switches; center disc updates; no toast fires.
 
-## Phase IV: Light & Body (Witnessing)
-*Testing spatial memory and horizons.*
+## Phase IV: Apollo & Body
+*Testing daylight context and Body return.*
 
-- [ ] **Light Sky:** Current time cursor is correctly positioned on the sky gradient.
-- [ ] **Witness Action:** Tapping "I'm here" triggers 3s stillness. Close button is hidden during stillness.
-- [ ] **Horizon Marks:** A 4px bronze circle appears on the horizon.
-- [ ] **Light Linger:** (Requires setup) Yesterday's witness mark is visible as a faint 3px ghost.
+- [ ] **Morning Flow Apollo:** In first-light/morning, the Temple CTA opens Morning Flow and shows the Apollo daylight question.
+- [ ] **Daylight Save:** Selecting `Some sun` or `Strong sun` and tapping `Let it be seen` preserves `state.light.entries[today].daylight`.
+- [ ] **Care Apollo Line:** Care shows the Apollo daylight line for `some` or `strong`, and stays silent for `inside` or no daylight choice.
+- [ ] **Light Trace:** After Morning Flow Light is witnessed, Temple daily line/day thread may reference first light.
 - [ ] **Body Modal:** Tapping "Returned" in Body modal pauses, then places a square mark on the earth horizon.
 - [ ] **Body Trace:** Temple card for Body shows a bronze shadow bloom after returning from the modal.
 
-## Phase V: Mind & Water (Holding)
-*Testing duration and stilled sessions.*
+## Phase V: Mind & Legacy Water Boundary
+*Testing Mind and Water retirement.*
 
 - [ ] **Mind Hold:** Begin session. The backdrop is locked. "End session" is hidden for the first 60 seconds.
 - [ ] **Mind Reflection:** Writing a reflection in State C and tapping "Save line" updates the Temple Mind card.
 - [ ] **Mind Resonance:** The Temple Mind card displays the reflection text as a single-line italic inscription.
-- [ ] **Water Modal:** Tapping "Held" places a mark below the soft surface line. Temple status updates to "Stilled".
+- [ ] **Water Boundary:** No Water modal, card, Today row, Work Flow step, or event listener is visible in the app.
 
 ## Phase VI: Chronicle & Drift (Memory)
 *Testing writing and resurfacing.*

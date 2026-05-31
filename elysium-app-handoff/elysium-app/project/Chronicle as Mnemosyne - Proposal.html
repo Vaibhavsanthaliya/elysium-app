@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chronicle as Mnemosyne — Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,400;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:               #0E0E12;
+    --bg-soft:          #131318;
+    --surface:          #1A1A21;
+    --surface-2:        #22222B;
+    --ink:              #ECE6D9;
+    --ink-muted:        rgba(236, 230, 217, 0.62);
+    --ink-faint:        rgba(236, 230, 217, 0.40);
+    --bronze:           #C9A56B;
+    --bronze-dim:       #8A704A;
+    --separator:        rgba(236, 230, 217, 0.08);
+    --separator-strong: rgba(236, 230, 217, 0.16);
+    --shadow-card:      0 30px 60px -20px rgba(0, 0, 0, 0.6);
+    --font-sans:    'DM Sans', system-ui, sans-serif;
+    --font-display: 'Spectral', Georgia, serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% -8%, rgba(201, 165, 107, 0.10), transparent 58%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 92px 32px 140px;
+  }
+
+  /* ── Eyebrow / meta ─────────────────────────────── */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    font-weight: 400;
+    margin: 0 0 14px;
+  }
+
+  /* ── Masthead ──────────────────────────────────── */
+  .masthead {
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--separator);
+    margin-bottom: 54px;
+  }
+  .masthead h1 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 40px;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    margin: 0 0 20px;
+    color: var(--ink);
+  }
+  .masthead h1 .ital {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--bronze);
+  }
+  .masthead .lede {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-muted);
+    max-width: 56ch;
+    margin: 0;
+  }
+  .meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 26px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .meta-line .b { color: var(--bronze); }
+
+  /* ── Sections ──────────────────────────────────── */
+  section { margin-bottom: 64px; }
+
+  .sec-hd {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 26px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--separator);
+  }
+  .sec-hd .lbl {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink);
+  }
+  .sec-hd .num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  p.body {
+    font-size: 15px;
+    line-height: 1.72;
+    color: var(--ink-muted);
+    max-width: 64ch;
+    margin: 0 0 18px;
+  }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.body em { font-family: var(--font-display); font-style: italic; color: var(--bronze); }
+  .b { color: var(--bronze); }
+
+  /* ── Gate cards ────────────────────────────────── */
+  .gates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 600px) { .gates { grid-template-columns: 1fr; } }
+  .gate {
+    background: linear-gradient(180deg, rgba(201,165,107,0.07), rgba(201,165,107,0.015));
+    border: 1px solid rgba(201, 165, 107, 0.22);
+    border-radius: 16px;
+    padding: 20px 20px 22px;
+  }
+  .gate .g-eye {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bronze);
+    margin-bottom: 10px;
+  }
+  .gate .g-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .gate .g-verdict {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--bronze);
+    margin-bottom: 12px;
+  }
+  .gate .g-body {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-muted);
+  }
+
+  /* ── Finding lists (aligned / generic) ─────────── */
+  .find {
+    border-top: 1px solid var(--separator);
+    padding: 18px 0 20px;
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 0 18px;
+  }
+  .find:last-child { border-bottom: 1px solid var(--separator); }
+  .find .idx {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--bronze);
+    line-height: 1.3;
+  }
+  .find .f-title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    margin-bottom: 7px;
+    color: var(--ink);
+  }
+  .find .f-body {
+    font-size: 14px;
+    line-height: 1.62;
+    color: var(--ink-muted);
+  }
+  .find .f-body code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--bronze);
+    background: rgba(201,165,107,0.08);
+    padding: 1px 6px;
+    border-radius: 5px;
+  }
+  .ref {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    margin-left: 6px;
+  }
+
+  /* ── Copy specimen rows ────────────────────────── */
+  .specimen {
+    border-top: 1px solid var(--separator);
+    padding: 22px 0;
+    display: grid;
+    grid-template-columns: 150px 1fr 92px;
+    gap: 8px 22px;
+    align-items: start;
+  }
+  .specimen:last-of-type { border-bottom: 1px solid var(--separator); }
+  @media (max-width: 640px) {
+    .specimen { grid-template-columns: 1fr; gap: 12px; }
+  }
+  .specimen .role {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-top: 3px;
+  }
+  .specimen .role .where {
+    display: block;
+    color: var(--bronze-dim);
+    margin-top: 5px;
+    letter-spacing: 0.1em;
+    font-size: 8.5px;
+  }
+  .change-stack { display: flex; flex-direction: column; gap: 12px; }
+  .old-line, .new-line { display: flex; align-items: baseline; gap: 10px; }
+  .arrow-tag {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    width: 32px;
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+  .arrow-tag.to { color: var(--bronze); }
+  .old-line .smp { opacity: 0.5; }
+
+  /* live-type specimens */
+  .smp { display: inline-block; }
+  .smp-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--bronze); }
+  .smp-title { font-family: var(--font-sans); font-weight: 500; font-size: 24px; letter-spacing: -0.02em; color: var(--ink); }
+  .smp-title .ital { font-family: var(--font-display); font-style: italic; font-weight: 400; color: var(--bronze); }
+  .smp-toggle { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bronze); }
+  .smp-search { font-family: var(--font-display); font-style: italic; font-size: 17px; color: var(--ink); opacity: 0.65; }
+  .smp-empty { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--ink-muted); }
+  .smp-italic { font-family: var(--font-display); font-style: italic; font-size: 16px; color: var(--ink); }
+  .smp-status { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .smp-status.lit { color: var(--bronze); }
+  .smp-back { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  .smp-river { font-family: var(--font-display); font-style: italic; font-size: 18px; color: var(--ink); }
+
+  .verdict {
+    justify-self: start;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .verdict.keep   { color: var(--ink-faint); border: 1px solid var(--separator-strong); }
+  .verdict.change { color: var(--bg); background: var(--bronze); font-weight: 500; }
+  .verdict.opt    { color: var(--bronze); border: 1px solid rgba(201,165,107,0.45); }
+  .verdict.hold   { color: var(--ink-muted); border: 1px solid var(--separator-strong); }
+  .specimen .note {
+    grid-column: 2 / 3;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink-faint);
+    font-style: italic;
+    font-family: var(--font-display);
+  }
+  @media (max-width: 640px) { .specimen .note { grid-column: 1; } }
+
+  /* ── Plain bullet list ─────────────────────────── */
+  ul.clean { list-style: none; margin: 0; padding: 0; }
+  ul.clean li {
+    position: relative;
+    padding: 11px 0 11px 24px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-muted);
+    border-bottom: 1px solid var(--separator);
+  }
+  ul.clean li:first-child { border-top: 1px solid var(--separator); }
+  ul.clean li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--bronze);
+    font-family: var(--font-display);
+  }
+  ul.clean li strong { color: var(--ink); font-weight: 600; }
+  ul.clean li code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--bronze);
+  }
+
+  /* ── Code block (Codex prompt) ─────────────────── */
+  .codeblock {
+    background: var(--bg-soft);
+    border: 1px solid var(--separator-strong);
+    border-radius: 14px;
+    padding: 24px 26px;
+    overflow-x: auto;
+    box-shadow: var(--shadow-card);
+  }
+  .codeblock pre {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.72;
+    color: var(--ink-muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .codeblock pre .c { color: var(--bronze); }
+  .codeblock pre .h { color: var(--ink); font-weight: 500; }
+  .codeblock pre .dim { color: var(--ink-faint); }
+
+  .closer {
+    margin-top: 80px;
+    padding-top: 26px;
+    border-top: 1px solid var(--separator);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--bronze-dim);
+  }
+</style>
+</head>
+<body>
+  <main class="wrap">
+
+    <!-- ════════ MASTHEAD ════════ -->
+    <header class="masthead">
+      <p class="eyebrow">EA-202 · Design Direction · Proposal Only</p>
+      <h1>Chronicle as <span class="ital">Mnemosyne</span></h1>
+      <p class="lede">Make memory the form, not the label. The conversion is nearly done at the surface — the work left is to protect the shape that already remembers, and to retire the two places that still speak like a notes app.</p>
+      <div class="meta-line">
+        <span><span class="b">Surface</span> · Chronicle</span>
+        <span><span class="b">Patron</span> · Mnemosyne</span>
+        <span><span class="b">Gates</span> · Utility + Form</span>
+        <span><span class="b">Mode</span> · Copy + micro-visual</span>
+      </div>
+    </header>
+
+    <!-- ════════ RECOMMENDED DIRECTION ════════ -->
+    <section>
+      <div class="sec-hd"><span class="lbl">Recommended direction</span><span class="num">01</span></div>
+      <p class="body">EA-196 already moved the Chronicle labels into Mnemosyne's register — <code style="font-family:var(--font-mono);font-size:12px;color:var(--bronze)">MNEMOSYNE</code> eyebrow, <em>Remember</em>, <em>Search what remains</em>, <em>Remembered</em>. So the temptation now is to add more myth. <strong>Resist it.</strong> The Form Gate is mostly passed already — but by <em>structure</em>, not vocabulary, and that structure is invisible until you name it.</p>
+      <p class="body">Three gestures already make Chronicle behave like memory rather than a log: you <strong>meet what remains before you write</strong> (the surface opens to resurfaced lines; the writing field sits beneath); <strong>old entries dim with age</strong> (the Drift's four-step fade); and <strong>the past returns unbidden</strong> (the Well surfaces one line by date-math, never by query). That is Mnemosyne. Keep it, and say so.</p>
+      <p class="body">The proposal is therefore deliberately small: <strong>one firm copy change</strong> (the save confirmation, the last place the surface says <em>Saved</em> like a file), <strong>one tied micro-visual</strong>, and <strong>two optional refinements</strong> you can take or leave. Everything else is a considered <em>hold</em> — restraint is the recommendation, and the constitution agrees.</p>
+    </section>
+
+    <!-- ════════ GATES ════════ -->
+    <section>
+      <div class="sec-hd"><span class="lbl">Gate status</span><span class="num">02</span></div>
+      <div class="gates">
+        <div class="gate">
+          <div class="g-eye">Gate 1 · Utility</div>
+          <div class="g-title">Useful without the myth</div>
+          <div class="g-verdict">Passes — unchanged</div>
+          <div class="g-body">Strip the word Mnemosyne and you still have: write a daily line, read your own archive, plain substring search, open one entry read-only. The proposal touches none of that machinery. A save still confirms with a timestamp.</div>
+        </div>
+        <div class="gate">
+          <div class="g-eye">Gate 2 · Form</div>
+          <div class="g-title">Only Mnemosyne could hold it</div>
+          <div class="g-verdict">Passes — by structure</div>
+          <div class="g-body">Reading-first order, age-graded fade, and unbidden return are memory's shape, not decoration. The one change (<em>Saved → Left</em>) closes the last gap where the surface reverted to filing-cabinet language.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ WHERE IT ALREADY FEELS MNEMOSYNE ════════ -->
+    <section>
+      <div class="sec-hd"><span class="lbl">Where it already feels like her</span><span class="num">03</span></div>
+
+      <div class="find">
+        <div class="idx">i</div>
+        <div>
+          <div class="f-title">Reading-first hierarchy</div>
+          <div class="f-body">The write surface renders resurfaced lines, the Well, and the river of past entries <em>above</em> the textarea — the code even calls writing the "secondary motion." You return to what remains before you leave anything new. That ordering is the single most Mnemosyne decision in the surface.</div>
+        </div>
+      </div>
+
+      <div class="find">
+        <div class="idx">ii</div>
+        <div>
+          <div class="f-title">Memory dims with age</div>
+          <div class="f-body">Drift entries fade across four opacity steps — vivid, <code>is-quiet</code>, <code>is-quieter</code>, <code>is-faint</code> — keyed to days elapsed, not list position. Recollection gauzing over time, rendered as atmosphere. This is the felt-not-read organ of the surface. <span class="ref">§4 · §8.1</span></div>
+        </div>
+      </div>
+
+      <div class="find">
+        <div class="idx">iii</div>
+        <div>
+          <div class="f-title">The past returns unbidden</div>
+          <div class="f-body">The Well surfaces exactly one prior line, chosen by anniversary / cycle / deep-time math — never ranked, never searched, never tappable into a "view all." Memory comes to you; you do not retrieve it. <span class="ref">§11 · §15.3</span></div>
+        </div>
+      </div>
+
+      <div class="find">
+        <div class="idx">iv</div>
+        <div>
+          <div class="f-title">The labels already speak memory</div>
+          <div class="f-body">
+            <span class="smp smp-empty">Nothing has been left here yet.</span> · <span class="smp smp-empty">Nothing answered.</span> · <span class="smp smp-empty">What was left here remains.</span> — leaving, calling, and remaining are already the verbs. <span class="smp smp-back">Return</span> is a sanctioned room verb. <span class="ref">§1.7</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ WHERE IT STILL FEELS GENERIC ════════ -->
+    <section>
+      <div class="sec-hd"><span class="lbl">Where it still feels generic</span><span class="num">04</span></div>
+
+      <div class="find">
+        <div class="idx">1</div>
+        <div>
+          <div class="f-title">The save confirmation</div>
+          <div class="f-body"><span class="smp smp-status">Saved · 9:42 PM</span> &nbsp;is the one place the surface drops back into productivity-app register. <code>Saved</code> belongs to documents and drafts; in Mnemosyne's room, a written line is <em>left</em>, not filed. This is the proposal's one firm change.</div>
+        </div>
+      </div>
+
+      <div class="find">
+        <div class="idx">2</div>
+        <div>
+          <div class="f-title">A stack of water metaphors</div>
+          <div class="f-body">Two images are visible at once — <span class="smp smp-empty" style="text-transform:none;letter-spacing:0.1em">From the well</span> and <span class="smp smp-river">The river</span>. The well is Mnemosyne's own spring; the river dilutes that single image into a second, competing one. Worth resolving — but optional, not load-bearing.</div>
+        </div>
+      </div>
+
+      <div class="find">
+        <div class="idx">3</div>
+        <div>
+          <div class="f-title">The Write toggle is a neutral verb</div>
+          <div class="f-body"><span class="smp smp-toggle">Write</span> is plain utility while everything around it speaks memory. Defensible to keep (clarity), but if you want the pair to rhyme, <span class="smp smp-toggle">Leave</span> / <span class="smp smp-toggle">Remember</span> maps cleanly to leaving-and-returning. Low confidence — your call.</div>
+        </div>
+      </div>
+
+      <div class="find">
+        <div class="idx">4</div>
+        <div>
+          <div class="f-title">A spelled-out number in a label</div>
+          <div class="f-body">The resurface label <span class="smp smp-empty" style="text-transform:none;letter-spacing:0.08em">Seven days ago</span> carries a count, in soft tension with the no-number rule for qualitative labels. <code>A week ago</code> removes it. Minor cleanup. <span class="ref">§11.6</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ EXACT COPY TABLE ════════ -->
+    <section>
+      <div class="sec-hd"><span class="lbl">Exact copy — old → new</span><span class="num">05</span></div>
+      <p class="body" style="margin-bottom:28px">Shown in live type. Most rows are a considered <span class="verdict keep" style="padding:2px 7px">Keep</span> — already aligned by EA-196. The work is in the <span class="verdict change" style="padding:2px 7px">Change</span> and <span class="verdict opt" style="padding:2px 7px">Optional</span> rows.</p>
+
+      <!-- 1 eyebrow -->
+      <div class="specimen">
+        <div class="role">Eyebrow<span class="where">chronicle-eyebrow</span></div>
+        <div class="change-stack">
+          <div class="new-line"><span class="arrow-tag">now</span><span class="smp smp-eyebrow">MNEMOSYNE</span></div>
+        </div>
+        <span class="verdict keep">Keep</span>
+        <div class="note">Patron lives in the eyebrow — exactly the doctrine.</div>
+      </div>
+
+      <!-- 2 title -->
+      <div class="specimen">
+        <div class="role">Title<span class="where">chronicle-title</span></div>
+        <div class="change-stack">
+          <div class="new-line"><span class="arrow-tag">now</span><span class="smp smp-title">The <span class="ital">chronicle</span></span></div>
+        </div>
+        <span class="verdict keep">Keep</span>
+        <div class="note">Tab/title stays plain; the patron name does not become the nav label.</div>
+      </div>
+
+      <!-- 3 write mode -->
+      <div class="specimen">
+        <div class="role">Write mode<span class="where">chronicle-mode-write</span></div>
+        <div class="change-stack">
+          <div class="old-line"><span class="arrow-tag">now</span><span class="smp smp-toggle">Write</span></div>
+          <div class="new-line"><span class="arrow-tag to">opt</span><span class="smp smp-toggle">Leave</span></div>
+        </div>
+        <span class="verdict hold">Hold</span>
+        <div class="note">Keep "Write" for clarity. Only switch to "Leave" if you also like it as a pair with "Remember."</div>
+      </div>
+
+      <!-- 4 read mode -->
+      <div class="specimen">
+        <div class="role">Read mode<span class="where">chronicle-mode-read</span></div>
+        <div class="change-stack">
+          <div class="new-line"><span class="arrow-tag">now</span><span class="smp smp-toggle">Remember</span></div>
+        </div>
+        <span class="verdict keep">Keep</span>
+        <div class="note">Already the recall verb. Done in EA-196.</div>
+      </div>
+
+      <!-- 5 search -->
+      <div class="specimen">
+        <div class="role">Search placeholder<span class="where">chronicle-search</span></div>
+        <div class="change-stack">
+          <div class="new-line"><span class="arrow-tag">now</span><span class="smp smp-search">Search what remains</span></div>
+        </div>
+        <span class="verdict keep">Keep</span>
+        <div class="note">Search framed as calling a remembered phrase. Strong as-is.</div>
+      </div>
+
+      <!-- 6 empty archive -->
+      <div class="specimen">
+        <div class="role">Empty archive<span class="where">archive-empty</span></div>
+        <div class="change-stack">
+          <div class="new-line"><span class="arrow-tag">now</span><span class="smp smp-empty">Nothing has been left here yet.</span></div>
+        </div>
+        <span class="verdict keep">Keep</span>
+        <div class="note">"Left here" already carries the leaving-memory frame.</div>
+      </div>
+
+      <!-- 7 empty search -->
+      <div class="specimen">
+        <div class="role">No search result<span class="where">archive-empty (query)</span></div>
+        <div class="change-stack">
+          <div class="new-line"><span class="arrow-tag">now</span><span class="smp smp-empty">Nothing answered.</span></div>
+        </div>
+        <span class="verdict keep">Keep</span>
+        <div class="note">You call; nothing answers. Perfect for the calling-a-phrase frame.</div>
+      </div>
+
+      <!-- 8 back -->
+      <div class="specimen">
+        <div class="role">Entry back button<span class="where">detail-back</span></div>
+        <div class="change-stack">
+          <div class="new-line"><span class="arrow-tag">now</span><span class="smp smp-back">Return</span></div>
+        </div>
+        <span class="verdict keep">Keep</span>
+        <div class="note">A sanctioned room verb. Do not change to "Back."</div>
+      </div>
+
+      <!-- 9 SAVE STATUS — the change -->
+      <div class="specimen" style="background:linear-gradient(180deg,rgba(201,165,107,0.05),transparent);margin:0 -16px;padding-left:16px;padding-right:16px;border-radius:12px;">
+        <div class="role">Save confirmation<span class="where">chronicle-status</span></div>
+        <div class="change-stack">
+          <div class="old-line"><span class="arrow-tag">old</span><span class="smp smp-status">Saved · 9:42 PM</span></div>
+          <div class="new-line"><span class="arrow-tag to">new</span><span class="smp smp-status lit">Left · 9:42 PM</span></div>
+        </div>
+        <span class="verdict change">Change</span>
+        <div class="note">The line is left, not filed. Rhymes with "Nothing has been left here yet" and "What was left here remains." Timestamp keeps the utility. ("Kept" is a fine alternate.)</div>
+      </div>
+
+      <!-- 10 prompt eyebrow -->
+      <div class="specimen">
+        <div class="role">Prompt eyebrow<span class="where">prompt-eyebrow</span></div>
+        <div class="change-stack">
+          <div class="new-line"><span class="arrow-tag">now</span><span class="smp smp-eyebrow">TONIGHT</span></div>
+        </div>
+        <span class="verdict keep">Keep</span>
+        <div class="note">A qualitative time anchor — useful, and already in the right voice. No myth needed here.</div>
+      </div>
+
+      <!-- 11 river -->
+      <div class="specimen">
+        <div class="role">River header<span class="where">chronicle-river-lbl</span></div>
+        <div class="change-stack">
+          <div class="old-line"><span class="arrow-tag">now</span><span class="smp smp-river">The river</span></div>
+          <div class="new-line"><span class="arrow-tag to">opt</span><span class="smp smp-river">What remains</span></div>
+        </div>
+        <span class="verdict opt">Optional</span>
+        <div class="note">Resolves the two-water-metaphor clash and builds a quiet motif with the search placeholder. "Still here" is a softer alternate. Or hold.</div>
+      </div>
+
+      <!-- 12 resurface label -->
+      <div class="specimen">
+        <div class="role">Resurface label<span class="where">getResurfaceLabel</span></div>
+        <div class="change-stack">
+          <div class="old-line"><span class="arrow-tag">old</span><span class="smp smp-empty" style="text-transform:none;letter-spacing:0.06em">Seven days ago</span></div>
+          <div class="new-line"><span class="arrow-tag to">new</span><span class="smp smp-empty" style="text-transform:none;letter-spacing:0.06em">A week ago</span></div>
+        </div>
+        <span class="verdict opt">Optional</span>
+        <div class="note">Removes the count from a qualitative label. §11.6 housekeeping.</div>
+      </div>
+    </section>
+
+    <!-- ════════ VISUAL / LAYOUT ════════ -->
+    <section>
+      <div class="sec-hd"><span class="lbl">Visual &amp; layout</span><span class="num">06</span></div>
+      <p class="body">No new components, no icons, no parchment, no columns. Everything below uses the existing system — DM Sans, Spectral italic, JetBrains Mono, bronze, warm separators. The surface is already visually strong; the goal is to <em>preserve</em> its form and make one tiny change land.</p>
+      <ul class="clean">
+        <li><strong>Promote the save line to bronze.</strong> The single tied visual move: render <code>.chronicle-status</code> in <code>var(--bronze)</code> instead of muted, keeping mono / 10px / 0.12em / uppercase. It then reads as a quiet patron meta-mark — "Left · 9:42 PM" — rather than an app toast.</li>
+        <li><strong>Protect the reading-first order.</strong> The textarea must stay <em>beneath</em> what-remains. This is the load-bearing Mnemosyne gesture; never let a future "compose-first" instinct float it to the top.</li>
+        <li><strong>Keep the four-step Drift fade.</strong> The vivid → faint opacity ladder is the felt memory organ. Leave the thresholds alone; do not flatten or "tidy" it.</li>
+        <li><strong>Leave the prompt card's dashed border as-is.</strong> It already reads as an inscription-in-waiting. Adding ornament here would be decoration, not form.</li>
+        <li><strong>Optional, if the river is renamed:</strong> nothing else moves — same Spectral italic 17px header treatment, same position above the Drift.</li>
+      </ul>
+    </section>
+
+    <!-- ════════ WHAT NOT TO CHANGE ════════ -->
+    <section>
+      <div class="sec-hd"><span class="lbl">What not to change</span><span class="num">07</span></div>
+      <ul class="clean">
+        <li><strong>Search behavior</strong> — literal substring only; reverse-chronological; no ranking, no semantic match. <span class="ref">§15.4A</span></li>
+        <li><strong>Resurfacing logic</strong> — one entry at a time, deterministic, non-tappable, silent on absence. Do not touch the Well / Drift / resurfaced selection. <span class="ref">§11 · §15.3</span></li>
+        <li><strong>The four permitted Chronicle screens</strong> — write, Drift, the Well, archive/search. No fifth surface, no "memory" tab, no timeline. <span class="ref">§15.5 · §20.15</span></li>
+        <li><strong>No new state</strong> — no tags, categories, counts, word counts, stats, mood, sentiment, summaries, AI, or pattern inference. <span class="ref">§9 · §10 · §20</span></li>
+        <li><strong>Storage spine</strong> — state shape, <code>DEFAULT_DATA</code>, <code>migrateState</code>, <code>STORAGE_KEY</code>, Supabase schema, IndexedDB all untouched.</li>
+        <li><strong>No Greek exposition</strong> — never explain Mnemosyne in copy. She is felt through form, never narrated.</li>
+      </ul>
+    </section>
+
+    <!-- ════════ CODEX PROMPT ════════ -->
+    <section>
+      <div class="sec-hd"><span class="lbl">Codex implementation prompt</span><span class="num">08</span></div>
+      <p class="body">For the approved set. Scoped tight — copy plus one CSS color. No behavior, state, schema, or structure changes.</p>
+      <div class="codeblock">
+<pre><span class="h">Ticket: EA-203 — Chronicle / Mnemosyne form polish (copy + micro-visual)</span>
+
+<span class="c">Scope:</span> copy-only + one CSS colour change. No behaviour, state,
+storage, schema, or structure changes. No new features, no refactors.
+
+<span class="c">Read first:</span> CLAUDE.md; docs/continuity-constitution.md
+(§11, §15, §15.4A, §22.5A, §27.2); docs/ticket-log.md (EA-196).
+
+<span class="c">— APPROVED —</span>
+
+<span class="h">1. js/render/chronicle.js — save confirmation copy</span>
+   Two occurrences of the saved string (the render branch in
+   renderChronicle() and the inline branch in saveChronicleNote()):
+     change  `Saved · ${formatTime12(`${hh}:${mm}`)}`
+     to      `Left · ${formatTime12(`${hh}:${mm}`)}`
+   Leave the timestamp logic exactly as-is.
+
+<span class="h">2. css/chronicle.css — .chronicle-status colour</span>
+   change  color: var(--muted-text);
+   to      color: var(--bronze);
+   Keep font-family mono, 10px, letter-spacing .12em, uppercase.
+
+<span class="c">— OPTIONAL (only if explicitly approved) —</span>
+
+<span class="dim">3. index.html — .chronicle-river-lbl text
+     "The river"  →  "What remains"   (or "Still here")
+4. js/domains/chronicle.js — getResurfaceLabel()
+     "Seven days ago"  →  "A week ago"</span>
+
+<span class="c">Do NOT change:</span> chronicle eyebrow, title, mode-toggle labels,
+search placeholder, empty / no-match states, the Return button;
+the Well / Drift / resurfaced selection logic; search behaviour;
+state shape, DEFAULT_DATA, migrateState, STORAGE_KEY, Supabase,
+IndexedDB. Add no counts, tags, analytics, AI, or summaries.
+
+<span class="c">Service worker:</span> bump CACHE_NAME elysium-v109 → elysium-v110.
+
+<span class="c">Patron Test:</span>
+  Utility — a save still confirms with a timestamp; archive,
+            search, read, and resurfacing are untouched.
+  Form    — "Left" frames writing as leaving memory, matching
+            "Nothing has been left here yet." and
+            "What was left here remains."</pre>
+      </div>
+    </section>
+
+    <div class="closer">Mnemosyne shapes the room · she is never explained</div>
+
+  </main>
+</body>
+</html>

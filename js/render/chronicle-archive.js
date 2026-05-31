@@ -55,7 +55,7 @@ function renderArchiveList() {
   if (!listEl) return;
   const entries = searchChronicleEntries(searchQuery);
   if (entries.length === 0) {
-    const msg = searchQuery.trim() ? 'Nothing answered.' : 'Nothing has been left here yet.';
+    const msg = searchQuery.trim() ? 'Nothing returned.' : 'Nothing has been left yet.';
     listEl.innerHTML = `<p class="chronicle-archive-empty">${escapeHtml(msg)}</p>`;
     return;
   }

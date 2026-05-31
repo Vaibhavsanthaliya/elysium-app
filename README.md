@@ -2,7 +2,7 @@
 
 Elysium is a patron-led daily operating system: a small personal PWA anchored in skincare, Today intentions, Chronicle writing, and day closure without turning them into scores, dashboards, or performance theater.
 
-It began as a skincare tracker, and Care remains the practical skincare anchor. The wider app is organized around plain useful surfaces for Today, Care, Chronicle, Sleep, Mind, Temple context, daylight awareness, progress record, and Settings.
+It began as a skincare tracker, and Care remains the practical skincare anchor. The wider app is organized around plain useful surfaces for Today, Care, Chronicle, Sleep, Mind, Temple context, Apollo daylight awareness inside Morning Flow and Care, progress record, and Settings.
 
 ## What Elysium Is Not
 
@@ -22,7 +22,7 @@ Elysium treats each surface as its own mode of attention:
 - **Sleep** - closure, parking note, and morning handoff.
 - **Mind** - mental-load offload for one thread.
 - **Temple** - atmospheric entry and domain context.
-- **Light** - daylight protection and SPF awareness context.
+- **Apollo / Light** - daylight protection and SPF awareness inside Morning Flow and Care, not a standalone visible domain.
 - **Stars / Settings** - restrained progress record, account, cues, install, import/export, and reset machinery.
 
 Care can mention skin because skin is one domain. The repository should not describe the whole app as skincare software.
@@ -46,6 +46,7 @@ The app intentionally keeps legacy storage names for compatibility.
 - `localStorage` key: `skincare_app_v1`
 - IndexedDB database: `skin-photos-v1`
 - Supabase table: `user_data`
+- Water remains only as dormant legacy compatibility state; it has no visible card, modal, Today row, or flow step.
 
 Do not rename these without an explicit migration plan. Identity copy can evolve without changing stored user data.
 
